@@ -1,12 +1,27 @@
 import React, { Component } from "react";
 import { View, Dimensions } from "react-native";
 import { Badge, Card, Text } from "react-native-elements";
+import { Category } from "../pojo/category";
+
+export interface Props {
+  color : string;
+  category: Category; 
+}
+
+export interface State {
+  color: string;
+  category: Category;
+  numTransactions : number;
+  screenWidth: number;
+  screenHeight: number;
+}
 
 export class CategoryScreen extends Component {
-  constructor(props) {
-    super(props);
+  
+  state : State;
 
-    this.handleResize = this.handleResize.bind(this);
+  constructor(props : Props) {
+    super(props);
 
     this.state = {
       color: props.color,
@@ -14,23 +29,7 @@ export class CategoryScreen extends Component {
       numTransactions : props.category.getTransactions().length,
       screenWidth: Math.round(Dimensions.get("window").width),
       screenHeight: Math.round(Dimensions.get("window").height), 
-      ratio : props.ratio,
     };
-  }
-
-  componentDidMount() {
-    window.addEventListener("resize", this.handleResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize);
-  }
-
-  handleResize() {
-    this.setState({
-      screenWidth: Math.round(Dimensions.get("window").width),
-      screenHeight: Math.round(Dimensions.get("window").height),
-    });
   }
 
   render() {

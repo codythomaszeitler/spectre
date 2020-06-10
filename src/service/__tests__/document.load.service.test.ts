@@ -19,18 +19,24 @@ describe('Document Load Service', () => {
 class TestLocation implements Location {
    
     items : string[];
+    parsed : string[];
 
     constructor(items : string[]) {
         this.items = items.slice();
+        this.parsed = [];
     }
 
-    hasNext() {
+    async hasNext() {
         return this.items.length !== 0;
     }
 
-    read() {
-        const array = [];
-        array.push(this.items.pop());
-        return array;
+    async read() {
+        this.parsed = [];
+        const item = this.items.pop();
+        if (item) {
+            this.parsed.push(item);
+        }
+
+        return this.parsed;
     }
 }

@@ -3,21 +3,23 @@
 export class DocumentLoadService {
 
     location : Location;
+    lines : string[];
 
     constructor(location : Location) {
         this.location = location;
+        this.lines = [];
     }
 
     async fetchall() {
-        objects = [];
-        while (this.location.hasNext()) {
-            objects.push(...this.location.read());
+        this.lines = [];
+        while (await this.location.hasNext()) {
+            this.lines.push(...await this.location.read());
         }
-        return objects;
+        return this.lines;
     }
 }
 
 export interface Location {
-    hasNext : () => boolean;
-    read : () => [];
+    hasNext : () => Promise<boolean>;
+    read : () => Promise<string[]>;
 }

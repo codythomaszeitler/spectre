@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { OnCategoryAddedEvent } from "../pojo/spectre.user";
+import { LocalFileLocation } from "../service/local.file.location";
+import { DocumentLoadService, Location } from "../service/document.load.service";
 
 export interface Props {
   onSuccessfulLoadListener: DocumentLoadedListener;
@@ -25,14 +26,14 @@ export class DocumentPicker extends Component {
     }
   }
 
-  onFilePick(event) {
-    const reader = new FileReader();
-    reader.addEventListener("load", (event) => {
-      const contents = event.target.result;
-      this.onSuccessfulFileLoad(contents);
-    });
+  async onFilePick(event : Object) {
+    const picked = event.target.files[0];
 
-    reader.readAsBinaryString(event.target.files[0]);
+    const location : Location = new LocalFileLocation(picked);
+    const loader : DocumentLoadService = new DocumentLoadService(location);
+
+    const lines = await loader.fetchall();
+
   }
 
   render() {
@@ -49,8 +50,8 @@ export interface DocumentLoadedListener {
 }
 
 export class OnDocumentLoadedEvent {
-    contents : string;
-    constructor(contents : string) {
+    contents : string[];
+    constructor(contents : string[]) {
         this.contents = contents;
     }
 }

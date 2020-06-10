@@ -19,7 +19,6 @@ import { Currency } from "../pojo/currency";
 import { CategoryScreen } from "./category.screen";
 import { Category } from "../pojo/category";
 import { DocumentPicker, DocumentLoadedListener, OnDocumentLoadedEvent} from "./document.picker.screen";
-import FileSaver from 'file-saver';
 
 export interface Props {
 
@@ -69,26 +68,10 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
     };
   }
 
-  componentDidMount() {
-    window.addEventListener("resize", this.handleResize);
-
-    var file = new File(["Hello, world!"], "hello world.txt", {type: "text/plain;charset=utf-8"});
-
-    FileSaver.saveAs(file);
-  }
-
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
-    window.removeEventListener("resize", this.handleResize);
   }
 
-  handleResize() {
-    this.setState({
-      screenWidth: Math.round(Dimensions.get("window").width),
-      screenHeight: Math.round(Dimensions.get("window").height),
-      categories: this.spectreUser.getCategories(),
-    });
-  }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.setState({

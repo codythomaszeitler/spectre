@@ -1,9 +1,19 @@
 import React, {Component} from 'react';
 import EnhancedModal from 'modal-enhanced-react-native-web';
 
+export interface Props {
+    isVisible : boolean;
+}
+
+export interface State {
+    isVisible : boolean;
+}
+
 export class Modal extends Component {
 
-    constructor(props) {
+    state : State;
+
+    constructor(props : Props) {
         super(props);
 
         this.state = {

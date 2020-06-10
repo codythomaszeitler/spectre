@@ -13,7 +13,7 @@ export class LocalFileLocation implements Location {
         this.lines = [];
         this.startedReadingFile = false;
         this.currentLocation = 0;
-        this.wasRead = false;
+        this.wasRead = true;
     }
 
     async hasNext() {
@@ -22,6 +22,7 @@ export class LocalFileLocation implements Location {
             this.lines = contents.split('\n');
         }
 
+        console.log(this.wasRead);
         return this.wasRead;
     }
 
@@ -31,7 +32,7 @@ export class LocalFileLocation implements Location {
             this.lines = contents.split('\n');
         }
 
-        this.wasRead = true;
+        this.wasRead = false;
         return this.lines;
     }
 

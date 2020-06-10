@@ -14,12 +14,12 @@ import {
   OnCategoryAddedEvent,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
-import { TransactionDetail } from "../pojo/info.line";
 import { Transaction } from "../pojo/transaction";
 import { Currency } from "../pojo/currency";
 import { CategoryScreen } from "./category.screen";
 import { Category } from "../pojo/category";
 import { DocumentPicker, DocumentLoadedListener, OnDocumentLoadedEvent} from "./document.picker.screen";
+import FileSaver from 'file-saver';
 
 export interface Props {
 
@@ -71,6 +71,10 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
 
   componentDidMount() {
     window.addEventListener("resize", this.handleResize);
+
+    var file = new File(["Hello, world!"], "hello world.txt", {type: "text/plain;charset=utf-8"});
+
+    FileSaver.saveAs(file);
   }
 
   componentWillUnmount() {

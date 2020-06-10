@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Card, Header } from "react-native-elements";
-import CSVReader from "react-csv-reader";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { Button } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import { SpectreUser } from "../pojo/spectre.user";
 import { TransactionDetail } from "../pojo/info.line";
 import { Transaction } from "../pojo/transaction";
 import { Currency } from "../pojo/currency";
+import Svg, { Circle, Rect } from "react-native-svg";
 
 export class CategorizationScreen extends Component {
+  screenWidth: number;
+  screenHeight: number;
+
   constructor(props) {
     super(props);
     this.onFileLoaded = this.onFileLoaded.bind(this);
@@ -19,6 +22,9 @@ export class CategorizationScreen extends Component {
 
     this.spectreUser = model;
     this.spectreUser.addTransactionReadyForCategorizationListener(this);
+
+    this.screenWidth = Math.round(Dimensions.get("window").width);
+    this.screenHeight = Math.round(Dimensions.get("window").height);
   }
 
   onTransactionReadyForCategorization(event) {
@@ -53,159 +59,69 @@ export class CategorizationScreen extends Component {
           alignContent: "stretch",
         }}
       >
-        <Header
-          leftComponent={{ icon: "menu", color: "#fff" }}
-          centerComponent={{
-            text: "Spectre",
-            style: { color: "#fff" },
-          }}
-          rightComponent={{ icon: "home", color: "#fff" }}
-        />
         <View
           style={{
-            flex: 1,
-          }}
-        ></View>
-        <View
-          style={{
-            flex: 5,
+            alignSelf: "center",
+            width: this.screenWidth * 0.8,
+            flex: 8,
           }}
         >
-          <Card
-            containerStyle={{
-              backgroundColor: "#77c98d",
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowRadius: 5,
-              shadowOpacity: 0.5,
+          <Button
+            buttonStyle={{
+              backgroundColor: "#ced4de",
             }}
-          >
-            <Text style={styles.text}>Home</Text>
-          </Card>
-        </View>
-        <View
-          style={{
-            flex: 5,
-          }}
-        >
-          <Card
-            containerStyle={{
-              backgroundColor: "#9cbbe6",
-
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowRadius: 5,
-              shadowOpacity: 0.5,
+            icon={{
+              name: "add",
+              size: 15,
+              color: "white",
             }}
-          >
-            <View
-              style={{
-                alignSelf: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={styles.text}>Auto</Text>
-            </View>
-          </Card>
-        </View>
-        <View
-          style={{
-            flex: 5,
-          }}
-        >
-          <Card
-            containerStyle={{
-              backgroundColor: "#f2a2f5",
-
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowRadius: 5,
-              shadowOpacity: 0.5,
-            }}
-          >
-            <Text style={styles.text}>Insurance</Text>
-          </Card>
-        </View>
-        <View
-          style={{
-            flex: 5,
-          }}
-        >
-          <Card
-            containerStyle={{
-              backgroundColor: "#f5ada2",
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowRadius: 5,
-              shadowOpacity: 0.5,
-            }}
-          >
-            <Text style={styles.text}>Stock Market</Text>
-          </Card>
-        </View>
-        <View
-          style={{
-            flex: 5,
-          }}
-        >
-          <Card
-            containerStyle={{
-              backgroundColor: "#00ada2",
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowRadius: 5,
-              shadowOpacity: 0.5,
-            }}
-          >
-            <Text style={styles.text}>Stock Market</Text>
-          </Card>
-        </View>
-        <View
-          style={{
-            flex: 5,
-          }}
-        >
-          <Card
-            containerStyle={{
-              backgroundColor: "#f500a2",
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowRadius: 5,
-              shadowOpacity: 0.5,
-            }}
-          >
-            <Text style={styles.text}>Stock Market</Text>
-          </Card>
+          ></Button>
         </View>
 
-        <View style={{ flex: 1, alignSelf: "center" }}>
-          <CSVReader
-            cssClass="csv-reader-input"
-            label="Select CSV with secret Death Star statistics"
-            onFileLoaded={this.onFileLoaded}
-            onError={this.onError}
-            inputStyle={{ color: "red" }}
-          />
+        <View
+          style={{
+            justifyContent: "flex-end",
+            flexDirection : 'row',
+            flex : 1
+          }}
+        >
+          <View
+            style={{
+              alignItems: "flex-start",
+              flex : 1
+            }}
+          >
+            <Svg height="100%" width="100%" viewBox="0 0 100 100">
+              <Rect
+                x="20"
+                y="20"
+                width="50"
+                height="50"
+                strokeWidth="2"
+                fill="#5ccc54"
+              />
+            </Svg>
+          </View>
+          <View style={{
+            flex : 1.5
+          }}>
+
+          </View>
+          <View
+            style={{
+              alignItems: "flex-end",
+              flex : 1
+            }}
+          >
+            <Svg height="100%" width="100%" viewBox="0 0 100 100">
+              <Circle cx="50" cy="50" r="45" strokeWidth="2.5" fill="red" />
+            </Svg>
+          </View>
         </View>
-        <View style={{ flex: 10 }}></View>
+        <View style={{
+          flex : .5
+        }}></View>
+
       </View>
     );
   }

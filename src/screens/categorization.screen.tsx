@@ -5,7 +5,7 @@ import CSVReader from "react-csv-reader";
 import { datastore } from "../datastore/datastore";
 import { SpectreUser } from "../pojo/spectre.user";
 import { TransactionDetail } from "../pojo/info.line";
-import {Transaction} from '../pojo/transaction';
+import { Transaction } from "../pojo/transaction";
 import { Currency } from "../pojo/currency";
 
 export class CategorizationScreen extends Component {
@@ -27,17 +27,16 @@ export class CategorizationScreen extends Component {
 
   onFileLoaded(rows) {
     for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
+      const row = rows[i];
 
-        console.log(row);
+      console.log(row);
 
+      const detail = new TransactionDetail(row[0], "Banking Information");
+      const company = new TransactionDetail(row[2], "Business");
+      const currency = new Currency(row[1]);
 
-        const detail = new TransactionDetail(row[0], 'Banking Information');
-        const company = new TransactionDetail(row[2], 'Business');
-        const currency = new Currency(row[1]);
-
-        const transaction = new Transaction(currency, null, [detail, company]);
-        this.spectreUser.readyForCategorization(transaction);
+      const transaction = new Transaction(currency, null, [detail, company]);
+      this.spectreUser.readyForCategorization(transaction);
     }
   }
 

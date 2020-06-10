@@ -1,8 +1,17 @@
+import { Currency } from "./currency";
+import { Timestamp } from "./timestamp";
+import { TransactionDetail } from "./info.line";
+
 export const AMOUNT_TYPE = "Amount";
 export const TIMESTAMP_TYPE = "When";
 
 export class Transaction {
-  constructor(amount, when, otherInfo) {
+
+  amount : Currency;
+  when? : Timestamp;
+  details? : TransactionDetail[];
+
+  constructor(amount : Currency, when? : Timestamp, otherInfo? : TransactionDetail[]) {
     this.amount = amount.copy();
     
     if (when) {

@@ -13,10 +13,13 @@
     "dinero.js": "^1.8.1",
     "expo": "~37.0.3",
     "luxon": "^1.24.1",
+    "modal-enhanced-react-native-web": "^0.2.0",
+    "modal-react-native-web": "^0.2.0",
     "react": "~16.9.0",
     "react-csv-reader": "^3.0.6",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
+    "react-native-document-picker": "^3.4.0",
     "react-native-elements": "^2.0.2",
     "react-native-svg": "11.0.1",
     "react-native-web": "~0.11.7"

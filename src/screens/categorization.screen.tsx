@@ -6,24 +6,26 @@ import {
   Dimensions,
   FlatList,
 } from "react-native";
-import { Button, Icon } from "react-native-elements";
+import { Button, Icon, Card } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
   CategoryAddedListener,
   OnCategoryAddedEvent,
 } from "../pojo/spectre.user";
+import { Modal } from "./modal.screen";
 import { TransactionDetail } from "../pojo/info.line";
 import { Transaction } from "../pojo/transaction";
 import { Currency } from "../pojo/currency";
 import { CategoryScreen } from "./category.screen";
 import { Category } from "../pojo/category";
+import { DocumentPicker, DocumentLoadedListener, OnDocumentLoadedEvent} from "./document.picker.screen";
 
-export class CategorizationScreen extends Component
-  implements CategoryAddedListener {
-  screenWidth: number;
-  screenHeight: number;
+export interface Props {
 
+}
+
+export class CategorizationScreen extends Component implements DocumentLoadedListener, CategoryAddedListener {
   spectreUser: SpectreUser;
 
   colors = [
@@ -37,11 +39,9 @@ export class CategorizationScreen extends Component
     "#ff8084",
   ];
 
-  constructor(props) {
+  constructor(props : Props) {
     super(props);
-    this.onFileLoaded = this.onFileLoaded.bind(this);
-    this.onError = this.onError.bind(this);
-
+    this.onSuccessfulLoad = this.onSuccessfulLoad.bind(this);
     this.handleResize = this.handleResize.bind(this);
 
     const model = new SpectreUser();
@@ -65,6 +65,7 @@ export class CategorizationScreen extends Component
       categories: this.spectreUser.getCategories(),
       screenWidth: Math.round(Dimensions.get("window").width),
       screenHeight: Math.round(Dimensions.get("window").height),
+      showImportCsvScreen: true,
     };
   }
 
@@ -95,23 +96,20 @@ export class CategorizationScreen extends Component
     console.log(event);
   }
 
-  onFileLoaded(rows) {
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-
-      console.log(row);
-
-      const detail = new TransactionDetail(row[0], "Banking Information");
-      const company = new TransactionDetail(row[2], "Business");
-      const currency = new Currency(row[1], "USD");
-
-      const transaction = new Transaction(currency, null, [detail, company]);
-      this.spectreUser.readyForCategorization(transaction);
-    }
-  }
-
-  onError(event) {
+  onSuccessfulLoad(event: OnDocumentLoadedEvent) {
     console.log(event);
+    // for (let i = 0; i < rows.length; i++) {
+    //   const row = rows[i];
+
+    //   console.log(row);
+
+    //   const detail = new TransactionDetail(row[0], "Banking Information");
+    //   const company = new TransactionDetail(row[2], "Business");
+    //   const currency = new Currency(row[1], "USD");
+
+    //   const transaction = new Transaction(currency, null, [detail, company]);
+    //   this.spectreUser.readyForCategorization(transaction);
+    // }
   }
 
   render() {
@@ -123,6 +121,11 @@ export class CategorizationScreen extends Component
           alignContent: "stretch",
         }}
       >
+        <Modal isVisible={this.state.showImportCsvScreen}>
+          <Card>
+            <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
+          </Card>
+        </Modal>
         <View
           style={{
             flex: 8,
@@ -131,10 +134,12 @@ export class CategorizationScreen extends Component
           <FlatList
             data={this.state.categories}
             renderItem={({ item, index }) => {
-              return <CategoryScreen
-                color={this.colors[index % this.colors.length]}
-                category={item}
-              ></CategoryScreen>;
+              return (
+                <CategoryScreen
+                  color={this.colors[index % this.colors.length]}
+                  category={item}
+                ></CategoryScreen>
+              );
             }}
           ></FlatList>
         </View>

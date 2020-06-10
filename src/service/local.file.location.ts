@@ -1,52 +1,59 @@
-import {Location} from './document.load.service';
+import { Location } from "./location";
+import FileSaver from "file-saver";
 
 export class LocalFileLocation implements Location {
+  file: File;
+  lines: string[];
+  wasRead: boolean;
+  startedReadingFile: boolean;
+  currentLocation: number;
 
-    file : File;
-    lines : string[];
-    wasRead : boolean;
-    startedReadingFile : boolean;
-    currentLocation : number;
+  constructor(file: File) {
+    this.file = file;
+    this.lines = [];
+    this.startedReadingFile = false;
+    this.currentLocation = 0;
+    this.wasRead = true;
+  }
 
-    constructor(file : File) {
-        this.file = file;
-        this.lines = [];
-        this.startedReadingFile = false;
-        this.currentLocation = 0;
-        this.wasRead = true;
+  async hasNext() {
+    if (!this.startedReadingFile) {
+      const contents = await this.readFile(this.file);
+      this.lines = contents.split("\n");
     }
 
-    async hasNext() {
-        if (!this.startedReadingFile) {
-            const contents = await this.readFile(this.file);
-            this.lines = contents.split('\n');
-        }
+    console.log(this.wasRead);
+    return this.wasRead;
+  }
 
-        console.log(this.wasRead);
-        return this.wasRead;
+  async read() {
+    if (!this.startedReadingFile) {
+      const contents = await this.readFile(this.file);
+      this.lines = contents.split("\n");
     }
 
-    async read() {
-        if (!this.startedReadingFile) {
-            const contents = await this.readFile(this.file);
-            this.lines = contents.split('\n');
-        }
+    this.wasRead = false;
+    return this.lines;
+  }
 
-        this.wasRead = false;
-        return this.lines;
-    }
+  readFile(file: File) {
+    this.startedReadingFile = true;
+    return new Promise<string[]>((resolve, reject) => {
+      const reader = new FileReader();
 
-    readFile(file : File) {
-        this.startedReadingFile = true;
-        return new Promise<string[]>((resolve, reject) => {
-          const reader = new FileReader();
-      
-          reader.onload = res => {
-            resolve(res.target.result);
-          };
-          reader.onerror = err => reject(err);
-      
-          reader.readAsText(file);
-        });
-      }
+      reader.onload = (res) => {
+        resolve(res.target.result);
+      };
+      reader.onerror = (err) => reject(err);
+
+      reader.readAsText(file);
+    });
+  }
+
+  async write(lines: string[]) {
+    var file = new File(lines, this.file.name, { type: "text/plain;charset=utf-8" });
+    await FileSaver.saveAs(file);
+
+    return true;
+  }
 }

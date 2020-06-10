@@ -36,5 +36,8 @@
     "jest": "^26.0.1",
     "ts-jest": "^26.1.0"
   },
+  "jest" : {
+    "testPathIgnorePatterns": ["<rootDir>/src/service/__tests__/test.location.ts"]
+  },
   "private": true
 }

@@ -82,6 +82,7 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
   }
 
   onSuccessfulLoad(event: OnDocumentLoadedEvent) {
+    console.log(event);
   }
 
   render() {

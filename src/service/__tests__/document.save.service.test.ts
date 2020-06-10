@@ -1,21 +1,16 @@
-import { DocumentSaveService, FileWriter } from "../document.save.service";
+import { DocumentSaveService } from "../document.save.service";
+import { TestLocation } from "./test.location";
 
-describe('Document Save Service', () => {
+describe("Document Save Service", () => {
+  it("should be able to write the filename and contents to a file", async () => {
+    const writer : TestLocation = new TestLocation([]);
 
-    it('should be able to write the filename and contents to a file', async () => {
-        let written : File = new File([], '');
-        const writer : FileWriter = {
-            async write(file : File) {
-                written = file;
-            }
-        };
+    const testString = "Hi! This is a test!";
 
-        const testString = 'Hi! This is a test!';
+    const testObject = new DocumentSaveService(writer);
+    await testObject.save([testString]);
 
-        const testObject = new DocumentSaveService(writer);
-        await testObject.save('testfile.txt', testString);
-
-        expect(written.name).toBe('testfile.txt');
-        expect(written.size).toBe(testString.length);
-    });
-}); 
+    expect(writer.written.length).toBe(1);
+    expect(writer.written[0]).toBe(testString);
+  });
+});

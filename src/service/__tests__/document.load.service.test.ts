@@ -1,4 +1,6 @@
-import {Location, DocumentLoadService} from '../document.load.service';
+import {DocumentLoadService} from '../document.load.service';
+import { Location } from "../location";
+import {TestLocation} from './test.location';
 
 describe('Document Load Service', () => {
     it('should be able to load a file from a filesystem', async () => {
@@ -16,27 +18,3 @@ describe('Document Load Service', () => {
 });
 
 
-class TestLocation implements Location {
-   
-    items : string[];
-    parsed : string[];
-
-    constructor(items : string[]) {
-        this.items = items.slice();
-        this.parsed = [];
-    }
-
-    async hasNext() {
-        return this.items.length !== 0;
-    }
-
-    async read() {
-        this.parsed = [];
-        const item = this.items.pop();
-        if (item) {
-            this.parsed.push(item);
-        }
-
-        return this.parsed;
-    }
-}

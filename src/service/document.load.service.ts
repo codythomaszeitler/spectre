@@ -1,4 +1,4 @@
-
+import { Location } from "./location";
 
 export class DocumentLoadService {
 
@@ -19,7 +19,3 @@ export class DocumentLoadService {
     }
 }
 
-export interface Location {
-    hasNext : () => Promise<boolean>;
-    read : () => Promise<string[]>;
-}

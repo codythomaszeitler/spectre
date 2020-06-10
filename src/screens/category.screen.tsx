@@ -1,15 +1,36 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Button, Icon, Card, Text } from "react-native-elements";
+import { View, Dimensions } from "react-native";
+import { Badge, Card, Text } from "react-native-elements";
 
 export class CategoryScreen extends Component {
   constructor(props) {
     super(props);
 
+    this.handleResize = this.handleResize.bind(this);
+
     this.state = {
       color: props.color,
       category: props.category,
+      numTransactions : props.category.getTransactions().length,
+      screenWidth: Math.round(Dimensions.get("window").width),
+      screenHeight: Math.round(Dimensions.get("window").height), 
+      ratio : props.ratio,
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+
+  handleResize() {
+    this.setState({
+      screenWidth: Math.round(Dimensions.get("window").width),
+      screenHeight: Math.round(Dimensions.get("window").height),
+    });
   }
 
   render() {
@@ -62,14 +83,9 @@ export class CategoryScreen extends Component {
                 flex: 1,
               }}
             >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 15,
-                }}
-              >
-                5
-              </Text>
+              <Badge value={this.state.numTransactions}  badgeStyle={{
+                backgroundColor : this.state.color
+              }}/>
             </View>
           </View>
         </Card>
@@ -83,7 +99,6 @@ export class CategoryScreen extends Component {
             return (
               <Card
                 containerStyle={{
-                  width: 275,
                   backgroundColor: this.state.color,
                   marginTop: 10,
                   paddingTop: 15,

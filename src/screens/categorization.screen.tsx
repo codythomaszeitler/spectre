@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ScrollView,
+  FlatList,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
@@ -43,30 +42,47 @@ export class CategorizationScreen extends Component
     this.onFileLoaded = this.onFileLoaded.bind(this);
     this.onError = this.onError.bind(this);
 
+    this.handleResize = this.handleResize.bind(this);
+
     const model = new SpectreUser();
     datastore().set(model);
     this.spectreUser = model;
 
-    for (let i = 0; i < 3; i++) {
-      const category : Category = new Category('Home');
+    for (let i = 0; i < 10; i++) {
+      const category: Category = new Category("Home");
       this.spectreUser.addCategory(category);
     }
 
-    this.spectreUser.categorize(new Transaction(new Currency(400, 'USD')), new Category('Home'));
+    this.spectreUser.categorize(
+      new Transaction(new Currency(400, "USD")),
+      new Category("Home")
+    );
 
     this.spectreUser.addTransactionReadyForCategorizationListener(this);
     this.spectreUser.addOnCategoryAddedListener(this);
 
-    this.screenWidth = Math.round(Dimensions.get("window").width);
-    this.screenHeight = Math.round(Dimensions.get("window").height);
-
     this.state = {
       categories: this.spectreUser.getCategories(),
+      screenWidth: Math.round(Dimensions.get("window").width),
+      screenHeight: Math.round(Dimensions.get("window").height),
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
+    window.removeEventListener("resize", this.handleResize);
+  }
+
+  handleResize() {
+    this.setState({
+      screenWidth: Math.round(Dimensions.get("window").width),
+      screenHeight: Math.round(Dimensions.get("window").height),
+      categories: this.spectreUser.getCategories(),
+    });
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
@@ -112,33 +128,15 @@ export class CategorizationScreen extends Component
             flex: 8,
           }}
         >
-          <ScrollView
-            style={{
-              alignSelf: "center",
-              width: this.screenWidth * 0.95,
-              flex: 8,
+          <FlatList
+            data={this.state.categories}
+            renderItem={({ item, index }) => {
+              return <CategoryScreen
+                color={this.colors[index % this.colors.length]}
+                category={item}
+              ></CategoryScreen>;
             }}
-          >
-            <View
-              style={{
-                justifyContent: "flex-start",
-              }}
-            >
-              <Text></Text>
-              <Text></Text>
-              <Text></Text>
-              <Text></Text>
-
-              {this.state.categories.map((data, index) => {
-                return (
-                  <CategoryScreen
-                    color={this.colors[index]}
-                    category={data}
-                  ></CategoryScreen>
-                );
-              })}
-            </View>
-          </ScrollView>
+          ></FlatList>
         </View>
         <View
           style={{

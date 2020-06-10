@@ -4,6 +4,7 @@ import { Timestamp } from "../timestamp";
 import { Currency } from "../currency";
 import { TransactionDetail } from "../info.line";
 import { Transaction } from "../transaction";
+import { OnCategoryAddedEvent, CategoryAddedListener } from '../spectre.user';
 
 describe("Spectre User", () => {
   it("should allow a user to categorize a transaction", () => {
@@ -51,6 +52,28 @@ describe("Spectre User", () => {
     testObject.removeTransactionReadyForCategorizationListener(listener);
     caughtEvent = null;
     testObject.readyForCategorization(transaction);
+    expect(caughtEvent).toBeNull();
+  });
+
+  it('should emit an event when a new category is added', () => {
+    let caughtEvent = null;
+    const listener : CategoryAddedListener = {
+      onCategoryAdded : function (event : OnCategoryAddedEvent) {
+        caughtEvent = event;
+      },
+    };
+
+    const testObject : SpectreUser = new SpectreUser();
+    testObject.addOnCategoryAddedListener(listener);
+    const category : Category = new Category('Home');
+    testObject.addCategory(category.copy());
+
+    expect(category.copy().equals(caughtEvent.category)).toBe(true);
+
+    caughtEvent = null;
+    testObject.removeOnCategoryAddedListener(listener);
+
+    testObject.addCategory(new Category('New'));
     expect(caughtEvent).toBeNull();
   });
 });

@@ -1,6 +1,16 @@
 import {Currency} from './currency';
+import { Category } from './category';
+import {Transaction} from './transaction';
 
 export class SpectreUser {
+
+    categories : Category[];
+    uncategorized : Transaction[];
+
+    onCategoryAddedListeners : CategoryAddedListener[];
+    currentOnCategoryAddedListenerId : number;
+
+    currentTransactionReadyForCategorizationListenerId : number;
 
     constructor() {
         this.categories = [];
@@ -8,6 +18,9 @@ export class SpectreUser {
 
         this.transactionReadyForCategorizationListeners = [];
         this.currentTransactionReadyForCategorizationListenerId = 0;
+
+        this.onCategoryAddedListeners = [];
+        this.currentOnCategoryAddedListenerId = 0;
     }
 
     getCategories() {
@@ -18,7 +31,7 @@ export class SpectreUser {
         return copied;
     }
 
-    getTransactionsFor(category) {
+    getTransactionsFor(category : Category) {
         const found = this._getCategory(category);
         return found.getTransactions();
     }
@@ -32,7 +45,7 @@ export class SpectreUser {
         return copied;
     }
 
-    readyForCategorization(transaction) {
+    readyForCategorization(transaction : Transaction) {
 
         this.uncategorized.push(transaction.copy());
 
@@ -55,13 +68,27 @@ export class SpectreUser {
         });
     }
 
-
-    addCategory(category) {
+    addCategory(category : Category) {
         this.categories.push(category.copy());
+
+        for (let i = 0; i < this.onCategoryAddedListeners.length; i++) {
+            this.onCategoryAddedListeners[i].onCategoryAdded(new OnCategoryAddedEvent(category.copy()));
+        }
     }
 
-    categorize(transaction, category) {
-        
+    addOnCategoryAddedListener(listener : CategoryAddedListener) {
+        this.onCategoryAddedListeners.push(listener);
+        listener.__onCategoryAddedListenerId = this.currentOnCategoryAddedListenerId;
+    }
+
+    removeOnCategoryAddedListener(listener : CategoryAddedListener) {
+        this.onCategoryAddedListeners = this.onCategoryAddedListeners.filter(function(inner) {
+            return listener.__onCategoryAddedListenerId !== inner.__onCategoryAddedListenerId;
+        }); 
+    }
+
+    categorize(transaction : Transaction, category : Category) {
+       
         this.uncategorized = this.uncategorized.filter(function(inner) {
             return !inner.equals(transaction);
         });
@@ -71,7 +98,7 @@ export class SpectreUser {
 
     }
 
-    rollup(category) {
+    rollup(category : Category) {
         const found = this._getCategory(category);
 
         const transactions = found.getTransactions();
@@ -87,7 +114,7 @@ export class SpectreUser {
         return computed;
     }
 
-    _getCategory(category) {
+    _getCategory(category : Category) {
         let found = null;
 
         for (let i = 0; i < this.categories.length; i++) {
@@ -98,5 +125,18 @@ export class SpectreUser {
         }
 
         return found;
+    }
+}
+
+export interface CategoryAddedListener {
+    onCategoryAdded : (event : OnCategoryAddedEvent) => void;
+}
+
+export class OnCategoryAddedEvent {
+
+    category : Category;
+
+    constructor(category : Category) {
+        this.category = category.copy();
     }
 }

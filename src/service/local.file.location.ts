@@ -4,6 +4,7 @@ export class LocalFileLocation implements Location {
 
     file : File;
     lines : string[];
+    wasRead : boolean;
     startedReadingFile : boolean;
     currentLocation : number;
 
@@ -12,23 +13,26 @@ export class LocalFileLocation implements Location {
         this.lines = [];
         this.startedReadingFile = false;
         this.currentLocation = 0;
+        this.wasRead = false;
     }
 
     async hasNext() {
         if (!this.startedReadingFile) {
-            this.lines = await this.readFile(this.file);
+            const contents = await this.readFile(this.file);
+            this.lines = contents.split('\n');
         }
 
-        return this.lines.length !== (this.currentLocation - 1);
+        return this.wasRead;
     }
 
     async read() {
         if (!this.startedReadingFile) {
-            this.lines = await this.readFile(this.file);
+            const contents = await this.readFile(this.file);
+            this.lines = contents.split('\n');
         }
 
-        this.currentLocation = this.lines.length - 1;
-        return this.lines.slice(); 
+        this.wasRead = true;
+        return this.lines;
     }
 
     readFile(file : File) {
@@ -37,7 +41,6 @@ export class LocalFileLocation implements Location {
           const reader = new FileReader();
       
           reader.onload = res => {
-              console.log(res);
             resolve(res.target.result);
           };
           reader.onerror = err => reject(err);

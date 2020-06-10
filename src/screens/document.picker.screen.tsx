@@ -20,7 +20,7 @@ export class DocumentPicker extends Component {
     }
   }
 
-  onSuccessfulFileLoad(contents: string) {
+  onSuccessfulFileLoad(contents: string[]) {
     for (let i = 0; i < this.documentLoadedListeners.length; i++) {
       this.documentLoadedListeners[i].onSuccessfulLoad(new OnDocumentLoadedEvent(contents));
     }
@@ -33,7 +33,7 @@ export class DocumentPicker extends Component {
     const loader : DocumentLoadService = new DocumentLoadService(location);
 
     const lines = await loader.fetchall();
-
+    this.onSuccessfulFileLoad(lines);
   }
 
   render() {

@@ -41,7 +41,6 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
   constructor(props : Props) {
     super(props);
     this.onSuccessfulLoad = this.onSuccessfulLoad.bind(this);
-    this.handleResize = this.handleResize.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -80,23 +79,9 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
   }
 
   onTransactionReadyForCategorization(event) {
-    console.log(event);
   }
 
   onSuccessfulLoad(event: OnDocumentLoadedEvent) {
-    console.log(event);
-    // for (let i = 0; i < rows.length; i++) {
-    //   const row = rows[i];
-
-    //   console.log(row);
-
-    //   const detail = new TransactionDetail(row[0], "Banking Information");
-    //   const company = new TransactionDetail(row[2], "Business");
-    //   const currency = new Currency(row[1], "USD");
-
-    //   const transaction = new Transaction(currency, null, [detail, company]);
-    //   this.spectreUser.readyForCategorization(transaction);
-    // }
   }
 
   render() {

@@ -1,12 +1,6 @@
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  FlatList,
-} from "react-native";
-import { Button, Icon, Card } from "react-native-elements";
+import { View, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import { Button, Icon, Card, Input } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -14,28 +8,30 @@ import {
   OnCategoryAddedEvent,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
-import { Transaction, AMOUNT_TYPE } from "../pojo/transaction";
-import { Currency } from "../pojo/currency";
+import { AMOUNT_TYPE } from "../pojo/transaction";
 import { CategoryScreen } from "./category.screen";
 import { Category } from "../pojo/category";
-import { DocumentPicker, DocumentLoadedListener, OnFileSelectedEvent} from "./document.picker.screen";
+import {
+  DocumentPicker,
+  DocumentLoadedListener,
+  OnFileSelectedEvent,
+} from "./document.picker.screen";
 import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { CsvImporter } from "../export/csv.importer";
 import { Columns } from "../export/columns";
 
-export interface Props {
+export interface Props {}
 
+export interface State {
+  categories: Category[];
+  showImportCsvScreen: boolean;
+  showAddCategoryScreen: boolean;
+  categoryAddText : string;
 }
 
-export interface State { 
-  categories: Category[],
-  screenWidth: number, 
-  screenHeight: number,
-  showImportCsvScreen: boolean
-}
-
-export class CategorizationScreen extends Component implements DocumentLoadedListener, CategoryAddedListener {
+export class CategorizationScreen extends Component
+  implements DocumentLoadedListener, CategoryAddedListener {
   spectreUser: SpectreUser;
 
   colors = [
@@ -49,35 +45,26 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
     "#ff8084",
   ];
 
-  state : State;
+  state: State;
 
-  constructor(props : Props) {
+  constructor(props: Props) {
     super(props);
     this.onFileSelect = this.onFileSelect.bind(this);
     this.onImportPress = this.onImportPress.bind(this);
+    this.onAddCategoryPress = this.onAddCategoryPress.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
     this.spectreUser = model;
-
-    for (let i = 0; i < 10; i++) {
-      const category: Category = new Category("Home");
-      this.spectreUser.addCategory(category);
-    }
-
-    this.spectreUser.categorize(
-      new Transaction(new Currency(400, "USD")),
-      new Category("Home")
-    );
 
     this.spectreUser.addTransactionReadyForCategorizationListener(this);
     this.spectreUser.addOnCategoryAddedListener(this);
 
     this.state = {
       categories: this.spectreUser.getCategories(),
-      screenWidth: Math.round(Dimensions.get("window").width),
-      screenHeight: Math.round(Dimensions.get("window").height),
       showImportCsvScreen: false,
+      showAddCategoryScreen: false,
+      categoryAddText : '',
     };
   }
 
@@ -87,8 +74,19 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
 
   onImportPress() {
     this.setState({
-      showImportCsvScreen : true
-    })
+      showImportCsvScreen: true,
+    });
+  }
+  
+  onAddCategoryPress(event) {
+    if (this.state.categoryAddText) {
+      const category = new Category(this.state.categoryAddText);
+      this.spectreUser.addCategory(category);
+
+      this.setState({
+        showAddCategoryScreen : false
+      });
+    }
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
@@ -102,25 +100,28 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
-
     const columns = new Columns({
-      0 : {
+      0: {
         "Charge Amount": AMOUNT_TYPE,
-      }, 
-      1 : {
-        "Bank" : "Bank"
       },
-      2 : {
-        "Place of Business" : "Place of Business"
-      }
+      1: {
+        Bank: "Bank",
+      },
+      2: {
+        "Place of Business": "Place of Business",
+      },
     });
 
     const location = new LocalFileLocation(event.file);
-    const loadService = new TransactionLoadService(this.spectreUser, location, new CsvImporter(columns));
+    const loadService = new TransactionLoadService(
+      this.spectreUser,
+      location,
+      new CsvImporter(columns)
+    );
     await loadService.load();
 
     this.setState({
-      showImportCsvScreen : false 
+      showImportCsvScreen: false,
     });
   }
 
@@ -133,13 +134,51 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
           alignContent: "stretch",
         }}
       >
-        <Modal isVisible={this.state.showImportCsvScreen} onBackdropPress={() => {
-          this.setState({
-            showImportCsvScreen : false 
-          });
-        }}>
+        <Modal
+          isVisible={this.state.showImportCsvScreen}
+          onBackdropPress={() => {
+            this.setState({
+              showImportCsvScreen: false,
+            });
+          }}
+        >
           <Card>
             <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
+          </Card>
+        </Modal>
+        <Modal
+          isVisible={this.state.showAddCategoryScreen}
+          onBackdropPress={() => {
+            this.setState({
+              showAddCategoryScreen: false,
+            });
+          }}
+        >
+          <Card title="Add Category">
+            <Input placeholder="Category" onChangeText={(text) => {
+              this.setState({
+                categoryAddText : text
+              });
+            }}/>
+            <Button
+              buttonStyle={{
+                backgroundColor: "#ced4de",
+                marginTop: 10,
+                paddingTop: 15,
+                paddingBottom: 15,
+                marginLeft: 30,
+                marginRight: 30,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: "#fff",
+              }}
+              icon={{
+                name: "add",
+                size: 15,
+                color: "white",
+              }}
+              onPress={this.onAddCategoryPress}
+            ></Button>
           </Card>
         </Modal>
         <View
@@ -180,6 +219,11 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
               name: "add",
               size: 15,
               color: "white",
+            }}
+            onPress={() => {
+              this.setState({
+                showAddCategoryScreen: true,
+              });
             }}
           ></Button>
         </View>

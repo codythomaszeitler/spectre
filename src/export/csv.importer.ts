@@ -2,8 +2,9 @@ import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
 import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
 import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/info.line";
+import {Importer} from './importer';
 
-export class CsvImporter {
+export class CsvImporter implements Importer {
 
     columns : Columns;
 

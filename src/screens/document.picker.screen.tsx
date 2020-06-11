@@ -21,20 +21,15 @@ export class DocumentPicker extends Component {
     }
   }
 
-  onSuccessfulFileLoad(contents: string[]) {
+  onFileSelect(contents: File){
     for (let i = 0; i < this.documentLoadedListeners.length; i++) {
-      this.documentLoadedListeners[i].onSuccessfulLoad(new OnDocumentLoadedEvent(contents));
+      this.documentLoadedListeners[i].onFileSelect(new OnFileSelectedEvent(contents));
     }
   }
 
   async onFilePick(event : Object) {
     const picked = event.target.files[0];
-
-    const location : Location = new LocalFileLocation(picked);
-    const loader : DocumentLoadService = new DocumentLoadService(location);
-
-    const lines = await loader.fetchall();
-    this.onSuccessfulFileLoad(lines);
+    this.onFileSelect(picked);
   }
 
   render() {
@@ -47,12 +42,12 @@ export class DocumentPicker extends Component {
 }
 
 export interface DocumentLoadedListener {
-  onSuccessfulLoad: (event: OnDocumentLoadedEvent) => void;
+  onFileSelect: (event: OnFileSelectedEvent) => void;
 }
 
-export class OnDocumentLoadedEvent {
-    contents : string[];
-    constructor(contents : string[]) {
-        this.contents = contents;
+export class OnFileSelectedEvent {
+    file : File;
+    constructor(file: File) {
+        this.file= file;
     }
 }

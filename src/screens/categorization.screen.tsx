@@ -14,14 +14,25 @@ import {
   OnCategoryAddedEvent,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
-import { Transaction } from "../pojo/transaction";
+import { Transaction, AMOUNT_TYPE } from "../pojo/transaction";
 import { Currency } from "../pojo/currency";
 import { CategoryScreen } from "./category.screen";
 import { Category } from "../pojo/category";
-import { DocumentPicker, DocumentLoadedListener, OnDocumentLoadedEvent} from "./document.picker.screen";
+import { DocumentPicker, DocumentLoadedListener, OnFileSelectedEvent} from "./document.picker.screen";
+import { TransactionLoadService } from "../service/transaction.load.service";
+import { LocalFileLocation } from "../service/local.file.location";
+import { CsvImporter } from "../export/csv.importer";
+import { Columns } from "../export/columns";
 
 export interface Props {
 
+}
+
+export interface State { 
+  categories: Category[],
+  screenWidth: number, 
+  screenHeight: number,
+  showImportCsvScreen: boolean
 }
 
 export class CategorizationScreen extends Component implements DocumentLoadedListener, CategoryAddedListener {
@@ -38,9 +49,12 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
     "#ff8084",
   ];
 
+  state : State;
+
   constructor(props : Props) {
     super(props);
-    this.onSuccessfulLoad = this.onSuccessfulLoad.bind(this);
+    this.onFileSelect = this.onFileSelect.bind(this);
+    this.onImportPress = this.onImportPress.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -63,7 +77,7 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
       categories: this.spectreUser.getCategories(),
       screenWidth: Math.round(Dimensions.get("window").width),
       screenHeight: Math.round(Dimensions.get("window").height),
-      showImportCsvScreen: true,
+      showImportCsvScreen: false,
     };
   }
 
@@ -71,6 +85,11 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
     this.spectreUser.removeOnCategoryAddedListener(this);
   }
 
+  onImportPress() {
+    this.setState({
+      showImportCsvScreen : true
+    })
+  }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.setState({
@@ -79,10 +98,30 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
   }
 
   onTransactionReadyForCategorization(event) {
+    console.log(event);
   }
 
-  onSuccessfulLoad(event: OnDocumentLoadedEvent) {
-    console.log(event);
+  async onFileSelect(event: OnFileSelectedEvent) {
+
+    const columns = new Columns({
+      0 : {
+        "Charge Amount": AMOUNT_TYPE,
+      }, 
+      1 : {
+        "Bank" : "Bank"
+      },
+      2 : {
+        "Place of Business" : "Place of Business"
+      }
+    });
+
+    const location = new LocalFileLocation(event.file);
+    const loadService = new TransactionLoadService(this.spectreUser, location, new CsvImporter(columns));
+    await loadService.load();
+
+    this.setState({
+      showImportCsvScreen : false 
+    });
   }
 
   render() {
@@ -94,7 +133,11 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
           alignContent: "stretch",
         }}
       >
-        <Modal isVisible={this.state.showImportCsvScreen}>
+        <Modal isVisible={this.state.showImportCsvScreen} onBackdropPress={() => {
+          this.setState({
+            showImportCsvScreen : false 
+          });
+        }}>
           <Card>
             <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
           </Card>
@@ -174,6 +217,7 @@ export class CategorizationScreen extends Component implements DocumentLoadedLis
                 width: 50,
                 height: 50,
               }}
+              onPress={this.onImportPress}
             >
               <Icon name={"add"} size={15} color="#fff" />
             </TouchableOpacity>

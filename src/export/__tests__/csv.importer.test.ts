@@ -6,7 +6,7 @@ import {
 } from "../../pojo/transaction";
 import { CsvExporter } from "../csv.exporter";
 import { Currency } from "../../pojo/currency";
-import { CsvImporter } from "../csv.importer";
+import { CsvImporter, unescapeCsvElement } from "../csv.importer";
 import { TransactionDetail } from "../../pojo/info.line";
 
 describe("Csv Importer", () => {
@@ -38,4 +38,20 @@ describe("Csv Importer", () => {
     const converted = testObject.convert(exporter.convert(transaction));
     expect(converted.equals(transaction)).toBe(true);
   });
+
+
+  it('should be able to unescape csv element without quotations marks', () => {
+    const unescaped = unescapeCsvElement('Cody');
+    expect(unescaped).toBe('Cody');
+  });
+
+  it('should be able to handle when there is no string given', () => {
+    const unescaped = unescapeCsvElement('');
+    expect(unescaped).toBe('');
+  });
+
+  it('should be able to handle when there is a null string given', () => {
+    const unescaped = unescapeCsvElement();
+    expect(unescaped).toBe('');
+  })
 });

@@ -14,7 +14,6 @@ export class CsvImporter implements Importer {
 
     convert(string : string) {
         let amount = null;
-        let timestamp = null;
         let details = [];
 
         const splits = string.split(',');
@@ -37,5 +36,8 @@ export class CsvImporter implements Importer {
 }
 
 export function unescapeCsvElement(element : string) {
+    if (!element) {
+        return '';
+    }
     return element.split('"').join('');
 }

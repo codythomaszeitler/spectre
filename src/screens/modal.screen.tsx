@@ -3,26 +3,15 @@ import EnhancedModal from 'modal-enhanced-react-native-web';
 
 export interface Props {
     isVisible : boolean;
-}
-
-export interface State {
-    isVisible : boolean;
+    onBackdropPresss: () => void;
 }
 
 export class Modal extends Component {
 
-    state : State;
-
-    constructor(props : Props) {
-        super(props);
-
-        this.state = {
-            isVisible : props.isVisible
-        }
-    }
-
     render() {
-        return (<EnhancedModal isVisible={this.state.isVisible} onBackdropPress={() => this.setState({ isVisible : false })}>
+        return (<EnhancedModal isVisible={this.props.isVisible} onBackdropPress={() => {
+            this.props.onBackdropPress();
+        }}>
             {this.props.children}
         </EnhancedModal>);
     }

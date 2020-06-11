@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import { LocalFileLocation } from "../service/local.file.location";
-import { DocumentLoadService, Location } from "../service/document.load.service";
+import { DocumentLoadService } from "../service/document.load.service";
+import { Location } from "../service/location";
 
 export interface Props {
   onSuccessfulLoadListener: DocumentLoadedListener;

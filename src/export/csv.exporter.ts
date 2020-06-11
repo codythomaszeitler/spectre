@@ -1,10 +1,14 @@
-import { AMOUNT_TYPE, TIMESTAMP_TYPE } from "../pojo/transaction";
+import { AMOUNT_TYPE, TIMESTAMP_TYPE, Transaction } from "../pojo/transaction";
 import { CATEGORY_TYPE } from "../pojo/category";
 import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
 import { TimestampConverter } from "../transaction.info.converter/timestamp.converter";
+import { Columns } from "./columns";
+import { Category } from "../pojo/category";
 
 export class CsvExporter {
-  constructor(columns) {
+  columns: Columns;
+
+  constructor(columns: Columns) {
     this.columns = columns.copy();
   }
 
@@ -21,7 +25,7 @@ export class CsvExporter {
     return header;
   }
 
-  convert(transaction, category) {
+  convert(transaction: Transaction, category?: Category) {
     let converted = "";
 
     for (let i = 0; i < this.columns.getNumColumns(); i++) {
@@ -35,7 +39,7 @@ export class CsvExporter {
         const converter = new TimestampConverter();
         const timestamp = transaction.getWhen();
         converted += escapeCsvElement(converter.toString(timestamp)) + ",";
-      } else if (type ===  CATEGORY_TYPE) {
+      } else if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";
       } else {
         converted += escapeCsvElement(transaction.getDetail(type)) + ",";
@@ -47,7 +51,7 @@ export class CsvExporter {
   }
 }
 
-export function escapeCsvElement(raw) {
+export function escapeCsvElement(raw : string) {
   const asCsv = '"' + raw + '"';
   return asCsv;
 }

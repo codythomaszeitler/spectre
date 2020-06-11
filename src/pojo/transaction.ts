@@ -46,11 +46,20 @@ export class Transaction {
   }
 
   getWhen() {
+    if (!this.when) {
+       return null;
+    }
+
     return this.when.copy();
   }
 
   equals(transaction) {
     const areDetailsEquivalent = (aDetails, bDetails) => {
+      if (aDetails.length !== bDetails.length) {
+        return false;
+      }
+
+
       let equivalent = true;
       for (let i = 0; i < aDetails.length; i++) {
         let foundMatch = false;
@@ -68,12 +77,27 @@ export class Transaction {
       return equivalent;
     };
 
+    const isWhenEquivalent = (aWhen, bWhen) => {
+      if (!aWhen && !bWhen) {
+        return true;
+      }
+
+      if (aWhen && !bWhen) {
+        return false;
+      }
+
+      if (!aWhen && bWhen) {
+        return false;
+      }
+
+      return this.getWhen().equals(transaction.getWhen());
+    }
+
     let currenciesEquivalent = this.getAmount().equals(transaction.getAmount());
-    let whenEquivalent = this.getWhen().equals(transaction.getWhen());
 
     return (
       currenciesEquivalent &&
-      whenEquivalent &&
+      isWhenEquivalent(this.getWhen(), transaction.getWhen()) &&
       areDetailsEquivalent(this.details, transaction.details)
     );
   }

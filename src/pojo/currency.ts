@@ -27,6 +27,15 @@ export class Currency {
     return asDinero.toFormat('$0,0.00');
   }
 
+  static fromString(string : string) {
+
+    const noDollarSign = string.replace('$', '');
+    const noCommas = noDollarSign.replace(',', '');
+    const number = Number(noCommas);
+
+    return new Currency(number, 'USD');
+  }
+
   copy() {
     return new Currency(this.amount, this.location);
   }

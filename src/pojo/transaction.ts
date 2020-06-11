@@ -11,13 +11,9 @@ export class Transaction {
   when? : Timestamp;
   details? : TransactionDetail[];
 
-  constructor(amount : Currency, when? : Timestamp, otherInfo? : TransactionDetail[]) {
+  constructor(amount : Currency, otherInfo? : TransactionDetail[]) {
     this.amount = amount.copy();
     
-    if (when) {
-        this.when = when.copy();
-    }
-
     this.details = [];
     if (otherInfo) {
       this.details = otherInfo.slice();
@@ -25,7 +21,7 @@ export class Transaction {
   }
 
   copy() {
-    return new Transaction(this.amount, this.when, this.details);
+    return new Transaction(this.amount, this.details);
   }
 
   getDetail(type) {
@@ -43,14 +39,6 @@ export class Transaction {
 
   getAmount() {
     return this.amount.copy();
-  }
-
-  getWhen() {
-    if (!this.when) {
-       return null;
-    }
-
-    return this.when.copy();
   }
 
   equals(transaction) {
@@ -77,27 +65,10 @@ export class Transaction {
       return equivalent;
     };
 
-    const isWhenEquivalent = (aWhen, bWhen) => {
-      if (!aWhen && !bWhen) {
-        return true;
-      }
-
-      if (aWhen && !bWhen) {
-        return false;
-      }
-
-      if (!aWhen && bWhen) {
-        return false;
-      }
-
-      return this.getWhen().equals(transaction.getWhen());
-    }
-
     let currenciesEquivalent = this.getAmount().equals(transaction.getAmount());
 
     return (
       currenciesEquivalent &&
-      isWhenEquivalent(this.getWhen(), transaction.getWhen()) &&
       areDetailsEquivalent(this.details, transaction.details)
     );
   }

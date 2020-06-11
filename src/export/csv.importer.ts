@@ -1,6 +1,5 @@
-import { AMOUNT_TYPE, TIMESTAMP_TYPE, Transaction } from "../pojo/transaction";
+import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
 import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
-import { TimestampConverter } from "../transaction.info.converter/timestamp.converter";
 import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/info.line";
 
@@ -25,11 +24,6 @@ export class CsvImporter {
 
                 const converter = new CurrencyConverter();
                 amount = converter.fromString(split);
-            } else if (this.columns.getType(i) === TIMESTAMP_TYPE) {
-                const split = unescapeCsvElement(splits[i]);
-
-                const converter = new TimestampConverter();
-                timestamp = converter.fromString(split);
             } else {
                 const split = unescapeCsvElement(splits[i]);
                 const detail = new TransactionDetail(split, this.columns.getType(i));
@@ -37,7 +31,7 @@ export class CsvImporter {
             }
         }
 
-        return new Transaction(amount, timestamp, details);
+        return new Transaction(amount, details);
       }
 }
 

@@ -4,6 +4,7 @@ import { Currency } from "../../pojo/currency";
 import { SpectreUser } from "../../pojo/spectre.user";
 import { Columns } from "../../export/columns";
 import { CsvExporter } from "../../export/csv.exporter";
+import {CsvImporter} from '../../export/csv.importer';
 
 describe("Transaction Load Service", () => {
   it("should be able to load transactions from a location", async () => {

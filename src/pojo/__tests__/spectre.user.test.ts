@@ -1,6 +1,5 @@
 import { SpectreUser } from "../spectre.user";
 import { Category } from "../category";
-import { Timestamp } from "../timestamp";
 import { Currency } from "../currency";
 import { TransactionDetail } from "../info.line";
 import { Transaction } from "../transaction";
@@ -14,9 +13,8 @@ describe("Spectre User", () => {
     const details = [];
     details.push(new TransactionDetail("Chase cc0392", "Bank"));
     details.push(new TransactionDetail("JAPANESE STEAKHOUSE", "Business"));
-    const timestamp = new Timestamp("January", 1, 2019);
     const currency = new Currency(400, "USD");
-    const transaction = new Transaction(currency, timestamp, details);
+    const transaction = new Transaction(currency, details);
 
     testObject.readyForCategorization(transaction);
     expect(testObject.getUncategorized().length).toBe(1);
@@ -39,7 +37,7 @@ describe("Spectre User", () => {
     const testObject = new SpectreUser();
     testObject.addTransactionReadyForCategorizationListener(listener);
 
-    const transaction = new Transaction(new Currency(400, 'USD'), new Timestamp(2010,1,1));
+    const transaction = new Transaction(new Currency(400, 'USD'));
     testObject.readyForCategorization(transaction);
 
     expect(testObject.getUncategorized().length).toBe(1);

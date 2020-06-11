@@ -8,11 +8,11 @@ describe('Transaction', () => {
 
         const aDetails = [];
         aDetails.push(new TransactionDetail('Test', 'TypeADetails'));
-        const a = new Transaction(new Currency(500, 'USD'), new Timestamp(2010, 1, 1), aDetails);
+        const a = new Transaction(new Currency(500, 'USD'), aDetails);
 
         const bDetails = [];
         bDetails.push(new TransactionDetail('Test', 'TypeBDetails'));
-        const b = new Transaction(new Currency(500, 'USD'), new Timestamp(2010, 1, 1), bDetails);
+        const b = new Transaction(new Currency(500, 'USD'), bDetails);
 
         expect(a.equals(b)).toBe(false);
     });

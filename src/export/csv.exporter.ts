@@ -35,10 +35,6 @@ export class CsvExporter {
         const converter = new CurrencyConverter();
         const currency = transaction.getAmount();
         converted += escapeCsvElement(converter.toString(currency)) + ",";
-      } else if (type === TIMESTAMP_TYPE) {
-        const converter = new TimestampConverter();
-        const timestamp = transaction.getWhen();
-        converted += escapeCsvElement(converter.toString(timestamp)) + ",";
       } else if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";
       } else {

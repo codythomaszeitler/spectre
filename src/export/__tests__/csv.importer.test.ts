@@ -6,7 +6,6 @@ import {
 } from "../../pojo/transaction";
 import { CsvExporter } from "../csv.exporter";
 import { Currency } from "../../pojo/currency";
-import { Timestamp } from "../../pojo/timestamp";
 import { CsvImporter } from "../csv.importer";
 import { TransactionDetail } from "../../pojo/info.line";
 
@@ -17,12 +16,9 @@ describe("Csv Importer", () => {
         Amount: AMOUNT_TYPE,
       },
       1: {
-        Timestamp: TIMESTAMP_TYPE,
-      },
-      2: {
         Test1Type: "Test1Type",
       },
-      3: {
+      2: {
         Test2Type: "Test2Type",
       },
     });
@@ -33,7 +29,6 @@ describe("Csv Importer", () => {
     ];
     const transaction = new Transaction(
       new Currency(400, "USD"),
-      new Timestamp(2010, 1, 1),
       details
     );
 

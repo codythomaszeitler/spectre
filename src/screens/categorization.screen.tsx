@@ -121,13 +121,14 @@ export class CategorizationScreen extends Component
         this.spectreUser.categorize(this.state.currentTransaction, category);
 
         const transaction = this.spectreUser.getUncategorized().pop();
-        console.log(transaction);
-        this.setState({
-          currentTransaction: transaction,
-        });
+
+        if (transaction) {
+          this.setState({
+            currentTransaction: transaction,
+          });
+        }
       }
     }
-
     Animated.spring(this.state.pan, { toValue: { x: 0, y: 0 } }).start();
   }
 

@@ -2,13 +2,19 @@ import React, { Component } from "react";
 import { View, Dimensions, TouchableOpacity } from "react-native";
 import { Badge, Card, Text } from "react-native-elements";
 import { Category } from "../pojo/category";
-import { SpectreUser, TransactionCategorizedListener, OnTransactionCategorizedEvent } from "../pojo/spectre.user";
-import {datastore} from '../datastore/datastore';
+import {
+  SpectreUser,
+  TransactionCategorizedListener,
+  OnTransactionCategorizedEvent,
+} from "../pojo/spectre.user";
+import { datastore } from "../datastore/datastore";
+import { InvisibleBoundingBox } from "./invisible.bounding.box";
 
 export interface Props {
   color: string;
   category: Category;
-  onPress: (event : OnCategoryPressed) => void;
+  onPress: (event: OnCategoryPressed) => void;
+  onLocationChange: (event: OnLocationChange) => void;
 }
 
 export interface State {
@@ -17,9 +23,10 @@ export interface State {
   numTransactions: number;
 }
 
-export class CategoryScreen extends Component implements TransactionCategorizedListener {
+export class CategoryScreen extends Component
+  implements TransactionCategorizedListener {
   state: State;
-  spectreUser : SpectreUser;
+  spectreUser: SpectreUser;
 
   constructor(props: Props) {
     super(props);
@@ -36,20 +43,54 @@ export class CategoryScreen extends Component implements TransactionCategorizedL
     };
   }
 
-  onTransactionCategorized(event : OnTransactionCategorizedEvent) {
-    const numTransactions = this.spectreUser.getTransactionsFor(this.state.category).length;
+  componentDidMount() {
+    this.updateLocation();
+  }
+
+  componentDidUpdate() {
+    this.updateLocation();
+  }
+
+  updateLocation() {
+    this.myComponent.measure(
+      (
+        fx: number,
+        fy: number,
+        width: number,
+        height: number,
+        px: number,
+        py: number
+      ) => {
+        const box = new InvisibleBoundingBox(px, py, width, height);
+
+        const event = new OnLocationChange(this.state.category, box);
+        this.props.onLocationChange(event);
+      }
+    );
+  }
+
+  onTransactionCategorized(event: OnTransactionCategorizedEvent) {
+    const numTransactions = this.spectreUser.getTransactionsFor(
+      this.state.category
+    ).length;
     this.setState({
-      numTransactions : numTransactions 
+      numTransactions: numTransactions,
     });
   }
 
-  onPress(event) {
+  onPress() {
     this.props.onPress(new OnCategoryPressed(this.state.category));
   }
 
   render() {
     return (
       <View
+        onResponderRelease={(event) => {
+          console.log(event);
+        }}
+        ref={(view) => {
+          this.myComponent = view;
+        }}
         style={{
           flex: 1,
         }}
@@ -137,10 +178,19 @@ export class CategoryScreen extends Component implements TransactionCategorizedL
 }
 
 export class OnCategoryPressed {
+  category: Category;
 
-  category : Category;
-
-  constructor(category) {
+  constructor(category: Category) {
     this.category = category.copy();
+  }
+}
+
+export class OnLocationChange {
+  box: InvisibleBoundingBox;
+  category: Category;
+
+  constructor(category: Category, box: InvisibleBoundingBox) {
+    this.category = category.copy();
+    this.box = box.copy();
   }
 }

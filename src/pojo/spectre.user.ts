@@ -14,6 +14,8 @@ export class SpectreUser {
   currentTransactionReadyForCategorizationListenerId: number;
   currentTransactionCategorizedListenerId: number;
 
+  currentTransactionId : number; 
+
   constructor() {
     this.categories = [];
     this.uncategorized = [];
@@ -26,6 +28,8 @@ export class SpectreUser {
 
     this.onTransactionCategorizedListeners = [];
     this.currentTransactionCategorizedListenerId = 0;
+
+    this.currentTransactionId = 0;
   }
 
   getCategories() {
@@ -51,6 +55,8 @@ export class SpectreUser {
   }
 
   readyForCategorization(transaction: Transaction) {
+    transaction.id = this.currentTransactionId;
+    this.currentTransactionId++;
     this.uncategorized.push(transaction.copy());
 
     for (
@@ -119,6 +125,10 @@ export class SpectreUser {
       }
       return listeners;
     };
+
+    if (!transaction.isCategorized()) {
+      throw new Error('Must ready transaction for categorization');
+    }
 
     this.uncategorized = this.uncategorized.filter(function (inner) {
       return !inner.equals(transaction);

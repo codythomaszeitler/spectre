@@ -10,6 +10,7 @@ export class Transaction {
   amount : Currency;
   when? : Timestamp;
   details? : TransactionDetail[];
+  id : number;
 
   constructor(amount : Currency, otherInfo? : TransactionDetail[]) {
     this.amount = amount.copy();
@@ -18,10 +19,17 @@ export class Transaction {
     if (otherInfo) {
       this.details = otherInfo.slice();
     }
+    this.id = -1;
+  }
+
+  isCategorized() {
+    return this.id !== -1;
   }
 
   copy() {
-    return new Transaction(this.amount, this.details);
+    const transaction = new Transaction(this.amount, this.details);
+    transaction.id = this.id;
+    return transaction;
   }
 
   getDetails() {
@@ -74,10 +82,12 @@ export class Transaction {
     };
 
     let currenciesEquivalent = this.getAmount().equals(transaction.getAmount());
+    let idsEquivalent = this.id === transaction.id;
 
     return (
       currenciesEquivalent &&
-      areDetailsEquivalent(this.details, transaction.details)
+      areDetailsEquivalent(this.details, transaction.details) &&
+      idsEquivalent
     );
   }
 }

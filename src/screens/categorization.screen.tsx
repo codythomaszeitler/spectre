@@ -16,7 +16,11 @@ import {
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
 import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
-import { CategoryScreen, OnCategoryPressed } from "./category.screen";
+import {
+  CategoryScreen,
+  OnCategoryPressed,
+  OnLocationChange,
+} from "./category.screen";
 import { Category } from "../pojo/category";
 import {
   DocumentPicker,
@@ -27,6 +31,7 @@ import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { CsvImporter } from "../export/csv.importer";
 import { Columns } from "../export/columns";
+import { InvisibleBoundingBox } from "./invisible.bounding.box";
 
 let CIRCLE_RADIUS = 36;
 
@@ -43,6 +48,7 @@ export interface State {
 export class CategorizationScreen extends Component
   implements DocumentLoadedListener, CategoryAddedListener {
   spectreUser: SpectreUser;
+  categoryBoxLocations: {};
 
   colors = [
     "#80b1ff",
@@ -63,6 +69,8 @@ export class CategorizationScreen extends Component
     this.onImportPress = this.onImportPress.bind(this);
     this.onAddCategoryPress = this.onAddCategoryPress.bind(this);
     this.onCategoryPress = this.onCategoryPress.bind(this);
+    this.onLocationChange = this.onLocationChange.bind(this);
+    this.onTransactionRelease = this.onTransactionRelease.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -80,24 +88,18 @@ export class CategorizationScreen extends Component
       currentTransaction: undefined,
     };
 
+    this.categoryBoxLocations = {};
+
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gesture) => true,
       onPanResponderMove: Animated.event([
         null,
         {
-          //Step 3
           dx: this.state.pan.x,
           dy: this.state.pan.y,
         },
       ]),
-      onPanResponderRelease: (evt, gestureState) => {
-        console.log(gestureState);
-        Animated.spring(
-          //Step 1
-          this.state.pan, //Step 2
-          { toValue: { x: 0, y: 0 } } //Step 3
-        ).start();
-      },
+      onPanResponderRelease: this.onTransactionRelease,
     });
   }
 
@@ -105,10 +107,39 @@ export class CategorizationScreen extends Component
     this.spectreUser.removeOnCategoryAddedListener(this);
   }
 
+  onTransactionRelease(event) {
+    const px = event.nativeEvent.pageX;
+    const py = event.nativeEvent.pageY;
+    const width = 1;
+    const height = 1;
+
+    const box = new InvisibleBoundingBox(px, py, width, height);
+    for (let categoryType in this.categoryBoxLocations) {
+      const inner = this.categoryBoxLocations[categoryType];
+      if (box.intersects(inner)) {
+        const category = new Category(categoryType);
+        this.spectreUser.categorize(this.state.currentTransaction, category);
+
+        const transaction = this.spectreUser.getUncategorized().pop();
+        console.log(transaction);
+        this.setState({
+          currentTransaction: transaction,
+        });
+      }
+    }
+
+    Animated.spring(this.state.pan, { toValue: { x: 0, y: 0 } }).start();
+  }
+
   onImportPress() {
     this.setState({
       showImportCsvScreen: true,
     });
+  }
+
+  onLocationChange(event: OnLocationChange) {
+    this.categoryBoxLocations[event.category.getType()] = event.box;
+    console.log(this.categoryBoxLocations);
   }
 
   onAddCategoryPress(event) {
@@ -246,6 +277,7 @@ export class CategorizationScreen extends Component
                   color={this.colors[index % this.colors.length]}
                   category={item}
                   onPress={this.onCategoryPress}
+                  onLocationChange={this.onLocationChange}
                 ></CategoryScreen>
               );
             }}

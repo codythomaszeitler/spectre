@@ -4,7 +4,6 @@ import { Currency } from "../currency";
 import { TransactionDetail } from "../info.line";
 import { Transaction } from "../transaction";
 import { OnCategoryAddedEvent, CategoryAddedListener } from '../spectre.user';
-import { CurrencyConverter } from "../../transaction.info.converter/currency.converter";
 
 describe("Spectre User", () => {
   it("should allow a user to categorize a transaction", () => {
@@ -106,5 +105,38 @@ describe("Spectre User", () => {
     caughtEvent = null;
     testObject.categorize(new Transaction(new Currency(800, 'USD')), category);
     expect(caughtEvent).toBeNull();
+  });
+
+  it('should only remove transaction that was categorized', () => {
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category("Home"));
+
+    const currency = new Currency(400, "USD");
+    const transaction = new Transaction(currency);
+
+    for (let i = 0; i < 10; i++) {
+      testObject.readyForCategorization(new Transaction(new Currency(400, 'USD')));
+    }
+
+    testObject.readyForCategorization(transaction);
+    testObject.categorize(transaction, new Category("Home"));
+    expect(testObject.getUncategorized().length).toBe(10);
+  });
+
+
+  it('should throw an exception if a user tries to categorize a transaction that was not ready', () => {
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category("Home"));
+
+    const currency = new Currency(400, "USD");
+    const transaction = new Transaction(currency);
+
+    let caughtException = null;
+    try {
+      testObject.categorize(transaction, new Category("Home"));
+    } catch (e) {
+      caughtException = e;
+    }
+    expect(caughtException.message).toBe('Must ready transaction for categorization');
   });
 });

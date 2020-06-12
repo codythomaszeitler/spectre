@@ -24,6 +24,14 @@ export class Transaction {
     return new Transaction(this.amount, this.details);
   }
 
+  getDetails() {
+    const copied = [];
+    for (let i = 0; i < this.details.length; i++) {
+      copied.push(this.details[i].copy());
+    }
+    return copied;
+  }
+
   getDetail(type) {
     let raw = null;
 

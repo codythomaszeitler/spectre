@@ -1,9 +1,10 @@
-import { SpectreUser } from "../spectre.user";
+import { SpectreUser, TransactionCategorizedListener, OnTransactionCategorizedEvent } from "../spectre.user";
 import { Category } from "../category";
 import { Currency } from "../currency";
 import { TransactionDetail } from "../info.line";
 import { Transaction } from "../transaction";
 import { OnCategoryAddedEvent, CategoryAddedListener } from '../spectre.user';
+import { CurrencyConverter } from "../../transaction.info.converter/currency.converter";
 
 describe("Spectre User", () => {
   it("should allow a user to categorize a transaction", () => {
@@ -72,6 +73,38 @@ describe("Spectre User", () => {
     testObject.removeOnCategoryAddedListener(listener);
 
     testObject.addCategory(new Category('New'));
+    expect(caughtEvent).toBeNull();
+  });
+
+
+  it('should emit an event for a specific category when a transaction is associated to it', () => {
+
+    let caughtEvent = undefined;
+    const listener : TransactionCategorizedListener = {
+      onTransactionCategorized: (event : OnTransactionCategorizedEvent) => {
+        caughtEvent = event;
+      }
+    };
+
+    const testObject : SpectreUser = new SpectreUser();
+    const category : Category = new Category('Home');
+
+    testObject.addCategory(category);
+
+    testObject.addTransactionCategorizedListener(category, listener);
+    const transaction = new Transaction(new Currency(400, 'USD'));
+    testObject.categorize(transaction, category);
+
+    expect(caughtEvent.transaction).toEqual(transaction);
+
+    caughtEvent = null;
+    testObject.removeTransactionCategorizedListener(new Category('TEST'), listener);
+    testObject.categorize(transaction, category);
+    expect(caughtEvent.transaction).toEqual(transaction);
+
+    testObject.removeTransactionCategorizedListener(category, listener);
+    caughtEvent = null;
+    testObject.categorize(new Transaction(new Currency(800, 'USD')), category);
     expect(caughtEvent).toBeNull();
   });
 });

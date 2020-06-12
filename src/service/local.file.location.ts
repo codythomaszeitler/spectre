@@ -33,7 +33,7 @@ export class LocalFileLocation implements Location {
     }
 
     this.wasRead = false;
-    return this.lines;
+    return this.lines.slice(1);
   }
 
   readFile(file: File) {

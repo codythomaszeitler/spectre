@@ -5,10 +5,6 @@ export class TransactionScreenSegment extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            transaction : props.transaction
-        }
     }
 
   render() {
@@ -16,9 +12,9 @@ export class TransactionScreenSegment extends Component {
       <Card
         containerStyle={this.props.containerStyle}
       >
-        <Text>{this.state.transaction.getAmount().toString()}</Text>
+        <Text>{this.props.transaction.getAmount().toString()}</Text>
 
-        {this.state.transaction.getDetails().map(function (item) {
+        {this.props.transaction.getDetails().map(function (item) {
           return <Text key={item.detail}>{item.detail}</Text>;
         })}
       </Card>

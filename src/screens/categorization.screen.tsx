@@ -46,6 +46,7 @@ export interface State {
   categoryAddText: string;
   currentTransaction: Transaction;
   pan: Animated.ValueXY;
+  isCategorizationMode: boolean;
 }
 
 export class CategorizationScreen extends Component
@@ -72,9 +73,8 @@ export class CategorizationScreen extends Component
     this.onImportPress = this.onImportPress.bind(this);
     this.onAddCategoryPress = this.onAddCategoryPress.bind(this);
     this.onCategoryPress = this.onCategoryPress.bind(this);
-    this.onLocationChange = this.onLocationChange.bind(this);
-    this.onTransactionRelease = this.onTransactionRelease.bind(this);
     this.onExportCategorized = this.onExportCategorized.bind(this);
+    this.onCategorizationStart = this.onCategorizationStart.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -90,54 +90,15 @@ export class CategorizationScreen extends Component
       showAddCategoryScreen: false,
       categoryAddText: "",
       currentTransaction: undefined,
+      isCategorizationMode: false,
+      numUncategorized: 0,
     };
 
     this.categoryBoxLocations = {};
-
-    this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (e, gesture) => true,
-      onPanResponderMove: Animated.event([
-        null,
-        {
-          dx: this.state.pan.x,
-          dy: this.state.pan.y,
-        },
-      ]),
-      onPanResponderRelease: this.onTransactionRelease,
-    });
   }
 
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
-  }
-
-  onTransactionRelease(event) {
-    const px = event.nativeEvent.pageX;
-    const py = event.nativeEvent.pageY;
-    const width = 1;
-    const height = 1;
-
-    const box = new InvisibleBoundingBox(px, py, width, height);
-    for (let categoryType in this.categoryBoxLocations) {
-      const inner = this.categoryBoxLocations[categoryType];
-      if (box.intersects(inner)) {
-        const category = new Category(categoryType);
-        this.spectreUser.categorize(this.state.currentTransaction, category);
-
-        const transaction = this.spectreUser.getUncategorized().pop();
-
-        if (transaction) {
-          this.setState({
-            currentTransaction: transaction,
-          });
-        }
-      }
-    }
-    // Animated.spring(this.state.pan, { toValue: { x: 0, y: 0 } }).start();
-    this.state.pan.setValue({
-      x: 0,
-      y: 0,
-    });
   }
 
   onImportPress() {
@@ -171,12 +132,8 @@ export class CategorizationScreen extends Component
     await transactionSaveService.save();
   }
 
-  onLocationChange(event: OnLocationChange) {
-    this.categoryBoxLocations[event.category.getType()] = event.box;
-    console.log(this.categoryBoxLocations);
-  }
-
   onAddCategoryPress(event) {
+    // This function changes based on what state the screen is currently in
     if (this.state.categoryAddText) {
       const category = new Category(this.state.categoryAddText);
       this.spectreUser.addCategory(category);
@@ -193,13 +150,16 @@ export class CategorizationScreen extends Component
     });
   }
 
+  onCategorizationStart() {
+    this.setState({
+      currentTransaction: this.spectreUser.getUncategorized().shift(),
+    });
+  }
+
   onTransactionReadyForCategorization() {
-    if (!this.state.currentTransaction) {
-      const transactions = this.spectreUser.getUncategorized();
-      this.setState({
-        currentTransaction: transactions.pop(),
-      });
-    }
+    // this.setState({
+    //   numUncategorized: this.spectreUser.getNumUncategorized(),
+    // });
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
@@ -225,18 +185,29 @@ export class CategorizationScreen extends Component
 
     this.setState({
       showImportCsvScreen: false,
+      numUncategorized:
+        loadService.getNumLinesLoaded() + this.state.numUncategorized,
     });
   }
 
   onCategoryPress(event: OnCategoryPressed) {
-    if (!this.state.currentTransaction) {
-      return;
-    }
+    if (this.state.currentTransaction) {
+      this.spectreUser.categorize(
+        this.state.currentTransaction,
+        event.category
+      );
 
-    this.spectreUser.categorize(this.state.currentTransaction, event.category);
-    this.setState({
-      currentTransaction: undefined,
-    });
+      const uncategorized = this.spectreUser.getUncategorized();
+      const transaction = uncategorized.shift();
+      if (transaction) {
+        this.setState({
+          currentTransaction: transaction,
+          numUncategorized: uncategorized.length,
+        });
+      }
+    } else {
+      // This will now open up the transactions underneath the category.
+    }
   }
 
   render() {
@@ -301,7 +272,7 @@ export class CategorizationScreen extends Component
         </Modal>
         <View
           style={{
-            flex: 5,
+            flex: 8,
           }}
         >
           <FlatList
@@ -311,13 +282,14 @@ export class CategorizationScreen extends Component
                 <CategoryScreen
                   color={this.colors[index % this.colors.length]}
                   category={item}
+                  categorizationMode={this.state.currentTransaction !== null}
                   onPress={this.onCategoryPress}
-                  onLocationChange={this.onLocationChange}
                 ></CategoryScreen>
               );
             }}
           ></FlatList>
         </View>
+
         <View
           style={{
             justifyContent: "flex-end",
@@ -349,122 +321,189 @@ export class CategorizationScreen extends Component
         </View>
         <View
           style={{
-            flex: 0.5,
+            flex: 0.25,
           }}
         ></View>
-        <View
-          style={{
-            justifyContent: "flex-end",
-            flexDirection: "row",
-            flex: 1,
-          }}
-        >
+        {!this.state.currentTransaction && (
           <View
             style={{
-              alignItems: "flex-start",
+              justifyContent: "flex-end",
+              flexDirection: "row",
               flex: 1,
             }}
           >
-            <TouchableOpacity
+            <View
               style={{
-                marginTop: 10,
-                paddingTop: 15,
-                paddingBottom: 15,
-                marginLeft: 30,
-                marginRight: 30,
-                backgroundColor: "#00BCD4",
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: "#fff",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 50,
-                height: 50,
+                alignItems: "flex-start",
+                flex: 1,
               }}
-              onPress={this.onImportPress}
             >
-              <Icon name={"add"} size={15} color="#fff" />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              alignItems: "flex-start",
-              flex: 1,
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                marginTop: 10,
-                paddingTop: 15,
-                paddingBottom: 15,
-                marginLeft: 30,
-                marginRight: 30,
-                backgroundColor: "#00BCD4",
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: "#fff",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 50,
-                height: 50,
-              }}
-              onPress={this.onExportCategorized}
-            >
-              <Icon name={"chevron-right"} size={15} color="#fff" />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              alignItems: "flex-end",
-              flex: 3,
-            }}
-          >
-            {this.state.currentTransaction && (
-              <Animated.View
-                {...this.panResponder.panHandlers}
-                style={[this.state.pan.getLayout()]}
+              <TouchableOpacity
+                style={{
+                  marginTop: 10,
+                  paddingTop: 15,
+                  paddingBottom: 15,
+                  marginLeft: 30,
+                  marginRight: 30,
+                  backgroundColor: "#00BCD4",
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 50,
+                  height: 50,
+                }}
+                onPress={this.onImportPress}
               >
-                <Card
-                  containerStyle={{
-                    shadowColor: "#000000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 3,
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: 1.0,
+                <Icon name={"add"} size={15} color="#fff" />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                alignItems: "flex-start",
+                flex: 1,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  marginTop: 10,
+                  paddingTop: 15,
+                  paddingBottom: 15,
+                  marginLeft: 30,
+                  marginRight: 30,
+                  backgroundColor: "#00BCD4",
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: "#fff",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 50,
+                  height: 50,
+                }}
+                onPress={this.onExportCategorized}
+              >
+                <Icon name={"chevron-right"} size={15} color="#fff" />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                alignItems: "flex-end",
+                flex: 3,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  borderWidth: 1,
+                  borderColor: "rgba(255,0,0,0.2)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 75,
+                  height: 75,
+                  backgroundColor: "red",
+                  borderRadius: 50,
+                }}
+                onPress={this.onCategorizationStart}
+              >
+                <Text
+                  style={{
+                    color: "white",
                   }}
                 >
-                  <Text>
-                    {this.state.currentTransaction.getAmount().toString()}
+                  {this.state.numUncategorized}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 0.5 }}></View>
+          </View>
+        )}
 
-                    {this.state.currentTransaction
-                      .getDetails()
-                      .map(function (item) {
-                        return ", " + item.detail;
-                      })}
-                  </Text>
-                </Card>
-              </Animated.View>
-            )}
-
-            {/* <TouchableOpacity
+        {this.state.currentTransaction && (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+            }}
+          >
+            <View
               style={{
-                borderWidth: 1,
-                borderColor: "rgba(255,0,0,0.2)",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 75,
-                height: 75,
-                backgroundColor: "red",
-                borderRadius: 50,
+                flex: 1,
+              }}
+            ></View>
+            <View
+              style={{
+                flex: 1,
               }}
             >
-              <Icon name={"chevron-right"} size={30} color="#fff" />
-            </TouchableOpacity> */}
+              <TouchableOpacity
+                style={{
+                  borderWidth: 2,
+                  borderColor: "rgba(255,0,0,1)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 30,
+                  height: 30,
+                  backgroundColor: "white",
+                  borderRadius: 50,
+                  translateX : 300
+                }}
+                onPress={() => {
+                  this.setState({
+                    currentTransaction : null
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  -
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flex: 8,
+              }}
+            >
+              <Card
+                containerStyle={{
+                  shadowColor: "#000000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 3,
+                  },
+                  shadowRadius: 5,
+                  shadowOpacity: 1.0,
+                  marginTop: 10,
+                  paddingTop: 15,
+                  paddingBottom: 15,
+                  borderRadius: 7,
+                  borderWidth: 0,
+                }}
+              >
+                <Text>
+                  {this.state.currentTransaction.getAmount().toString()}
+                </Text>
+
+                  {this.state.currentTransaction
+                    .getDetails()
+                    .map(function (item) {
+                      return (<Text>{item.detail}</Text>);
+                    })}
+              </Card>
+            </View>
+            <View style={{
+              flex : 1
+            }}></View>
           </View>
-          <View style={{ flex: 0.5 }}></View>
-        </View>
+        )}
+        <View
+          style={{
+            flex: 0.25,
+          }}
+        ></View>
       </View>
     );
   }

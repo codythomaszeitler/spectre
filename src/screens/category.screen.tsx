@@ -43,32 +43,6 @@ export class CategoryScreen extends Component
     };
   }
 
-  componentDidMount() {
-    this.updateLocation();
-  }
-
-  componentDidUpdate() {
-    this.updateLocation();
-  }
-
-  updateLocation() {
-    this.myComponent.measure(
-      (
-        fx: number,
-        fy: number,
-        width: number,
-        height: number,
-        px: number,
-        py: number
-      ) => {
-        const box = new InvisibleBoundingBox(px, py, width, height);
-
-        const event = new OnLocationChange(this.state.category, box);
-        this.props.onLocationChange(event);
-      }
-    );
-  }
-
   onTransactionCategorized(event: OnTransactionCategorizedEvent) {
     const numTransactions = this.spectreUser.getTransactionsFor(
       this.state.category
@@ -87,9 +61,6 @@ export class CategoryScreen extends Component
       <View
         onResponderRelease={(event) => {
           console.log(event);
-        }}
-        ref={(view) => {
-          this.myComponent = view;
         }}
         style={{
           flex: 1,

@@ -183,7 +183,6 @@ export class CategorizationScreen extends Component
 
       this.setState({
         showAddCategoryScreen: false,
-        categoryAddText : '',
       });
     }
   }
@@ -191,7 +190,6 @@ export class CategorizationScreen extends Component
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.setState({
       categories: this.spectreUser.getCategories(),
-      categoryAddText : ''
     });
   }
 
@@ -278,6 +276,7 @@ export class CategorizationScreen extends Component
                   categoryAddText: text,
                 });
               }}
+              value={this.state.categoryAddText}
             />
             <Button
               buttonStyle={{
@@ -302,7 +301,7 @@ export class CategorizationScreen extends Component
         </Modal>
         <View
           style={{
-            flex: 8,
+            flex: 5,
           }}
         >
           <FlatList
@@ -417,7 +416,7 @@ export class CategorizationScreen extends Component
           <View
             style={{
               alignItems: "flex-end",
-              flex: 5,
+              flex: 3,
             }}
           >
             {this.state.currentTransaction && (

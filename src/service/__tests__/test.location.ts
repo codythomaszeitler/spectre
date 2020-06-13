@@ -26,6 +26,7 @@ export class TestLocation implements Location {
   }
 
   async write(lines: string[]) {
+    this.items.push(...lines);
     this.written = lines;
     return true;
   }

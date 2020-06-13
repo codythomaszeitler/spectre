@@ -1,11 +1,11 @@
 import { AMOUNT_TYPE, TIMESTAMP_TYPE, Transaction } from "../pojo/transaction";
 import { CATEGORY_TYPE } from "../pojo/category";
 import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
-import { TimestampConverter } from "../transaction.info.converter/timestamp.converter";
 import { Columns } from "./columns";
 import { Category } from "../pojo/category";
+import { Exporter } from "./exporter";
 
-export class CsvExporter {
+export class CsvExporter implements Exporter {
   columns: Columns;
 
   constructor(columns: Columns) {

@@ -32,6 +32,8 @@ import { LocalFileLocation } from "../service/local.file.location";
 import { CsvImporter } from "../export/csv.importer";
 import { Columns } from "../export/columns";
 import { InvisibleBoundingBox } from "./invisible.bounding.box";
+import { TransactionSaveService } from "../service/transaction.save.service";
+import { CsvExporter } from "../export/csv.exporter";
 
 let CIRCLE_RADIUS = 36;
 
@@ -72,6 +74,7 @@ export class CategorizationScreen extends Component
     this.onCategoryPress = this.onCategoryPress.bind(this);
     this.onLocationChange = this.onLocationChange.bind(this);
     this.onTransactionRelease = this.onTransactionRelease.bind(this);
+    this.onExportCategorized = this.onExportCategorized.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -143,6 +146,31 @@ export class CategorizationScreen extends Component
     });
   }
 
+  async onExportCategorized() {
+    const file = new File([], "test.csv", { type: "text/plain;charset=utf-8" });
+
+    const location = new LocalFileLocation(file);
+    const columns = new Columns({
+      0: {
+        "Charge Amount": AMOUNT_TYPE,
+      },
+      1: {
+        Bank: "Bank",
+      },
+      2: {
+        "Place of Business": "Place of Business",
+      },
+    });
+
+    const transactionSaveService = new TransactionSaveService(
+      this.spectreUser,
+      location,
+      new CsvExporter(columns)
+    );
+
+    await transactionSaveService.save();
+  }
+
   onLocationChange(event: OnLocationChange) {
     this.categoryBoxLocations[event.category.getType()] = event.box;
     console.log(this.categoryBoxLocations);
@@ -155,6 +183,7 @@ export class CategorizationScreen extends Component
 
       this.setState({
         showAddCategoryScreen: false,
+        categoryAddText : '',
       });
     }
   }
@@ -162,6 +191,7 @@ export class CategorizationScreen extends Component
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.setState({
       categories: this.spectreUser.getCategories(),
+      categoryAddText : ''
     });
   }
 
@@ -379,6 +409,7 @@ export class CategorizationScreen extends Component
                 width: 50,
                 height: 50,
               }}
+              onPress={this.onExportCategorized}
             >
               <Icon name={"chevron-right"} size={15} color="#fff" />
             </TouchableOpacity>

@@ -8,6 +8,8 @@ export class TransactionLoadService {
   location: Location;
   importer: Importer;
 
+  numLinesLoaded : number;
+
   constructor(
     spectreUser: SpectreUser,
     location: Location,
@@ -16,6 +18,10 @@ export class TransactionLoadService {
     this.spectreUser = spectreUser;
     this.location = location;
     this.importer = importer;
+  }
+
+  getNumLinesLoaded() {
+    return this.numLinesLoaded;
   }
 
   async load() {
@@ -33,6 +39,7 @@ export class TransactionLoadService {
 
         this.spectreUser.readyForCategorization(transaction);
     }
+    this.numLinesLoaded = lines.length;
 
     return transactions;
   }

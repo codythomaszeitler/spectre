@@ -34,6 +34,7 @@ import { Columns } from "../export/columns";
 import { InvisibleBoundingBox } from "./invisible.bounding.box";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
+import { TransactionScreenSegment } from "./transaction.screen.segment";
 
 let CIRCLE_RADIUS = 36;
 
@@ -280,6 +281,7 @@ export class CategorizationScreen extends Component
             renderItem={({ item, index }) => {
               return (
                 <CategoryScreen
+                  key={item.getType()}
                   color={this.colors[index % this.colors.length]}
                   category={item}
                   categorizationMode={this.state.currentTransaction !== null}
@@ -445,11 +447,11 @@ export class CategorizationScreen extends Component
                   height: 30,
                   backgroundColor: "white",
                   borderRadius: 50,
-                  translateX : 300
+                  translateX: 300,
                 }}
                 onPress={() => {
                   this.setState({
-                    currentTransaction : null
+                    currentTransaction: null,
                   });
                 }}
               >
@@ -467,7 +469,8 @@ export class CategorizationScreen extends Component
                 flex: 8,
               }}
             >
-              <Card
+              <TransactionScreenSegment
+                transaction={this.state.currentTransaction}
                 containerStyle={{
                   shadowColor: "#000000",
                   shadowOffset: {
@@ -482,21 +485,13 @@ export class CategorizationScreen extends Component
                   borderRadius: 7,
                   borderWidth: 0,
                 }}
-              >
-                <Text>
-                  {this.state.currentTransaction.getAmount().toString()}
-                </Text>
-
-                  {this.state.currentTransaction
-                    .getDetails()
-                    .map(function (item) {
-                      return (<Text>{item.detail}</Text>);
-                    })}
-              </Card>
+              ></TransactionScreenSegment>
             </View>
-            <View style={{
-              flex : 1
-            }}></View>
+            <View
+              style={{
+                flex: 1,
+              }}
+            ></View>
           </View>
         )}
         <View

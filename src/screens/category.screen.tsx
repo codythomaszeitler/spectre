@@ -9,6 +9,7 @@ import {
 } from "../pojo/spectre.user";
 import { datastore } from "../datastore/datastore";
 import { InvisibleBoundingBox } from "./invisible.bounding.box";
+import { TransactionScreenSegment } from "./transaction.screen.segment";
 
 export interface Props {
   color: string;
@@ -49,6 +50,7 @@ export class CategoryScreen extends Component
     ).length;
     this.setState({
       numTransactions: numTransactions,
+      category: event.category.copy(),
     });
   }
 
@@ -59,9 +61,6 @@ export class CategoryScreen extends Component
   render() {
     return (
       <View
-        onResponderRelease={(event) => {
-          console.log(event);
-        }}
         style={{
           flex: 1,
         }}
@@ -119,30 +118,40 @@ export class CategoryScreen extends Component
               </View>
             </View>
           </Card>
-
-          <View
-            style={{
-              alignSelf: "flex-end",
-            }}
-          >
-            {this.state.category.getTransactions().map((data, index) => {
-              return (
-                <Card
-                  containerStyle={{
-                    backgroundColor: this.state.color,
-                    marginTop: 10,
-                    paddingTop: 15,
-                    paddingBottom: 15,
-                    borderRadius: 7,
-                    borderWidth: 0,
+        </TouchableOpacity>
+          {this.state.category.getTransactions().map((data, index) => {
+            return (
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    flex: 9,
                   }}
                 >
-                  <Text>{data.getAmount().toString()}</Text>
-                </Card>
-              );
-            })}
-          </View>
-        </TouchableOpacity>
+                  <TransactionScreenSegment
+                    key={data.id}
+                    transaction={data}
+                    containerStyle={{
+                      backgroundColor: this.state.color,
+                      marginTop: 10,
+                      paddingTop: 15,
+                      paddingBottom: 15,
+                      borderRadius: 7,
+                      borderWidth: 0,
+                    }}
+                  ></TransactionScreenSegment>
+                </View>
+              </View>
+            );
+          })}
       </View>
     );
   }

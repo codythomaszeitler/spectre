@@ -140,7 +140,7 @@ export class SpectreUser {
     const listeners = getListeners();
     for (let i = 0; i < listeners.length; i++) {
       listeners[i].onTransactionCategorized(
-        new OnTransactionCategorizedEvent(category, transaction)
+        new OnTransactionCategorizedEvent(found.copy(), transaction)
       );
     }
   }

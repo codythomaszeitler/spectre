@@ -43,6 +43,7 @@ export interface State {
   showAddCategoryScreen: boolean;
   categoryAddText: string;
   currentTransaction: Transaction;
+  pan: Animated.ValueXY;
 }
 
 export class CategorizationScreen extends Component
@@ -129,7 +130,11 @@ export class CategorizationScreen extends Component
         }
       }
     }
-    Animated.spring(this.state.pan, { toValue: { x: 0, y: 0 } }).start();
+    // Animated.spring(this.state.pan, { toValue: { x: 0, y: 0 } }).start();
+    this.state.pan.setValue({
+      x: 0,
+      y: 0,
+    });
   }
 
   onImportPress() {
@@ -389,8 +394,17 @@ export class CategorizationScreen extends Component
                 {...this.panResponder.panHandlers}
                 style={[this.state.pan.getLayout()]}
               >
-                <Card>
-                  <Text> --- To Categorize ---</Text>
+                <Card
+                  containerStyle={{
+                    shadowColor: "#000000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 3,
+                    },
+                    shadowRadius: 5,
+                    shadowOpacity: 1.0,
+                  }}
+                >
                   <Text>
                     {this.state.currentTransaction.getAmount().toString()}
 

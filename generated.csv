@@ -1,11 +1,1001 @@
 Charge Amount,Bank,Place of Business
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
-$400.25,Bank of America,Barros
+$0.25,Wells Fargo,Jack in the box
+$1.25,Bank of America,Mcdonalds
+$2.25,Chase,Wendys
+$3.25,Wells Fargo,Apple Store
+$4.25,Bank of America,Microsoft Store
+$5.25,Chase,Jack in the box
+$6.25,Wells Fargo,Mcdonalds
+$7.25,Bank of America,Wendys
+$8.25,Chase,Apple Store
+$9.25,Wells Fargo,Microsoft Store
+$10.25,Bank of America,Jack in the box
+$11.25,Chase,Mcdonalds
+$12.25,Wells Fargo,Wendys
+$13.25,Bank of America,Apple Store
+$14.25,Chase,Microsoft Store
+$15.25,Wells Fargo,Jack in the box
+$16.25,Bank of America,Mcdonalds
+$17.25,Chase,Wendys
+$18.25,Wells Fargo,Apple Store
+$19.25,Bank of America,Microsoft Store
+$20.25,Chase,Jack in the box
+$21.25,Wells Fargo,Mcdonalds
+$22.25,Bank of America,Wendys
+$23.25,Chase,Apple Store
+$24.25,Wells Fargo,Microsoft Store
+$25.25,Bank of America,Jack in the box
+$26.25,Chase,Mcdonalds
+$27.25,Wells Fargo,Wendys
+$28.25,Bank of America,Apple Store
+$29.25,Chase,Microsoft Store
+$30.25,Wells Fargo,Jack in the box
+$31.25,Bank of America,Mcdonalds
+$32.25,Chase,Wendys
+$33.25,Wells Fargo,Apple Store
+$34.25,Bank of America,Microsoft Store
+$35.25,Chase,Jack in the box
+$36.25,Wells Fargo,Mcdonalds
+$37.25,Bank of America,Wendys
+$38.25,Chase,Apple Store
+$39.25,Wells Fargo,Microsoft Store
+$40.25,Bank of America,Jack in the box
+$41.25,Chase,Mcdonalds
+$42.25,Wells Fargo,Wendys
+$43.25,Bank of America,Apple Store
+$44.25,Chase,Microsoft Store
+$45.25,Wells Fargo,Jack in the box
+$46.25,Bank of America,Mcdonalds
+$47.25,Chase,Wendys
+$48.25,Wells Fargo,Apple Store
+$49.25,Bank of America,Microsoft Store
+$50.25,Chase,Jack in the box
+$51.25,Wells Fargo,Mcdonalds
+$52.25,Bank of America,Wendys
+$53.25,Chase,Apple Store
+$54.25,Wells Fargo,Microsoft Store
+$55.25,Bank of America,Jack in the box
+$56.25,Chase,Mcdonalds
+$57.25,Wells Fargo,Wendys
+$58.25,Bank of America,Apple Store
+$59.25,Chase,Microsoft Store
+$60.25,Wells Fargo,Jack in the box
+$61.25,Bank of America,Mcdonalds
+$62.25,Chase,Wendys
+$63.25,Wells Fargo,Apple Store
+$64.25,Bank of America,Microsoft Store
+$65.25,Chase,Jack in the box
+$66.25,Wells Fargo,Mcdonalds
+$67.25,Bank of America,Wendys
+$68.25,Chase,Apple Store
+$69.25,Wells Fargo,Microsoft Store
+$70.25,Bank of America,Jack in the box
+$71.25,Chase,Mcdonalds
+$72.25,Wells Fargo,Wendys
+$73.25,Bank of America,Apple Store
+$74.25,Chase,Microsoft Store
+$75.25,Wells Fargo,Jack in the box
+$76.25,Bank of America,Mcdonalds
+$77.25,Chase,Wendys
+$78.25,Wells Fargo,Apple Store
+$79.25,Bank of America,Microsoft Store
+$80.25,Chase,Jack in the box
+$81.25,Wells Fargo,Mcdonalds
+$82.25,Bank of America,Wendys
+$83.25,Chase,Apple Store
+$84.25,Wells Fargo,Microsoft Store
+$85.25,Bank of America,Jack in the box
+$86.25,Chase,Mcdonalds
+$87.25,Wells Fargo,Wendys
+$88.25,Bank of America,Apple Store
+$89.25,Chase,Microsoft Store
+$90.25,Wells Fargo,Jack in the box
+$91.25,Bank of America,Mcdonalds
+$92.25,Chase,Wendys
+$93.25,Wells Fargo,Apple Store
+$94.25,Bank of America,Microsoft Store
+$95.25,Chase,Jack in the box
+$96.25,Wells Fargo,Mcdonalds
+$97.25,Bank of America,Wendys
+$98.25,Chase,Apple Store
+$99.25,Wells Fargo,Microsoft Store
+$100.25,Bank of America,Jack in the box
+$101.25,Chase,Mcdonalds
+$102.25,Wells Fargo,Wendys
+$103.25,Bank of America,Apple Store
+$104.25,Chase,Microsoft Store
+$105.25,Wells Fargo,Jack in the box
+$106.25,Bank of America,Mcdonalds
+$107.25,Chase,Wendys
+$108.25,Wells Fargo,Apple Store
+$109.25,Bank of America,Microsoft Store
+$110.25,Chase,Jack in the box
+$111.25,Wells Fargo,Mcdonalds
+$112.25,Bank of America,Wendys
+$113.25,Chase,Apple Store
+$114.25,Wells Fargo,Microsoft Store
+$115.25,Bank of America,Jack in the box
+$116.25,Chase,Mcdonalds
+$117.25,Wells Fargo,Wendys
+$118.25,Bank of America,Apple Store
+$119.25,Chase,Microsoft Store
+$120.25,Wells Fargo,Jack in the box
+$121.25,Bank of America,Mcdonalds
+$122.25,Chase,Wendys
+$123.25,Wells Fargo,Apple Store
+$124.25,Bank of America,Microsoft Store
+$125.25,Chase,Jack in the box
+$126.25,Wells Fargo,Mcdonalds
+$127.25,Bank of America,Wendys
+$128.25,Chase,Apple Store
+$129.25,Wells Fargo,Microsoft Store
+$130.25,Bank of America,Jack in the box
+$131.25,Chase,Mcdonalds
+$132.25,Wells Fargo,Wendys
+$133.25,Bank of America,Apple Store
+$134.25,Chase,Microsoft Store
+$135.25,Wells Fargo,Jack in the box
+$136.25,Bank of America,Mcdonalds
+$137.25,Chase,Wendys
+$138.25,Wells Fargo,Apple Store
+$139.25,Bank of America,Microsoft Store
+$140.25,Chase,Jack in the box
+$141.25,Wells Fargo,Mcdonalds
+$142.25,Bank of America,Wendys
+$143.25,Chase,Apple Store
+$144.25,Wells Fargo,Microsoft Store
+$145.25,Bank of America,Jack in the box
+$146.25,Chase,Mcdonalds
+$147.25,Wells Fargo,Wendys
+$148.25,Bank of America,Apple Store
+$149.25,Chase,Microsoft Store
+$150.25,Wells Fargo,Jack in the box
+$151.25,Bank of America,Mcdonalds
+$152.25,Chase,Wendys
+$153.25,Wells Fargo,Apple Store
+$154.25,Bank of America,Microsoft Store
+$155.25,Chase,Jack in the box
+$156.25,Wells Fargo,Mcdonalds
+$157.25,Bank of America,Wendys
+$158.25,Chase,Apple Store
+$159.25,Wells Fargo,Microsoft Store
+$160.25,Bank of America,Jack in the box
+$161.25,Chase,Mcdonalds
+$162.25,Wells Fargo,Wendys
+$163.25,Bank of America,Apple Store
+$164.25,Chase,Microsoft Store
+$165.25,Wells Fargo,Jack in the box
+$166.25,Bank of America,Mcdonalds
+$167.25,Chase,Wendys
+$168.25,Wells Fargo,Apple Store
+$169.25,Bank of America,Microsoft Store
+$170.25,Chase,Jack in the box
+$171.25,Wells Fargo,Mcdonalds
+$172.25,Bank of America,Wendys
+$173.25,Chase,Apple Store
+$174.25,Wells Fargo,Microsoft Store
+$175.25,Bank of America,Jack in the box
+$176.25,Chase,Mcdonalds
+$177.25,Wells Fargo,Wendys
+$178.25,Bank of America,Apple Store
+$179.25,Chase,Microsoft Store
+$180.25,Wells Fargo,Jack in the box
+$181.25,Bank of America,Mcdonalds
+$182.25,Chase,Wendys
+$183.25,Wells Fargo,Apple Store
+$184.25,Bank of America,Microsoft Store
+$185.25,Chase,Jack in the box
+$186.25,Wells Fargo,Mcdonalds
+$187.25,Bank of America,Wendys
+$188.25,Chase,Apple Store
+$189.25,Wells Fargo,Microsoft Store
+$190.25,Bank of America,Jack in the box
+$191.25,Chase,Mcdonalds
+$192.25,Wells Fargo,Wendys
+$193.25,Bank of America,Apple Store
+$194.25,Chase,Microsoft Store
+$195.25,Wells Fargo,Jack in the box
+$196.25,Bank of America,Mcdonalds
+$197.25,Chase,Wendys
+$198.25,Wells Fargo,Apple Store
+$199.25,Bank of America,Microsoft Store
+$200.25,Chase,Jack in the box
+$201.25,Wells Fargo,Mcdonalds
+$202.25,Bank of America,Wendys
+$203.25,Chase,Apple Store
+$204.25,Wells Fargo,Microsoft Store
+$205.25,Bank of America,Jack in the box
+$206.25,Chase,Mcdonalds
+$207.25,Wells Fargo,Wendys
+$208.25,Bank of America,Apple Store
+$209.25,Chase,Microsoft Store
+$210.25,Wells Fargo,Jack in the box
+$211.25,Bank of America,Mcdonalds
+$212.25,Chase,Wendys
+$213.25,Wells Fargo,Apple Store
+$214.25,Bank of America,Microsoft Store
+$215.25,Chase,Jack in the box
+$216.25,Wells Fargo,Mcdonalds
+$217.25,Bank of America,Wendys
+$218.25,Chase,Apple Store
+$219.25,Wells Fargo,Microsoft Store
+$220.25,Bank of America,Jack in the box
+$221.25,Chase,Mcdonalds
+$222.25,Wells Fargo,Wendys
+$223.25,Bank of America,Apple Store
+$224.25,Chase,Microsoft Store
+$225.25,Wells Fargo,Jack in the box
+$226.25,Bank of America,Mcdonalds
+$227.25,Chase,Wendys
+$228.25,Wells Fargo,Apple Store
+$229.25,Bank of America,Microsoft Store
+$230.25,Chase,Jack in the box
+$231.25,Wells Fargo,Mcdonalds
+$232.25,Bank of America,Wendys
+$233.25,Chase,Apple Store
+$234.25,Wells Fargo,Microsoft Store
+$235.25,Bank of America,Jack in the box
+$236.25,Chase,Mcdonalds
+$237.25,Wells Fargo,Wendys
+$238.25,Bank of America,Apple Store
+$239.25,Chase,Microsoft Store
+$240.25,Wells Fargo,Jack in the box
+$241.25,Bank of America,Mcdonalds
+$242.25,Chase,Wendys
+$243.25,Wells Fargo,Apple Store
+$244.25,Bank of America,Microsoft Store
+$245.25,Chase,Jack in the box
+$246.25,Wells Fargo,Mcdonalds
+$247.25,Bank of America,Wendys
+$248.25,Chase,Apple Store
+$249.25,Wells Fargo,Microsoft Store
+$250.25,Bank of America,Jack in the box
+$251.25,Chase,Mcdonalds
+$252.25,Wells Fargo,Wendys
+$253.25,Bank of America,Apple Store
+$254.25,Chase,Microsoft Store
+$255.25,Wells Fargo,Jack in the box
+$256.25,Bank of America,Mcdonalds
+$257.25,Chase,Wendys
+$258.25,Wells Fargo,Apple Store
+$259.25,Bank of America,Microsoft Store
+$260.25,Chase,Jack in the box
+$261.25,Wells Fargo,Mcdonalds
+$262.25,Bank of America,Wendys
+$263.25,Chase,Apple Store
+$264.25,Wells Fargo,Microsoft Store
+$265.25,Bank of America,Jack in the box
+$266.25,Chase,Mcdonalds
+$267.25,Wells Fargo,Wendys
+$268.25,Bank of America,Apple Store
+$269.25,Chase,Microsoft Store
+$270.25,Wells Fargo,Jack in the box
+$271.25,Bank of America,Mcdonalds
+$272.25,Chase,Wendys
+$273.25,Wells Fargo,Apple Store
+$274.25,Bank of America,Microsoft Store
+$275.25,Chase,Jack in the box
+$276.25,Wells Fargo,Mcdonalds
+$277.25,Bank of America,Wendys
+$278.25,Chase,Apple Store
+$279.25,Wells Fargo,Microsoft Store
+$280.25,Bank of America,Jack in the box
+$281.25,Chase,Mcdonalds
+$282.25,Wells Fargo,Wendys
+$283.25,Bank of America,Apple Store
+$284.25,Chase,Microsoft Store
+$285.25,Wells Fargo,Jack in the box
+$286.25,Bank of America,Mcdonalds
+$287.25,Chase,Wendys
+$288.25,Wells Fargo,Apple Store
+$289.25,Bank of America,Microsoft Store
+$290.25,Chase,Jack in the box
+$291.25,Wells Fargo,Mcdonalds
+$292.25,Bank of America,Wendys
+$293.25,Chase,Apple Store
+$294.25,Wells Fargo,Microsoft Store
+$295.25,Bank of America,Jack in the box
+$296.25,Chase,Mcdonalds
+$297.25,Wells Fargo,Wendys
+$298.25,Bank of America,Apple Store
+$299.25,Chase,Microsoft Store
+$300.25,Wells Fargo,Jack in the box
+$301.25,Bank of America,Mcdonalds
+$302.25,Chase,Wendys
+$303.25,Wells Fargo,Apple Store
+$304.25,Bank of America,Microsoft Store
+$305.25,Chase,Jack in the box
+$306.25,Wells Fargo,Mcdonalds
+$307.25,Bank of America,Wendys
+$308.25,Chase,Apple Store
+$309.25,Wells Fargo,Microsoft Store
+$310.25,Bank of America,Jack in the box
+$311.25,Chase,Mcdonalds
+$312.25,Wells Fargo,Wendys
+$313.25,Bank of America,Apple Store
+$314.25,Chase,Microsoft Store
+$315.25,Wells Fargo,Jack in the box
+$316.25,Bank of America,Mcdonalds
+$317.25,Chase,Wendys
+$318.25,Wells Fargo,Apple Store
+$319.25,Bank of America,Microsoft Store
+$320.25,Chase,Jack in the box
+$321.25,Wells Fargo,Mcdonalds
+$322.25,Bank of America,Wendys
+$323.25,Chase,Apple Store
+$324.25,Wells Fargo,Microsoft Store
+$325.25,Bank of America,Jack in the box
+$326.25,Chase,Mcdonalds
+$327.25,Wells Fargo,Wendys
+$328.25,Bank of America,Apple Store
+$329.25,Chase,Microsoft Store
+$330.25,Wells Fargo,Jack in the box
+$331.25,Bank of America,Mcdonalds
+$332.25,Chase,Wendys
+$333.25,Wells Fargo,Apple Store
+$334.25,Bank of America,Microsoft Store
+$335.25,Chase,Jack in the box
+$336.25,Wells Fargo,Mcdonalds
+$337.25,Bank of America,Wendys
+$338.25,Chase,Apple Store
+$339.25,Wells Fargo,Microsoft Store
+$340.25,Bank of America,Jack in the box
+$341.25,Chase,Mcdonalds
+$342.25,Wells Fargo,Wendys
+$343.25,Bank of America,Apple Store
+$344.25,Chase,Microsoft Store
+$345.25,Wells Fargo,Jack in the box
+$346.25,Bank of America,Mcdonalds
+$347.25,Chase,Wendys
+$348.25,Wells Fargo,Apple Store
+$349.25,Bank of America,Microsoft Store
+$350.25,Chase,Jack in the box
+$351.25,Wells Fargo,Mcdonalds
+$352.25,Bank of America,Wendys
+$353.25,Chase,Apple Store
+$354.25,Wells Fargo,Microsoft Store
+$355.25,Bank of America,Jack in the box
+$356.25,Chase,Mcdonalds
+$357.25,Wells Fargo,Wendys
+$358.25,Bank of America,Apple Store
+$359.25,Chase,Microsoft Store
+$360.25,Wells Fargo,Jack in the box
+$361.25,Bank of America,Mcdonalds
+$362.25,Chase,Wendys
+$363.25,Wells Fargo,Apple Store
+$364.25,Bank of America,Microsoft Store
+$365.25,Chase,Jack in the box
+$366.25,Wells Fargo,Mcdonalds
+$367.25,Bank of America,Wendys
+$368.25,Chase,Apple Store
+$369.25,Wells Fargo,Microsoft Store
+$370.25,Bank of America,Jack in the box
+$371.25,Chase,Mcdonalds
+$372.25,Wells Fargo,Wendys
+$373.25,Bank of America,Apple Store
+$374.25,Chase,Microsoft Store
+$375.25,Wells Fargo,Jack in the box
+$376.25,Bank of America,Mcdonalds
+$377.25,Chase,Wendys
+$378.25,Wells Fargo,Apple Store
+$379.25,Bank of America,Microsoft Store
+$380.25,Chase,Jack in the box
+$381.25,Wells Fargo,Mcdonalds
+$382.25,Bank of America,Wendys
+$383.25,Chase,Apple Store
+$384.25,Wells Fargo,Microsoft Store
+$385.25,Bank of America,Jack in the box
+$386.25,Chase,Mcdonalds
+$387.25,Wells Fargo,Wendys
+$388.25,Bank of America,Apple Store
+$389.25,Chase,Microsoft Store
+$390.25,Wells Fargo,Jack in the box
+$391.25,Bank of America,Mcdonalds
+$392.25,Chase,Wendys
+$393.25,Wells Fargo,Apple Store
+$394.25,Bank of America,Microsoft Store
+$395.25,Chase,Jack in the box
+$396.25,Wells Fargo,Mcdonalds
+$397.25,Bank of America,Wendys
+$398.25,Chase,Apple Store
+$399.25,Wells Fargo,Microsoft Store
+$400.25,Bank of America,Jack in the box
+$401.25,Chase,Mcdonalds
+$402.25,Wells Fargo,Wendys
+$403.25,Bank of America,Apple Store
+$404.25,Chase,Microsoft Store
+$405.25,Wells Fargo,Jack in the box
+$406.25,Bank of America,Mcdonalds
+$407.25,Chase,Wendys
+$408.25,Wells Fargo,Apple Store
+$409.25,Bank of America,Microsoft Store
+$410.25,Chase,Jack in the box
+$411.25,Wells Fargo,Mcdonalds
+$412.25,Bank of America,Wendys
+$413.25,Chase,Apple Store
+$414.25,Wells Fargo,Microsoft Store
+$415.25,Bank of America,Jack in the box
+$416.25,Chase,Mcdonalds
+$417.25,Wells Fargo,Wendys
+$418.25,Bank of America,Apple Store
+$419.25,Chase,Microsoft Store
+$420.25,Wells Fargo,Jack in the box
+$421.25,Bank of America,Mcdonalds
+$422.25,Chase,Wendys
+$423.25,Wells Fargo,Apple Store
+$424.25,Bank of America,Microsoft Store
+$425.25,Chase,Jack in the box
+$426.25,Wells Fargo,Mcdonalds
+$427.25,Bank of America,Wendys
+$428.25,Chase,Apple Store
+$429.25,Wells Fargo,Microsoft Store
+$430.25,Bank of America,Jack in the box
+$431.25,Chase,Mcdonalds
+$432.25,Wells Fargo,Wendys
+$433.25,Bank of America,Apple Store
+$434.25,Chase,Microsoft Store
+$435.25,Wells Fargo,Jack in the box
+$436.25,Bank of America,Mcdonalds
+$437.25,Chase,Wendys
+$438.25,Wells Fargo,Apple Store
+$439.25,Bank of America,Microsoft Store
+$440.25,Chase,Jack in the box
+$441.25,Wells Fargo,Mcdonalds
+$442.25,Bank of America,Wendys
+$443.25,Chase,Apple Store
+$444.25,Wells Fargo,Microsoft Store
+$445.25,Bank of America,Jack in the box
+$446.25,Chase,Mcdonalds
+$447.25,Wells Fargo,Wendys
+$448.25,Bank of America,Apple Store
+$449.25,Chase,Microsoft Store
+$450.25,Wells Fargo,Jack in the box
+$451.25,Bank of America,Mcdonalds
+$452.25,Chase,Wendys
+$453.25,Wells Fargo,Apple Store
+$454.25,Bank of America,Microsoft Store
+$455.25,Chase,Jack in the box
+$456.25,Wells Fargo,Mcdonalds
+$457.25,Bank of America,Wendys
+$458.25,Chase,Apple Store
+$459.25,Wells Fargo,Microsoft Store
+$460.25,Bank of America,Jack in the box
+$461.25,Chase,Mcdonalds
+$462.25,Wells Fargo,Wendys
+$463.25,Bank of America,Apple Store
+$464.25,Chase,Microsoft Store
+$465.25,Wells Fargo,Jack in the box
+$466.25,Bank of America,Mcdonalds
+$467.25,Chase,Wendys
+$468.25,Wells Fargo,Apple Store
+$469.25,Bank of America,Microsoft Store
+$470.25,Chase,Jack in the box
+$471.25,Wells Fargo,Mcdonalds
+$472.25,Bank of America,Wendys
+$473.25,Chase,Apple Store
+$474.25,Wells Fargo,Microsoft Store
+$475.25,Bank of America,Jack in the box
+$476.25,Chase,Mcdonalds
+$477.25,Wells Fargo,Wendys
+$478.25,Bank of America,Apple Store
+$479.25,Chase,Microsoft Store
+$480.25,Wells Fargo,Jack in the box
+$481.25,Bank of America,Mcdonalds
+$482.25,Chase,Wendys
+$483.25,Wells Fargo,Apple Store
+$484.25,Bank of America,Microsoft Store
+$485.25,Chase,Jack in the box
+$486.25,Wells Fargo,Mcdonalds
+$487.25,Bank of America,Wendys
+$488.25,Chase,Apple Store
+$489.25,Wells Fargo,Microsoft Store
+$490.25,Bank of America,Jack in the box
+$491.25,Chase,Mcdonalds
+$492.25,Wells Fargo,Wendys
+$493.25,Bank of America,Apple Store
+$494.25,Chase,Microsoft Store
+$495.25,Wells Fargo,Jack in the box
+$496.25,Bank of America,Mcdonalds
+$497.25,Chase,Wendys
+$498.25,Wells Fargo,Apple Store
+$499.25,Bank of America,Microsoft Store
+$500.25,Chase,Jack in the box
+$501.25,Wells Fargo,Mcdonalds
+$502.25,Bank of America,Wendys
+$503.25,Chase,Apple Store
+$504.25,Wells Fargo,Microsoft Store
+$505.25,Bank of America,Jack in the box
+$506.25,Chase,Mcdonalds
+$507.25,Wells Fargo,Wendys
+$508.25,Bank of America,Apple Store
+$509.25,Chase,Microsoft Store
+$510.25,Wells Fargo,Jack in the box
+$511.25,Bank of America,Mcdonalds
+$512.25,Chase,Wendys
+$513.25,Wells Fargo,Apple Store
+$514.25,Bank of America,Microsoft Store
+$515.25,Chase,Jack in the box
+$516.25,Wells Fargo,Mcdonalds
+$517.25,Bank of America,Wendys
+$518.25,Chase,Apple Store
+$519.25,Wells Fargo,Microsoft Store
+$520.25,Bank of America,Jack in the box
+$521.25,Chase,Mcdonalds
+$522.25,Wells Fargo,Wendys
+$523.25,Bank of America,Apple Store
+$524.25,Chase,Microsoft Store
+$525.25,Wells Fargo,Jack in the box
+$526.25,Bank of America,Mcdonalds
+$527.25,Chase,Wendys
+$528.25,Wells Fargo,Apple Store
+$529.25,Bank of America,Microsoft Store
+$530.25,Chase,Jack in the box
+$531.25,Wells Fargo,Mcdonalds
+$532.25,Bank of America,Wendys
+$533.25,Chase,Apple Store
+$534.25,Wells Fargo,Microsoft Store
+$535.25,Bank of America,Jack in the box
+$536.25,Chase,Mcdonalds
+$537.25,Wells Fargo,Wendys
+$538.25,Bank of America,Apple Store
+$539.25,Chase,Microsoft Store
+$540.25,Wells Fargo,Jack in the box
+$541.25,Bank of America,Mcdonalds
+$542.25,Chase,Wendys
+$543.25,Wells Fargo,Apple Store
+$544.25,Bank of America,Microsoft Store
+$545.25,Chase,Jack in the box
+$546.25,Wells Fargo,Mcdonalds
+$547.25,Bank of America,Wendys
+$548.25,Chase,Apple Store
+$549.25,Wells Fargo,Microsoft Store
+$550.25,Bank of America,Jack in the box
+$551.25,Chase,Mcdonalds
+$552.25,Wells Fargo,Wendys
+$553.25,Bank of America,Apple Store
+$554.25,Chase,Microsoft Store
+$555.25,Wells Fargo,Jack in the box
+$556.25,Bank of America,Mcdonalds
+$557.25,Chase,Wendys
+$558.25,Wells Fargo,Apple Store
+$559.25,Bank of America,Microsoft Store
+$560.25,Chase,Jack in the box
+$561.25,Wells Fargo,Mcdonalds
+$562.25,Bank of America,Wendys
+$563.25,Chase,Apple Store
+$564.25,Wells Fargo,Microsoft Store
+$565.25,Bank of America,Jack in the box
+$566.25,Chase,Mcdonalds
+$567.25,Wells Fargo,Wendys
+$568.25,Bank of America,Apple Store
+$569.25,Chase,Microsoft Store
+$570.25,Wells Fargo,Jack in the box
+$571.25,Bank of America,Mcdonalds
+$572.25,Chase,Wendys
+$573.25,Wells Fargo,Apple Store
+$574.25,Bank of America,Microsoft Store
+$575.25,Chase,Jack in the box
+$576.25,Wells Fargo,Mcdonalds
+$577.25,Bank of America,Wendys
+$578.25,Chase,Apple Store
+$579.25,Wells Fargo,Microsoft Store
+$580.25,Bank of America,Jack in the box
+$581.25,Chase,Mcdonalds
+$582.25,Wells Fargo,Wendys
+$583.25,Bank of America,Apple Store
+$584.25,Chase,Microsoft Store
+$585.25,Wells Fargo,Jack in the box
+$586.25,Bank of America,Mcdonalds
+$587.25,Chase,Wendys
+$588.25,Wells Fargo,Apple Store
+$589.25,Bank of America,Microsoft Store
+$590.25,Chase,Jack in the box
+$591.25,Wells Fargo,Mcdonalds
+$592.25,Bank of America,Wendys
+$593.25,Chase,Apple Store
+$594.25,Wells Fargo,Microsoft Store
+$595.25,Bank of America,Jack in the box
+$596.25,Chase,Mcdonalds
+$597.25,Wells Fargo,Wendys
+$598.25,Bank of America,Apple Store
+$599.25,Chase,Microsoft Store
+$600.25,Wells Fargo,Jack in the box
+$601.25,Bank of America,Mcdonalds
+$602.25,Chase,Wendys
+$603.25,Wells Fargo,Apple Store
+$604.25,Bank of America,Microsoft Store
+$605.25,Chase,Jack in the box
+$606.25,Wells Fargo,Mcdonalds
+$607.25,Bank of America,Wendys
+$608.25,Chase,Apple Store
+$609.25,Wells Fargo,Microsoft Store
+$610.25,Bank of America,Jack in the box
+$611.25,Chase,Mcdonalds
+$612.25,Wells Fargo,Wendys
+$613.25,Bank of America,Apple Store
+$614.25,Chase,Microsoft Store
+$615.25,Wells Fargo,Jack in the box
+$616.25,Bank of America,Mcdonalds
+$617.25,Chase,Wendys
+$618.25,Wells Fargo,Apple Store
+$619.25,Bank of America,Microsoft Store
+$620.25,Chase,Jack in the box
+$621.25,Wells Fargo,Mcdonalds
+$622.25,Bank of America,Wendys
+$623.25,Chase,Apple Store
+$624.25,Wells Fargo,Microsoft Store
+$625.25,Bank of America,Jack in the box
+$626.25,Chase,Mcdonalds
+$627.25,Wells Fargo,Wendys
+$628.25,Bank of America,Apple Store
+$629.25,Chase,Microsoft Store
+$630.25,Wells Fargo,Jack in the box
+$631.25,Bank of America,Mcdonalds
+$632.25,Chase,Wendys
+$633.25,Wells Fargo,Apple Store
+$634.25,Bank of America,Microsoft Store
+$635.25,Chase,Jack in the box
+$636.25,Wells Fargo,Mcdonalds
+$637.25,Bank of America,Wendys
+$638.25,Chase,Apple Store
+$639.25,Wells Fargo,Microsoft Store
+$640.25,Bank of America,Jack in the box
+$641.25,Chase,Mcdonalds
+$642.25,Wells Fargo,Wendys
+$643.25,Bank of America,Apple Store
+$644.25,Chase,Microsoft Store
+$645.25,Wells Fargo,Jack in the box
+$646.25,Bank of America,Mcdonalds
+$647.25,Chase,Wendys
+$648.25,Wells Fargo,Apple Store
+$649.25,Bank of America,Microsoft Store
+$650.25,Chase,Jack in the box
+$651.25,Wells Fargo,Mcdonalds
+$652.25,Bank of America,Wendys
+$653.25,Chase,Apple Store
+$654.25,Wells Fargo,Microsoft Store
+$655.25,Bank of America,Jack in the box
+$656.25,Chase,Mcdonalds
+$657.25,Wells Fargo,Wendys
+$658.25,Bank of America,Apple Store
+$659.25,Chase,Microsoft Store
+$660.25,Wells Fargo,Jack in the box
+$661.25,Bank of America,Mcdonalds
+$662.25,Chase,Wendys
+$663.25,Wells Fargo,Apple Store
+$664.25,Bank of America,Microsoft Store
+$665.25,Chase,Jack in the box
+$666.25,Wells Fargo,Mcdonalds
+$667.25,Bank of America,Wendys
+$668.25,Chase,Apple Store
+$669.25,Wells Fargo,Microsoft Store
+$670.25,Bank of America,Jack in the box
+$671.25,Chase,Mcdonalds
+$672.25,Wells Fargo,Wendys
+$673.25,Bank of America,Apple Store
+$674.25,Chase,Microsoft Store
+$675.25,Wells Fargo,Jack in the box
+$676.25,Bank of America,Mcdonalds
+$677.25,Chase,Wendys
+$678.25,Wells Fargo,Apple Store
+$679.25,Bank of America,Microsoft Store
+$680.25,Chase,Jack in the box
+$681.25,Wells Fargo,Mcdonalds
+$682.25,Bank of America,Wendys
+$683.25,Chase,Apple Store
+$684.25,Wells Fargo,Microsoft Store
+$685.25,Bank of America,Jack in the box
+$686.25,Chase,Mcdonalds
+$687.25,Wells Fargo,Wendys
+$688.25,Bank of America,Apple Store
+$689.25,Chase,Microsoft Store
+$690.25,Wells Fargo,Jack in the box
+$691.25,Bank of America,Mcdonalds
+$692.25,Chase,Wendys
+$693.25,Wells Fargo,Apple Store
+$694.25,Bank of America,Microsoft Store
+$695.25,Chase,Jack in the box
+$696.25,Wells Fargo,Mcdonalds
+$697.25,Bank of America,Wendys
+$698.25,Chase,Apple Store
+$699.25,Wells Fargo,Microsoft Store
+$700.25,Bank of America,Jack in the box
+$701.25,Chase,Mcdonalds
+$702.25,Wells Fargo,Wendys
+$703.25,Bank of America,Apple Store
+$704.25,Chase,Microsoft Store
+$705.25,Wells Fargo,Jack in the box
+$706.25,Bank of America,Mcdonalds
+$707.25,Chase,Wendys
+$708.25,Wells Fargo,Apple Store
+$709.25,Bank of America,Microsoft Store
+$710.25,Chase,Jack in the box
+$711.25,Wells Fargo,Mcdonalds
+$712.25,Bank of America,Wendys
+$713.25,Chase,Apple Store
+$714.25,Wells Fargo,Microsoft Store
+$715.25,Bank of America,Jack in the box
+$716.25,Chase,Mcdonalds
+$717.25,Wells Fargo,Wendys
+$718.25,Bank of America,Apple Store
+$719.25,Chase,Microsoft Store
+$720.25,Wells Fargo,Jack in the box
+$721.25,Bank of America,Mcdonalds
+$722.25,Chase,Wendys
+$723.25,Wells Fargo,Apple Store
+$724.25,Bank of America,Microsoft Store
+$725.25,Chase,Jack in the box
+$726.25,Wells Fargo,Mcdonalds
+$727.25,Bank of America,Wendys
+$728.25,Chase,Apple Store
+$729.25,Wells Fargo,Microsoft Store
+$730.25,Bank of America,Jack in the box
+$731.25,Chase,Mcdonalds
+$732.25,Wells Fargo,Wendys
+$733.25,Bank of America,Apple Store
+$734.25,Chase,Microsoft Store
+$735.25,Wells Fargo,Jack in the box
+$736.25,Bank of America,Mcdonalds
+$737.25,Chase,Wendys
+$738.25,Wells Fargo,Apple Store
+$739.25,Bank of America,Microsoft Store
+$740.25,Chase,Jack in the box
+$741.25,Wells Fargo,Mcdonalds
+$742.25,Bank of America,Wendys
+$743.25,Chase,Apple Store
+$744.25,Wells Fargo,Microsoft Store
+$745.25,Bank of America,Jack in the box
+$746.25,Chase,Mcdonalds
+$747.25,Wells Fargo,Wendys
+$748.25,Bank of America,Apple Store
+$749.25,Chase,Microsoft Store
+$750.25,Wells Fargo,Jack in the box
+$751.25,Bank of America,Mcdonalds
+$752.25,Chase,Wendys
+$753.25,Wells Fargo,Apple Store
+$754.25,Bank of America,Microsoft Store
+$755.25,Chase,Jack in the box
+$756.25,Wells Fargo,Mcdonalds
+$757.25,Bank of America,Wendys
+$758.25,Chase,Apple Store
+$759.25,Wells Fargo,Microsoft Store
+$760.25,Bank of America,Jack in the box
+$761.25,Chase,Mcdonalds
+$762.25,Wells Fargo,Wendys
+$763.25,Bank of America,Apple Store
+$764.25,Chase,Microsoft Store
+$765.25,Wells Fargo,Jack in the box
+$766.25,Bank of America,Mcdonalds
+$767.25,Chase,Wendys
+$768.25,Wells Fargo,Apple Store
+$769.25,Bank of America,Microsoft Store
+$770.25,Chase,Jack in the box
+$771.25,Wells Fargo,Mcdonalds
+$772.25,Bank of America,Wendys
+$773.25,Chase,Apple Store
+$774.25,Wells Fargo,Microsoft Store
+$775.25,Bank of America,Jack in the box
+$776.25,Chase,Mcdonalds
+$777.25,Wells Fargo,Wendys
+$778.25,Bank of America,Apple Store
+$779.25,Chase,Microsoft Store
+$780.25,Wells Fargo,Jack in the box
+$781.25,Bank of America,Mcdonalds
+$782.25,Chase,Wendys
+$783.25,Wells Fargo,Apple Store
+$784.25,Bank of America,Microsoft Store
+$785.25,Chase,Jack in the box
+$786.25,Wells Fargo,Mcdonalds
+$787.25,Bank of America,Wendys
+$788.25,Chase,Apple Store
+$789.25,Wells Fargo,Microsoft Store
+$790.25,Bank of America,Jack in the box
+$791.25,Chase,Mcdonalds
+$792.25,Wells Fargo,Wendys
+$793.25,Bank of America,Apple Store
+$794.25,Chase,Microsoft Store
+$795.25,Wells Fargo,Jack in the box
+$796.25,Bank of America,Mcdonalds
+$797.25,Chase,Wendys
+$798.25,Wells Fargo,Apple Store
+$799.25,Bank of America,Microsoft Store
+$800.25,Chase,Jack in the box
+$801.25,Wells Fargo,Mcdonalds
+$802.25,Bank of America,Wendys
+$803.25,Chase,Apple Store
+$804.25,Wells Fargo,Microsoft Store
+$805.25,Bank of America,Jack in the box
+$806.25,Chase,Mcdonalds
+$807.25,Wells Fargo,Wendys
+$808.25,Bank of America,Apple Store
+$809.25,Chase,Microsoft Store
+$810.25,Wells Fargo,Jack in the box
+$811.25,Bank of America,Mcdonalds
+$812.25,Chase,Wendys
+$813.25,Wells Fargo,Apple Store
+$814.25,Bank of America,Microsoft Store
+$815.25,Chase,Jack in the box
+$816.25,Wells Fargo,Mcdonalds
+$817.25,Bank of America,Wendys
+$818.25,Chase,Apple Store
+$819.25,Wells Fargo,Microsoft Store
+$820.25,Bank of America,Jack in the box
+$821.25,Chase,Mcdonalds
+$822.25,Wells Fargo,Wendys
+$823.25,Bank of America,Apple Store
+$824.25,Chase,Microsoft Store
+$825.25,Wells Fargo,Jack in the box
+$826.25,Bank of America,Mcdonalds
+$827.25,Chase,Wendys
+$828.25,Wells Fargo,Apple Store
+$829.25,Bank of America,Microsoft Store
+$830.25,Chase,Jack in the box
+$831.25,Wells Fargo,Mcdonalds
+$832.25,Bank of America,Wendys
+$833.25,Chase,Apple Store
+$834.25,Wells Fargo,Microsoft Store
+$835.25,Bank of America,Jack in the box
+$836.25,Chase,Mcdonalds
+$837.25,Wells Fargo,Wendys
+$838.25,Bank of America,Apple Store
+$839.25,Chase,Microsoft Store
+$840.25,Wells Fargo,Jack in the box
+$841.25,Bank of America,Mcdonalds
+$842.25,Chase,Wendys
+$843.25,Wells Fargo,Apple Store
+$844.25,Bank of America,Microsoft Store
+$845.25,Chase,Jack in the box
+$846.25,Wells Fargo,Mcdonalds
+$847.25,Bank of America,Wendys
+$848.25,Chase,Apple Store
+$849.25,Wells Fargo,Microsoft Store
+$850.25,Bank of America,Jack in the box
+$851.25,Chase,Mcdonalds
+$852.25,Wells Fargo,Wendys
+$853.25,Bank of America,Apple Store
+$854.25,Chase,Microsoft Store
+$855.25,Wells Fargo,Jack in the box
+$856.25,Bank of America,Mcdonalds
+$857.25,Chase,Wendys
+$858.25,Wells Fargo,Apple Store
+$859.25,Bank of America,Microsoft Store
+$860.25,Chase,Jack in the box
+$861.25,Wells Fargo,Mcdonalds
+$862.25,Bank of America,Wendys
+$863.25,Chase,Apple Store
+$864.25,Wells Fargo,Microsoft Store
+$865.25,Bank of America,Jack in the box
+$866.25,Chase,Mcdonalds
+$867.25,Wells Fargo,Wendys
+$868.25,Bank of America,Apple Store
+$869.25,Chase,Microsoft Store
+$870.25,Wells Fargo,Jack in the box
+$871.25,Bank of America,Mcdonalds
+$872.25,Chase,Wendys
+$873.25,Wells Fargo,Apple Store
+$874.25,Bank of America,Microsoft Store
+$875.25,Chase,Jack in the box
+$876.25,Wells Fargo,Mcdonalds
+$877.25,Bank of America,Wendys
+$878.25,Chase,Apple Store
+$879.25,Wells Fargo,Microsoft Store
+$880.25,Bank of America,Jack in the box
+$881.25,Chase,Mcdonalds
+$882.25,Wells Fargo,Wendys
+$883.25,Bank of America,Apple Store
+$884.25,Chase,Microsoft Store
+$885.25,Wells Fargo,Jack in the box
+$886.25,Bank of America,Mcdonalds
+$887.25,Chase,Wendys
+$888.25,Wells Fargo,Apple Store
+$889.25,Bank of America,Microsoft Store
+$890.25,Chase,Jack in the box
+$891.25,Wells Fargo,Mcdonalds
+$892.25,Bank of America,Wendys
+$893.25,Chase,Apple Store
+$894.25,Wells Fargo,Microsoft Store
+$895.25,Bank of America,Jack in the box
+$896.25,Chase,Mcdonalds
+$897.25,Wells Fargo,Wendys
+$898.25,Bank of America,Apple Store
+$899.25,Chase,Microsoft Store
+$900.25,Wells Fargo,Jack in the box
+$901.25,Bank of America,Mcdonalds
+$902.25,Chase,Wendys
+$903.25,Wells Fargo,Apple Store
+$904.25,Bank of America,Microsoft Store
+$905.25,Chase,Jack in the box
+$906.25,Wells Fargo,Mcdonalds
+$907.25,Bank of America,Wendys
+$908.25,Chase,Apple Store
+$909.25,Wells Fargo,Microsoft Store
+$910.25,Bank of America,Jack in the box
+$911.25,Chase,Mcdonalds
+$912.25,Wells Fargo,Wendys
+$913.25,Bank of America,Apple Store
+$914.25,Chase,Microsoft Store
+$915.25,Wells Fargo,Jack in the box
+$916.25,Bank of America,Mcdonalds
+$917.25,Chase,Wendys
+$918.25,Wells Fargo,Apple Store
+$919.25,Bank of America,Microsoft Store
+$920.25,Chase,Jack in the box
+$921.25,Wells Fargo,Mcdonalds
+$922.25,Bank of America,Wendys
+$923.25,Chase,Apple Store
+$924.25,Wells Fargo,Microsoft Store
+$925.25,Bank of America,Jack in the box
+$926.25,Chase,Mcdonalds
+$927.25,Wells Fargo,Wendys
+$928.25,Bank of America,Apple Store
+$929.25,Chase,Microsoft Store
+$930.25,Wells Fargo,Jack in the box
+$931.25,Bank of America,Mcdonalds
+$932.25,Chase,Wendys
+$933.25,Wells Fargo,Apple Store
+$934.25,Bank of America,Microsoft Store
+$935.25,Chase,Jack in the box
+$936.25,Wells Fargo,Mcdonalds
+$937.25,Bank of America,Wendys
+$938.25,Chase,Apple Store
+$939.25,Wells Fargo,Microsoft Store
+$940.25,Bank of America,Jack in the box
+$941.25,Chase,Mcdonalds
+$942.25,Wells Fargo,Wendys
+$943.25,Bank of America,Apple Store
+$944.25,Chase,Microsoft Store
+$945.25,Wells Fargo,Jack in the box
+$946.25,Bank of America,Mcdonalds
+$947.25,Chase,Wendys
+$948.25,Wells Fargo,Apple Store
+$949.25,Bank of America,Microsoft Store
+$950.25,Chase,Jack in the box
+$951.25,Wells Fargo,Mcdonalds
+$952.25,Bank of America,Wendys
+$953.25,Chase,Apple Store
+$954.25,Wells Fargo,Microsoft Store
+$955.25,Bank of America,Jack in the box
+$956.25,Chase,Mcdonalds
+$957.25,Wells Fargo,Wendys
+$958.25,Bank of America,Apple Store
+$959.25,Chase,Microsoft Store
+$960.25,Wells Fargo,Jack in the box
+$961.25,Bank of America,Mcdonalds
+$962.25,Chase,Wendys
+$963.25,Wells Fargo,Apple Store
+$964.25,Bank of America,Microsoft Store
+$965.25,Chase,Jack in the box
+$966.25,Wells Fargo,Mcdonalds
+$967.25,Bank of America,Wendys
+$968.25,Chase,Apple Store
+$969.25,Wells Fargo,Microsoft Store
+$970.25,Bank of America,Jack in the box
+$971.25,Chase,Mcdonalds
+$972.25,Wells Fargo,Wendys
+$973.25,Bank of America,Apple Store
+$974.25,Chase,Microsoft Store
+$975.25,Wells Fargo,Jack in the box
+$976.25,Bank of America,Mcdonalds
+$977.25,Chase,Wendys
+$978.25,Wells Fargo,Apple Store
+$979.25,Bank of America,Microsoft Store
+$980.25,Chase,Jack in the box
+$981.25,Wells Fargo,Mcdonalds
+$982.25,Bank of America,Wendys
+$983.25,Chase,Apple Store
+$984.25,Wells Fargo,Microsoft Store
+$985.25,Bank of America,Jack in the box
+$986.25,Chase,Mcdonalds
+$987.25,Wells Fargo,Wendys
+$988.25,Bank of America,Apple Store
+$989.25,Chase,Microsoft Store
+$990.25,Wells Fargo,Jack in the box
+$991.25,Bank of America,Mcdonalds
+$992.25,Chase,Wendys
+$993.25,Wells Fargo,Apple Store
+$994.25,Bank of America,Microsoft Store
+$995.25,Chase,Jack in the box
+$996.25,Wells Fargo,Mcdonalds
+$997.25,Bank of America,Wendys
+$998.25,Chase,Apple Store
+$999.25,Wells Fargo,Microsoft Store

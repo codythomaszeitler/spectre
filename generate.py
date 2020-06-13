@@ -1,10 +1,18 @@
 
 header = 'Charge Amount,Bank,Place of Business\n'
 
-contents = ''
-for i in range(10):
-    contents += '$400.25,Bank of America,Barros\n' 
 
+banks = ['Wells Fargo', 'Bank of America', 'Chase']
+buisnesses = ['Jack in the box', 'Mcdonalds', 'Wendys', 'Apple Store', 'Microsoft Store']
+
+contents = ''
+num_rows = 1000
+for i in range(num_rows):
+
+    bank = banks[i % len(banks)]
+    buisness = buisnesses[i % len(buisnesses)]
+
+    contents += '$' + str(i) + '.25,' + bank + ',' + buisness + '\n' 
 
 full = header + contents
 print (full)

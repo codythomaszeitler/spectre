@@ -9,10 +9,6 @@ export class TransactionScreenSegment extends Component {
   render() {
     return (
       <Card containerStyle={this.props.containerStyle}>
-        <Text style={{
-          color : this.props.textColor
-        }}>{this.props.transaction.getAmount().toString()}</Text>
-
         {this.props.transaction.getDetails().map((item) => {
           return <Text key={item.detail} style={{
             color : this.props.textColor

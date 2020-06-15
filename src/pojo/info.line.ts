@@ -1,5 +1,6 @@
 import { Currency } from "./currency";
 import { AMOUNT_TYPE } from "./transaction";
+import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
 
 export class TransactionDetail {
 
@@ -14,7 +15,9 @@ export class TransactionDetail {
     }
 
     static withCurrency(currency : Currency) {
-        const detail = new TransactionDetail('', AMOUNT_TYPE);
+        const converter = new CurrencyConverter();
+
+        const detail = new TransactionDetail(converter.toString(currency), AMOUNT_TYPE);
         detail.currency = currency.copy();
         return detail;
     }

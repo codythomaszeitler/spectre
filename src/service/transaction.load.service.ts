@@ -18,6 +18,7 @@ export class TransactionLoadService {
     this.spectreUser = spectreUser;
     this.location = location;
     this.importer = importer;
+    this.numLinesLoaded = 0;
   }
 
   getNumLinesLoaded() {

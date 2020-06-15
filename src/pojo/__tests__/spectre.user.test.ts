@@ -92,6 +92,7 @@ describe("Spectre User", () => {
 
     testObject.addTransactionCategorizedListener(category, listener);
     const transaction = new Transaction(new Currency(400, 'USD'));
+    testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, category);
 
     expect(caughtEvent.transaction).toEqual(transaction);
@@ -103,7 +104,10 @@ describe("Spectre User", () => {
 
     testObject.removeTransactionCategorizedListener(category, listener);
     caughtEvent = null;
-    testObject.categorize(new Transaction(new Currency(800, 'USD')), category);
+
+    const newTransaction = new Transaction(new Currency(800, 'USD'));
+    testObject.readyForCategorization(newTransaction);
+    testObject.categorize(newTransaction, category);
     expect(caughtEvent).toBeNull();
   });
 

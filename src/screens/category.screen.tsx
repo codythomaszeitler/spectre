@@ -14,6 +14,7 @@ import { TransactionScreenSegment } from "./transaction.screen.segment";
 export interface Props {
   color: string;
   category: Category;
+  categorizationMode: boolean;
   onPress: (event: OnCategoryPressed) => void;
   onLocationChange: (event: OnLocationChange) => void;
 }
@@ -22,6 +23,7 @@ export interface State {
   color: string;
   category: Category;
   numTransactions: number;
+  shouldShowTransactions : boolean;
 }
 
 export class CategoryScreen extends Component
@@ -55,6 +57,15 @@ export class CategoryScreen extends Component
   }
 
   onPress() {
+    console.log(this.props);
+    if (!this.props.categorizationMode) {
+      const flipped = !this.state.shouldShowTransactions;
+      console.log(flipped);
+      this.setState({
+        shouldShowTransactions : flipped
+      });
+    }
+
     this.props.onPress(new OnCategoryPressed(this.state.category));
   }
 
@@ -119,9 +130,11 @@ export class CategoryScreen extends Component
             </View>
           </Card>
         </TouchableOpacity>
-          {this.state.category.getTransactions().map((data, index) => {
+        {(!this.props.categorizationMode && this.state.shouldShowTransactions) &&
+          this.state.category.getTransactions().map((data, index) => {
             return (
               <View
+                key={data.id}
                 style={{
                   flexDirection: "row",
                 }}
@@ -137,8 +150,8 @@ export class CategoryScreen extends Component
                   }}
                 >
                   <TransactionScreenSegment
-                    key={data.id}
                     transaction={data}
+                    textColor='white'
                     containerStyle={{
                       backgroundColor: this.state.color,
                       marginTop: 10,
@@ -147,6 +160,7 @@ export class CategoryScreen extends Component
                       borderRadius: 7,
                       borderWidth: 0,
                     }}
+                    type={"row"}
                   ></TransactionScreenSegment>
                 </View>
               </View>

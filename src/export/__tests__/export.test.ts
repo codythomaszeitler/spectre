@@ -35,6 +35,7 @@ describe("Export", () => {
       details
     );
 
+    spectreUser.readyForCategorization(transaction);
     spectreUser.categorize(transaction, new Category("TEST"));
 
     const testObject = new Export(new CsvExporter(columns));

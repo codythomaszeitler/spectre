@@ -31,7 +31,6 @@ import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { CsvImporter } from "../export/csv.importer";
 import { Columns } from "../export/columns";
-import { InvisibleBoundingBox } from "./invisible.bounding.box";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
@@ -76,12 +75,12 @@ export class CategorizationScreen extends Component
     this.onCategoryPress = this.onCategoryPress.bind(this);
     this.onExportCategorized = this.onExportCategorized.bind(this);
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
+    this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
     this.spectreUser = model;
 
-    this.spectreUser.addTransactionReadyForCategorizationListener(this);
     this.spectreUser.addOnCategoryAddedListener(this);
 
     this.state = {
@@ -154,13 +153,16 @@ export class CategorizationScreen extends Component
   onCategorizationStart() {
     this.setState({
       currentTransaction: this.spectreUser.getUncategorized().shift(),
+      isCategorizationMode : true
     });
   }
 
-  onTransactionReadyForCategorization() {
-    // this.setState({
-    //   numUncategorized: this.spectreUser.getNumUncategorized(),
-    // });
+  onCategorizationEnd() {
+    console.log('we are here');
+    this.setState({
+      currentTransaction : null,
+      isCategorizationMode : false
+    })
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
@@ -278,13 +280,16 @@ export class CategorizationScreen extends Component
         >
           <FlatList
             data={this.state.categories}
+            keyExtractor={(item, index) => {
+              return item.getType() ;//+ new Date().getTime().toString() + (Math.floor(Math.random() * Math.floor(new Date().getTime()))).toString()
+            }}
+            extraData={this.state}
             renderItem={({ item, index }) => {
               return (
                 <CategoryScreen
-                  key={item.getType()}
                   color={this.colors[index % this.colors.length]}
                   category={item}
-                  categorizationMode={this.state.currentTransaction !== null}
+                  categorizationMode={this.state.isCategorizationMode}
                   onPress={this.onCategoryPress}
                 ></CategoryScreen>
               );
@@ -447,13 +452,8 @@ export class CategorizationScreen extends Component
                   height: 30,
                   backgroundColor: "white",
                   borderRadius: 50,
-                  translateX: 300,
                 }}
-                onPress={() => {
-                  this.setState({
-                    currentTransaction: null,
-                  });
-                }}
+                onPress={this.onCategorizationEnd}
               >
                 <Text
                   style={{
@@ -471,6 +471,7 @@ export class CategorizationScreen extends Component
             >
               <TransactionScreenSegment
                 transaction={this.state.currentTransaction}
+                textColor='black'
                 containerStyle={{
                   shadowColor: "#000000",
                   shadowOffset: {

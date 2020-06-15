@@ -28,9 +28,6 @@ export class TransactionLoadService {
     const loadService = new DocumentLoadService(this.location);
 
     let lines = await loadService.fetchall();
-    lines = lines.filter(function(line) {
-        return line.includes(',');
-    });
 
     const transactions = [];
     for (let i = 0; i < lines.length; i++) {

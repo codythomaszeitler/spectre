@@ -158,7 +158,6 @@ export class CategorizationScreen extends Component
   }
 
   onCategorizationEnd() {
-    console.log('we are here');
     this.setState({
       currentTransaction : null,
       isCategorizationMode : false

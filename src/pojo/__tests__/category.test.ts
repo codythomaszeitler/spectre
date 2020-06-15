@@ -21,6 +21,15 @@ describe('Category', () => {
         expect(transactions.length).toBe(1);
     });
 
+    it('should be able to unassociate a transaction', () => {
+        const testObject = new Category('Test');
+        testObject.associate(new Transaction([TransactionDetail.withCurrency(new Currency(500))]));
+        testObject.unassociate(new Transaction([TransactionDetail.withCurrency(new Currency(500))]));
+
+        const transactions = testObject.getTransactions();
+        expect(transactions.length).toBe(0);
+    });
+
     it('should return an empty list if there are no associated transactions', () => {
         const testObject = new Category('Test');
         expect(testObject.getTransactions().length).toBe(0);

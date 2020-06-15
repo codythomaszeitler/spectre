@@ -145,6 +145,13 @@ export class SpectreUser {
     }
   }
 
+  uncategorize(transaction : Transaction, category: Category) {
+    const found = this._getCategory(category);
+    found.unassociate(transaction);
+
+    this.uncategorized.splice(0, 0, transaction.copy());
+  }
+
   addTransactionCategorizedListener(
     category: Category,
     listener: TransactionCategorizedListener

@@ -20,6 +20,12 @@ export class Category {
         this.transactions.push(transaction.copy());
     }
 
+    unassociate(transaction : Transaction) {
+        this.transactions = this.transactions.filter(function (inner) {
+            return !transaction.equals(inner);
+        });
+    }
+
     getTransactions() {
         const copied = [];
         for (let i = 0; i < this.transactions.length; i++) {

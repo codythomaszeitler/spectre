@@ -26,6 +26,51 @@ describe("Spectre User", () => {
     expect(outputCurrency).toEqual(new Currency(400, "USD"));
   });
 
+  it('should be able to undo a categorization', () => {
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category("Home"));
+
+    const details = [];
+    details.push(new TransactionDetail("Chase cc0392", "Bank"));
+    details.push(new TransactionDetail("JAPANESE STEAKHOUSE", "Business"));
+    details.push(TransactionDetail.withCurrency(new Currency(400)));
+    const transaction = new Transaction(details);
+
+    testObject.readyForCategorization(transaction);
+    expect(testObject.getUncategorized().length).toBe(1);
+
+    testObject.categorize(transaction, new Category("Home"));
+    expect(testObject.getUncategorized().length).toBe(0);
+
+    testObject.uncategorize(transaction, new Category("Home"));
+    expect(testObject.getUncategorized().length).toBe(1);
+    expect(testObject.getTransactionsFor(new Category('Home')).length).toBe(0);
+  });
+
+  it('should put the most recent uncategorized transaction at the next transaction', () => {
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category("Home"));
+
+    const details = [];
+    details.push(new TransactionDetail("Chase cc0392", "Bank"));
+    details.push(new TransactionDetail("JAPANESE STEAKHOUSE", "Business"));
+    details.push(TransactionDetail.withCurrency(new Currency(400)));
+    const transaction = new Transaction(details);
+
+    testObject.readyForCategorization(transaction);
+    expect(testObject.getUncategorized().length).toBe(1);
+
+    testObject.categorize(transaction, new Category("Home"));
+    expect(testObject.getUncategorized().length).toBe(0);
+
+
+    const otherTransaction = new Transaction([TransactionDetail.withCurrency(new Currency(400))]);
+    testObject.readyForCategorization(otherTransaction);
+
+    testObject.uncategorize(transaction, new Category("Home"));
+    expect(testObject.getUncategorized()[0].equals(transaction)).toBe(true);
+  });
+
   it("should emit an event when a transaction is ready to be categorized", () => {
     let caughtEvent = null;
     const listener = {

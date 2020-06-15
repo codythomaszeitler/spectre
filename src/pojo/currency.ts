@@ -5,9 +5,14 @@ export class Currency {
   amount : number;
   location : String;
 
-  constructor(amount : number, location : String) {
+  constructor(amount : number, location? : String) {
     this.amount = amount;
-    this.location = location;
+
+    if (!location) {
+      this.location = 'USD';
+    } else {
+      this.location = location;
+    }
   }
 
   add(currency : Currency) {

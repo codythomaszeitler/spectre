@@ -26,9 +26,9 @@ describe("Csv Importer", () => {
     const details = [
       new TransactionDetail("This is a detail", "Test1Type"),
       new TransactionDetail("This is another detail", "Test2Type"),
+      TransactionDetail.withCurrency(new Currency(400))
     ];
     const transaction = new Transaction(
-      new Currency(400, "USD"),
       details
     );
 

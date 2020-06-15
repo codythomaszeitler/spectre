@@ -1,5 +1,4 @@
-import {Transaction} from '../transaction';
-import {Timestamp} from '../timestamp';
+import {Transaction, AMOUNT_TYPE} from '../transaction';
 import {Currency} from '../currency';
 import {TransactionDetail} from '../info.line';
 
@@ -8,11 +7,15 @@ describe('Transaction', () => {
 
         const aDetails = [];
         aDetails.push(new TransactionDetail('Test', 'TypeADetails'));
-        const a = new Transaction(new Currency(500, 'USD'), aDetails);
+        aDetails.push(TransactionDetail.withCurrency(new Currency(500)));
+
+        const a = new Transaction(aDetails);
 
         const bDetails = [];
         bDetails.push(new TransactionDetail('Test', 'TypeBDetails'));
-        const b = new Transaction(new Currency(500, 'USD'), bDetails);
+        bDetails.push(TransactionDetail.withCurrency(new Currency(500)));
+
+        const b = new Transaction(bDetails);
 
         expect(a.equals(b)).toBe(false);
     });

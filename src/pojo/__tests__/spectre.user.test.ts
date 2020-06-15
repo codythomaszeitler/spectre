@@ -13,8 +13,8 @@ describe("Spectre User", () => {
     const details = [];
     details.push(new TransactionDetail("Chase cc0392", "Bank"));
     details.push(new TransactionDetail("JAPANESE STEAKHOUSE", "Business"));
-    const currency = new Currency(400, "USD");
-    const transaction = new Transaction(currency, details);
+    details.push(TransactionDetail.withCurrency(new Currency(400)));
+    const transaction = new Transaction(details);
 
     testObject.readyForCategorization(transaction);
     expect(testObject.getUncategorized().length).toBe(1);
@@ -37,7 +37,8 @@ describe("Spectre User", () => {
     const testObject = new SpectreUser();
     testObject.addTransactionReadyForCategorizationListener(listener);
 
-    const transaction = new Transaction(new Currency(400, 'USD'));
+    const details = [TransactionDetail.withCurrency(new Currency(400))];
+    const transaction = new Transaction(details);
     testObject.readyForCategorization(transaction);
 
     expect(testObject.getUncategorized().length).toBe(1);
@@ -91,7 +92,7 @@ describe("Spectre User", () => {
     testObject.addCategory(category);
 
     testObject.addTransactionCategorizedListener(category, listener);
-    const transaction = new Transaction(new Currency(400, 'USD'));
+    const transaction = new Transaction([TransactionDetail.withCurrency(new Currency(400))]);
     testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, category);
 
@@ -105,7 +106,7 @@ describe("Spectre User", () => {
     testObject.removeTransactionCategorizedListener(category, listener);
     caughtEvent = null;
 
-    const newTransaction = new Transaction(new Currency(800, 'USD'));
+    const newTransaction = new Transaction([TransactionDetail.withCurrency(new Currency(800))]);
     testObject.readyForCategorization(newTransaction);
     testObject.categorize(newTransaction, category);
     expect(caughtEvent).toBeNull();
@@ -116,10 +117,10 @@ describe("Spectre User", () => {
     testObject.addCategory(new Category("Home"));
 
     const currency = new Currency(400, "USD");
-    const transaction = new Transaction(currency);
+    const transaction = new Transaction([TransactionDetail.withCurrency(new Currency(400))]);
 
     for (let i = 0; i < 10; i++) {
-      testObject.readyForCategorization(new Transaction(new Currency(400, 'USD')));
+      testObject.readyForCategorization(new Transaction([TransactionDetail.withCurrency(new Currency(400))]));
     }
 
     testObject.readyForCategorization(transaction);
@@ -133,7 +134,7 @@ describe("Spectre User", () => {
     testObject.addCategory(new Category("Home"));
 
     const currency = new Currency(400, "USD");
-    const transaction = new Transaction(currency);
+    const transaction = new Transaction([TransactionDetail.withCurrency(currency)]);
 
     let caughtException = null;
     try {

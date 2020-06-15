@@ -8,6 +8,7 @@ import { Category } from "../../pojo/category";
 import { Currency } from "../../pojo/currency";
 import { TransactionSaveService } from "../transaction.save.service";
 import { Location } from "../location";
+import { TransactionDetail } from "../../pojo/info.line";
 
 describe("Transaction Save Service", () => {
   it("should write all categorized transactions to the given location", async () => {
@@ -22,7 +23,8 @@ describe("Transaction Save Service", () => {
     spectreUser.addCategory(category);
 
     for (let i = 0; i < 10; i++) {
-      const transaction = new Transaction(new Currency(400, "USD"));
+      const details = [TransactionDetail.withCurrency(new Currency(400))];
+      const transaction = new Transaction(details);
       spectreUser.readyForCategorization(transaction);
       spectreUser.categorize(transaction, category);
     }

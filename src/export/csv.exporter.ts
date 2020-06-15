@@ -33,7 +33,7 @@ export class CsvExporter implements Exporter {
 
       if (type === AMOUNT_TYPE) {
         const converter = new CurrencyConverter();
-        const currency = transaction.getAmount();
+        const currency = transaction.getDetail(AMOUNT_TYPE);
         converted += escapeCsvElement(converter.toString(currency)) + ",";
       } else if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";

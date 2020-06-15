@@ -1,11 +1,22 @@
+import { Currency } from "./currency";
+import { AMOUNT_TYPE } from "./transaction";
+
 export class TransactionDetail {
 
     detail : String;
     type : String;
+    currency : Currency;
 
     constructor(detail : String, type : String) {
         this.detail = detail;
         this.type = type;
+        this.currency = new Currency(0);
+    }
+
+    static withCurrency(currency : Currency) {
+        const detail = new TransactionDetail('', AMOUNT_TYPE);
+        detail.currency = currency.copy();
+        return detail;
     }
 
     copy() {
@@ -13,11 +24,25 @@ export class TransactionDetail {
     }
 
     equals(transactionDetail : TransactionDetail) {
-        return this.detail === transactionDetail.detail && this.type === transactionDetail.type;
+        const areDetailsEquivalent = () => {
+            let areDetailsEquivalent = false;
+            if (this.type === AMOUNT_TYPE && transactionDetail.type === AMOUNT_TYPE) {
+                areDetailsEquivalent = this.currency.equals(transactionDetail.currency);
+            } else {
+                areDetailsEquivalent = this.detail === transactionDetail.detail;
+            }
+            return areDetailsEquivalent;
+        }
+
+        return areDetailsEquivalent() && this.type === transactionDetail.type;
     }
 
     getDetail() {
-        return this.detail;
+        if (!this.detail) {
+            return this.currency;
+        } else {
+            return this.detail;
+        }
     }
 
     getType() {

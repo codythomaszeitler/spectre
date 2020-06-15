@@ -13,7 +13,6 @@ export class CsvImporter implements Importer {
     }
 
     convert(string : string) {
-        let amount = null;
         let details = [];
 
         const splits = string.split(',');
@@ -23,7 +22,8 @@ export class CsvImporter implements Importer {
                 const split = unescapeCsvElement(splits[i]);
 
                 const converter = new CurrencyConverter();
-                amount = converter.fromString(split);
+                const amount = converter.fromString(split);
+                details.push(TransactionDetail.withCurrency(amount));
             } else {
                 const split = unescapeCsvElement(splits[i]);
                 const detail = new TransactionDetail(split, this.columns.getType(i));
@@ -31,7 +31,7 @@ export class CsvImporter implements Importer {
             }
         }
 
-        return new Transaction(amount, details);
+        return new Transaction(details);
       }
 }
 

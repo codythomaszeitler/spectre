@@ -6,6 +6,7 @@ import { Columns } from "../../export/columns";
 import { CsvExporter } from "../../export/csv.exporter";
 import { CsvImporter } from "../../export/csv.importer";
 import {TransactionLoadService} from '../transaction.load.service';
+import { TransactionDetail } from "../../pojo/info.line";
 
 describe("Transaction Load Service", () => {
   it("should be able to load transactions from a location", async () => {
@@ -15,7 +16,8 @@ describe("Transaction Load Service", () => {
       },
     });
 
-    const transaction = new Transaction(new Currency(400, "USD"));
+    const details = [TransactionDetail.withCurrency(new Currency(400))];
+    const transaction = new Transaction(details);
     const exporter = new CsvExporter(columns);
     const importer = new CsvImporter(columns);
 

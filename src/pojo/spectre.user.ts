@@ -1,6 +1,6 @@
 import { Currency } from "./currency";
 import { Category } from "./category";
-import { Transaction } from "./transaction";
+import { Transaction, AMOUNT_TYPE } from "./transaction";
 
 export class SpectreUser {
   categories: Category[];
@@ -182,7 +182,7 @@ export class SpectreUser {
 
     for (let i = 0; i < transactions.length; i++) {
       const transaction = transactions[i];
-      const currency = transaction.getAmount();
+      const currency = transaction.getDetail(AMOUNT_TYPE);
 
       computed = computed.add(currency);
     }

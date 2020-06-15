@@ -1,9 +1,15 @@
+import { SpectreUser } from "../pojo/spectre.user";
+import { Exporter } from "./exporter";
+
 export class Export {
-  constructor(exporter) {
+
+  exporter : Exporter;
+
+  constructor(exporter : Exporter) {
     this.exporter = exporter;
   }
 
-  export(spectreUser) {
+  export(spectreUser : SpectreUser) {
     let csvContents = this.exporter.getHeader() + "\n";
 
     const categories = spectreUser.getCategories();

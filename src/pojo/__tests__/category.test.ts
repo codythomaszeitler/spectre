@@ -1,6 +1,7 @@
 import { Category } from "../category";
 import { Currency } from "../currency";
 import {Transaction } from '../transaction';
+import { TransactionDetail } from "../info.line";
 
 describe('Category', () => {
     it('should respect equality', () => {
@@ -14,7 +15,7 @@ describe('Category', () => {
 
     it('should be able to associate a transaction' , () => {
         const testObject = new Category('Test');
-        testObject.associate(new Transaction(new Currency(500, 'USD')));
+        testObject.associate(new Transaction([TransactionDetail.withCurrency(new Currency(500))]));
 
         const transactions = testObject.getTransactions();
         expect(transactions.length).toBe(1);

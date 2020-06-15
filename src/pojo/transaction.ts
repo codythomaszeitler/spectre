@@ -1,24 +1,14 @@
-import { Currency } from "./currency";
-import { Timestamp } from "./timestamp";
 import { TransactionDetail } from "./info.line";
 
 export const AMOUNT_TYPE = "Amount";
-export const TIMESTAMP_TYPE = "When";
 
 export class Transaction {
 
-  amount : Currency;
-  when? : Timestamp;
-  details? : TransactionDetail[];
+  details : TransactionDetail[];
   id : number;
 
-  constructor(amount : Currency, otherInfo? : TransactionDetail[]) {
-    this.amount = amount.copy();
-    
-    this.details = [];
-    if (otherInfo) {
-      this.details = otherInfo.slice();
-    }
+  constructor(otherInfo : TransactionDetail[]) {
+    this.details = otherInfo.slice();
     this.id = -1;
   }
 
@@ -27,7 +17,7 @@ export class Transaction {
   }
 
   copy() {
-    const transaction = new Transaction(this.amount, this.details);
+    const transaction = new Transaction(this.details);
     transaction.id = this.id;
     return transaction;
   }
@@ -40,7 +30,7 @@ export class Transaction {
     return copied;
   }
 
-  getDetail(type) {
+  getDetail(type : string) {
     let raw = null;
 
     for (let i = 0; i < this.details.length; i++) {
@@ -53,12 +43,9 @@ export class Transaction {
     return raw;
   }
 
-  getAmount() {
-    return this.amount.copy();
-  }
 
-  equals(transaction) {
-    const areDetailsEquivalent = (aDetails, bDetails) => {
+  equals(transaction : Transaction) {
+    const areDetailsEquivalent = (aDetails : TransactionDetail[], bDetails : TransactionDetail[]) => {
       if (aDetails.length !== bDetails.length) {
         return false;
       }
@@ -81,11 +68,9 @@ export class Transaction {
       return equivalent;
     };
 
-    let currenciesEquivalent = this.getAmount().equals(transaction.getAmount());
     let idsEquivalent = this.id === transaction.id;
 
     return (
-      currenciesEquivalent &&
       areDetailsEquivalent(this.details, transaction.details) &&
       idsEquivalent
     );

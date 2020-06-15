@@ -1,8 +1,13 @@
+import {Transaction} from '../pojo/transaction';
+
 export const CATEGORY_TYPE = 'Category';
 
 export class Category {
 
-    constructor(type) {
+    type : string;
+    transactions : Transaction[];
+
+    constructor(type : string) {
         this.type = type;
         this.transactions = [];
     }
@@ -11,7 +16,7 @@ export class Category {
         return this.type;
     }
 
-    associate(transaction) {
+    associate(transaction : Transaction) {
         this.transactions.push(transaction.copy());
     }
 
@@ -23,7 +28,7 @@ export class Category {
         return copied;
     }
 
-    equals(category) {
+    equals(category : Category) {
         return this.type === category.type;
     }
 

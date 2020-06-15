@@ -30,8 +30,8 @@ describe("Export", () => {
     const details = [];
     details.push(new TransactionDetail("TestBank", "Bank"));
     details.push(new TransactionDetail("TestBusiness", "Business"));
+    details.push(TransactionDetail.withCurrency(new Currency(400)));
     const transaction = new Transaction(
-      new Currency(400, "USD"),
       details
     );
 

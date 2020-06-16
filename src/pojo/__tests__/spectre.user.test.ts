@@ -2,11 +2,11 @@ import { SpectreUser, TransactionCategorizedListener, OnTransactionCategorizedEv
 import { Category } from "../category";
 import { Currency } from "../currency";
 import { TransactionDetail } from "../info.line";
-import { Transaction } from "../transaction";
+import { Transaction, AMOUNT_TYPE } from "../transaction";
 import { OnCategoryAddedEvent, CategoryAddedListener } from '../spectre.user';
 
 describe("Spectre User", () => {
-  it("should allow a user to categorize a transaction", () => {
+  it("should allow a user to rollup a transaction", () => {
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 
@@ -22,7 +22,7 @@ describe("Spectre User", () => {
     testObject.categorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(0);
 
-    const outputCurrency = testObject.rollup(new Category("Home"));
+    const outputCurrency = testObject.rollup(new Category("Home"), AMOUNT_TYPE);
     expect(outputCurrency).toEqual(new Currency(400, "USD"));
   });
 
@@ -69,6 +69,7 @@ describe("Spectre User", () => {
 
     testObject.uncategorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized()[0].equals(transaction)).toBe(true);
+    expect(testObject.getUncategorized().length).toBe(2);
   });
 
   it("should emit an event when a transaction is ready to be categorized", () => {

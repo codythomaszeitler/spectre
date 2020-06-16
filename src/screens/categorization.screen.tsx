@@ -153,15 +153,15 @@ export class CategorizationScreen extends Component
   onCategorizationStart() {
     this.setState({
       currentTransaction: this.spectreUser.getUncategorized().shift(),
-      isCategorizationMode : true
+      isCategorizationMode: true,
     });
   }
 
   onCategorizationEnd() {
     this.setState({
-      currentTransaction : null,
-      isCategorizationMode : false
-    })
+      currentTransaction: null,
+      isCategorizationMode: false,
+    });
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
@@ -280,7 +280,7 @@ export class CategorizationScreen extends Component
           <FlatList
             data={this.state.categories}
             keyExtractor={(item, index) => {
-              return item.getType() ;//+ new Date().getTime().toString() + (Math.floor(Math.random() * Math.floor(new Date().getTime()))).toString()
+              return item.getType(); //+ new Date().getTime().toString() + (Math.floor(Math.random() * Math.floor(new Date().getTime()))).toString()
             }}
             extraData={this.state}
             renderItem={({ item, index }) => {
@@ -429,16 +429,14 @@ export class CategorizationScreen extends Component
             style={{
               flex: 1,
               flexDirection: "row",
+              justifyContent: "space-around",
             }}
           >
+            <View style={{flex : 1}}></View>
             <View
               style={{
                 flex: 1,
-              }}
-            ></View>
-            <View
-              style={{
-                flex: 1,
+                alignSelf: "flex-start",
               }}
             >
               <TouchableOpacity
@@ -469,8 +467,9 @@ export class CategorizationScreen extends Component
               }}
             >
               <TransactionScreenSegment
+                canDelete={false}
                 transaction={this.state.currentTransaction}
-                textColor='black'
+                textColor="black"
                 containerStyle={{
                   shadowColor: "#000000",
                   shadowOffset: {
@@ -490,6 +489,7 @@ export class CategorizationScreen extends Component
             <View
               style={{
                 flex: 1,
+                alignSelf: "flex-end",
               }}
             ></View>
           </View>

@@ -11,7 +11,7 @@ export class TransactionDetail {
     constructor(detail : String, type : String) {
         this.detail = detail;
         this.type = type;
-        this.currency = new Currency(0);
+        this.currency = new Currency(NaN);
     }
 
     static withCurrency(currency : Currency) {
@@ -41,10 +41,10 @@ export class TransactionDetail {
     }
 
     getDetail() {
-        if (!this.detail) {
-            return this.currency;
-        } else {
+        if (this.currency.equals(new Currency(NaN))) {
             return this.detail;
+        } else {
+            return this.currency;
         }
     }
 

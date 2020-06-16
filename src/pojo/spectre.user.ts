@@ -181,7 +181,7 @@ export class SpectreUser {
     );
   }
 
-  rollup(category: Category) {
+  rollup(category: Category, type : string) {
     const found = this._getCategory(category);
 
     const transactions = found.getTransactions();
@@ -189,7 +189,7 @@ export class SpectreUser {
 
     for (let i = 0; i < transactions.length; i++) {
       const transaction = transactions[i];
-      const currency = transaction.getDetail(AMOUNT_TYPE);
+      const currency = transaction.getDetail(type);
 
       computed = computed.add(currency);
     }

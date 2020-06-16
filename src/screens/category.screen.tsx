@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Badge, Card, Text } from "react-native-elements";
 import { Category } from "../pojo/category";
 import {
@@ -9,14 +9,13 @@ import {
 } from "../pojo/spectre.user";
 import { datastore } from "../datastore/datastore";
 import { InvisibleBoundingBox } from "./invisible.bounding.box";
-import { TransactionScreenSegment } from "./transaction.screen.segment";
+import { TransactionScreenSegment, TransactionDeletePress } from "./transaction.screen.segment";
 
 export interface Props {
   color: string;
   category: Category;
   categorizationMode: boolean;
   onPress: (event: OnCategoryPressed) => void;
-  onLocationChange: (event: OnLocationChange) => void;
 }
 
 export interface State {
@@ -35,6 +34,7 @@ export class CategoryScreen extends Component
     super(props);
 
     this.onPress = this.onPress.bind(this);
+    this.onDeletePress = this.onDeletePress.bind(this);
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
@@ -44,6 +44,10 @@ export class CategoryScreen extends Component
       category: props.category,
       numTransactions: props.category.getTransactions().length,
     };
+  }
+
+  onDeletePress(event : TransactionDeletePress) {
+    this.spectreUser.uncategorize(event.transaction, this.props.category);
   }
 
   onTransactionCategorized(event: OnTransactionCategorizedEvent) {
@@ -57,10 +61,8 @@ export class CategoryScreen extends Component
   }
 
   onPress() {
-    console.log(this.props);
     if (!this.props.categorizationMode) {
       const flipped = !this.state.shouldShowTransactions;
-      console.log(flipped);
       this.setState({
         shouldShowTransactions : flipped
       });
@@ -150,6 +152,8 @@ export class CategoryScreen extends Component
                   }}
                 >
                   <TransactionScreenSegment
+                    canDelete={true}
+                    onDelete={this.onDeletePress}
                     transaction={data}
                     textColor='white'
                     containerStyle={{

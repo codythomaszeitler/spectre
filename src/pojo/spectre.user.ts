@@ -8,7 +8,7 @@ export class SpectreUser {
 
   onCategoryAddedListeners: CategoryAddedListener[];
 
-  onTransactionCategorizedListeners: TransactionCategorizationListenerMapping[];
+  onTransactionCategorizedListeners: ListenerCategoryMapping[];
   onTransactionUncategorizedListeners: TransactionUncategorizedListener[];
 
   currentListenerId: number;
@@ -144,7 +144,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionCategorizedListener
   ) {
-    const mapping = new TransactionCategorizationListenerMapping(
+    const mapping = new ListenerCategoryMapping(
       category,
       listener
     );
@@ -157,7 +157,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionCategorizedListener
   ) {
-    const removeCheck = new TransactionCategorizationListenerMapping(
+    const removeCheck = new ListenerCategoryMapping(
       category,
       listener
     );
@@ -190,7 +190,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionUncategorizedListener
   ) {
-    const mapping = new TransactionCategorizationListenerMapping(
+    const mapping = new ListenerCategoryMapping(
       category,
       listener
     );
@@ -203,7 +203,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionUncategorizedListener
   ) {
-    const removeCheck = new TransactionCategorizationListenerMapping(
+    const removeCheck = new ListenerCategoryMapping(
       category,
       listener
     );
@@ -285,7 +285,7 @@ export class OnTransactionUncategorizedEvent {
   }
 }
 
-class TransactionCategorizationListenerMapping {
+class ListenerCategoryMapping {
   category: Category;
   listener: TransactionCategorizedListener;
 
@@ -294,7 +294,7 @@ class TransactionCategorizationListenerMapping {
     this.listener = listener;
   }
 
-  equals(mapping: TransactionCategorizationListenerMapping) {
+  equals(mapping: ListenerCategoryMapping) {
     const areCategoryEquals = this.category.equals(mapping.category);
     const areListenerEquals = this.listener.__id === mapping.listener.__id;
     return areCategoryEquals && areListenerEquals;

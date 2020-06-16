@@ -13,6 +13,7 @@ import {
   SpectreUser,
   CategoryAddedListener,
   OnCategoryAddedEvent,
+  OnTransactionUncategorizedEvent,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
 import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
@@ -145,6 +146,7 @@ export class CategorizationScreen extends Component
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
+    this.spectreUser.addTransactionUncategorizedListener(event.category, this);
     this.setState({
       categories: this.spectreUser.getCategories(),
     });
@@ -210,6 +212,12 @@ export class CategorizationScreen extends Component
     } else {
       // This will now open up the transactions underneath the category.
     }
+  }
+
+  onTransactionUncategorized(event : OnTransactionUncategorizedEvent) {
+    this.setState({
+      numUncategorized : this.spectreUser.getUncategorized().length
+    });
   }
 
   render() {

@@ -181,7 +181,7 @@ export class SpectreUser {
     );
     for (let i = 0; i < listeners.length; i++) {
       listeners[i].onTransactionUncategorized(
-        new OnTransactionUncategorizedEvent(category, transaction)
+        new OnTransactionUncategorizedEvent(found, transaction)
       );
     }
   }

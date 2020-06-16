@@ -6,6 +6,7 @@ import {
   SpectreUser,
   TransactionCategorizedListener,
   OnTransactionCategorizedEvent,
+  OnTransactionUncategorizedEvent,
 } from "../pojo/spectre.user";
 import { datastore } from "../datastore/datastore";
 import { InvisibleBoundingBox } from "./invisible.bounding.box";
@@ -38,12 +39,18 @@ export class CategoryScreen extends Component
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
+    this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
     this.state = {
       color: props.color,
       category: props.category,
       numTransactions: props.category.getTransactions().length,
     };
+  }
+
+  componentWillUnmount() {
+    this.spectreUser.removeTransactionCategorizedListener(props.category, this);
+    this.spectreUser.removeTransactionUncategorizedListener(props.category, this);
   }
 
   onDeletePress(event : TransactionDeletePress) {
@@ -54,6 +61,16 @@ export class CategoryScreen extends Component
     const numTransactions = this.spectreUser.getTransactionsFor(
       this.state.category
     ).length;
+    this.setState({
+      numTransactions: numTransactions,
+      category: event.category.copy(),
+    });
+  }
+
+  onTransactionUncategorized(event : OnTransactionUncategorizedEvent) {
+    const numTransactions = this.spectreUser.getTransactionsFor(
+      this.state.category
+    ).length; 
     this.setState({
       numTransactions: numTransactions,
       category: event.category.copy(),

@@ -3,6 +3,8 @@ import { View } from "react-native";
 import { Card, Text, Button } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 
+
+
 export class TransactionScreenSegment extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +12,8 @@ export class TransactionScreenSegment extends Component {
   }
 
   onDeletePress(event) {
-    this.props.onDelete(new TransactionDeletePress(props.transaction));
+    console.log(this.props);
+    this.props.onDelete(new TransactionDeletePress(this.props.transaction));
   }
 
   render() {

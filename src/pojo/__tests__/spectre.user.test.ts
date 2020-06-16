@@ -50,7 +50,7 @@ describe("Spectre User", () => {
     testObject.categorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(0);
 
-    testObject.addTransactionUncategorizedListener(listener);
+    testObject.addTransactionUncategorizedListener(new Category('Home'), listener);
     testObject.uncategorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(1);
     expect(testObject.getTransactionsFor(new Category('Home')).length).toBe(0);
@@ -69,7 +69,7 @@ describe("Spectre User", () => {
     testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, new Category("Home"));
 
-    testObject.removeTransactionUncategorizedListener(listener);
+    testObject.removeTransactionUncategorizedListener(new Category('Home'), listener);
     testObject.uncategorize(transaction, new Category("Home"));
     expect(caughtEvent).toBeNull();
   });

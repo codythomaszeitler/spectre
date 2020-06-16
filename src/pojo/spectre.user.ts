@@ -117,17 +117,8 @@ export class SpectreUser {
     );
   }
 
+
   categorize(transaction: Transaction, category: Category) {
-    const getListeners = () => {
-      const listeners = [];
-      for (let i = 0; i < this.onTransactionCategorizedListeners.length; i++) {
-        const mapping = this.onTransactionCategorizedListeners[i];
-        if (mapping.category.equals(category)) {
-          listeners.push(mapping.listener);
-        }
-      }
-      return listeners;
-    };
 
     if (!transaction.isCategorized()) {
       throw new Error("Must ready transaction for categorization");
@@ -140,13 +131,25 @@ export class SpectreUser {
     const found = this._getCategory(category);
     found.associate(transaction);
 
-    const listeners = getListeners();
+    const listeners = this._getListenersForCategory(this.onTransactionCategorizedListeners, category);
     for (let i = 0; i < listeners.length; i++) {
       listeners[i].onTransactionCategorized(
         new OnTransactionCategorizedEvent(found.copy(), transaction)
       );
     }
   }
+
+  _getListenersForCategory(mappings, category) {
+    const listeners = [];
+    for (let i = 0; i < mappings.length; i++) {
+      const mapping = mappings[i];
+      if (mapping.category.equals(category)) {
+        listeners.push(mapping.listener);
+      }
+    }
+    return listeners;
+  }
+
 
   addTransactionCategorizedListener(
     category: Category,
@@ -157,7 +160,7 @@ export class SpectreUser {
       listener
     );
     this.onTransactionCategorizedListeners.push(mapping);
-    listener.__currentTransactionCategorizedListenerId = this.currentListenerId;
+    listener.__id = this.currentListenerId;
     this.currentListenerId++;
   }
 
@@ -183,23 +186,41 @@ export class SpectreUser {
 
     this.uncategorized.splice(0, 0, transaction.copy());
 
-    for (let i = 0; i < this.onTransactionUncategorizedListeners.length; i++) {
-      this.onTransactionUncategorizedListeners[i].onTransactionUncategorized(
+    const listeners = this._getListenersForCategory(this.onTransactionUncategorizedListeners, category);
+    for (let i = 0; i < listeners.length; i++) {
+      listeners[i].onTransactionUncategorized(
         new OnTransactionUncategorizedEvent(category, transaction)
       );
     }
   }
 
-  addTransactionUncategorizedListener(listener : TransactionUncategorizedListener) {
-    this.onTransactionUncategorizedListeners.push(listener);
+  addTransactionUncategorizedListener(
+    category : Category,
+    listener: TransactionUncategorizedListener
+  ) {
+    const mapping = new TransactionCategorizationListenerMapping(
+      category,
+      listener
+    );
+    this.onTransactionUncategorizedListeners.push(mapping);
     listener.__id = this.currentListenerId;
     this.currentListenerId++;
   }
 
-  removeTransactionUncategorizedListener(listener : TransactionUncategorizedListener) {
-    this.onTransactionUncategorizedListeners = this.onTransactionUncategorizedListeners.filter(function(inner) {
-      return inner.__id !== listener.__id;
-    });
+  removeTransactionUncategorizedListener(
+    category : Category,
+    listener: TransactionUncategorizedListener
+  ) {
+    const removeCheck = new TransactionCategorizationListenerMapping(
+      category,
+      listener
+    );
+
+    this.onTransactionUncategorizedListeners = this.onTransactionUncategorizedListeners.filter(
+      function (mapping) {
+        return !removeCheck.equals(mapping);
+      }
+    );
   }
 
   rollup(category: Category, type: string) {
@@ -259,7 +280,7 @@ export class OnTransactionCategorizedEvent {
 }
 
 export interface TransactionUncategorizedListener {
-  onTransactionUncategorized: (event : OnTransactionUncategorizedEvent) => void;
+  onTransactionUncategorized: (event: OnTransactionUncategorizedEvent) => void;
 }
 
 export class OnTransactionUncategorizedEvent {
@@ -269,9 +290,8 @@ export class OnTransactionUncategorizedEvent {
   constructor(category: Category, transaction: Transaction) {
     this.category = category.copy();
     this.transaction = transaction.copy();
-  } 
+  }
 }
-
 
 class TransactionCategorizationListenerMapping {
   category: Category;
@@ -285,8 +305,8 @@ class TransactionCategorizationListenerMapping {
   equals(mapping: TransactionCategorizationListenerMapping) {
     const areCategoryEquals = this.category.equals(mapping.category);
     const areListenerEquals =
-      this.listener.__currentTransactionCategorizedListenerId ===
-      mapping.listener.__currentTransactionCategorizedListenerId;
+      this.listener.__id ===
+      mapping.listener.__id;
     return areCategoryEquals && areListenerEquals;
   }
 }

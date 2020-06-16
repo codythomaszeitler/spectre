@@ -47,6 +47,10 @@ describe("Spectre User", () => {
     expect(testObject.getTransactionsFor(new Category('Home')).length).toBe(0);
   });
 
+  it('should emit an event when a transaction is uncategorized', () => {
+
+  });
+
   it('should put the most recent uncategorized transaction at the next transaction', () => {
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));

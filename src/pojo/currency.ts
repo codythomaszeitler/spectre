@@ -46,9 +46,18 @@ export class Currency {
   }
 
   equals(currency : Currency) {
-    const amountsEqual = this.amount === currency.amount;
+    const areAmountsEqual = () => {
+      let areAmountsEqual = false;
+      if (isNaN(this.amount) && isNaN(currency.amount)) {
+        areAmountsEqual = true;
+      } else {
+        areAmountsEqual = this.amount === currency.amount;
+      }
+      return areAmountsEqual;
+    }
+
     const locationEqual = this.location === this.location;
 
-    return amountsEqual && locationEqual;
+    return areAmountsEqual() && locationEqual;
   }
 }

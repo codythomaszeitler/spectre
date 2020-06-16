@@ -27,14 +27,22 @@ describe("Spectre User", () => {
   });
 
   it('should be able to undo a categorization', () => {
+
+    let caughtEvent = null;
+    let listener = {
+      onTransactionUncategorized : function(event : OnTransactionUnassociated) {
+        caughtEvent = event;
+      }
+    }
+
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 
-    const details = [];
+    let details = [];
     details.push(new TransactionDetail("Chase cc0392", "Bank"));
     details.push(new TransactionDetail("JAPANESE STEAKHOUSE", "Business"));
     details.push(TransactionDetail.withCurrency(new Currency(400)));
-    const transaction = new Transaction(details);
+    let transaction = new Transaction(details);
 
     testObject.readyForCategorization(transaction);
     expect(testObject.getUncategorized().length).toBe(1);
@@ -42,14 +50,30 @@ describe("Spectre User", () => {
     testObject.categorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(0);
 
+    testObject.addTransactionUncategorizedListener(listener);
     testObject.uncategorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(1);
     expect(testObject.getTransactionsFor(new Category('Home')).length).toBe(0);
+
+    expect(caughtEvent.transaction.equals(transaction)).toBe(true);
+    expect(caughtEvent.category.equals(new Category('Home'))).toBe(true);
+
+    caughtEvent = null;
+
+    details = [];
+    details.push(new TransactionDetail("Chase cc0392", "Bank"));
+    details.push(new TransactionDetail("JAPANESE STEAKHOUSE", "Business"));
+    details.push(TransactionDetail.withCurrency(new Currency(400)));
+
+    transaction = new Transaction(details);
+    testObject.readyForCategorization(transaction);
+    testObject.categorize(transaction, new Category("Home"));
+
+    testObject.removeTransactionUncategorizedListener(listener);
+    testObject.uncategorize(transaction, new Category("Home"));
+    expect(caughtEvent).toBeNull();
   });
 
-  it('should emit an event when a transaction is uncategorized', () => {
-
-  });
 
   it('should put the most recent uncategorized transaction at the next transaction', () => {
     const testObject = new SpectreUser();

@@ -10,11 +10,12 @@ export class SpectreUser {
   currentOnCategoryAddedListenerId: number;
 
   onTransactionCategorizedListeners: TransactionCategorizationListenerMapping[];
+  onTransactionUncategorizedListeners: TransactionUncategorizedListener[];
 
   currentTransactionReadyForCategorizationListenerId: number;
-  currentTransactionCategorizedListenerId: number;
+  currentListenerId: number;
 
-  currentTransactionId : number; 
+  currentTransactionId: number;
 
   constructor() {
     this.categories = [];
@@ -27,7 +28,9 @@ export class SpectreUser {
     this.currentOnCategoryAddedListenerId = 0;
 
     this.onTransactionCategorizedListeners = [];
-    this.currentTransactionCategorizedListenerId = 0;
+    this.currentListenerId = 0;
+
+    this.onTransactionUncategorizedListeners = [];
 
     this.currentTransactionId = 0;
   }
@@ -127,7 +130,7 @@ export class SpectreUser {
     };
 
     if (!transaction.isCategorized()) {
-      throw new Error('Must ready transaction for categorization');
+      throw new Error("Must ready transaction for categorization");
     }
 
     this.uncategorized = this.uncategorized.filter(function (inner) {
@@ -145,13 +148,6 @@ export class SpectreUser {
     }
   }
 
-  uncategorize(transaction : Transaction, category: Category) {
-    const found = this._getCategory(category);
-    found.unassociate(transaction);
-
-    this.uncategorized.splice(0, 0, transaction.copy());
-  }
-
   addTransactionCategorizedListener(
     category: Category,
     listener: TransactionCategorizedListener
@@ -161,17 +157,17 @@ export class SpectreUser {
       listener
     );
     this.onTransactionCategorizedListeners.push(mapping);
-    listener.__currentTransactionCategorizedListenerId = this.currentTransactionCategorizedListenerId;
-    this.currentTransactionCategorizedListenerId++;
+    listener.__currentTransactionCategorizedListenerId = this.currentListenerId;
+    this.currentListenerId++;
   }
 
   removeTransactionCategorizedListener(
     category: Category,
     listener: TransactionCategorizedListener
   ) {
-
     const removeCheck = new TransactionCategorizationListenerMapping(
-        category, listener
+      category,
+      listener
     );
 
     this.onTransactionCategorizedListeners = this.onTransactionCategorizedListeners.filter(
@@ -181,7 +177,32 @@ export class SpectreUser {
     );
   }
 
-  rollup(category: Category, type : string) {
+  uncategorize(transaction: Transaction, category: Category) {
+    const found = this._getCategory(category);
+    found.unassociate(transaction);
+
+    this.uncategorized.splice(0, 0, transaction.copy());
+
+    for (let i = 0; i < this.onTransactionUncategorizedListeners.length; i++) {
+      this.onTransactionUncategorizedListeners[i].onTransactionUncategorized(
+        new OnTransactionUncategorizedEvent(category, transaction)
+      );
+    }
+  }
+
+  addTransactionUncategorizedListener(listener : TransactionUncategorizedListener) {
+    this.onTransactionUncategorizedListeners.push(listener);
+    listener.__id = this.currentListenerId;
+    this.currentListenerId++;
+  }
+
+  removeTransactionUncategorizedListener(listener : TransactionUncategorizedListener) {
+    this.onTransactionUncategorizedListeners = this.onTransactionUncategorizedListeners.filter(function(inner) {
+      return inner.__id !== listener.__id;
+    });
+  }
+
+  rollup(category: Category, type: string) {
     const found = this._getCategory(category);
 
     const transactions = found.getTransactions();
@@ -236,6 +257,21 @@ export class OnTransactionCategorizedEvent {
     this.transaction = transaction.copy();
   }
 }
+
+export interface TransactionUncategorizedListener {
+  onTransactionUncategorized: (event : OnTransactionUncategorizedEvent) => void;
+}
+
+export class OnTransactionUncategorizedEvent {
+  category: Category;
+  transaction: Transaction;
+
+  constructor(category: Category, transaction: Transaction) {
+    this.category = category.copy();
+    this.transaction = transaction.copy();
+  } 
+}
+
 
 class TransactionCategorizationListenerMapping {
   category: Category;

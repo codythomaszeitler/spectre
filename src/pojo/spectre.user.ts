@@ -7,14 +7,11 @@ export class SpectreUser {
   uncategorized: Transaction[];
 
   onCategoryAddedListeners: CategoryAddedListener[];
-  currentOnCategoryAddedListenerId: number;
 
   onTransactionCategorizedListeners: TransactionCategorizationListenerMapping[];
   onTransactionUncategorizedListeners: TransactionUncategorizedListener[];
 
-  currentTransactionReadyForCategorizationListenerId: number;
   currentListenerId: number;
-
   currentTransactionId: number;
 
   constructor() {
@@ -22,15 +19,10 @@ export class SpectreUser {
     this.uncategorized = [];
 
     this.transactionReadyForCategorizationListeners = [];
-    this.currentTransactionReadyForCategorizationListenerId = 0;
-
     this.onCategoryAddedListeners = [];
-    this.currentOnCategoryAddedListenerId = 0;
-
     this.onTransactionCategorizedListeners = [];
-    this.currentListenerId = 0;
-
     this.onTransactionUncategorizedListeners = [];
+    this.currentListenerId = 0;
 
     this.currentTransactionId = 0;
   }
@@ -76,17 +68,14 @@ export class SpectreUser {
 
   addTransactionReadyForCategorizationListener(listener) {
     this.transactionReadyForCategorizationListeners.push(listener);
-    listener.__transactionReadyForCategorizationListenerId = this
-      .currentTransactionReadyForCategorizationListenerId++;
+    listener.__id = this.currentListenerId;
+    this.currentListenerId++;
   }
 
   removeTransactionReadyForCategorizationListener(listener) {
     this.transactionReadyForCategorizationListeners = this.transactionReadyForCategorizationListeners.filter(
       function (inner) {
-        return (
-          listener.__transactionReadyForCategorizationListenerId !==
-          inner.__transactionReadyForCategorizationListenerId
-        );
+        return listener.__id !== inner.__id;
       }
     );
   }
@@ -117,9 +106,7 @@ export class SpectreUser {
     );
   }
 
-
   categorize(transaction: Transaction, category: Category) {
-
     if (!transaction.isCategorized()) {
       throw new Error("Must ready transaction for categorization");
     }
@@ -131,7 +118,10 @@ export class SpectreUser {
     const found = this._getCategory(category);
     found.associate(transaction);
 
-    const listeners = this._getListenersForCategory(this.onTransactionCategorizedListeners, category);
+    const listeners = this._getListenersForCategory(
+      this.onTransactionCategorizedListeners,
+      category
+    );
     for (let i = 0; i < listeners.length; i++) {
       listeners[i].onTransactionCategorized(
         new OnTransactionCategorizedEvent(found.copy(), transaction)
@@ -149,7 +139,6 @@ export class SpectreUser {
     }
     return listeners;
   }
-
 
   addTransactionCategorizedListener(
     category: Category,
@@ -186,7 +175,10 @@ export class SpectreUser {
 
     this.uncategorized.splice(0, 0, transaction.copy());
 
-    const listeners = this._getListenersForCategory(this.onTransactionUncategorizedListeners, category);
+    const listeners = this._getListenersForCategory(
+      this.onTransactionUncategorizedListeners,
+      category
+    );
     for (let i = 0; i < listeners.length; i++) {
       listeners[i].onTransactionUncategorized(
         new OnTransactionUncategorizedEvent(category, transaction)
@@ -195,7 +187,7 @@ export class SpectreUser {
   }
 
   addTransactionUncategorizedListener(
-    category : Category,
+    category: Category,
     listener: TransactionUncategorizedListener
   ) {
     const mapping = new TransactionCategorizationListenerMapping(
@@ -208,7 +200,7 @@ export class SpectreUser {
   }
 
   removeTransactionUncategorizedListener(
-    category : Category,
+    category: Category,
     listener: TransactionUncategorizedListener
   ) {
     const removeCheck = new TransactionCategorizationListenerMapping(
@@ -304,9 +296,7 @@ class TransactionCategorizationListenerMapping {
 
   equals(mapping: TransactionCategorizationListenerMapping) {
     const areCategoryEquals = this.category.equals(mapping.category);
-    const areListenerEquals =
-      this.listener.__id ===
-      mapping.listener.__id;
+    const areListenerEquals = this.listener.__id === mapping.listener.__id;
     return areCategoryEquals && areListenerEquals;
   }
 }

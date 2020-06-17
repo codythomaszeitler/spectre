@@ -5,16 +5,20 @@ describe("Csv Exporter", () => {
   beforeEach(() => {
     testObject = new Columns({
       0: {
-        Bank: "BankType",
+        name : 'Bank',  
+        type : "BankType",
       },
       1: {
-        Business: "BusinessType",
+        name : 'Business',
+        type : 'BusinessType',
       },
       2: {
-        Amount: "AmountType",
+        name : 'Amount',
+        type : 'AmountType',
       },
       3: {
-        When: "WhenType",
+        name : 'When',
+        type : 'WhenType',
       },
     });
   });
@@ -37,25 +41,6 @@ describe("Csv Exporter", () => {
     expect(testObject.getType(3)).toBe("WhenType");
   });
 
-  it("should throw an exception if there are two keys under one index", () => {
-    const configDetails = {
-      0: {
-        Bank: "BankType",
-        Business: "BusinessType",
-      },
-    };
-
-    let caughtException = null;
-    try {
-      testObject = new Columns(configDetails);
-    } catch (e) {
-      caughtException = e;
-    }
-
-    expect(caughtException.message).toBe(
-      "There were [2] keys under the index [0], there must only be one"
-    );
-  });
 
   it("should throw an exception if the index is out of bounds on getName", () => {
     let caughtException = null;

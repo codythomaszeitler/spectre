@@ -17,16 +17,17 @@ export class CsvImporter implements Importer {
 
         const splits = string.split(',');
         for (let i = 0; i < this.columns.getNumColumns(); i++) {
+            const columnName = this.columns.getName(i);
 
             if (this.columns.getType(i) === AMOUNT_TYPE) {
                 const split = unescapeCsvElement(splits[i]);
 
                 const converter = new CurrencyConverter();
                 const amount = converter.fromString(split);
-                details.push(TransactionDetail.withCurrency(amount));
+                details.push(TransactionDetail.withCurrency(amount, columnName));
             } else {
                 const split = unescapeCsvElement(splits[i]);
-                const detail = new TransactionDetail(split, this.columns.getType(i));
+                const detail = new TransactionDetail(split, columnName, this.columns.getType(i));
                 details.push(detail);
             }
         }

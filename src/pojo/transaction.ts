@@ -30,12 +30,13 @@ export class Transaction {
     return copied;
   }
 
-  getDetail(type : string) {
+  getDetailByName(name : string) {
     let raw = null;
 
     for (let i = 0; i < this.details.length; i++) {
-      if (this.details[i].getType() === type) {
-        raw = this.details[i].getDetail();
+      const detail = this.details[i].getColumnName();
+      if (this.details[i].getColumnName() === name) {
+        raw = this.details[i].getElement();
         break;
       }
     }

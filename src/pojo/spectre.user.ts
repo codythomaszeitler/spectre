@@ -268,7 +268,7 @@ export class SpectreUser {
 
     for (let i = 0; i < transactions.length; i++) {
       const transaction = transactions[i];
-      const currency = transaction.getDetail(type);
+      const currency = transaction.getDetailByName(type);
 
       computed = computed.add(currency);
     }

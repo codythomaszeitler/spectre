@@ -225,7 +225,14 @@ export class CategorizationScreen extends Component
   }
 
   onTransactionUncategorized(event : OnTransactionUncategorizedEvent) {
+
+    let currentTransaction = null;
+    if (this.state.isCategorizationMode) {
+      currentTransaction = this.spectreUser.getUncategorized().shift()
+    }
+
     this.setState({
+      currentTransaction : currentTransaction,
       numUncategorized : this.spectreUser.getUncategorized().length
     });
   }

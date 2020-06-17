@@ -22,7 +22,6 @@ export class LocalFileLocation implements Location {
       this.lines = contents.split("\n");
     }
 
-    console.log(this.wasRead);
     return this.wasRead;
   }
 

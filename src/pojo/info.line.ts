@@ -4,20 +4,22 @@ import { CurrencyConverter } from "../transaction.info.converter/currency.conver
 
 export class TransactionDetail {
 
-    detail : String;
-    type : String;
+    detail : string;
+    columnName : string;
+    type : string;
     currency : Currency;
 
-    constructor(detail : String, type : String) {
+    constructor(detail : string, columnName : string, type : string) {
         this.detail = detail;
+        this.columnName = columnName;
         this.type = type;
         this.currency = new Currency(NaN);
     }
 
-    static withCurrency(currency : Currency) {
+    static withCurrency(currency : Currency, columnName : string) {
         const converter = new CurrencyConverter();
 
-        const detail = new TransactionDetail(converter.toString(currency), AMOUNT_TYPE);
+        const detail = new TransactionDetail(converter.toString(currency), columnName, AMOUNT_TYPE);
         detail.currency = currency.copy();
         return detail;
     }
@@ -40,12 +42,16 @@ export class TransactionDetail {
         return areDetailsEquivalent() && this.type === transactionDetail.type;
     }
 
-    getDetail() {
+    getElement() {
         if (this.currency.equals(new Currency(NaN))) {
             return this.detail;
         } else {
             return this.currency;
         }
+    }
+
+    getColumnName() {
+        return this.columnName;
     }
 
     getType() {

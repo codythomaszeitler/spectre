@@ -1,24 +1,7 @@
-export class Columns {
-  constructor(configuration) {
-    const checkConfiguration = () => {
-      for (let key in configuration) {
-        let keyCount = 0;
-        for (let innerKey in configuration[key]) {
-          keyCount++;
-        }
-        if (keyCount !== 1) {
-          throw new Error(
-            "There were [" +
-              keyCount +
-              "] keys under the index [" +
-              key +
-              "], there must only be one"
-          );
-        }
-      }
-    };
 
-    checkConfiguration();
+export class Columns {
+  configuration : Object;
+  constructor(configuration : Object) {
     this.configuration = JSON.parse(JSON.stringify(configuration));
   }
 
@@ -32,26 +15,12 @@ export class Columns {
 
   getName(columnIndex) {
     this._checkColumnIndex(columnIndex);
-
-    const nameToType = this.configuration[columnIndex];
-
-    let name = null;
-    for (let key in nameToType) {
-      name = key;
-    }
-    return name;
+    return this.configuration[columnIndex]['name'];
   }
 
   getType(columnIndex) {
     this._checkColumnIndex(columnIndex);
-
-    const nameToType = this.configuration[columnIndex];
-
-    let type = null;
-    for (let key in nameToType) {
-      type = nameToType[key];
-    }
-    return type;
+    return this.configuration[columnIndex]['type'];
   }
 
   _checkColumnIndex(columnIndex) {

@@ -32,7 +32,6 @@ export class TransactionLoadService {
 
     const transactions = [];
     for (let i = 0; i < lines.length; i++) {
-      console.log(lines[i]);
         const transaction = this.importer.convert(lines[i]);
         transactions.push(transaction);
 

@@ -1,7 +1,7 @@
 import { Columns } from "../columns";
 import { Export } from "../export";
 import { CsvExporter } from "../csv.exporter";
-import { Transaction, AMOUNT_TYPE, TIMESTAMP_TYPE} from "../../pojo/transaction";
+import { Transaction, AMOUNT_TYPE} from "../../pojo/transaction";
 import { TransactionDetail } from "../../pojo/info.line";
 import { SpectreUser } from "../../pojo/spectre.user";
 import { Category, CATEGORY_TYPE } from "../../pojo/category";
@@ -11,16 +11,20 @@ describe("Export", () => {
   it("should be able to export a category from a into string format", () => {
     const columns = new Columns({
       0: {
-        Bank: "Bank",
+        name : 'Bank',
+        type : 'BankType'
       },
       1: {
-        Business: "Business",
+        name : 'Business',
+        type : 'BusinessType'
       },
       2: {
-        Amount: AMOUNT_TYPE,
+        name : 'Amount',
+        type : AMOUNT_TYPE
       },
       3: {
-        Category: CATEGORY_TYPE,
+        name : 'Category',
+        type : CATEGORY_TYPE
       },
     });
 
@@ -28,9 +32,9 @@ describe("Export", () => {
     spectreUser.addCategory(new Category("TEST"));
 
     const details = [];
-    details.push(new TransactionDetail("TestBank", "Bank"));
-    details.push(new TransactionDetail("TestBusiness", "Business"));
-    details.push(TransactionDetail.withCurrency(new Currency(400)));
+    details.push(new TransactionDetail("TestBank", "Bank",  "BankType"));
+    details.push(new TransactionDetail("TestBusiness", "Business", "BusinessType"));
+    details.push(TransactionDetail.withCurrency(new Currency(400), "Amount"));
     const transaction = new Transaction(
       details
     );

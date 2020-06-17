@@ -35,4 +35,30 @@ describe("Transaction Load Service", () => {
     expect(loaded.length).toBe(1);
     expect(spectreUser.getUncategorized().length).toBe(1);
   });
+
+  it('should be able to load a transaction when the line is has more elements than columns defines', async () => {
+    const columns = new Columns({
+      0: {
+        name : 'default',
+        type : 'string'
+      },
+    }); 
+
+    const importer = new CsvImporter(columns);
+
+    const lines = ['TEST,EXTRA ELEMENT'];
+    const location = new TestLocation(lines);
+    const spectreUser = new SpectreUser();
+    const testObject = new TransactionLoadService(
+      spectreUser, 
+      location,
+      importer
+    );
+
+    const loaded  = await testObject.load();
+    expect(loaded.length).toBe(1);
+
+    const transaction : Transaction = loaded[0];
+    expect(transaction.getDetailByName('default')).toBe('TEST');
+  });
 });

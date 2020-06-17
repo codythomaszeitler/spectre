@@ -30,15 +30,16 @@ export class CsvExporter implements Exporter {
 
     for (let i = 0; i < this.columns.getNumColumns(); i++) {
       const type = this.columns.getType(i);
+      const name = this.columns.getName(i);
 
       if (type === AMOUNT_TYPE) {
         const converter = new CurrencyConverter();
-        const currency = transaction.getDetail(AMOUNT_TYPE);
+        const currency = transaction.getDetailByName(name);
         converted += escapeCsvElement(converter.toString(currency)) + ",";
       } else if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";
       } else {
-        converted += escapeCsvElement(transaction.getDetail(type)) + ",";
+        converted += escapeCsvElement(transaction.getDetailByName(name)) + ",";
       }
     }
 

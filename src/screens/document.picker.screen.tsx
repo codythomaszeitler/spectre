@@ -19,6 +19,10 @@ export class DocumentPicker extends Component {
     if (props.onSuccessfulLoadListener) {
       this.documentLoadedListeners.push(props.onSuccessfulLoadListener);
     }
+
+    this.state = {
+      currentFile : ''
+    }
   }
 
   onFileSelect(contents: File){
@@ -35,7 +39,7 @@ export class DocumentPicker extends Component {
   render() {
     return (
       <View>
-        <input type="file" width="100%" onChange={this.onFilePick}></input>
+        <input type="file" width="100%" value={this.state.currentFile} onChange={this.onFilePick}></input>
       </View>
     );
   }

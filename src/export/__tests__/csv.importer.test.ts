@@ -2,7 +2,6 @@ import { Columns } from "../columns";
 import {
   AMOUNT_TYPE,
   Transaction,
-  TIMESTAMP_TYPE,
 } from "../../pojo/transaction";
 import { CsvExporter } from "../csv.exporter";
 import { Currency } from "../../pojo/currency";
@@ -13,20 +12,23 @@ describe("Csv Importer", () => {
   it("should be able to import items into that were exported", () => {
     const columns = new Columns({
       0: {
-        Amount: AMOUNT_TYPE,
+        name : 'Amount',
+        type : AMOUNT_TYPE
       },
       1: {
-        Test1Type: "Test1Type",
+        name : 'Test1Type',
+        type : 'Test1Type'
       },
       2: {
-        Test2Type: "Test2Type",
+        name : 'Test2Type',
+        type : 'Test2Type'
       },
     });
 
     const details = [
-      new TransactionDetail("This is a detail", "Test1Type"),
-      new TransactionDetail("This is another detail", "Test2Type"),
-      TransactionDetail.withCurrency(new Currency(400))
+      new TransactionDetail("This is a detail", "Test1Type", "Test1Type"),
+      new TransactionDetail("This is another detail", "Test2Type", "Test2Type"),
+      TransactionDetail.withCurrency(new Currency(400), 'Amount')
     ];
     const transaction = new Transaction(
       details

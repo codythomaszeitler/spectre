@@ -17,12 +17,23 @@ export class TestLocation implements Location {
 
   async read() {
     this.parsed = [];
-    const item = this.items.pop();
+    const item = this.items.shift();
     if (item) {
       this.parsed.push(item);
     }
 
     return this.parsed;
+  }
+
+  async peek() {
+    const copy = [...this.items];
+
+    let peeked = copy.shift();
+    if (!peeked) {
+      peeked = '';
+    } 
+
+    return peeked;
   }
 
   async write(lines: string[]) {

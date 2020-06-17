@@ -296,4 +296,35 @@ describe("Spectre User", () => {
       "Must ready transaction for categorization"
     );
   });
+
+  it('should throw an exception if two categories are added with the same name', () => {
+    const testObject = new SpectreUser();
+
+    testObject.addCategory(new Category('Home'));
+
+    let caughtException = null;
+    try {
+      testObject.addCategory(new Category('Home'));
+    } catch (e) {
+      caughtException = e;
+    }
+    expect(caughtException.message).toBe('Category [Home] was alredy added');
+  });
+
+  it('should throw an exception if trying to categorize against something that dne', () => {
+
+    const testObject = new SpectreUser();
+    const transaction = new Transaction([new TransactionDetail('TEST', 'A')]);
+
+    testObject.readyForCategorization(transaction);
+
+    let caughtException = null;
+    try {
+      testObject.categorize(transaction, new Category('Home'));
+    } catch (e) {
+      caughtException = e;
+    }
+    expect(caughtException.message).toBe('[Home] category was not registered in user');
+
+  });
 });

@@ -83,6 +83,11 @@ export class SpectreUser {
   }
 
   addCategory(category: Category) {
+    const found = this._getCategory(category);
+    if (found) {
+      throw new Error("Category [" + category.getType() + "] was alredy added");
+    }
+
     this.categories.push(category.copy());
 
     for (let i = 0; i < this.onCategoryAddedListeners.length; i++) {
@@ -141,13 +146,25 @@ export class SpectreUser {
     this.currentListenerId++;
   }
 
-  removeCategoryRemovedListener(listener : CategoryRemovedListener) {
-    this.onCategoryRemovedListeners = this.onCategoryRemovedListeners.filter(function(inner) {
-      return listener.__categoryRemovedListenerId !== inner.__categoryRemovedListenerId;
-    });
+  removeCategoryRemovedListener(listener: CategoryRemovedListener) {
+    this.onCategoryRemovedListeners = this.onCategoryRemovedListeners.filter(
+      function (inner) {
+        return (
+          listener.__categoryRemovedListenerId !==
+          inner.__categoryRemovedListenerId
+        );
+      }
+    );
   }
 
   categorize(transaction: Transaction, category: Category) {
+    const found = this._getCategory(category);
+    if (!found) {
+      throw new Error(
+        "[" + category.getType() + "] category was not registered in user"
+      );
+    }
+
     if (!transaction.isCategorized()) {
       throw new Error("Must ready transaction for categorization");
     }
@@ -156,7 +173,6 @@ export class SpectreUser {
       return !inner.equals(transaction);
     });
 
-    const found = this._getCategory(category);
     found.associate(transaction);
 
     const listeners = this._getListenersForCategory(

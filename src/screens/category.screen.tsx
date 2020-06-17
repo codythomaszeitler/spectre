@@ -38,8 +38,9 @@ export class CategoryScreen extends Component
     super(props);
 
     this.onPress = this.onPress.bind(this);
-    this.onDeletePress = this.onDeletePress.bind(this);
+    this.onUncategorizePress = this.onUncategorizePress.bind(this);
     this.onCategoryDeletePress = this.onCategoryDeletePress.bind(this);
+    this.onDeletePress = this.onDeletePress.bind(this);
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
@@ -53,14 +54,18 @@ export class CategoryScreen extends Component
   }
 
   componentWillUnmount() {
-    this.spectreUser.removeTransactionCategorizedListener(props.category, this);
+    this.spectreUser.removeTransactionCategorizedListener(this.props.category, this);
     this.spectreUser.removeTransactionUncategorizedListener(
-      props.category,
+      this.props.category,
       this
     );
   }
 
-  onDeletePress(event: TransactionDeletePress) {
+  onDeletePress() {
+    this.spectreUser.removeCategory(this.props.category);
+  }
+
+  onUncategorizePress(event: TransactionDeletePress) {
     this.spectreUser.uncategorize(event.transaction, this.props.category);
   }
 
@@ -164,9 +169,7 @@ export class CategoryScreen extends Component
                 }}
               >
                 <TouchableOpacity
-                  onPress={() => {
-                    console.log("we pressed the X");
-                  }}
+                  onPress={this.onDeletePress}
                 >
                   <Badge
                     value="X"
@@ -201,7 +204,7 @@ export class CategoryScreen extends Component
                 >
                   <TransactionScreenSegment
                     canDelete={true}
-                    onDelete={this.onDeletePress}
+                    onDelete={this.onUncategorizePress}
                     transaction={data}
                     textColor="white"
                     containerStyle={{

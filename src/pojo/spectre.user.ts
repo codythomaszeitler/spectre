@@ -7,6 +7,7 @@ export class SpectreUser {
   uncategorized: Transaction[];
 
   onCategoryAddedListeners: CategoryAddedListener[];
+  onCategoryRemovedListeners: CategoryRemovedListener[];
 
   onTransactionCategorizedListeners: ListenerCategoryMapping[];
   onTransactionUncategorizedListeners: TransactionUncategorizedListener[];
@@ -20,6 +21,7 @@ export class SpectreUser {
 
     this.transactionReadyForCategorizationListeners = [];
     this.onCategoryAddedListeners = [];
+    this.onCategoryRemovedListeners = [];
     this.onTransactionCategorizedListeners = [];
     this.onTransactionUncategorizedListeners = [];
     this.currentListenerId = 0;
@@ -124,6 +126,24 @@ export class SpectreUser {
 
     this.categories = this.categories.filter(function (inner) {
       return !category.equals(inner);
+    });
+
+    for (let i = 0; i < this.onCategoryRemovedListeners.length; i++) {
+      this.onCategoryRemovedListeners[i].onCategoryRemoved(
+        new OnCategoryRemovedEvent(removed)
+      );
+    }
+  }
+
+  addCategoryRemovedListener(listener: CategoryRemovedListener) {
+    this.onCategoryRemovedListeners.push(listener);
+    listener.__categoryRemovedListenerId = this.currentListenerId;
+    this.currentListenerId++;
+  }
+
+  removeCategoryRemovedListener(listener : CategoryRemovedListener) {
+    this.onCategoryRemovedListeners = this.onCategoryRemovedListeners.filter(function(inner) {
+      return listener.__categoryRemovedListenerId !== inner.__categoryRemovedListenerId;
     });
   }
 
@@ -259,6 +279,18 @@ export interface CategoryAddedListener {
 }
 
 export class OnCategoryAddedEvent {
+  category: Category;
+
+  constructor(category: Category) {
+    this.category = category.copy();
+  }
+}
+
+export interface CategoryRemovedListener {
+  onCategoryRemoved: (event: OnCategoryRemovedEvent) => void;
+}
+
+export class OnCategoryRemovedEvent {
   category: Category;
 
   constructor(category: Category) {

@@ -229,6 +229,14 @@ describe("Spectre User", () => {
   });
 
   it("should be able to delete a category with transactions", () => {
+
+    let caughtEvent = null;
+    const listener = {
+      onCategoryRemoved: function(event : OnCategoryRemovedEvent) {
+        caughtEvent = event;
+      }
+    }
+
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 
@@ -239,9 +247,19 @@ describe("Spectre User", () => {
     testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(0);
+
+    testObject.addCategoryRemovedListener(listener);
     testObject.removeCategory(new Category("Home"));
 
     expect(testObject.getUncategorized().length).toBe(1);
+    expect(caughtEvent.category.equals(new Category('Home'))).toBe(true);
+    caughtEvent = null;
+
+    testObject.removeCategoryRemovedListener(listener);
+    testObject.addCategory(new Category('Test'));
+    testObject.removeCategory(new Category('Test'));
+
+    expect(caughtEvent).toBeNull();
   });
 
   it("should throw an exception if you try to delete a category that does not exist", () => {

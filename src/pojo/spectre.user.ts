@@ -106,6 +106,27 @@ export class SpectreUser {
     );
   }
 
+  removeCategory(category: Category) {
+    const removed = this._getCategory(category);
+    if (!removed) {
+      throw new Error(
+        "Cannot remove a category that does not exist [" +
+          category.getType() +
+          "]"
+      );
+    }
+
+    const nowUncategorized = removed.getTransactions();
+    for (let i = 0; i < nowUncategorized.length; i++) {
+      const transaction = nowUncategorized[i];
+      this.uncategorize(transaction, category);
+    }
+
+    this.categories = this.categories.filter(function (inner) {
+      return !category.equals(inner);
+    });
+  }
+
   categorize(transaction: Transaction, category: Category) {
     if (!transaction.isCategorized()) {
       throw new Error("Must ready transaction for categorization");
@@ -144,10 +165,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionCategorizedListener
   ) {
-    const mapping = new ListenerCategoryMapping(
-      category,
-      listener
-    );
+    const mapping = new ListenerCategoryMapping(category, listener);
     this.onTransactionCategorizedListeners.push(mapping);
     listener.__id = this.currentListenerId;
     this.currentListenerId++;
@@ -157,10 +175,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionCategorizedListener
   ) {
-    const removeCheck = new ListenerCategoryMapping(
-      category,
-      listener
-    );
+    const removeCheck = new ListenerCategoryMapping(category, listener);
 
     this.onTransactionCategorizedListeners = this.onTransactionCategorizedListeners.filter(
       function (mapping) {
@@ -190,10 +205,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionUncategorizedListener
   ) {
-    const mapping = new ListenerCategoryMapping(
-      category,
-      listener
-    );
+    const mapping = new ListenerCategoryMapping(category, listener);
     this.onTransactionUncategorizedListeners.push(mapping);
     listener.__id = this.currentListenerId;
     this.currentListenerId++;
@@ -203,10 +215,7 @@ export class SpectreUser {
     category: Category,
     listener: TransactionUncategorizedListener
   ) {
-    const removeCheck = new ListenerCategoryMapping(
-      category,
-      listener
-    );
+    const removeCheck = new ListenerCategoryMapping(category, listener);
 
     this.onTransactionUncategorizedListeners = this.onTransactionUncategorizedListeners.filter(
       function (mapping) {

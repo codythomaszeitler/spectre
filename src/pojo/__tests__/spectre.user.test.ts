@@ -1,9 +1,13 @@
-import { SpectreUser, TransactionCategorizedListener, OnTransactionCategorizedEvent } from "../spectre.user";
+import {
+  SpectreUser,
+  TransactionCategorizedListener,
+  OnTransactionCategorizedEvent,
+} from "../spectre.user";
 import { Category } from "../category";
 import { Currency } from "../currency";
 import { TransactionDetail } from "../info.line";
 import { Transaction, AMOUNT_TYPE } from "../transaction";
-import { OnCategoryAddedEvent, CategoryAddedListener } from '../spectre.user';
+import { OnCategoryAddedEvent, CategoryAddedListener } from "../spectre.user";
 
 describe("Spectre User", () => {
   it("should allow a user to rollup a transaction", () => {
@@ -26,14 +30,13 @@ describe("Spectre User", () => {
     expect(outputCurrency).toEqual(new Currency(400, "USD"));
   });
 
-  it('should be able to undo a categorization', () => {
-
+  it("should be able to undo a categorization", () => {
     let caughtEvent = null;
     let listener = {
-      onTransactionUncategorized : function(event : OnTransactionUnassociated) {
+      onTransactionUncategorized: function (event: OnTransactionUnassociated) {
         caughtEvent = event;
-      }
-    }
+      },
+    };
 
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
@@ -50,13 +53,16 @@ describe("Spectre User", () => {
     testObject.categorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(0);
 
-    testObject.addTransactionUncategorizedListener(new Category('Home'), listener);
+    testObject.addTransactionUncategorizedListener(
+      new Category("Home"),
+      listener
+    );
     testObject.uncategorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(1);
-    expect(testObject.getTransactionsFor(new Category('Home')).length).toBe(0);
+    expect(testObject.getTransactionsFor(new Category("Home")).length).toBe(0);
 
     expect(caughtEvent.transaction.equals(transaction)).toBe(true);
-    expect(caughtEvent.category.equals(new Category('Home'))).toBe(true);
+    expect(caughtEvent.category.equals(new Category("Home"))).toBe(true);
 
     caughtEvent = null;
 
@@ -69,13 +75,15 @@ describe("Spectre User", () => {
     testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, new Category("Home"));
 
-    testObject.removeTransactionUncategorizedListener(new Category('Home'), listener);
+    testObject.removeTransactionUncategorizedListener(
+      new Category("Home"),
+      listener
+    );
     testObject.uncategorize(transaction, new Category("Home"));
     expect(caughtEvent).toBeNull();
   });
 
-
-  it('should put the most recent uncategorized transaction at the next transaction', () => {
+  it("should put the most recent uncategorized transaction at the next transaction", () => {
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 
@@ -91,8 +99,9 @@ describe("Spectre User", () => {
     testObject.categorize(transaction, new Category("Home"));
     expect(testObject.getUncategorized().length).toBe(0);
 
-
-    const otherTransaction = new Transaction([TransactionDetail.withCurrency(new Currency(400))]);
+    const otherTransaction = new Transaction([
+      TransactionDetail.withCurrency(new Currency(400)),
+    ]);
     testObject.readyForCategorization(otherTransaction);
 
     testObject.uncategorize(transaction, new Category("Home"));
@@ -128,17 +137,17 @@ describe("Spectre User", () => {
     expect(caughtEvent).toBeNull();
   });
 
-  it('should emit an event when a new category is added', () => {
+  it("should emit an event when a new category is added", () => {
     let caughtEvent = null;
-    const listener : CategoryAddedListener = {
-      onCategoryAdded : function (event : OnCategoryAddedEvent) {
+    const listener: CategoryAddedListener = {
+      onCategoryAdded: function (event: OnCategoryAddedEvent) {
         caughtEvent = event;
       },
     };
 
-    const testObject : SpectreUser = new SpectreUser();
+    const testObject: SpectreUser = new SpectreUser();
     testObject.addOnCategoryAddedListener(listener);
-    const category : Category = new Category('Home');
+    const category: Category = new Category("Home");
     testObject.addCategory(category.copy());
 
     expect(category.copy().equals(caughtEvent.category)).toBe(true);
@@ -146,55 +155,64 @@ describe("Spectre User", () => {
     caughtEvent = null;
     testObject.removeOnCategoryAddedListener(listener);
 
-    testObject.addCategory(new Category('New'));
+    testObject.addCategory(new Category("New"));
     expect(caughtEvent).toBeNull();
   });
 
-
-  it('should emit an event for a specific category when a transaction is associated to it', () => {
-
+  it("should emit an event for a specific category when a transaction is associated to it", () => {
     let caughtEvent = undefined;
-    const listener : TransactionCategorizedListener = {
-      onTransactionCategorized: (event : OnTransactionCategorizedEvent) => {
+    const listener: TransactionCategorizedListener = {
+      onTransactionCategorized: (event: OnTransactionCategorizedEvent) => {
         caughtEvent = event;
-      }
+      },
     };
 
-    const testObject : SpectreUser = new SpectreUser();
-    const category : Category = new Category('Home');
+    const testObject: SpectreUser = new SpectreUser();
+    const category: Category = new Category("Home");
 
     testObject.addCategory(category);
 
     testObject.addTransactionCategorizedListener(category, listener);
-    const transaction = new Transaction([TransactionDetail.withCurrency(new Currency(400))]);
+    const transaction = new Transaction([
+      TransactionDetail.withCurrency(new Currency(400)),
+    ]);
     testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, category);
 
     expect(caughtEvent.transaction).toEqual(transaction);
 
     caughtEvent = null;
-    testObject.removeTransactionCategorizedListener(new Category('TEST'), listener);
+    testObject.removeTransactionCategorizedListener(
+      new Category("TEST"),
+      listener
+    );
     testObject.categorize(transaction, category);
     expect(caughtEvent.transaction).toEqual(transaction);
 
     testObject.removeTransactionCategorizedListener(category, listener);
     caughtEvent = null;
 
-    const newTransaction = new Transaction([TransactionDetail.withCurrency(new Currency(800))]);
+    const newTransaction = new Transaction([
+      TransactionDetail.withCurrency(new Currency(800)),
+    ]);
     testObject.readyForCategorization(newTransaction);
     testObject.categorize(newTransaction, category);
     expect(caughtEvent).toBeNull();
   });
 
-  it('should only remove transaction that was categorized', () => {
+  it("should only remove transaction that was categorized", () => {
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 
     const currency = new Currency(400, "USD");
-    const transaction = new Transaction([TransactionDetail.withCurrency(new Currency(400))]);
+    const transaction = new Transaction([
+      TransactionDetail.withCurrency(new Currency(400)),
+    ]);
 
     for (let i = 0; i < 10; i++) {
-      testObject.readyForCategorization(new Transaction([TransactionDetail.withCurrency(new Currency(400))]));
+      testObject.readyForCategorization(
+        new Transaction([TransactionDetail.withCurrency(new Currency(400))])
+      );
     }
 
     testObject.readyForCategorization(transaction);
@@ -202,13 +220,53 @@ describe("Spectre User", () => {
     expect(testObject.getUncategorized().length).toBe(10);
   });
 
+  it("should be able to delete a category without transactions", () => {
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category("Home"));
+    testObject.removeCategory(new Category("Home"));
 
-  it('should throw an exception if a user tries to categorize a transaction that was not ready', () => {
+    expect(testObject.getCategories().length).toBe(0);
+  });
+
+  it("should be able to delete a category with transactions", () => {
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category("Home"));
+
+    const details = [];
+    details.push(new TransactionDetail("Test", "Test"));
+    const transaction = new Transaction(details);
+
+    testObject.readyForCategorization(transaction);
+    testObject.categorize(transaction, new Category("Home"));
+    expect(testObject.getUncategorized().length).toBe(0);
+    testObject.removeCategory(new Category("Home"));
+
+    expect(testObject.getUncategorized().length).toBe(1);
+  });
+
+  it("should throw an exception if you try to delete a category that does not exist", () => {
+    const testObject = new SpectreUser();
+
+    let caughtException = null;
+    try {
+      testObject.removeCategory(new Category("Home"));
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe(
+      "Cannot remove a category that does not exist [Home]"
+    );
+  });
+
+  it("should throw an exception if a user tries to categorize a transaction that was not ready", () => {
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 
     const currency = new Currency(400, "USD");
-    const transaction = new Transaction([TransactionDetail.withCurrency(currency)]);
+    const transaction = new Transaction([
+      TransactionDetail.withCurrency(currency),
+    ]);
 
     let caughtException = null;
     try {
@@ -216,6 +274,8 @@ describe("Spectre User", () => {
     } catch (e) {
       caughtException = e;
     }
-    expect(caughtException.message).toBe('Must ready transaction for categorization');
+    expect(caughtException.message).toBe(
+      "Must ready transaction for categorization"
+    );
   });
 });

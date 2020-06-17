@@ -10,7 +10,10 @@ import {
 } from "../pojo/spectre.user";
 import { datastore } from "../datastore/datastore";
 import { InvisibleBoundingBox } from "./invisible.bounding.box";
-import { TransactionScreenSegment, TransactionDeletePress } from "./transaction.screen.segment";
+import {
+  TransactionScreenSegment,
+  TransactionDeletePress,
+} from "./transaction.screen.segment";
 
 export interface Props {
   color: string;
@@ -23,7 +26,7 @@ export interface State {
   color: string;
   category: Category;
   numTransactions: number;
-  shouldShowTransactions : boolean;
+  shouldShowTransactions: boolean;
 }
 
 export class CategoryScreen extends Component
@@ -36,6 +39,7 @@ export class CategoryScreen extends Component
 
     this.onPress = this.onPress.bind(this);
     this.onDeletePress = this.onDeletePress.bind(this);
+    this.onCategoryDeletePress = this.onCategoryDeletePress.bind(this);
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
@@ -50,10 +54,13 @@ export class CategoryScreen extends Component
 
   componentWillUnmount() {
     this.spectreUser.removeTransactionCategorizedListener(props.category, this);
-    this.spectreUser.removeTransactionUncategorizedListener(props.category, this);
+    this.spectreUser.removeTransactionUncategorizedListener(
+      props.category,
+      this
+    );
   }
 
-  onDeletePress(event : TransactionDeletePress) {
+  onDeletePress(event: TransactionDeletePress) {
     this.spectreUser.uncategorize(event.transaction, this.props.category);
   }
 
@@ -67,10 +74,10 @@ export class CategoryScreen extends Component
     });
   }
 
-  onTransactionUncategorized(event : OnTransactionUncategorizedEvent) {
+  onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
     const numTransactions = this.spectreUser.getTransactionsFor(
       this.state.category
-    ).length; 
+    ).length;
     this.setState({
       numTransactions: numTransactions,
       category: event.category.copy(),
@@ -81,11 +88,15 @@ export class CategoryScreen extends Component
     if (!this.props.categorizationMode) {
       const flipped = !this.state.shouldShowTransactions;
       this.setState({
-        shouldShowTransactions : flipped
+        shouldShowTransactions: flipped,
       });
     }
 
     this.props.onPress(new OnCategoryPressed(this.state.category));
+  }
+
+  onCategoryDeletePress() {
+    this.spectreUser.remove(this.state.category);
   }
 
   render() {
@@ -130,7 +141,7 @@ export class CategoryScreen extends Component
 
               <View
                 style={{
-                  flex: 5,
+                  flex: 10,
                 }}
               ></View>
               <View
@@ -146,10 +157,30 @@ export class CategoryScreen extends Component
                   }}
                 />
               </View>
+              <View
+                style={{
+                  justifyContent: "flex-end",
+                  flex: 1,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("we pressed the X");
+                  }}
+                >
+                  <Badge
+                    value="X"
+                    badgeStyle={{
+                      backgroundColor: this.state.color,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </Card>
         </TouchableOpacity>
-        {(!this.props.categorizationMode && this.state.shouldShowTransactions) &&
+        {!this.props.categorizationMode &&
+          this.state.shouldShowTransactions &&
           this.state.category.getTransactions().map((data, index) => {
             return (
               <View
@@ -172,7 +203,7 @@ export class CategoryScreen extends Component
                     canDelete={true}
                     onDelete={this.onDeletePress}
                     transaction={data}
-                    textColor='white'
+                    textColor="white"
                     containerStyle={{
                       backgroundColor: this.state.color,
                       marginTop: 10,

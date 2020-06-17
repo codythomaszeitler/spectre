@@ -14,6 +14,7 @@ import {
   CategoryAddedListener,
   OnCategoryAddedEvent,
   OnTransactionUncategorizedEvent,
+  OnCategoryRemovedEvent,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
 import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
@@ -83,6 +84,8 @@ export class CategorizationScreen extends Component
     this.spectreUser = model;
 
     this.spectreUser.addOnCategoryAddedListener(this);
+    this.spectreUser.addCategoryRemovedListener(this);
+
 
     this.state = {
       pan: new Animated.ValueXY(),
@@ -149,6 +152,13 @@ export class CategorizationScreen extends Component
     this.spectreUser.addTransactionUncategorizedListener(event.category, this);
     this.setState({
       categories: this.spectreUser.getCategories(),
+    });
+  }
+
+  onCategoryRemoved(event : OnCategoryRemovedEvent) {
+    this.spectreUser.removeTransactionUncategorizedListener(event.category, this);
+    this.setState({
+      categories : this.spectreUser.getCategories()
     });
   }
 

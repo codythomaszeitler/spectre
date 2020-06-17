@@ -325,6 +325,5 @@ describe("Spectre User", () => {
       caughtException = e;
     }
     expect(caughtException.message).toBe('[Home] category was not registered in user');
-
   });
 });

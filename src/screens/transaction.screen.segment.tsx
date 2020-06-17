@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Card, Text, Button } from "react-native-elements";
+import { View, TouchableOpacity } from "react-native";
+import { Card, Text, Badge } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
-
-
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
@@ -12,7 +10,6 @@ export class TransactionScreenSegment extends Component {
   }
 
   onDeletePress(event) {
-    console.log(this.props);
     this.props.onDelete(new TransactionDeletePress(this.props.transaction));
   }
 
@@ -26,32 +23,46 @@ export class TransactionScreenSegment extends Component {
         <Card containerStyle={this.props.containerStyle}>
           <View
             style={{
-              alignSelf: "flex-start",
-              flex: 10,
-            }}
-          >
-            {this.props.transaction.getDetails().map((item) => {
-              return (
-                <Text
-                  key={item.detail}
-                  style={{
-                    color: this.props.textColor,
-                  }}
-                >
-                  {item.detail}
-                </Text>
-              );
-            })}
-          </View>
-          <View
-            style={{
-              alignSelf: "flex-end",
+              flexDirection: "row",
               flex: 1,
             }}
           >
-            {this.props.canDelete && (
-              <Button title="X" onPress={this.onDeletePress}></Button>
-            )}
+            <View
+              style={{
+                alignSelf: "flex-start",
+                flex: 10,
+              }}
+            >
+              {this.props.transaction.getDetails().map((item) => {
+                return (
+                  <Text
+                    key={item.detail}
+                    style={{
+                      color: this.props.textColor,
+                    }}
+                  >
+                    {item.detail}
+                  </Text>
+                );
+              })}
+            </View>
+            <View
+              style={{
+                alignSelf: "center",
+                flex: 1,
+              }}
+            >
+              {this.props.canDelete && (
+                <TouchableOpacity onPress={this.onDeletePress}>
+                  <Badge
+                    value="X"
+                    badgeStyle={{
+                      backgroundColor: this.props.containerStyle.backgroundColor
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </Card>
       </View>

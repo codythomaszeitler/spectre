@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  PanResponder,
   Animated,
 } from "react-native";
 import { Button, Icon, Card, Input, Text } from "react-native-elements";
@@ -21,7 +20,6 @@ import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
 import {
   CategoryScreen,
   OnCategoryPressed,
-  OnLocationChange,
 } from "./category.screen";
 import { Category } from "../pojo/category";
 import {
@@ -36,6 +34,7 @@ import { Columns } from "../export/columns";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
+import { DocumentLoadService } from "../service/document.load.service";
 
 let CIRCLE_RADIUS = 36;
 
@@ -190,10 +189,11 @@ export class CategorizationScreen extends Component
     });
 
     const location = new LocalFileLocation(event.file);
+
     const loadService = new TransactionLoadService(
       this.spectreUser,
       location,
-      new CsvImporter(columns)
+      new CsvImporter()
     );
     await loadService.load();
 

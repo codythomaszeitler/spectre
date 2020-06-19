@@ -27,12 +27,13 @@ export class TransactionLoadService {
 
   async load() {
     const loadService = new DocumentLoadService(this.location);
+    const columns = await loadService.guessColumnsConfig();
 
     let lines = await loadService.fetchall();
 
     const transactions = [];
     for (let i = 0; i < lines.length; i++) {
-        const transaction = this.importer.convert(lines[i]);
+        const transaction = this.importer.convert(lines[i], columns);
         transactions.push(transaction);
 
         this.spectreUser.readyForCategorization(transaction);

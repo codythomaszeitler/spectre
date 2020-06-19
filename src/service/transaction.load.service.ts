@@ -16,13 +16,11 @@ export class TransactionLoadService {
     spectreUser: SpectreUser,
     location: Location,
     importer: Importer,
-    columns : Columns
   ) {
     this.spectreUser = spectreUser;
     this.location = location;
     this.importer = importer;
     this.numLinesLoaded = 0;
-    this.columns = columns.copy();
   }
 
   getNumLinesLoaded() {
@@ -36,7 +34,7 @@ export class TransactionLoadService {
 
     const transactions = [];
     for (let i = 0; i < lines.length; i++) {
-        const transaction = this.importer.convert(lines[i], this.columns);
+        const transaction = this.importer.convert(lines[i]);
         transactions.push(transaction);
 
         this.spectreUser.readyForCategorization(transaction);

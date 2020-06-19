@@ -35,6 +35,7 @@ import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { DocumentLoadService } from "../service/document.load.service";
+import { ColumnEstimation } from "../service/column.estimation";
 
 let CIRCLE_RADIUS = 36;
 
@@ -176,24 +177,15 @@ export class CategorizationScreen extends Component
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
-    const columns = new Columns({
-      0: {
-        "Charge Amount": AMOUNT_TYPE,
-      },
-      1: {
-        Bank: "Bank",
-      },
-      2: {
-        "Place of Business": "Place of Business",
-      },
-    });
 
     const location = new LocalFileLocation(event.file);
+    const estimator = new ColumnEstimation(location);
+    const columns = await estimator.estimate();
 
     const loadService = new TransactionLoadService(
       this.spectreUser,
       location,
-      new CsvImporter()
+      new CsvImporter(columns)
     );
     await loadService.load();
 

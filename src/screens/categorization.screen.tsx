@@ -159,10 +159,12 @@ export class CategorizationScreen extends Component
   }
 
   onCategorizationStart() {
-    this.setState({
-      currentTransaction: this.spectreUser.getUncategorized().shift(),
-      isCategorizationMode: true,
-    });
+    if (this.spectreUser.getUncategorized().length !== 0) {
+      this.setState({
+        currentTransaction: this.spectreUser.getUncategorized().shift(),
+        isCategorizationMode: true,
+      });
+    }
   }
 
   onCategorizationEnd() {
@@ -186,8 +188,7 @@ export class CategorizationScreen extends Component
 
     this.setState({
       showImportCsvScreen: false,
-      numUncategorized:
-        loadService.getNumLinesLoaded() + this.state.numUncategorized,
+      numUncategorized: this.spectreUser.getUncategorized().length,
     });
   }
 
@@ -203,12 +204,12 @@ export class CategorizationScreen extends Component
 
       if (transaction) {
         this.setState({
-          currentTransaction : transaction,
+          currentTransaction: transaction,
         });
       } else {
         this.setState({
-          currentTransaction : null,
-          isCategorizationMode : false
+          currentTransaction: null,
+          isCategorizationMode: false,
         });
       }
     }

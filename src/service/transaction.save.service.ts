@@ -31,7 +31,7 @@ export class TransactionSaveService {
             const transaction = transactions[j].copy();
 
             const asString = this.exporter.convert(transaction, category); 
-            converted.push(asString + ',' + category.getType() + '\n');
+            converted.push(asString + '\n');
         }
     }
 

@@ -23,14 +23,9 @@ export class TransactionLoadService {
     this.numLinesLoaded = 0;
   }
 
-  getNumLinesLoaded() {
-    return this.numLinesLoaded;
-  }
-
   async load() {
     const loadService = new DocumentLoadService(this.location);
 
-    const before = this.spectreUser.getUncategorized().length;
     let lines = await loadService.fetchall();
 
     const transactions = [];
@@ -40,8 +35,6 @@ export class TransactionLoadService {
 
         this.spectreUser.readyForCategorization(transaction);
     }
-
-    this.numLinesLoaded = this.spectreUser.getUncategorized().length - before;
 
     return transactions;
   }

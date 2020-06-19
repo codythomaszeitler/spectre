@@ -6,7 +6,7 @@ banks = ['Wells Fargo', 'Bank of America', 'Chase']
 buisnesses = ['Jack in the box', 'Mcdonalds', 'Wendys', 'Apple Store', 'Microsoft Store']
 
 contents = ''
-num_rows = 0
+num_rows = 10000
 for i in range(num_rows):
 
     bank = banks[i % len(banks)]

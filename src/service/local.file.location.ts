@@ -14,6 +14,16 @@ export class LocalFileLocation implements Location {
     this.wasRead = true;
   }
 
+  async isEmpty() {
+    const contents = await this.readFile(this.file);
+    console.log(contents);
+    console.log(typeof contents);
+    console.log(contents.length);
+    console.log(contents.trim().length);
+    console.log(contents.trim().length === 0);
+    return contents.trim().length === 0;
+  }
+
   async hasNext() {
     if (!this.startedReadingFile) {
       const contents = await this.readFile(this.file);

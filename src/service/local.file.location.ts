@@ -25,6 +25,12 @@ export class LocalFileLocation implements Location {
     return this.wasRead;
   }
 
+  async peek() {
+    const contents = await this.readFile(this.file);
+    this.lines = contents.split("\n");
+    return this.lines[0];
+  }
+
   async read() {
     if (!this.startedReadingFile) {
       const contents = await this.readFile(this.file);

@@ -169,9 +169,11 @@ export class SpectreUser {
       throw new Error("Must ready transaction for categorization");
     }
 
+    console.log(this.uncategorized);
     this.uncategorized = this.uncategorized.filter(function (inner) {
       return !inner.equals(transaction);
     });
+    console.log(this.uncategorized);
 
     found.associate(transaction);
 

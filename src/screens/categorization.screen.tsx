@@ -14,13 +14,12 @@ import {
   OnCategoryAddedEvent,
   OnTransactionUncategorizedEvent,
   OnCategoryRemovedEvent,
+  TransactionCategorizedListener,
+  OnTransactionCategorizedEvent,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
-import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
-import {
-  CategoryScreen,
-  OnCategoryPressed,
-} from "./category.screen";
+import { Transaction } from "../pojo/transaction";
+import { CategoryScreen, OnCategoryPressed } from "./category.screen";
 import { Category } from "../pojo/category";
 import {
   DocumentPicker,
@@ -34,7 +33,7 @@ import { Columns } from "../export/columns";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
-import { DocumentLoadService } from "../service/document.load.service";
+import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
 
 let CIRCLE_RADIUS = 36;
@@ -52,7 +51,7 @@ export interface State {
 }
 
 export class CategorizationScreen extends Component
-  implements DocumentLoadedListener, CategoryAddedListener {
+  implements DocumentLoadedListener, CategoryAddedListener, TransactionCategorizedListener {
   spectreUser: SpectreUser;
   categoryBoxLocations: {};
 
@@ -86,7 +85,6 @@ export class CategorizationScreen extends Component
     this.spectreUser.addOnCategoryAddedListener(this);
     this.spectreUser.addCategoryRemovedListener(this);
 
-
     this.state = {
       pan: new Animated.ValueXY(),
       categories: this.spectreUser.getCategories(),
@@ -115,17 +113,7 @@ export class CategorizationScreen extends Component
     const file = new File([], "test.csv", { type: "text/plain;charset=utf-8" });
 
     const location = new LocalFileLocation(file);
-    const columns = new Columns({
-      0: {
-        "Charge Amount": AMOUNT_TYPE,
-      },
-      1: {
-        Bank: "Bank",
-      },
-      2: {
-        "Place of Business": "Place of Business",
-      },
-    });
+    const columns = new Columns({});
 
     const transactionSaveService = new TransactionSaveService(
       this.spectreUser,
@@ -149,16 +137,21 @@ export class CategorizationScreen extends Component
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
+    this.spectreUser.addTransactionCategorizedListener(event.category, this);
     this.spectreUser.addTransactionUncategorizedListener(event.category, this);
     this.setState({
       categories: this.spectreUser.getCategories(),
     });
   }
 
-  onCategoryRemoved(event : OnCategoryRemovedEvent) {
-    this.spectreUser.removeTransactionUncategorizedListener(event.category, this);
+  onCategoryRemoved(event: OnCategoryRemovedEvent) {
+    this.spectreUser.removeTransactionCategorizedListener(event.category, this);
+    this.spectreUser.removeTransactionUncategorizedListener(
+      event.category,
+      this
+    );
     this.setState({
-      categories : this.spectreUser.getCategories()
+      categories: this.spectreUser.getCategories(),
     });
   }
 
@@ -177,7 +170,6 @@ export class CategorizationScreen extends Component
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
-
     const location = new LocalFileLocation(event.file);
     const estimator = new ColumnEstimation(location);
     const columns = await estimator.estimate();
@@ -208,7 +200,6 @@ export class CategorizationScreen extends Component
       if (transaction) {
         this.setState({
           currentTransaction: transaction,
-          numUncategorized: uncategorized.length,
         });
       }
     } else {
@@ -216,16 +207,22 @@ export class CategorizationScreen extends Component
     }
   }
 
-  onTransactionUncategorized(event : OnTransactionUncategorizedEvent) {
+  onTransactionCategorized(event: OnTransactionCategorizedEvent) {
+    console.log(this.spectreUser.getUncategorized().length);
+    this.setState({
+      numUncategorized : this.spectreUser.getUncategorized().length
+    })
+  }
 
+  onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
     let currentTransaction = null;
     if (this.state.isCategorizationMode) {
-      currentTransaction = this.spectreUser.getUncategorized().shift()
+      currentTransaction = this.spectreUser.getUncategorized().shift();
     }
 
     this.setState({
-      currentTransaction : currentTransaction,
-      numUncategorized : this.spectreUser.getUncategorized().length
+      currentTransaction: currentTransaction,
+      numUncategorized: this.spectreUser.getUncategorized().length,
     });
   }
 
@@ -449,7 +446,7 @@ export class CategorizationScreen extends Component
               justifyContent: "space-around",
             }}
           >
-            <View style={{flex : 1}}></View>
+            <View style={{ flex: 1 }}></View>
             <View
               style={{
                 flex: 1,

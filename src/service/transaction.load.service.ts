@@ -30,17 +30,19 @@ export class TransactionLoadService {
   async load() {
     const loadService = new DocumentLoadService(this.location);
 
+    const before = this.spectreUser.getUncategorized().length;
     let lines = await loadService.fetchall();
 
     const transactions = [];
     for (let i = 0; i < lines.length; i++) {
         const transaction = this.importer.convert(lines[i]);
+        console.log(transaction);
         transactions.push(transaction);
 
         this.spectreUser.readyForCategorization(transaction);
     }
 
-    this.numLinesLoaded = lines.length;
+    this.numLinesLoaded = this.spectreUser.getUncategorized().length - before;
 
     return transactions;
   }

@@ -175,6 +175,10 @@ export class CategorizationScreen extends Component
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
+    if (event.file.size === 0) {
+      return;
+    }
+
     const location = new LocalFileLocation(event.file);
     const estimator = new ColumnEstimation(location);
     const columns = await estimator.estimate();

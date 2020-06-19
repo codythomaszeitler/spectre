@@ -6,13 +6,11 @@ export class LocalFileLocation implements Location {
   lines: string[];
   wasRead: boolean;
   startedReadingFile: boolean;
-  currentLocation: number;
 
   constructor(file: File) {
     this.file = file;
     this.lines = [];
     this.startedReadingFile = false;
-    this.currentLocation = 0;
     this.wasRead = true;
   }
 

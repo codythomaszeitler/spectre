@@ -35,6 +35,7 @@ import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
+import { AddCategoryScreen } from "./add.category.screen";
 
 let CIRCLE_RADIUS = 36;
 
@@ -75,7 +76,6 @@ export class CategorizationScreen extends Component
     super(props);
     this.onFileSelect = this.onFileSelect.bind(this);
     this.onImportPress = this.onImportPress.bind(this);
-    this.onAddCategoryPress = this.onAddCategoryPress.bind(this);
     this.onCategoryPress = this.onCategoryPress.bind(this);
     this.onExportCategorized = this.onExportCategorized.bind(this);
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
@@ -93,7 +93,6 @@ export class CategorizationScreen extends Component
       categories: this.spectreUser.getCategories(),
       showImportCsvScreen: false,
       showAddCategoryScreen: false,
-      categoryAddText: "",
       currentTransaction: undefined,
       isCategorizationMode: false,
       numUncategorized: 0,
@@ -127,17 +126,6 @@ export class CategorizationScreen extends Component
     await transactionSaveService.save();
   }
 
-  onAddCategoryPress(event) {
-    // This function changes based on what state the screen is currently in
-    if (this.state.categoryAddText) {
-      const category = new Category(this.state.categoryAddText);
-      this.spectreUser.addCategory(category);
-
-      this.setState({
-        showAddCategoryScreen: false,
-      });
-    }
-  }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
@@ -266,36 +254,11 @@ export class CategorizationScreen extends Component
             });
           }}
         >
-          <Card title="Add Category">
-            <Input
-              placeholder="Category"
-              onChangeText={(text) => {
-                this.setState({
-                  categoryAddText: text,
-                });
-              }}
-              value={this.state.categoryAddText}
-            />
-            <Button
-              buttonStyle={{
-                backgroundColor: "#ced4de",
-                marginTop: 10,
-                paddingTop: 15,
-                paddingBottom: 15,
-                marginLeft: 30,
-                marginRight: 30,
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: "#fff",
-              }}
-              icon={{
-                name: "add",
-                size: 15,
-                color: "white",
-              }}
-              onPress={this.onAddCategoryPress}
-            ></Button>
-          </Card>
+          <AddCategoryScreen onSuccessfulAdd={() => {
+            this.setState({
+              showAddCategoryScreen : false
+            });
+          }}></AddCategoryScreen>
         </Modal>
         <View
           style={{

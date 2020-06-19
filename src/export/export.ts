@@ -10,7 +10,7 @@ export class Export {
   }
 
   export(spectreUser : SpectreUser) {
-    let csvContents = this.exporter.getHeader() + "\n";
+    let csvContents = '';
 
     const categories = spectreUser.getCategories();
 

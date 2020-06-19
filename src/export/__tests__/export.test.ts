@@ -44,8 +44,7 @@ describe("Export", () => {
 
     const testObject = new Export(new CsvExporter(columns));
     const csvContents = testObject.export(spectreUser).split("\n");
-    expect(csvContents[0]).toBe('"Bank","Business","Amount","Category"');
-    expect(csvContents[1]).toBe(
+    expect(csvContents[0]).toBe(
       '"TestBank","TestBusiness","$400.00","TEST"'
     );
   });

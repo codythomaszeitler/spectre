@@ -1,7 +1,7 @@
 import { Columns } from "../columns";
 
-describe("Csv Exporter", () => {
-  let testObject;
+describe("Columns", () => {
+  let testObject : Columns;
   beforeEach(() => {
     testObject = new Columns({
       0: {
@@ -51,7 +51,7 @@ describe("Csv Exporter", () => {
     }
 
     expect(caughtException.message).toBe(
-      "[4] was greater than the max index of columns in config, which is [3]"
+      "Column [4] does not exist"
     );
   });
 
@@ -64,7 +64,7 @@ describe("Csv Exporter", () => {
     }
 
     expect(caughtException.message).toBe(
-      "[4] was greater than the max index of columns in config, which is [3]"
+      "Column [4] does not exist"
     );
   });
 });

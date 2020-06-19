@@ -62,5 +62,6 @@ describe("Transaction Load Service", () => {
 
     const transaction : Transaction = loaded[0];
     expect(transaction.getDetailByName('default')).toBe('TEST');
+    expect(transaction.getDetails().length).toBe(2);
   });
 });

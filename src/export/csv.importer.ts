@@ -16,10 +16,14 @@ export class CsvImporter implements Importer {
         let details = [];
 
         const splits = string.split(',');
-        for (let i = 0; i < this.columns.getNumColumns(); i++) {
+        for (let i = 0; i < splits.length; i++) {
             const columnName = this.columns.getName(i);
 
-            if (this.columns.getType(i) === AMOUNT_TYPE) {
+            if (!columnName) {
+                const split = unescapeCsvElement(splits[i]);
+                const detail = new TransactionDetail(split, 'noConfig' + i, 'string');
+                details.push(detail);
+            } else if (this.columns.getType(i) === AMOUNT_TYPE) {
                 const split = unescapeCsvElement(splits[i]);
 
                 const converter = new CurrencyConverter();

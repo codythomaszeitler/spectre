@@ -41,6 +41,32 @@ describe("Csv Importer", () => {
     expect(converted.equals(transaction)).toBe(true);
   });
 
+  it('should be able to convert a transaction with extra elements', () => {
+    const columns = new Columns({
+      0: {
+        name : 'Amount',
+        type : AMOUNT_TYPE
+      },
+      1: {
+        name : 'Test1Type',
+        type : 'Test1Type'
+      },
+      2: {
+        name : 'Test2Type',
+        type : 'Test2Type'
+      },
+    });
+
+
+    const rawString = '$400.00,Test1,Test2,Test3\n';
+    const testObject = new CsvImporter(columns);
+
+    const converted = testObject.convert(rawString);
+
+    const details = converted.getDetails();
+    expect(details.length).toBe(4);
+  });
+
 
   it('should be able to unescape csv element without quotations marks', () => {
     const unescaped = unescapeCsvElement('Cody');

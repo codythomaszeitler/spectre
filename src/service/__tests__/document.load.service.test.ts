@@ -14,6 +14,15 @@ describe('Document Load Service', () => {
         expect(data).toContainEqual('2');
         expect(data).toContainEqual('3');
     });
+
+    it('should remove all empty lines when fetchall is called', async () => {
+        const location : Location = new TestLocation(['1', '     ', '3']);
+
+        const testObject = new DocumentLoadService(location);
+        const loaded = await testObject.fetchall();
+
+        expect(loaded.length).toBe(2);
+    });
 });
 
 

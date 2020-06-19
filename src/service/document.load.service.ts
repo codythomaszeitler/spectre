@@ -1,5 +1,4 @@
 import { Location } from "./location";
-import { Columns } from "../export/columns";
 
 export class DocumentLoadService {
   location: Location;
@@ -10,10 +9,19 @@ export class DocumentLoadService {
     this.lines = [];
   }
 
+  clean(lines : string[]) {
+
+    return lines.filter(function(line) {
+        return line.trim().length !== 0;
+    });
+  }
+
   async fetchall() {
     this.lines = [];
     while (await this.location.hasNext()) {
-      this.lines.push(...(await this.location.read()));
+      const loaded = await this.location.read();
+      const cleaned = this.clean(loaded);
+      this.lines.push(...cleaned);
     }
     return this.lines;
   }

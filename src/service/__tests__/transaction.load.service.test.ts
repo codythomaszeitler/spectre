@@ -28,7 +28,8 @@ describe("Transaction Load Service", () => {
     const testObject = new TransactionLoadService(
       spectreUser,
       location,
-      importer
+      importer,
+      columns
     );
 
     const loaded = await testObject.load();
@@ -52,7 +53,8 @@ describe("Transaction Load Service", () => {
     const testObject = new TransactionLoadService(
       spectreUser, 
       location,
-      importer
+      importer,
+      columns
     );
 
     const loaded  = await testObject.load();

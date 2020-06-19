@@ -51,7 +51,10 @@ export interface State {
 }
 
 export class CategorizationScreen extends Component
-  implements DocumentLoadedListener, CategoryAddedListener, TransactionCategorizedListener {
+  implements
+    DocumentLoadedListener,
+    CategoryAddedListener,
+    TransactionCategorizedListener {
   spectreUser: SpectreUser;
   categoryBoxLocations: {};
 
@@ -197,21 +200,24 @@ export class CategorizationScreen extends Component
 
       const uncategorized = this.spectreUser.getUncategorized();
       const transaction = uncategorized.shift();
+
       if (transaction) {
         this.setState({
-          currentTransaction: transaction,
+          currentTransaction : transaction,
+        });
+      } else {
+        this.setState({
+          currentTransaction : null,
+          isCategorizationMode : false
         });
       }
-    } else {
-      // This will now open up the transactions underneath the category.
     }
   }
 
   onTransactionCategorized(event: OnTransactionCategorizedEvent) {
-    console.log(this.spectreUser.getUncategorized().length);
     this.setState({
-      numUncategorized : this.spectreUser.getUncategorized().length
-    })
+      numUncategorized: this.spectreUser.getUncategorized().length,
+    });
   }
 
   onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
@@ -517,28 +523,3 @@ export class CategorizationScreen extends Component
     );
   }
 }
-
-const styles = StyleSheet.create({
-  text: {
-    textAlign: "center",
-    fontSize: 20,
-    fontFamily: "Kohinoor Telugu",
-  },
-  card: {
-    backgroundColor: "#fff",
-    marginTop: 10,
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginLeft: 30,
-    marginRight: 30,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#000",
-  },
-  circle: {
-    backgroundColor: "#1abc9c",
-    width: CIRCLE_RADIUS * 2,
-    height: CIRCLE_RADIUS * 2,
-    borderRadius: CIRCLE_RADIUS,
-  },
-});

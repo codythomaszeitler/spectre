@@ -308,7 +308,7 @@ describe("Spectre User", () => {
     } catch (e) {
       caughtException = e;
     }
-    expect(caughtException.message).toBe('Category [Home] was alredy added');
+    expect(caughtException.message).toBe('Category [Home] was already added');
   });
 
   it('should throw an exception if trying to categorize against something that dne', () => {

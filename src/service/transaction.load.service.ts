@@ -36,7 +36,6 @@ export class TransactionLoadService {
     const transactions = [];
     for (let i = 0; i < lines.length; i++) {
         const transaction = this.importer.convert(lines[i]);
-        console.log(transaction);
         transactions.push(transaction);
 
         this.spectreUser.readyForCategorization(transaction);

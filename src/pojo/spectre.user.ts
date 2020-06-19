@@ -85,7 +85,7 @@ export class SpectreUser {
   addCategory(category: Category) {
     const found = this._getCategory(category);
     if (found) {
-      throw new Error("Category [" + category.getType() + "] was alredy added");
+      throw new Error("Category [" + category.getType() + "] was already added");
     }
 
     this.categories.push(category.copy());
@@ -169,11 +169,9 @@ export class SpectreUser {
       throw new Error("Must ready transaction for categorization");
     }
 
-    console.log(this.uncategorized);
     this.uncategorized = this.uncategorized.filter(function (inner) {
       return !inner.equals(transaction);
     });
-    console.log(this.uncategorized);
 
     found.associate(transaction);
 

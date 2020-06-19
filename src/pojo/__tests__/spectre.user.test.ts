@@ -10,7 +10,7 @@ import { Transaction, AMOUNT_TYPE } from "../transaction";
 import { OnCategoryAddedEvent, CategoryAddedListener } from "../spectre.user";
 
 describe("Spectre User", () => {
-  it("should allow a user to rollup a transaction", () => {
+  it.skip("should allow a user to rollup a transaction", () => {
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
 

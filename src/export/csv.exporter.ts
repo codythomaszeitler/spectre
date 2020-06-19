@@ -1,9 +1,9 @@
-import { AMOUNT_TYPE, TIMESTAMP_TYPE, Transaction } from "../pojo/transaction";
+import { Transaction } from "../pojo/transaction";
 import { CATEGORY_TYPE } from "../pojo/category";
-import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
 import { Columns } from "./columns";
 import { Category } from "../pojo/category";
 import { Exporter } from "./exporter";
+import { DetailConverter } from "./detail.converter";
 
 export class CsvExporter implements Exporter {
   columns: Columns;
@@ -29,24 +29,30 @@ export class CsvExporter implements Exporter {
     let converted = "";
 
     const details = transaction.getDetails();
-    for (let i = 0; i < details.length; i++) {
+    let length = details.length;
+    if (category) {
+      length = length + 1;
+    }
+
+    for (let i = 0; i < length; i++) {
       if (!this.columns.hasColumn(i)) {
         const detail = details[i];
-        converted += escapeCsvElement(detail.getElement()) + ',';
+        if (detail) {
+          converted += escapeCsvElement(detail.getElement()) + ',';
+        } else {
+          converted += escapeCsvElement(category.getType()) + ',';
+        }
         continue;
       }
 
       const type = this.columns.getType(i);
       const name = this.columns.getName(i);
 
-      if (type === AMOUNT_TYPE) {
-        const converter = new CurrencyConverter();
-        const currency = transaction.getDetailByName(name);
-        converted += escapeCsvElement(converter.toString(currency)) + ",";
-      } else if (type === CATEGORY_TYPE) {
+      if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";
       } else {
-        converted += escapeCsvElement(transaction.getDetailByName(name)) + ",";
+        const converter = new DetailConverter();
+        converted += escapeCsvElement(converter.fromDetail(transaction.getDetailByName(name))) + ',';
       }
     }
 

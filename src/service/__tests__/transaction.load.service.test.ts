@@ -61,8 +61,8 @@ describe("Transaction Load Service", () => {
     expect(loaded.length).toBe(1);
 
     const transaction : Transaction = loaded[0];
-    expect(transaction.getDetailByName('default')).toBe('TEST');
-    expect(transaction.getDetailByName('noConfig1')).toBe('EXTRA ELEMENT');
+    expect(transaction.getElementByColumnName('default')).toBe('TEST');
+    expect(transaction.getElementByColumnName('noConfig1')).toBe('EXTRA ELEMENT');
     expect(transaction.getDetails().length).toBe(2);
   });
 
@@ -94,9 +94,9 @@ describe("Transaction Load Service", () => {
     expect(loaded.length).toBe(1);
 
     const transaction : Transaction = loaded[0];
-    expect(transaction.getDetailByName('default0')).toBe('TEST');
-    expect(transaction.getDetailByName('noConfig1')).toBe('ELEMENT1');
-    expect(transaction.getDetailByName('default2')).toBe('ELEMENT2');
+    expect(transaction.getElementByColumnName('default0')).toBe('TEST');
+    expect(transaction.getElementByColumnName('noConfig1')).toBe('ELEMENT1');
+    expect(transaction.getElementByColumnName('default2')).toBe('ELEMENT2');
     expect(transaction.getDetails().length).toBe(3);
   });
 });

@@ -1,4 +1,5 @@
 import { TransactionDetail } from "./info.line";
+import { DetailConverter } from "../export/detail.converter";
 
 export const AMOUNT_TYPE = "Amount";
 
@@ -34,14 +35,28 @@ export class Transaction {
     let raw = null;
 
     for (let i = 0; i < this.details.length; i++) {
-      const detail = this.details[i].getColumnName();
       if (this.details[i].getColumnName() === name) {
-        raw = this.details[i].getElement();
+        raw = this.details[i];
         break;
       }
     }
 
     return raw;
+  }
+
+  getElementByColumnName(columnName : string) {
+    let element = null;
+
+    for (let i = 0; i < this.details.length; i++) {
+
+      const detail = this.details[i];
+      if (detail.getColumnName() === columnName) {
+        const converter = new DetailConverter();
+        element = converter.fromDetail(detail);
+      }
+    }
+
+    return element;
   }
 
 

@@ -4,18 +4,22 @@ import { CsvExporter } from "../../export/csv.exporter";
 import { Columns } from "../../export/columns";
 import { AMOUNT_TYPE, Transaction } from "../../pojo/transaction";
 import { DocumentLoadService } from "../document.load.service";
-import { Category } from "../../pojo/category";
+import { Category, CATEGORY_TYPE } from "../../pojo/category";
 import { Currency } from "../../pojo/currency";
 import { TransactionSaveService } from "../transaction.save.service";
-import { Location } from "../location";
 import { TransactionDetail } from "../../pojo/info.line";
 
 describe("Transaction Save Service", () => {
   it("should write all categorized transactions to the given location", async () => {
     const columns = new Columns({
       0: {
-        Amount: AMOUNT_TYPE,
+        name : 'Amount',
+        type : AMOUNT_TYPE
       },
+      1: {
+        name : 'Category',
+        type : CATEGORY_TYPE
+      }
     });
 
     const spectreUser = new SpectreUser();
@@ -23,7 +27,7 @@ describe("Transaction Save Service", () => {
     spectreUser.addCategory(category);
 
     for (let i = 0; i < 10; i++) {
-      const details = [TransactionDetail.withCurrency(new Currency(400))];
+      const details = [TransactionDetail.withCurrency(new Currency(400), columns.getName(0))];
       const transaction = new Transaction(details);
       spectreUser.readyForCategorization(transaction);
       spectreUser.categorize(transaction, category);

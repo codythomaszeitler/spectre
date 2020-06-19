@@ -28,7 +28,14 @@ export class CsvExporter implements Exporter {
   convert(transaction: Transaction, category?: Category) {
     let converted = "";
 
-    for (let i = 0; i < this.columns.getNumColumns(); i++) {
+    const details = transaction.getDetails();
+    for (let i = 0; i < details.length; i++) {
+      if (!this.columns.hasColumn(i)) {
+        const detail = details[i];
+        converted += escapeCsvElement(detail.getElement()) + ',';
+        continue;
+      }
+
       const type = this.columns.getType(i);
       const name = this.columns.getName(i);
 

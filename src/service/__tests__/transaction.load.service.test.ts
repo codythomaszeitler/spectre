@@ -62,6 +62,41 @@ describe("Transaction Load Service", () => {
 
     const transaction : Transaction = loaded[0];
     expect(transaction.getDetailByName('default')).toBe('TEST');
+    expect(transaction.getDetailByName('noConfig1')).toBe('EXTRA ELEMENT');
     expect(transaction.getDetails().length).toBe(2);
+  });
+
+  it('should be able to load a transaction when there are gaps in the columns definition', async() => {
+    const columns = new Columns({
+      0: {
+        name : 'default0',
+        type : 'string'
+      },
+      2: {
+        name : 'default2',
+        type : 'string'
+      }
+    }); 
+
+    const importer = new CsvImporter(columns);
+
+    const lines = ['TEST,ELEMENT1,ELEMENT2'];
+    const location = new TestLocation(lines);
+    const spectreUser = new SpectreUser();
+    const testObject = new TransactionLoadService(
+      spectreUser, 
+      location,
+      importer,
+      columns
+    );
+
+    const loaded  = await testObject.load();
+    expect(loaded.length).toBe(1);
+
+    const transaction : Transaction = loaded[0];
+    expect(transaction.getDetailByName('default0')).toBe('TEST');
+    expect(transaction.getDetailByName('noConfig1')).toBe('ELEMENT1');
+    expect(transaction.getDetailByName('default2')).toBe('ELEMENT2');
+    expect(transaction.getDetails().length).toBe(3);
   });
 });

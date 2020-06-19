@@ -1,7 +1,7 @@
 import { TransactionDetail } from "../../pojo/info.line";
 import { AMOUNT_TYPE } from "../../pojo/transaction";
 import { Currency } from "../../pojo/currency";
-import {DetailConverter} from '../converter.factory';
+import {DetailConverter} from '../detail.converter';
 
 describe('Converter Factory', () => {
     it('should be able to convert a currency from a transaction detail with AMOUNT TYPE', () => {

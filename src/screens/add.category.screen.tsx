@@ -1,11 +1,24 @@
 import React, { Component } from "react";
-import { Card, Button, Input } from "react-native-elements";
+import { View } from "react-native";
+import { Card, Button, Input, Text } from "react-native-elements";
 import { SpectreUser } from "../pojo/spectre.user";
 import { datastore } from "../datastore/datastore";
-import {Category} from '../pojo/category';
+import { Category } from "../pojo/category";
+import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
+
+  colors = [
+    "#80b1ff",
+    "#ff8082",
+    "violet",
+    "#80ff8b",
+    "#80ffe1",
+    "#80aaff",
+    "#ff7784",
+    "#ff8086",
+  ];
 
   constructor(props) {
     super(props);
@@ -14,51 +27,86 @@ export class AddCategoryScreen extends Component {
     this.spectreUser = datastore().get();
 
     this.state = {
-        categoryAddText : ''
-    }
+      categoryAddText: "",
+      color: this.colors[0],
+    };
   }
 
-  onAddCategoryPress(event) {
+  onAddCategoryPress() {
     // This function changes based on what state the screen is currently in
     if (this.state.categoryAddText) {
       const category = new Category(this.state.categoryAddText);
       this.spectreUser.addCategory(category);
 
-      this.props.onSuccessfulAdd(category);
+      this.props.onSuccessfulAdd(category, this.state.color);
+
+      this.setState({
+          categoryAddText : '',
+          color : this.colors[0]
+      });
     }
   }
 
   render() {
     return (
       <Card title="Add Category">
-        <Input
-          placeholder="Category"
-          onChangeText={(text) => {
-            this.setState({
-              categoryAddText: text,
-            });
-          }}
-          value={this.state.categoryAddText}
-        />
-        <Button
-          buttonStyle={{
-            backgroundColor: "#ced4de",
-            marginTop: 10,
-            paddingTop: 15,
-            paddingBottom: 15,
-            marginLeft: 30,
-            marginRight: 30,
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: "#fff",
-          }}
-          icon={{
-            name: "add",
-            size: 15,
-            color: "white",
-          }}
-          onPress={this.onAddCategoryPress}
-        ></Button>
+        <View style={{ flex: 1 }}>
+          <Input
+            placeholder="Category"
+            onChangeText={(text) => {
+              this.setState({
+                categoryAddText: text,
+              });
+            }}
+            value={this.state.categoryAddText}
+          />
+
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            {this.colors.map(function (value) {
+              return (
+                <View style={{
+                    flex : 1,
+                }}
+                key={value}
+                >
+                  <ColorChoiceScreenSegment
+                    onPress={(color) => {
+                        this.setState({
+                            color : color
+                        });
+                    }}
+                    color={value}
+                    currentSelectedColor={this.state.color}
+                  ></ColorChoiceScreenSegment>
+                </View>
+              );
+            }.bind(this))}
+          </View>
+
+          <Button
+            buttonStyle={{
+              backgroundColor: "#ced4de",
+              marginTop: 10,
+              paddingTop: 15,
+              paddingBottom: 15,
+              marginLeft: 30,
+              marginRight: 30,
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: "#fff",
+            }}
+            icon={{
+              name: "add",
+              size: 15,
+              color: "white",
+            }}
+            onPress={this.onAddCategoryPress}
+          ></Button>
+        </View>
       </Card>
     );
   }

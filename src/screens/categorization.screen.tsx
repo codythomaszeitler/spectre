@@ -57,20 +57,9 @@ export class CategorizationScreen extends Component
     CategoryAddedListener,
     TransactionCategorizedListener {
   spectreUser: SpectreUser;
-  categoryBoxLocations: {};
-
-  colors = [
-    "#80b1ff",
-    "#ff8084",
-    "violet",
-    "#80ff8b",
-    "#80ffe1",
-    "#80b1ff",
-    "#ff8084",
-    "#ff8084",
-  ];
-
   state: State;
+
+  categoryColors : Object;
 
   constructor(props: Props) {
     super(props);
@@ -87,6 +76,8 @@ export class CategorizationScreen extends Component
 
     this.spectreUser.addOnCategoryAddedListener(this);
     this.spectreUser.addCategoryRemovedListener(this);
+
+    this.categoryColors = {};
 
     this.state = {
       pan: new Animated.ValueXY(),
@@ -254,10 +245,11 @@ export class CategorizationScreen extends Component
             });
           }}
         >
-          <AddCategoryScreen onSuccessfulAdd={() => {
+          <AddCategoryScreen onSuccessfulAdd={(category, color) => {
             this.setState({
               showAddCategoryScreen : false
             });
+            this.categoryColors[category.getType()] = color
           }}></AddCategoryScreen>
         </Modal>
         <View
@@ -271,10 +263,11 @@ export class CategorizationScreen extends Component
               return item.getType(); //+ new Date().getTime().toString() + (Math.floor(Math.random() * Math.floor(new Date().getTime()))).toString()
             }}
             extraData={this.state}
-            renderItem={({ item, index }) => {
+            renderItem={({ item }) => {
+              const color = this.categoryColors[item.getType()];
               return (
                 <CategoryScreen
-                  color={this.colors[index % this.colors.length]}
+                  color={color}
                   category={item}
                   categorizationMode={this.state.isCategorizationMode}
                   onPress={this.onCategoryPress}

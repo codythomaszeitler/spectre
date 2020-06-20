@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import {Button} from 'react-native-elements';
+import { Text } from "react-native-elements";
+import { TouchableOpacity } from "react-native";
 
 export class ColorChoiceScreenSegment extends Component {
   constructor(props) {
@@ -13,14 +14,23 @@ export class ColorChoiceScreenSegment extends Component {
 
   render() {
     return (
-        <Button buttonStyle={{
-            backgroundColor : this.props.color,
-            borderColor : '#7CFC00'
+      <TouchableOpacity
+        style={{
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.2)",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 30,
+          height: 30,
+          backgroundColor: this.props.color,
+          borderRadius: 50,
         }}
         onPress={this.onPress}
-        
-        title={(this.props.currentSelectedColor === this.props.color) ? 'X' : '-'}
-        ></Button>
+      >
+        <Text>
+          {this.props.currentSelectedColor === this.props.color ? "+" : "-"}
+        </Text>
+      </TouchableOpacity>
     );
   }
 }

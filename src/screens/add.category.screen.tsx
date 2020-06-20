@@ -41,8 +41,8 @@ export class AddCategoryScreen extends Component {
       this.props.onSuccessfulAdd(category, this.state.color);
 
       this.setState({
-          categoryAddText : '',
-          color : this.colors[0]
+        categoryAddText: "",
+        color: this.colors[0],
       });
     }
   }
@@ -51,6 +51,11 @@ export class AddCategoryScreen extends Component {
     return (
       <Card title="Add Category">
         <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+            }}
+          ></View>
           <Input
             placeholder="Category"
             onChangeText={(text) => {
@@ -64,48 +69,56 @@ export class AddCategoryScreen extends Component {
           <View
             style={{
               flexDirection: "row",
+              flex: 1,
             }}
           >
-            {this.colors.map(function (value) {
-              return (
-                <View style={{
-                    flex : 1,
-                }}
-                key={value}
-                >
-                  <ColorChoiceScreenSegment
-                    onPress={(color) => {
-                        this.setState({
-                            color : color
-                        });
+            {this.colors.map(
+              function (value) {
+                return (
+                  <View
+                    style={{
+                      flex: 1,
                     }}
-                    color={value}
-                    currentSelectedColor={this.state.color}
-                  ></ColorChoiceScreenSegment>
-                </View>
-              );
-            }.bind(this))}
+                    key={value}
+                  >
+                    <ColorChoiceScreenSegment
+                      onPress={(color) => {
+                        this.setState({
+                          color: color,
+                        });
+                      }}
+                      color={value}
+                      currentSelectedColor={this.state.color}
+                    ></ColorChoiceScreenSegment>
+                  </View>
+                );
+              }.bind(this)
+            )}
           </View>
 
-          <Button
-            buttonStyle={{
-              backgroundColor: "#ced4de",
-              marginTop: 10,
-              paddingTop: 15,
-              paddingBottom: 15,
-              marginLeft: 30,
-              marginRight: 30,
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: "#fff",
-            }}
-            icon={{
-              name: "add",
-              size: 15,
-              color: "white",
-            }}
-            onPress={this.onAddCategoryPress}
-          ></Button>
+          <View style={{
+              flex : 1
+          }}>
+            <Button
+              buttonStyle={{
+                backgroundColor: "#ced4de",
+                marginTop: 10,
+                paddingTop: 15,
+                paddingBottom: 15,
+                marginLeft: 30,
+                marginRight: 30,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: "#fff",
+              }}
+              icon={{
+                name: "add",
+                size: 15,
+                color: "white",
+              }}
+              onPress={this.onAddCategoryPress}
+            ></Button>
+          </View>
         </View>
       </Card>
     );

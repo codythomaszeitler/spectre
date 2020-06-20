@@ -20,8 +20,6 @@ export class ColorChoiceScreenSegment extends Component {
           borderColor: "rgba(0,0,0,0.2)",
           alignItems: "center",
           justifyContent: "center",
-          width: 30,
-          height: 30,
           backgroundColor: this.props.color,
           borderRadius: 50,
         }}

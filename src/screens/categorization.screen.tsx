@@ -59,7 +59,7 @@ export class CategorizationScreen extends Component
   spectreUser: SpectreUser;
   state: State;
 
-  categoryColors : Object;
+  categoryColors: Object;
 
   constructor(props: Props) {
     super(props);
@@ -87,13 +87,26 @@ export class CategorizationScreen extends Component
       currentTransaction: undefined,
       isCategorizationMode: false,
       numUncategorized: 0,
+      width : 0,
+      height : 0
     };
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
     this.categoryBoxLocations = {};
   }
 
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
   onImportPress() {
@@ -116,7 +129,6 @@ export class CategorizationScreen extends Component
 
     await transactionSaveService.save();
   }
-
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
@@ -220,7 +232,8 @@ export class CategorizationScreen extends Component
     return (
       <View
         style={{
-          flex: 1,
+          width : this.state.width,
+          height : this.state.height,
           justifyContent: "space-around",
           alignContent: "stretch",
         }}
@@ -245,12 +258,14 @@ export class CategorizationScreen extends Component
             });
           }}
         >
-          <AddCategoryScreen onSuccessfulAdd={(category, color) => {
-            this.setState({
-              showAddCategoryScreen : false
-            });
-            this.categoryColors[category.getType()] = color
-          }}></AddCategoryScreen>
+          <AddCategoryScreen
+            onSuccessfulAdd={(category, color) => {
+              this.setState({
+                showAddCategoryScreen: false,
+              });
+              this.categoryColors[category.getType()] = color;
+            }}
+          ></AddCategoryScreen>
         </Modal>
         <View
           style={{
@@ -480,6 +495,29 @@ export class CategorizationScreen extends Component
             flex: 0.25,
           }}
         ></View>
+        <form
+          action="https://www.paypal.com/cgi-bin/webscr"
+          method="post"
+          target="_top"
+        >
+          <input type="hidden" name="cmd" value="_s-xclick" />
+          <input type="hidden" name="hosted_button_id" value="9EHAV84AATTWC" />
+          <input
+            type="image"
+            src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
+            border="0"
+            name="submit"
+            title="PayPal - The safer, easier way to pay online!"
+            alt="Donate with PayPal button"
+          />
+          <img
+            alt=""
+            border="0"
+            src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+            width="1"
+            height="1"
+          />
+        </form>
       </View>
     );
   }

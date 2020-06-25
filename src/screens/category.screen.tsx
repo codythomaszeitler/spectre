@@ -131,7 +131,7 @@ export class CategoryScreen extends Component
               <View
                 style={{
                   justifyContent: "flex-start",
-                  flex: 1,
+                  flex: 5,
                 }}
               >
                 <Text
@@ -146,13 +146,13 @@ export class CategoryScreen extends Component
 
               <View
                 style={{
-                  flex: 10,
+                  flex: 5,
                 }}
               ></View>
               <View
                 style={{
                   justifyContent: "flex-end",
-                  flex: 1,
+                  flex: 2,
                 }}
               >
                 <Badge
@@ -165,7 +165,7 @@ export class CategoryScreen extends Component
               <View
                 style={{
                   justifyContent: "flex-end",
-                  flex: 1,
+                  flex: 2,
                 }}
               >
                 <TouchableOpacity

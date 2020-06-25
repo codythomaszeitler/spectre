@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import {
   View,
   TouchableOpacity,
-  StyleSheet,
   FlatList,
   Animated,
+  ScrollView,
 } from "react-native";
 import { Button, Icon, Card, Input, Text } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
@@ -87,8 +87,8 @@ export class CategorizationScreen extends Component
       currentTransaction: undefined,
       isCategorizationMode: false,
       numUncategorized: 0,
-      width : 0,
-      height : 0
+      width: 0,
+      height: 0,
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
@@ -97,12 +97,12 @@ export class CategorizationScreen extends Component
 
   componentDidMount() {
     this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
+    window.addEventListener("resize", this.updateWindowDimensions);
   }
 
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
-    window.removeEventListener('resize', this.updateWindowDimensions);
+    window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
   updateWindowDimensions() {
@@ -232,8 +232,8 @@ export class CategorizationScreen extends Component
     return (
       <View
         style={{
-          width : this.state.width,
-          height : this.state.height,
+          width: this.state.width,
+          height: this.state.height,
           justifyContent: "space-around",
           alignContent: "stretch",
         }}
@@ -272,54 +272,52 @@ export class CategorizationScreen extends Component
             flex: 8,
           }}
         >
-          <FlatList
-            data={this.state.categories}
-            keyExtractor={(item, index) => {
-              return item.getType(); //+ new Date().getTime().toString() + (Math.floor(Math.random() * Math.floor(new Date().getTime()))).toString()
-            }}
-            extraData={this.state}
-            renderItem={({ item }) => {
-              const color = this.categoryColors[item.getType()];
-              return (
-                <CategoryScreen
-                  color={color}
-                  category={item}
-                  categorizationMode={this.state.isCategorizationMode}
-                  onPress={this.onCategoryPress}
-                ></CategoryScreen>
-              );
-            }}
-          ></FlatList>
-        </View>
-
-        <View
-          style={{
-            justifyContent: "flex-end",
-          }}
-        >
-          <Button
-            buttonStyle={{
-              backgroundColor: "#ced4de",
-              marginTop: 10,
-              paddingTop: 15,
-              paddingBottom: 15,
-              marginLeft: 30,
-              marginRight: 30,
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: "#fff",
-            }}
-            icon={{
-              name: "add",
-              size: 15,
-              color: "white",
-            }}
-            onPress={() => {
-              this.setState({
-                showAddCategoryScreen: true,
-              });
-            }}
-          ></Button>
+          <ScrollView>
+            <View>
+              {this.state.categories.map(
+                function (category: Category) {
+                  const color = this.categoryColors[category.getType()];
+                  return (
+                    <CategoryScreen
+                      color={color}
+                      category={category}
+                      categorizationMode={this.state.isCategorizationMode}
+                      onPress={this.onCategoryPress}
+                    ></CategoryScreen>
+                  );
+                }.bind(this)
+              )}
+            </View>
+            <View
+              style={{
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                buttonStyle={{
+                  backgroundColor: "#ced4de",
+                  marginTop: 10,
+                  paddingTop: 15,
+                  paddingBottom: 15,
+                  marginLeft: 30,
+                  marginRight: 30,
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: "#fff",
+                }}
+                icon={{
+                  name: "add",
+                  size: 15,
+                  color: "white",
+                }}
+                onPress={() => {
+                  this.setState({
+                    showAddCategoryScreen: true,
+                  });
+                }}
+              ></Button>
+            </View>
+          </ScrollView>
         </View>
         <View
           style={{

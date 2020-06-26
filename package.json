@@ -9,10 +9,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.1.0",
     "@types/file-saver": "^2.0.1",
     "dinero": "^1.0.1",
     "dinero.js": "^1.8.1",
     "expo": "~37.0.3",
+    "expo-font": "~8.1.0",
     "file-saver": "^2.0.2",
     "luxon": "^1.24.1",
     "modal-enhanced-react-native-web": "^0.2.0",
@@ -36,8 +38,10 @@
     "jest": "^26.0.1",
     "ts-jest": "^26.1.0"
   },
-  "jest" : {
-    "testPathIgnorePatterns": ["<rootDir>/src/service/__tests__/test.location.ts"]
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/service/__tests__/test.location.ts"
+    ]
   },
   "private": true
 }

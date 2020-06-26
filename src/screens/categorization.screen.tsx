@@ -35,6 +35,7 @@ import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
 import { AddCategoryScreen } from "./add.category.screen";
+import {FontFamily} from '../css/styles';
 
 let CIRCLE_RADIUS = 36;
 
@@ -407,6 +408,8 @@ export class CategorizationScreen extends Component
                 <Text
                   style={{
                     color: "white",
+                    fontFamily : FontFamily,
+                    fontSize : 18
                   }}
                 >
                   {this.state.numUncategorized}

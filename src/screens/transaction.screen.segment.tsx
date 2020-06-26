@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Card, Text, Badge } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
+import {FontFamily} from '../css/styles';
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ export class TransactionScreenSegment extends Component {
                     key={item.detail}
                     style={{
                       color: this.props.textColor,
+                      fontFamily : FontFamily
                     }}
                   >
                     {item.detail}
@@ -58,6 +60,9 @@ export class TransactionScreenSegment extends Component {
                     value="X"
                     badgeStyle={{
                       backgroundColor: this.props.containerStyle.backgroundColor
+                    }}
+                    textStyle={{
+                      fontFamily : FontFamily
                     }}
                   />
                 </TouchableOpacity>

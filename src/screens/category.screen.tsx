@@ -14,6 +14,7 @@ import {
   TransactionScreenSegment,
   TransactionDeletePress,
 } from "./transaction.screen.segment";
+import { FontFamily } from "../css/styles";
 
 export interface Props {
   color: string;
@@ -138,6 +139,7 @@ export class CategoryScreen extends Component
                   style={{
                     color: "#fff",
                     fontSize: 15,
+                    fontFamily : FontFamily
                   }}
                 >
                   {this.state.category.getType()}
@@ -160,6 +162,9 @@ export class CategoryScreen extends Component
                   badgeStyle={{
                     backgroundColor: this.state.color,
                   }}
+                  textStyle={{
+                    fontFamily : FontFamily
+                  }}
                 />
               </View>
               <View
@@ -176,6 +181,10 @@ export class CategoryScreen extends Component
                     badgeStyle={{
                       backgroundColor: this.state.color,
                     }}
+                    textStyle={{
+                      fontFamily : FontFamily
+                    }}
+                    
                   />
                 </TouchableOpacity>
               </View>

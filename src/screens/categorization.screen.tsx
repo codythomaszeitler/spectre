@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Animated,
-  ScrollView,
-} from "react-native";
+import { View, TouchableOpacity, Animated, ScrollView } from "react-native";
 import { Button, Icon, Card, Input, Text } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
@@ -35,7 +30,8 @@ import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
 import { AddCategoryScreen } from "./add.category.screen";
-import {FontFamily} from '../css/styles';
+import { FontFamily } from "../css/styles";
+import { Alert } from "./alert";
 
 let CIRCLE_RADIUS = 36;
 
@@ -116,18 +112,24 @@ export class CategorizationScreen extends Component
   }
 
   async onExportCategorized() {
-    const file = new File([], "test.csv", { type: "text/plain;charset=utf-8" });
+    try {
+      const file = new File([], "test.csv", {
+        type: "text/plain;charset=utf-8",
+      });
+      const location = new LocalFileLocation(file);
+      const columns = new Columns({});
 
-    const location = new LocalFileLocation(file);
-    const columns = new Columns({});
+      const transactionSaveService = new TransactionSaveService(
+        this.spectreUser,
+        location,
+        new CsvExporter(columns)
+      );
 
-    const transactionSaveService = new TransactionSaveService(
-      this.spectreUser,
-      location,
-      new CsvExporter(columns)
-    );
-
-    await transactionSaveService.save();
+      await transactionSaveService.save();
+    } catch (e) {
+      let errorDialog = new Alert();
+      errorDialog.show(e.message);
+    }
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
@@ -166,47 +168,57 @@ export class CategorizationScreen extends Component
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
-    const location = new LocalFileLocation(event.file);
-    if (await location.isEmpty()) {
-      return;
+    try {
+      const location = new LocalFileLocation(event.file);
+      if (await location.isEmpty()) {
+        return;
+      }
+
+      const estimator = new ColumnEstimation(location);
+      const columns = await estimator.estimate();
+
+      const loadService = new TransactionLoadService(
+        this.spectreUser,
+        location,
+        new CsvImporter(columns)
+      );
+      await loadService.load();
+
+      this.setState({
+        showImportCsvScreen: false,
+        numUncategorized: this.spectreUser.getUncategorized().length,
+      });
+    } catch (e) {
+      let errorDialog = new Alert();
+      errorDialog.show(e.message);
     }
-
-    const estimator = new ColumnEstimation(location);
-    const columns = await estimator.estimate();
-
-    const loadService = new TransactionLoadService(
-      this.spectreUser,
-      location,
-      new CsvImporter(columns)
-    );
-    await loadService.load();
-
-    this.setState({
-      showImportCsvScreen: false,
-      numUncategorized: this.spectreUser.getUncategorized().length,
-    });
   }
 
   onCategoryPress(event: OnCategoryPressed) {
-    if (this.state.currentTransaction) {
-      this.spectreUser.categorize(
-        this.state.currentTransaction,
-        event.category
-      );
+    try {
+      if (this.state.currentTransaction) {
+        this.spectreUser.categorize(
+          this.state.currentTransaction,
+          event.category
+        );
 
-      const uncategorized = this.spectreUser.getUncategorized();
-      const transaction = uncategorized.shift();
+        const uncategorized = this.spectreUser.getUncategorized();
+        const transaction = uncategorized.shift();
 
-      if (transaction) {
-        this.setState({
-          currentTransaction: transaction,
-        });
-      } else {
-        this.setState({
-          currentTransaction: null,
-          isCategorizationMode: false,
-        });
+        if (transaction) {
+          this.setState({
+            currentTransaction: transaction,
+          });
+        } else {
+          this.setState({
+            currentTransaction: null,
+            isCategorizationMode: false,
+          });
+        }
       }
+    } catch (e) {
+      let errorDialog = new Alert();
+      errorDialog.show(e.message);
     }
   }
 
@@ -408,8 +420,8 @@ export class CategorizationScreen extends Component
                 <Text
                   style={{
                     color: "white",
-                    fontFamily : FontFamily,
-                    fontSize : 18
+                    fontFamily: FontFamily,
+                    fontSize: 18,
                   }}
                 >
                   {this.state.numUncategorized}

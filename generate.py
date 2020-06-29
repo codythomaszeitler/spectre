@@ -11,7 +11,10 @@ for i in range(num_rows):
     bank = banks[i % len(banks)]
     buisness = buisnesses[i % len(buisnesses)]
 
-    contents +=  bank + ',' + buisness + ',RANDOM''\n' 
+    if i % 2 == 0:
+        contents +=  bank + ',' + buisness + ',RANDOM' + '\n' 
+    else:
+        contents +=  bank + ',' + '\n'
 
 full = header + contents
 print (full)

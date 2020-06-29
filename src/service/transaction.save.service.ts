@@ -2,8 +2,9 @@ import { SpectreUser } from "../pojo/spectre.user";
 import { Exporter } from "../export/exporter";
 import { Location } from "../service/location";
 import { DocumentSaveService } from "./document.save.service";
-import { Columns } from "../export/columns";
+import { Columns, columnNameDelimeter, nameKey } from "../export/columns";
 import { CATEGORY_TYPE } from "../pojo/category";
+import {Transaction} from '../pojo/transaction';
 
 export class TransactionSaveService {
   spectreUser: SpectreUser;
@@ -42,42 +43,58 @@ export class TransactionSaveService {
   }
 
   static generateCompliantColumns(spectreUser : SpectreUser) {
-
     const columnsConfig = {};
 
-    const transactions = spectreUser.getTransactions();
-
-    let largestColumnCount = 0;
-    for (let i = 0; i < transactions.length; i++) {
-      const transaction = transactions[i];
-      const details = transaction.getDetails();
-
-      for (let j = 0; j < details.length; j++) {
-        const detail = details[j];
-        const columnName = detail.getColumnName();
-
-        if (columnsConfig[j]) {
-          const currentColumnName = columnsConfig[j]["name"];
+    const ensureColumnSupportsTransaction = (transaction : Transaction) => {
+      const addOrAppendColumnName = (columnIndex : number, columnName : string) => {
+        if (columnsConfig[columnIndex]) {
+          const currentColumnName = columnsConfig[columnIndex][nameKey];
           if (!currentColumnName.includes(columnName)) {
-            columnsConfig[j]["name"] = currentColumnName + '|' + columnName
+            columnsConfig[columnIndex][nameKey] = currentColumnName + columnNameDelimeter + columnName
           }
         } else {
-          columnsConfig[j] = {
+          columnsConfig[columnIndex] = {
            name : columnName, 
            type : 'string'
           }
         }
       }
 
-      if (largestColumnCount < details.length) {
-        largestColumnCount = details.length;
+      const details = transaction.getDetails();
+      for (let j = 0; j < details.length; j++) {
+        const detail = details[j];
+        const columnName = detail.getColumnName();
+
+        addOrAppendColumnName(j, columnName);
       }
     }
 
-    columnsConfig[largestColumnCount] = {
-      name : 'Category',
-      type : CATEGORY_TYPE
+    const addCategoryColumn = () => {
+      const getLargestColumnCount = () => {
+        const transactions = spectreUser.getTransactions();
+  
+        let largestColumnCount = 0;
+        for (let i = 0; i < transactions.length; i++) {
+          const details = transactions[i].getDetails();
+          if (details.length > largestColumnCount) {
+            largestColumnCount = details.length;
+          }
+        }
+        return largestColumnCount;
+      }
+      columnsConfig[getLargestColumnCount()] = {
+        name : 'Category',
+        type : CATEGORY_TYPE
+      }
     }
+
+    const transactions = spectreUser.getTransactions();
+    for (let i = 0; i < transactions.length; i++) {
+      const transaction = transactions[i];
+      ensureColumnSupportsTransaction(transaction);
+    }
+
+    addCategoryColumn();
 
     return new Columns(columnsConfig);
   }

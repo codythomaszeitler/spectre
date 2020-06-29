@@ -1,4 +1,7 @@
 
+export const columnNameDelimeter = '|';
+export const nameKey = 'name';
+
 export class Columns {
   configuration : Object;
   constructor(configuration : Object) {
@@ -15,7 +18,7 @@ export class Columns {
 
   getName(columnIndex : number) {
     this._checkColumnIndex(columnIndex);
-    return this.configuration[columnIndex]['name'];
+    return this.configuration[columnIndex][nameKey];
   }
 
   getType(columnIndex : number) {

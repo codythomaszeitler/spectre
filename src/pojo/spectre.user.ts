@@ -42,6 +42,15 @@ export class SpectreUser {
     return found.getTransactions();
   }
 
+  getTransactions() {
+    const transactions = [];
+    const categories = this.getCategories();
+    for (let i = 0; i < categories.length; i++) {
+      transactions.push(...this.getTransactionsFor(categories[i]));
+    }
+    return transactions;
+  }
+
   getUncategorized() {
     const copied = [];
     for (let i = 0; i < this.uncategorized.length; i++) {

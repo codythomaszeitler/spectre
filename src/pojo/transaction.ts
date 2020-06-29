@@ -31,6 +31,17 @@ export class Transaction {
     return copied;
   }
 
+  hasDetailWithColumnName(columnName : string) {
+    let hasDetailWithColumnName = false;
+    for (let i = 0; i < this.details.length; i++) {
+      if (this.details[i].getColumnName() === columnName) {
+        hasDetailWithColumnName = true;
+        break;
+      }
+    }
+    return hasDetailWithColumnName;
+  }
+
   getDetailByName(name : string) {
     let raw = null;
 

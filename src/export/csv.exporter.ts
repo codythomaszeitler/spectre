@@ -26,21 +26,42 @@ export class CsvExporter implements Exporter {
   }
 
   convert(transaction: Transaction, category?: Category) {
+    const containsColumnName = (columnNames: string[]) => {
+      let hasColumnName = false;
+      for (let i = 0; i < columnNames.length; i++) {
+        const columnName = columnNames[i];
+        if (transaction.hasDetailWithColumnName(columnName)) {
+          hasColumnName = true;
+          break;
+        }
+      }
+      return hasColumnName;
+    };
+
+    const getMatchingColumnName = (columnNames: string[]) => {
+      let matchingColumnName = null;
+
+      for (let i = 0; i < columnNames.length; i++) {
+        if (transaction.hasDetailWithColumnName(columnNames[i])) {
+          matchingColumnName = columnNames[i];
+          break;
+        }
+      }
+      return matchingColumnName;
+    };
+
     let converted = "";
 
     const details = transaction.getDetails();
-    let length = details.length;
-    if (category) {
-      length = length + 1;
-    }
+    let length = this.columns.getNumColumns();
 
     for (let i = 0; i < length; i++) {
       if (!this.columns.hasColumn(i)) {
         const detail = details[i];
         if (detail) {
-          converted += escapeCsvElement(detail.getElement()) + ',';
+          converted += escapeCsvElement(detail.getElement()) + ",";
         } else {
-          converted += escapeCsvElement(category.getType()) + ',';
+          converted += escapeCsvElement(category.getType()) + ",";
         }
         continue;
       }
@@ -50,9 +71,22 @@ export class CsvExporter implements Exporter {
 
       if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";
+      } else if (!name) {
+        converted += ",";
       } else {
-        const converter = new DetailConverter();
-        converted += escapeCsvElement(converter.fromDetail(transaction.getDetailByName(name))) + ',';
+        const columnNames = name.split("|");
+        if (containsColumnName(columnNames)) {
+          const matchingColumnName = getMatchingColumnName(columnNames);
+          const converter = new DetailConverter();
+          converted +=
+            escapeCsvElement(
+              converter.fromDetail(
+                transaction.getDetailByName(matchingColumnName)
+              )
+            ) + ",";
+        } else {
+          converted += ",";
+        }
       }
     }
 
@@ -61,7 +95,7 @@ export class CsvExporter implements Exporter {
   }
 }
 
-export function escapeCsvElement(raw : string) {
+export function escapeCsvElement(raw: string) {
   const asCsv = '"' + raw + '"';
   return asCsv;
 }

@@ -117,7 +117,7 @@ export class CategorizationScreen extends Component
         type: "text/plain;charset=utf-8",
       });
       const location = new LocalFileLocation(file);
-      const columns = new Columns({});
+      const columns = TransactionSaveService.generateCompliantColumns(this.spectreUser);
 
       const transactionSaveService = new TransactionSaveService(
         this.spectreUser,

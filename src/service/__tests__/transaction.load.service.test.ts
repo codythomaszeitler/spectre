@@ -12,11 +12,12 @@ describe("Transaction Load Service", () => {
   it("should be able to load transactions from a location", async () => {
     const columns = new Columns({
       0: {
-        Amount: AMOUNT_TYPE,
+        name : 'Amount',
+        type : AMOUNT_TYPE
       },
     });
 
-    const details = [TransactionDetail.withCurrency(new Currency(400))];
+    const details = [TransactionDetail.withCurrency(new Currency(400), 'Amount')];
     const transaction = new Transaction(details);
     const exporter = new CsvExporter(columns);
     const importer = new CsvImporter(columns);
@@ -28,8 +29,7 @@ describe("Transaction Load Service", () => {
     const testObject = new TransactionLoadService(
       spectreUser,
       location,
-      importer,
-      columns
+      importer
     );
 
     const loaded = await testObject.load();

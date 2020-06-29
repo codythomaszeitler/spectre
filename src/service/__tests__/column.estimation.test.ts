@@ -5,7 +5,7 @@ describe("Column Estimation", () => {
   it("should be able to estimate columns given a location", async () => {
     const location = new TestLocation(["a,b,c", "1,1,3"]);
     const testObject = new ColumnEstimation();
-    const columns = await testObject.estimate(location);
+    const columns = await testObject.estimateByLocation(location);
 
     expect(columns.getNumColumns()).toBe(3);
     expect(columns.getName(0)).toBe("column0");
@@ -19,7 +19,7 @@ describe("Column Estimation", () => {
   it('should return only one column if the peeked line does not have the delimiter', async () => {
     const location = new TestLocation(["a", "1"]);
     const testObject = new ColumnEstimation();
-    const columns = await testObject.estimate(location);
+    const columns = await testObject.estimateByLocation(location);
 
     expect(columns.getNumColumns()).toBe(1);
     expect(columns.getName(0)).toBe("column0");
@@ -31,7 +31,7 @@ describe("Column Estimation", () => {
     const testObject = new ColumnEstimation();
     let caughtException = null;
     try {
-      await testObject.estimate(null);
+      await testObject.estimateByLocation(null);
     } catch (e) {
         caughtException = e;
     }
@@ -45,7 +45,7 @@ describe("Column Estimation", () => {
 
     let caughtException = null;
     try {
-      await testObject.estimate(location);
+      await testObject.estimateByLocation(location);
     } catch (e) {
       caughtException = e;
     }
@@ -60,7 +60,7 @@ describe("Column Estimation", () => {
 
     let caughtException = null;
     try {
-      await testObject.estimate(location);
+      await testObject.estimateByLocation(location);
     } catch (e) {
       caughtException = e;
     }
@@ -75,7 +75,7 @@ describe("Column Estimation", () => {
 
     let caughtException = null;
     try {
-      await testObject.estimate(location);
+      await testObject.estimateByLocation(location);
     } catch (e) {
       caughtException = e;
     }

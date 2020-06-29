@@ -2,9 +2,7 @@ import { SpectreUser } from "../pojo/spectre.user";
 import { Exporter } from "../export/exporter";
 import { Location } from "../service/location";
 import { DocumentSaveService } from "./document.save.service";
-import { Columns, columnNameDelimeter, nameKey } from "../export/columns";
-import { CATEGORY_TYPE } from "../pojo/category";
-import {Transaction} from '../pojo/transaction';
+import { ColumnEstimation } from "./column.estimation";
 
 export class TransactionSaveService {
   spectreUser: SpectreUser;
@@ -43,59 +41,7 @@ export class TransactionSaveService {
   }
 
   static generateCompliantColumns(spectreUser : SpectreUser) {
-    const columnsConfig = {};
-
-    const ensureColumnSupportsTransaction = (transaction : Transaction) => {
-      const addOrAppendColumnName = (columnIndex : number, columnName : string) => {
-        if (columnsConfig[columnIndex]) {
-          const currentColumnName = columnsConfig[columnIndex][nameKey];
-          if (!currentColumnName.includes(columnName)) {
-            columnsConfig[columnIndex][nameKey] = currentColumnName + columnNameDelimeter + columnName
-          }
-        } else {
-          columnsConfig[columnIndex] = {
-           name : columnName, 
-           type : 'string'
-          }
-        }
-      }
-
-      const details = transaction.getDetails();
-      for (let j = 0; j < details.length; j++) {
-        const detail = details[j];
-        const columnName = detail.getColumnName();
-
-        addOrAppendColumnName(j, columnName);
-      }
-    }
-
-    const addCategoryColumn = () => {
-      const getLargestColumnCount = () => {
-        const transactions = spectreUser.getTransactions();
-  
-        let largestColumnCount = 0;
-        for (let i = 0; i < transactions.length; i++) {
-          const details = transactions[i].getDetails();
-          if (details.length > largestColumnCount) {
-            largestColumnCount = details.length;
-          }
-        }
-        return largestColumnCount;
-      }
-      columnsConfig[getLargestColumnCount()] = {
-        name : 'Category',
-        type : CATEGORY_TYPE
-      }
-    }
-
-    const transactions = spectreUser.getTransactions();
-    for (let i = 0; i < transactions.length; i++) {
-      const transaction = transactions[i];
-      ensureColumnSupportsTransaction(transaction);
-    }
-
-    addCategoryColumn();
-
-    return new Columns(columnsConfig);
+    const estimator = new ColumnEstimation();
+    return estimator.estimateBySpectreUser(spectreUser);
   }
 }

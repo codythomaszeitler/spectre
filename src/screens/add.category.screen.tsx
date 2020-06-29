@@ -6,6 +6,7 @@ import { datastore } from "../datastore/datastore";
 import { Category } from "../pojo/category";
 import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
 import { CategoryColors } from "../css/styles";
+import { Alert } from "./alert";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
@@ -25,17 +26,22 @@ export class AddCategoryScreen extends Component {
   }
 
   onAddCategoryPress() {
-    // This function changes based on what state the screen is currently in
-    if (this.state.categoryAddText) {
-      const category = new Category(this.state.categoryAddText);
-      this.spectreUser.addCategory(category);
+    try {
+      // This function changes based on what state the screen is currently in
+      if (this.state.categoryAddText) {
+        const category = new Category(this.state.categoryAddText);
+        this.spectreUser.addCategory(category);
 
-      this.props.onSuccessfulAdd(category, this.state.color);
+        this.props.onSuccessfulAdd(category, this.state.color);
 
-      this.setState({
-        categoryAddText: "",
-        color: this.colors[0],
-      });
+        this.setState({
+          categoryAddText: "",
+          color: this.colors[0],
+        });
+      }
+    } catch (e) {
+      const errorDialog = new Alert();
+      errorDialog.show(e.message);
     }
   }
 

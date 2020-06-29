@@ -15,6 +15,7 @@ import {
   TransactionDeletePress,
 } from "./transaction.screen.segment";
 import { FontFamily } from "../css/styles";
+import { Alert } from "./alert";
 
 export interface Props {
   color: string;
@@ -55,7 +56,10 @@ export class CategoryScreen extends Component
   }
 
   componentWillUnmount() {
-    this.spectreUser.removeTransactionCategorizedListener(this.props.category, this);
+    this.spectreUser.removeTransactionCategorizedListener(
+      this.props.category,
+      this
+    );
     this.spectreUser.removeTransactionUncategorizedListener(
       this.props.category,
       this
@@ -63,11 +67,21 @@ export class CategoryScreen extends Component
   }
 
   onDeletePress() {
-    this.spectreUser.removeCategory(this.props.category);
+    try {
+      this.spectreUser.removeCategory(this.props.category);
+    } catch (e) {
+      const errorDialog = new Alert();
+      errorDialog.show(e.message);
+    }
   }
 
   onUncategorizePress(event: TransactionDeletePress) {
-    this.spectreUser.uncategorize(event.transaction, this.props.category);
+    try {
+      this.spectreUser.uncategorize(event.transaction, this.props.category);
+    } catch (e) {
+      const errorDialog = new Alert();
+      errorDialog.show(e.message);
+    }
   }
 
   onTransactionCategorized(event: OnTransactionCategorizedEvent) {
@@ -91,18 +105,28 @@ export class CategoryScreen extends Component
   }
 
   onPress() {
-    if (!this.props.categorizationMode) {
-      const flipped = !this.state.shouldShowTransactions;
-      this.setState({
-        shouldShowTransactions: flipped,
-      });
-    }
+    try {
+      if (!this.props.categorizationMode) {
+        const flipped = !this.state.shouldShowTransactions;
+        this.setState({
+          shouldShowTransactions: flipped,
+        });
+      }
 
-    this.props.onPress(new OnCategoryPressed(this.state.category));
+      this.props.onPress(new OnCategoryPressed(this.state.category));
+    } catch (e) {
+      const errorDialog = new Alert();
+      errorDialog.show(e.message);
+    }
   }
 
   onCategoryDeletePress() {
-    this.spectreUser.remove(this.state.category);
+    try {
+      this.spectreUser.remove(this.state.category);
+    } catch (e) {
+      const errorDialog = new Alert();
+      errorDialog.show(e.message);
+    }
   }
 
   render() {
@@ -139,7 +163,7 @@ export class CategoryScreen extends Component
                   style={{
                     color: "#fff",
                     fontSize: 15,
-                    fontFamily : FontFamily
+                    fontFamily: FontFamily,
                   }}
                 >
                   {this.state.category.getType()}
@@ -163,7 +187,7 @@ export class CategoryScreen extends Component
                     backgroundColor: this.state.color,
                   }}
                   textStyle={{
-                    fontFamily : FontFamily
+                    fontFamily: FontFamily,
                   }}
                 />
               </View>
@@ -173,18 +197,15 @@ export class CategoryScreen extends Component
                   flex: 2,
                 }}
               >
-                <TouchableOpacity
-                  onPress={this.onDeletePress}
-                >
+                <TouchableOpacity onPress={this.onDeletePress}>
                   <Badge
                     value="X"
                     badgeStyle={{
                       backgroundColor: this.state.color,
                     }}
                     textStyle={{
-                      fontFamily : FontFamily
+                      fontFamily: FontFamily,
                     }}
-                    
                   />
                 </TouchableOpacity>
               </View>

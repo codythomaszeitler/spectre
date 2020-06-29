@@ -12,19 +12,6 @@ export class CsvExporter implements Exporter {
     this.columns = columns.copy();
   }
 
-  getHeader() {
-    let header = "";
-    const columnCount = this.columns.getNumColumns();
-    for (let i = 0; i < columnCount; i++) {
-      if (i === columnCount - 1) {
-        header += escapeCsvElement(this.columns.getName(i));
-      } else {
-        header += escapeCsvElement(this.columns.getName(i)) + ",";
-      }
-    }
-    return header;
-  }
-
   convert(transaction: Transaction, category?: Category) {
     const containsColumnName = (columnNames: string[]) => {
       let hasColumnName = false;

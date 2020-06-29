@@ -4,8 +4,8 @@ import { TestLocation } from "./test.location";
 describe("Column Estimation", () => {
   it("should be able to estimate columns given a location", async () => {
     const location = new TestLocation(["a,b,c", "1,1,3"]);
-    const testObject = new ColumnEstimation(location);
-    const columns = await testObject.estimate();
+    const testObject = new ColumnEstimation();
+    const columns = await testObject.estimate(location);
 
     expect(columns.getNumColumns()).toBe(3);
     expect(columns.getName(0)).toBe("column0");
@@ -18,8 +18,8 @@ describe("Column Estimation", () => {
 
   it('should return only one column if the peeked line does not have the delimiter', async () => {
     const location = new TestLocation(["a", "1"]);
-    const testObject = new ColumnEstimation(location);
-    const columns = await testObject.estimate();
+    const testObject = new ColumnEstimation();
+    const columns = await testObject.estimate(location);
 
     expect(columns.getNumColumns()).toBe(1);
     expect(columns.getName(0)).toBe("column0");
@@ -28,9 +28,10 @@ describe("Column Estimation", () => {
 
   it('should throw an exception if a null location is given during construction', async () => {
 
+    const testObject = new ColumnEstimation();
     let caughtException = null;
     try {
-        new ColumnEstimation(null);
+      await testObject.estimate(null);
     } catch (e) {
         caughtException = e;
     }
@@ -40,11 +41,11 @@ describe("Column Estimation", () => {
 
   it("should throw an exception if the first line is null during peek", async () => {
     const location = new TestLocation([null, "a,b,c", "1,1,3"]);
-    const testObject = new ColumnEstimation(location);
+    const testObject = new ColumnEstimation();
 
     let caughtException = null;
     try {
-      await testObject.estimate();
+      await testObject.estimate(location);
     } catch (e) {
       caughtException = e;
     }
@@ -55,11 +56,11 @@ describe("Column Estimation", () => {
 
   it("should throw an exception if the first line is undefined during peek", async () => {
     const location = new TestLocation([undefined, "a,b,c", "1,1,3"]);
-    const testObject = new ColumnEstimation(location);
+    const testObject = new ColumnEstimation();
 
     let caughtException = null;
     try {
-      await testObject.estimate();
+      await testObject.estimate(location);
     } catch (e) {
       caughtException = e;
     }
@@ -70,11 +71,11 @@ describe("Column Estimation", () => {
 
   it("should throw an exception if the first line is empty during peek", async () => {
     const location = new TestLocation(["", "a,b,c", "1,1,3"]);
-    const testObject = new ColumnEstimation(location);
+    const testObject = new ColumnEstimation();
 
     let caughtException = null;
     try {
-      await testObject.estimate();
+      await testObject.estimate(location);
     } catch (e) {
       caughtException = e;
     }

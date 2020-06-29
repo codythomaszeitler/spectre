@@ -1,6 +1,6 @@
 import { Transaction } from "../pojo/transaction";
 import { CATEGORY_TYPE } from "../pojo/category";
-import { Columns } from "./columns";
+import { Columns, columnNameDelimeter } from "./columns";
 import { Category } from "../pojo/category";
 import { Exporter } from "./exporter";
 import { DetailConverter } from "./detail.converter";
@@ -54,14 +54,14 @@ export class CsvExporter implements Exporter {
       }
 
       const type = this.columns.getType(i);
-      const name = this.columns.getName(i);
+      const nameOrNames = this.columns.getName(i);
 
       if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getType()) + ",";
-      } else if (!name) {
+      } else if (!nameOrNames) {
         converted += ",";
       } else {
-        const columnNames = name.split("|");
+        const columnNames = nameOrNames.split(columnNameDelimeter);
         if (containsColumnName(columnNames)) {
           const matchingColumnName = getMatchingColumnName(columnNames);
           const converter = new DetailConverter();

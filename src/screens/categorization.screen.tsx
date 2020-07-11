@@ -174,8 +174,8 @@ export class CategorizationScreen extends Component
         return;
       }
 
-      const estimator = new ColumnEstimation(location);
-      const columns = await estimator.estimate();
+      const estimator = new ColumnEstimation();
+      const columns = await estimator.estimateByLocation(location);
 
       const loadService = new TransactionLoadService(
         this.spectreUser,

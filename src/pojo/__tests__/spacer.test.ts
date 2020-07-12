@@ -103,4 +103,30 @@ describe("Spacer", () => {
       "Cannot create a spacer with a null after category"
     );
   });
+
+  it('should throw an exception for contains space after if a falsy spacers is given', () => {
+    let caughtException = null;
+    try {
+      Spacer.containsSpacerAfter(null, beforeCategorization);
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe(
+      "Cannot check spacer location from a falsy list of spacers"
+    );
+  });
+
+  it('should throw an exception for contains space before if a falsy spacers is given', () => {
+    let caughtException = null;
+    try {
+      Spacer.containsSpacerBefore(null, afterCategorization);
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe(
+      "Cannot check spacer location from a falsy list of spacers"
+    );
+  });
 });

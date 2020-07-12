@@ -17,6 +17,10 @@ export class Spacer {
     this.after = after.copy();
   }
 
+  copy() {
+    return new Spacer(this.before, this.after);
+  }
+
   static START_OF_CATEGORIES() {
     return new Category("___UNIQUE STRING FOR START OF CATEGORIES___");
   }
@@ -26,6 +30,12 @@ export class Spacer {
   }
 
   static containsSpacerBefore(spacers: Spacer[], category: Category) {
+    if (!spacers) {
+        throw new Error(
+          "Cannot check spacer location from a falsy list of spacers"
+        );
+      }
+
     if (!category) {
       return false;
     }
@@ -45,6 +55,12 @@ export class Spacer {
   }
 
   static containsSpacerAfter(spacers: Spacer[], category: Category) {
+    if (!spacers) {
+      throw new Error(
+        "Cannot check spacer location from a falsy list of spacers"
+      );
+    }
+
     if (!category) {
       return false;
     }

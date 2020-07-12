@@ -148,11 +148,6 @@ export class CategorizationScreen extends Component
       payloads.push(this.createPayloadFor(category));
       payloads.push(new SpacerScreenSegmentPayload());
 
-      // const spacers = [];
-      // if (Spacer.containsSpacerAfter(spacers, category)) {
-      //   const spacerPayload = new SpacerScreenSegmentPayload();
-      //   payloads.push(spacerPayload);
-      // }
     }
 
     return payloads;
@@ -359,21 +354,6 @@ export class CategorizationScreen extends Component
                 })}
               </View>
             }
-            {/* <View>
-              {this.state.categories.map(
-                function (category: Category) {
-                  const color = this.categoryColors[category.getType()];
-                  return (
-                    <CategoryScreen
-                      color={color}
-                      category={category}
-                      categorizationMode={this.state.isCategorizationMode}
-                      onPress={this.onCategoryPress}
-                    ></CategoryScreen>
-                  );
-                }.bind(this)
-              )}
-            </View> */}
             <View
               style={{
                 justifyContent: "flex-end",

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Card, Button, Input, Text } from "react-native-elements";
 import { SpectreUser } from "../pojo/spectre.user";
+import { Color } from "../pojo/color";
 import { datastore } from "../datastore/datastore";
 import { Category } from "../pojo/category";
 import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
@@ -32,7 +33,7 @@ export class AddCategoryScreen extends Component {
         const category = new Category(this.state.categoryAddText);
         this.spectreUser.addCategory(category);
 
-        this.props.onSuccessfulAdd(category, this.state.color);
+        this.props.onSuccessfulAdd(category, new Color(this.state.color));
 
         this.setState({
           categoryAddText: "",

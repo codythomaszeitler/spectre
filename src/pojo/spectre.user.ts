@@ -166,6 +166,11 @@ export class SpectreUser {
     );
   }
 
+  hasAnotherTransaction() {
+    const categories = this.getUncategorized();
+    return categories.length !== 0;
+  }
+
   categorize(transaction: Transaction, category: Category) {
     const found = this._getCategory(category);
     if (!found) {

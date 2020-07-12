@@ -16,9 +16,10 @@ import {
 } from "./transaction.screen.segment";
 import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
+import {Color} from '../pojo/color';
 
 export interface Props {
-  color: string;
+  color: Color;
   category: Category;
   categorizationMode: boolean;
   onPress: (event: OnCategoryPressed) => void;
@@ -49,9 +50,10 @@ export class CategoryScreen extends Component
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
     this.state = {
-      color: props.color,
+      color: props.color.hex(),
       category: props.category,
       numTransactions: props.category.getTransactions().length,
+      shouldShowTransactions : false
     };
   }
 

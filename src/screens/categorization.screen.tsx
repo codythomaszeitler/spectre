@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Animated, ScrollView } from "react-native";
-import { Button, Icon, Card, Input, Text } from "react-native-elements";
+import { Button, Icon, Card, Text } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -29,14 +29,19 @@ import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
 import { AddCategoryScreen } from "./add.category.screen";
-import { FontFamily } from "../css/styles";
+import { FontFamily, CategoryColors } from "../css/styles";
 import { Alert } from "./alert";
-
-let CIRCLE_RADIUS = 36;
+import { ScreenSegmentPayload } from "./screen.segment.payload";
+import { ScreenSegmentFactory } from "./screen.segment.factory";
+import { CategoryScreenSegmentPayload } from "./category.screen.segment.payload";
+import { Color } from "../pojo/color";
+import { Spacer } from "../pojo/spacer";
+import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 
 export interface Props {}
 
 export interface State {
+  screenSegmentPayloads: ScreenSegmentPayload[];
   categories: Category[];
   showImportCsvScreen: boolean;
   showAddCategoryScreen: boolean;
@@ -75,6 +80,7 @@ export class CategorizationScreen extends Component
     this.categoryColors = {};
 
     this.state = {
+      screenSegmentPayloads: [],
       pan: new Animated.ValueXY(),
       categories: this.spectreUser.getCategories(),
       showImportCsvScreen: false,
@@ -116,7 +122,9 @@ export class CategorizationScreen extends Component
         type: "text/plain;charset=utf-8",
       });
       const location = new LocalFileLocation(file);
-      const columns = TransactionSaveService.generateCompliantColumns(this.spectreUser);
+      const columns = TransactionSaveService.generateCompliantColumns(
+        this.spectreUser
+      );
 
       const transactionSaveService = new TransactionSaveService(
         this.spectreUser,
@@ -131,38 +139,91 @@ export class CategorizationScreen extends Component
     }
   }
 
+  generatePayloadsForCurrentState() {
+    const payloads = [];
+
+    const categories = this.spectreUser.getCategories();
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+
+      console.log(this.state.isCategorizationMode);
+
+      const categoryPayload = new CategoryScreenSegmentPayload(category)
+        .setColor(this.getColorFor(category))
+        .setCategorizationMode(this.state.isCategorizationMode)
+        .setOnPress(this.onCategoryPress);
+      payloads.push(categoryPayload);
+
+      const spacers = [];
+      if (Spacer.containsSpacerAfter(spacers, category)) {
+        const spacerPayload = new SpacerScreenSegmentPayload();
+        payloads.push(spacerPayload);
+      }
+    }
+
+    return payloads;
+  }
+
+  getColorFor(category: Category) {
+    let color = new Color(CategoryColors[0]);
+    if (category.getType() in this.categoryColors) {
+      color = this.categoryColors[category.getType()].copy();
+    }
+    return color;
+  }
+
+  onCategoryColorChoice(category: Category, color: Color) {
+    this.categoryColors[category.getType()] = color;
+
+    this.setState({
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+    });
+  }
+
   onCategoryAdded(event: OnCategoryAddedEvent) {
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
     this.spectreUser.addTransactionUncategorizedListener(event.category, this);
+
     this.setState({
-      categories: this.spectreUser.getCategories(),
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 
   onCategoryRemoved(event: OnCategoryRemovedEvent) {
+    const removeColorChoice = (category: Category) => {
+      delete this.categoryColors[category.getType()];
+    };
+
     this.spectreUser.removeTransactionCategorizedListener(event.category, this);
     this.spectreUser.removeTransactionUncategorizedListener(
       event.category,
       this
     );
+
+    removeColorChoice(event.category);
+
     this.setState({
-      categories: this.spectreUser.getCategories(),
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 
   onCategorizationStart() {
-    if (this.spectreUser.getUncategorized().length !== 0) {
+    if (this.spectreUser.hasAnotherTransaction()) {
+      this.nextTransaction();
+
       this.setState({
-        currentTransaction: this.spectreUser.getUncategorized().shift(),
-        isCategorizationMode: true,
+        screenSegmentPayloads: this.generatePayloadsForCurrentState(),
       });
     }
   }
 
   onCategorizationEnd() {
+    this.state.currentTransaction = null;
+    this.state.isCategorizationMode = false;
+    this.forceUpdate();
+
     this.setState({
-      currentTransaction: null,
-      isCategorizationMode: false,
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 
@@ -201,23 +262,25 @@ export class CategorizationScreen extends Component
           event.category
         );
 
-        const uncategorized = this.spectreUser.getUncategorized();
-        const transaction = uncategorized.shift();
-
-        if (transaction) {
-          this.setState({
-            currentTransaction: transaction,
-          });
-        } else {
-          this.setState({
-            currentTransaction: null,
-            isCategorizationMode: false,
-          });
-        }
+        this.nextTransaction();
       }
     } catch (e) {
       let errorDialog = new Alert();
       errorDialog.show(e.message);
+    }
+  }
+
+  nextTransaction() {
+    if (this.spectreUser.hasAnotherTransaction()) {
+      const uncategorized = this.spectreUser.getUncategorized();
+      const transaction = uncategorized.shift();
+
+      this.state.currentTransaction = transaction;
+      this.state.isCategorizationMode = true;
+
+      this.forceUpdate();
+    } else {
+      this.onCategorizationEnd();
     }
   }
 
@@ -274,7 +337,7 @@ export class CategorizationScreen extends Component
               this.setState({
                 showAddCategoryScreen: false,
               });
-              this.categoryColors[category.getType()] = color;
+              this.onCategoryColorChoice(category, color);
             }}
           ></AddCategoryScreen>
         </Modal>
@@ -284,7 +347,17 @@ export class CategorizationScreen extends Component
           }}
         >
           <ScrollView>
-            <View>
+            {
+              <View>
+                {this.state.screenSegmentPayloads.map(function (
+                  payload: ScreenSegmentPayload
+                ) {
+                  const factory = new ScreenSegmentFactory();
+                  return factory.create(payload);
+                })}
+              </View>
+            }
+            {/* <View>
               {this.state.categories.map(
                 function (category: Category) {
                   const color = this.categoryColors[category.getType()];
@@ -298,7 +371,7 @@ export class CategorizationScreen extends Component
                   );
                 }.bind(this)
               )}
-            </View>
+            </View> */}
             <View
               style={{
                 justifyContent: "flex-end",

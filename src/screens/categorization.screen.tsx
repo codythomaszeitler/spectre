@@ -23,7 +23,6 @@ import {
 import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { CsvImporter } from "../export/csv.importer";
-import { Columns } from "../export/columns";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";

@@ -9,6 +9,7 @@ import {
   SpacerScreenSegmentPayload,
   SPACER_PAYLOAD_TYPE,
 } from "./spacer.screen.segment.payload";
+import { SpacerScreenSegment } from './spacer.screen.segment';
 
 export class ScreenSegmentFactory {
   create(payload: ScreenSegmentPayload) {
@@ -47,6 +48,6 @@ class CategoryScreenSegementFactory {
 
 class SpacerScreenSegmentFactory {
   create(payload: SpacerScreenSegmentPayload) {
-    return null;
+    return (<SpacerScreenSegment></SpacerScreenSegment>);
   }
 }

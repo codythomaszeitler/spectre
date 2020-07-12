@@ -146,12 +146,13 @@ export class CategorizationScreen extends Component
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
       payloads.push(this.createPayloadFor(category));
+      payloads.push(new SpacerScreenSegmentPayload());
 
-      const spacers = [];
-      if (Spacer.containsSpacerAfter(spacers, category)) {
-        const spacerPayload = new SpacerScreenSegmentPayload();
-        payloads.push(spacerPayload);
-      }
+      // const spacers = [];
+      // if (Spacer.containsSpacerAfter(spacers, category)) {
+      //   const spacerPayload = new SpacerScreenSegmentPayload();
+      //   payloads.push(spacerPayload);
+      // }
     }
 
     return payloads;

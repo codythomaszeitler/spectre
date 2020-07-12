@@ -13,7 +13,7 @@ import {
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
 import { Transaction } from "../pojo/transaction";
-import { CategoryScreen, OnCategoryPressed } from "./category.screen";
+import { OnCategoryPressed } from "./category.screen";
 import { Category } from "../pojo/category";
 import {
   DocumentPicker,
@@ -145,14 +145,7 @@ export class CategorizationScreen extends Component
     const categories = this.spectreUser.getCategories();
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
-
-      console.log(this.state.isCategorizationMode);
-
-      const categoryPayload = new CategoryScreenSegmentPayload(category)
-        .setColor(this.getColorFor(category))
-        .setCategorizationMode(this.state.isCategorizationMode)
-        .setOnPress(this.onCategoryPress);
-      payloads.push(categoryPayload);
+      payloads.push(this.createPayloadFor(category));
 
       const spacers = [];
       if (Spacer.containsSpacerAfter(spacers, category)) {
@@ -162,6 +155,14 @@ export class CategorizationScreen extends Component
     }
 
     return payloads;
+  }
+
+  createPayloadFor(category: Category) {
+    const categoryPayload = new CategoryScreenSegmentPayload(category)
+      .setColor(this.getColorFor(category))
+      .setCategorizationMode(this.state.isCategorizationMode)
+      .setOnPress(this.onCategoryPress);
+    return categoryPayload;
   }
 
   getColorFor(category: Category) {

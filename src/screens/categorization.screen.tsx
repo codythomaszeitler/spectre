@@ -400,7 +400,7 @@ export class CategorizationScreen extends Component
                   paddingBottom: 15,
                   marginLeft: 30,
                   marginRight: 30,
-                  backgroundColor: "#00BCD4",
+                  backgroundColor: "#1FDA5D",
                   borderRadius: 10,
                   borderWidth: 1,
                   borderColor: "#fff",
@@ -427,7 +427,7 @@ export class CategorizationScreen extends Component
                   paddingBottom: 15,
                   marginLeft: 30,
                   marginRight: 30,
-                  backgroundColor: "#00BCD4",
+                  backgroundColor: "#DA9F1F",
                   borderRadius: 10,
                   borderWidth: 1,
                   borderColor: "#fff",
@@ -464,7 +464,7 @@ export class CategorizationScreen extends Component
                   style={{
                     color: "white",
                     fontFamily: FontFamily,
-                    fontSize: 18,
+                    fontSize: 26,
                   }}
                 >
                   {this.state.numUncategorized}

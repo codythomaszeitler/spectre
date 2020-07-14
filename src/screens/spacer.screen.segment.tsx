@@ -21,7 +21,7 @@ export class SpacerScreenSegment extends Component {
         >
           <Divider style={{
               borderBottomWidth : 2,
-              borderColor : "#e1e8ee"
+              borderColor : "#B6B3AE"
           }}></Divider>
         </View>
       );
@@ -47,7 +47,7 @@ export class SpacerScreenSegment extends Component {
       >
         <View
           style={{
-            flex: 5,
+            flex: 15,
           }}
         ></View>
 
@@ -55,7 +55,7 @@ export class SpacerScreenSegment extends Component {
 
         <View
           style={{
-            flex: 5,
+            flex: 15,
           }}
         ></View>
       </View>

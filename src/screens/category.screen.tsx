@@ -9,14 +9,13 @@ import {
   OnTransactionUncategorizedEvent,
 } from "../pojo/spectre.user";
 import { datastore } from "../datastore/datastore";
-import { InvisibleBoundingBox } from "./invisible.bounding.box";
 import {
   TransactionScreenSegment,
   TransactionDeletePress,
 } from "./transaction.screen.segment";
 import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
-import {Color} from '../pojo/color';
+import { Color } from "../pojo/color";
 
 export interface Props {
   color: Color;
@@ -26,7 +25,7 @@ export interface Props {
 }
 
 export interface State {
-  color: string;
+  color: Color;
   category: Category;
   numTransactions: number;
   shouldShowTransactions: boolean;
@@ -50,10 +49,10 @@ export class CategoryScreen extends Component
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
     this.state = {
-      color: props.color.hex(),
+      color: new Color(props.color.hex()),
       category: props.category,
       numTransactions: props.category.getTransactions().length,
-      shouldShowTransactions : false
+      shouldShowTransactions: false,
     };
   }
 
@@ -141,7 +140,7 @@ export class CategoryScreen extends Component
         <TouchableOpacity onPress={this.onPress}>
           <Card
             containerStyle={{
-              backgroundColor: this.state.color,
+              backgroundColor: this.state.color.hex(),
               marginTop: 10,
               paddingTop: 15,
               paddingBottom: 15,
@@ -186,7 +185,8 @@ export class CategoryScreen extends Component
                 <Badge
                   value={this.state.numTransactions}
                   badgeStyle={{
-                    backgroundColor: this.state.color,
+                    backgroundColor: this.state.color.darkerBy(1.2).hex(),
+                    borderColor : this.state.color.darkerBy(1.2).hex(),
                   }}
                   textStyle={{
                     fontFamily: FontFamily,
@@ -197,13 +197,15 @@ export class CategoryScreen extends Component
                 style={{
                   justifyContent: "flex-end",
                   flex: 2,
+                  borderStyle : 'dashed'
                 }}
               >
                 <TouchableOpacity onPress={this.onDeletePress}>
                   <Badge
                     value="X"
                     badgeStyle={{
-                      backgroundColor: this.state.color,
+                      backgroundColor: this.state.color.darkerBy(1.2).hex(),
+                      borderColor : this.state.color.darkerBy(1.2).hex()
                     }}
                     textStyle={{
                       fontFamily: FontFamily,

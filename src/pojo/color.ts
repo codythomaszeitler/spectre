@@ -17,7 +17,7 @@ export class Color {
     return this.hexCode === color.hexCode;
   }
 
-  darker() {
+  darkerBy(factor : number) {
     const toPaddedHex = (integer: number) => {
       let asHex = integer.toString(16);
 
@@ -32,9 +32,9 @@ export class Color {
     const greenHex = this.getGreenHex();
     const blueHex = this.getBlueHex();
 
-    const darkerRedHex = Math.floor(redHex / 2);
-    const darkerGreenHex = Math.floor(greenHex / 2);
-    const darkerBlueHex = Math.floor(blueHex / 2);
+    const darkerRedHex = Math.floor(redHex / factor);
+    const darkerGreenHex = Math.floor(greenHex / factor);
+    const darkerBlueHex = Math.floor(blueHex / factor);
 
     const darkerHexCode =
       toPaddedHex(darkerRedHex) +

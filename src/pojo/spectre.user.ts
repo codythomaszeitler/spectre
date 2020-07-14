@@ -8,7 +8,7 @@ export class SpectreUser {
 
   onCategoryAddedListeners: CategoryAddedListener[];
   onCategoryRemovedListeners: CategoryRemovedListener[];
-  onBeforeCategoryRemovedListeners : BeforeCategoryRemovedListener[];
+  onBeforeCategoryRemovedListeners: BeforeCategoryRemovedListener[];
 
   onTransactionCategorizedListeners: ListenerCategoryMapping[];
   onTransactionUncategorizedListeners: TransactionUncategorizedListener[];
@@ -96,7 +96,9 @@ export class SpectreUser {
   addCategory(category: Category) {
     const found = this._getCategory(category);
     if (found) {
-      throw new Error("Category [" + category.getType() + "] was already added");
+      throw new Error(
+        "Category [" + category.getType() + "] was already added"
+      );
     }
 
     this.categories.push(category.copy());
@@ -142,7 +144,9 @@ export class SpectreUser {
 
     for (let i = 0; i < this.onBeforeCategoryRemovedListeners.length; i++) {
       const listener = this.onBeforeCategoryRemovedListeners[i];
-      listener.onBeforeCategoryRemoved(new OnBeforeCategoryRemovedEvent(category));
+      listener.onBeforeCategoryRemoved(
+        new OnBeforeCategoryRemovedEvent(category)
+      );
     }
 
     this.categories = this.categories.filter(function (inner) {
@@ -173,16 +177,21 @@ export class SpectreUser {
     );
   }
 
-  addBeforeCategoryRemovedListener(listener : BeforeCategoryRemovedListener) {
+  addBeforeCategoryRemovedListener(listener: BeforeCategoryRemovedListener) {
     this.onBeforeCategoryRemovedListeners.push(listener);
     listener._beforeCategoryRemovedListenerId = this.currentListenerId;
     this.currentListenerId++;
   }
 
-  removeBeforeCategoryRemovedListener(listener : BeforeCategoryRemovedListener) {
-    this.onBeforeCategoryRemovedListeners = this.onBeforeCategoryRemovedListeners.filter((inner) => {
-      return listener.__beforeCategoryRemovedListenerId != inner.__beforeCategoryRemovedListenerId;
-    });
+  removeBeforeCategoryRemovedListener(listener: BeforeCategoryRemovedListener) {
+    this.onBeforeCategoryRemovedListeners = this.onBeforeCategoryRemovedListeners.filter(
+      (inner) => {
+        return (
+          listener.__beforeCategoryRemovedListenerId !=
+          inner.__beforeCategoryRemovedListenerId
+        );
+      }
+    );
   }
 
   hasAnotherTransaction() {
@@ -322,8 +331,7 @@ export class SpectreUser {
     return found;
   }
 
-  indexOfCategory (category: Category) {
-
+  indexOfCategory(category: Category) {
     const categories = this.getCategories();
 
     let foundIndex = -1;
@@ -335,9 +343,24 @@ export class SpectreUser {
     }
 
     return foundIndex;
-  };
+  }
 
-  getCategoryBefore (category: Category) {
+  getCategoryBefore(category: Category) {
+    if (!category) {
+      throw new Error(
+        "Cannot call getCategoryBefore with a null or undefined category"
+      );
+    }
+
+    const found = this._getCategory(category);
+    if (!found) {
+      throw new Error(
+        "Cannot call getCategoryBefore on category that does not exist within user [" +
+          category.getType() +
+          "]"
+      );
+    }
+
     const categories = this.getCategories();
 
     const foundIndex = this.indexOfCategory(category);
@@ -346,18 +369,18 @@ export class SpectreUser {
     }
 
     return categories[foundIndex - 1];
-  };
+  }
 
   getCategoryAfter(category: Category) {
     const categories = this.getCategories();
     const foundIndex = this.indexOfCategory(category);
 
-    if (foundIndex === (categories.length - 1) ) {
+    if (foundIndex === categories.length - 1) {
       return null;
     }
 
     return categories[foundIndex + 1];
-  };
+  }
 }
 
 export interface CategoryAddedListener {
@@ -385,18 +408,16 @@ export class OnCategoryRemovedEvent {
 }
 
 export interface BeforeCategoryRemovedListener {
-  onBeforeCategoryRemoved : (event : OnBeforeCategoryRemovedEvent) => void;
+  onBeforeCategoryRemoved: (event: OnBeforeCategoryRemovedEvent) => void;
 }
 
 export class OnBeforeCategoryRemovedEvent {
-  category : Category;
+  category: Category;
 
-  constructor(category : Category) {
+  constructor(category: Category) {
     this.category = category.copy();
   }
 }
-
-
 
 export interface TransactionCategorizedListener {
   onTransactionCategorized: (event: OnTransactionCategorizedEvent) => void;

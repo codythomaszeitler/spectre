@@ -352,4 +352,48 @@ describe("Spectre User", () => {
     testObject.removeCategory(category);
     expect(caughtEvent).toBeNull();
   });
+
+  it('should be able to tell what category is before another category when one exists', () => {
+    const testObject = new SpectreUser();
+
+    testObject.addCategory(new Category('A'));
+    testObject.addCategory(new Category('B'));
+    testObject.addCategory(new Category('C'));
+
+    expect(testObject.getCategoryBefore(new Category('B')).equals(new Category('A'))).toBe(true);
+    expect(testObject.getCategoryBefore(new Category('A'))).toBeNull();
+  });
+
+  it('should throw an exception if a category that does not exist within the user is given for getCategoryBefore', () => {
+
+    const testObject = new SpectreUser();
+    testObject.addCategory(new Category('A'));
+    testObject.addCategory(new Category('B'));
+    testObject.addCategory(new Category('C'));
+
+    let caughtException = null;
+    try {
+      testObject.getCategoryBefore(new Category('D'));
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe('Cannot call getCategoryBefore on category that does not exist within user [D]');
+  });
+
+  it('should throw an exception if a falsy category is given to getCategoryBefore', () => {
+    const testObject = new SpectreUser();
+
+    let caughtException = null;
+
+    try {
+      testObject.getCategoryBefore(null);
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe('Cannot call getCategoryBefore with a null or undefined category', () => {
+
+    });
+  });
 });

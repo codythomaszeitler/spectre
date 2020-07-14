@@ -59,7 +59,8 @@ export class TransactionScreenSegment extends Component {
                   <Badge
                     value="X"
                     badgeStyle={{
-                      backgroundColor: this.props.containerStyle.backgroundColor
+                      backgroundColor: this.props.backgroundColor.darkerBy(1.2).hex(),
+                      borderColor : this.props.backgroundColor.darkerBy(1.2).hex()
                     }}
                     textStyle={{
                       fontFamily : FontFamily

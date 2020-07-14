@@ -19,7 +19,7 @@ export class AddSpacerOrCategoryScreen extends Component {
         ></View>
         <View
           style={{
-            flex: 2,
+            flex: 3,
           }}
         >
           <AddSpacerButton
@@ -28,7 +28,7 @@ export class AddSpacerOrCategoryScreen extends Component {
         </View>
         <View
           style={{
-            flex: 10,
+            flex: 7,
           }}
         >
           <AddCategoryButton

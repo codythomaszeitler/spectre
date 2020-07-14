@@ -8,6 +8,7 @@ export class SpectreUser {
 
   onCategoryAddedListeners: CategoryAddedListener[];
   onCategoryRemovedListeners: CategoryRemovedListener[];
+  onBeforeCategoryRemovedListeners : BeforeCategoryRemovedListener[];
 
   onTransactionCategorizedListeners: ListenerCategoryMapping[];
   onTransactionUncategorizedListeners: TransactionUncategorizedListener[];
@@ -22,6 +23,7 @@ export class SpectreUser {
     this.transactionReadyForCategorizationListeners = [];
     this.onCategoryAddedListeners = [];
     this.onCategoryRemovedListeners = [];
+    this.onBeforeCategoryRemovedListeners = [];
     this.onTransactionCategorizedListeners = [];
     this.onTransactionUncategorizedListeners = [];
     this.currentListenerId = 0;
@@ -138,6 +140,11 @@ export class SpectreUser {
       this.uncategorize(transaction, category);
     }
 
+    for (let i = 0; i < this.onBeforeCategoryRemovedListeners.length; i++) {
+      const listener = this.onBeforeCategoryRemovedListeners[i];
+      listener.onBeforeCategoryRemoved(new OnBeforeCategoryRemovedEvent(category));
+    }
+
     this.categories = this.categories.filter(function (inner) {
       return !category.equals(inner);
     });
@@ -164,6 +171,18 @@ export class SpectreUser {
         );
       }
     );
+  }
+
+  addBeforeCategoryRemovedListener(listener : BeforeCategoryRemovedListener) {
+    this.onBeforeCategoryRemovedListeners.push(listener);
+    listener._beforeCategoryRemovedListenerId = this.currentListenerId;
+    this.currentListenerId++;
+  }
+
+  removeBeforeCategoryRemovedListener(listener : BeforeCategoryRemovedListener) {
+    this.onBeforeCategoryRemovedListeners = this.onBeforeCategoryRemovedListeners.filter((inner) => {
+      return listener.__beforeCategoryRemovedListenerId != inner.__beforeCategoryRemovedListenerId;
+    });
   }
 
   hasAnotherTransaction() {
@@ -302,6 +321,43 @@ export class SpectreUser {
 
     return found;
   }
+
+  indexOfCategory (category: Category) {
+
+    const categories = this.getCategories();
+
+    let foundIndex = -1;
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].equals(category)) {
+        foundIndex = i;
+        break;
+      }
+    }
+
+    return foundIndex;
+  };
+
+  getCategoryBefore (category: Category) {
+    const categories = this.getCategories();
+
+    const foundIndex = this.indexOfCategory(category);
+    if (foundIndex === 0) {
+      return null;
+    }
+
+    return categories[foundIndex - 1];
+  };
+
+  getCategoryAfter(category: Category) {
+    const categories = this.getCategories();
+    const foundIndex = this.indexOfCategory(category);
+
+    if (foundIndex === (categories.length - 1) ) {
+      return null;
+    }
+
+    return categories[foundIndex + 1];
+  };
 }
 
 export interface CategoryAddedListener {
@@ -327,6 +383,20 @@ export class OnCategoryRemovedEvent {
     this.category = category.copy();
   }
 }
+
+export interface BeforeCategoryRemovedListener {
+  onBeforeCategoryRemoved : (event : OnBeforeCategoryRemovedEvent) => void;
+}
+
+export class OnBeforeCategoryRemovedEvent {
+  category : Category;
+
+  constructor(category : Category) {
+    this.category = category.copy();
+  }
+}
+
+
 
 export interface TransactionCategorizedListener {
   onTransactionCategorized: (event: OnTransactionCategorizedEvent) => void;

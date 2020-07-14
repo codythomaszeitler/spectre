@@ -2,6 +2,7 @@ import {
   SpectreUser,
   TransactionCategorizedListener,
   OnTransactionCategorizedEvent,
+  OnCategoryRemovedEvent,
 } from "../spectre.user";
 import { Category } from "../category";
 import { Currency } from "../currency";
@@ -325,5 +326,30 @@ describe("Spectre User", () => {
       caughtException = e;
     }
     expect(caughtException.message).toBe('[Home] category was not registered in user');
+  });
+
+  it('should emit an event right before a category is removed', () => {
+    const testObject = new SpectreUser();
+
+    let caughtEvent = null;
+    const listener = {
+      onBeforeCategoryRemoved(event : OnCategoryRemovedEvent) {
+        caughtEvent = event;
+      }
+    };
+
+    testObject.addBeforeCategoryRemovedListener(listener);
+
+    const category = new Category('TEST');
+    testObject.addCategory(category);
+
+    testObject.removeCategory(category);
+    expect(caughtEvent).not.toBeNull();
+    caughtEvent = null;
+
+    testObject.removeBeforeCategoryRemovedListener(listener);
+    testObject.addCategory(category);
+    testObject.removeCategory(category);
+    expect(caughtEvent).toBeNull();
   });
 });

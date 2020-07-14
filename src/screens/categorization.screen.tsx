@@ -221,6 +221,37 @@ export class CategorizationScreen extends Component
   }
 
   onCategoryRemoved(event: OnCategoryRemovedEvent) {
+    const removeAndRealignSpacers = (category: Category) => {
+      const numSpacersBefore = this.spacers.length;
+
+      this.spacers = this.spacers.filter((spacer) => {
+        return (
+          !spacer.isAfter(category) && !spacer.isBefore(category)
+        );
+      });
+      const numSpacersAfter = this.spacers.length;
+      const wasSpacerRemoved = numSpacersAfter != numSpacersBefore;
+
+      if (wasSpacerRemoved) {
+        const before = this.spectreUser.getCategoryBefore(category);
+        const after = this.spectreUser.getCategoryAfter(category);
+
+        if (!before && !after) {
+          const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), Spacer.END_OF_CATEGORIES());
+          this.spacers.push(spacer);
+        } else if (!before) {
+          const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), after);
+          this.spacers.push(spacer);
+        } else if (!after) {
+          const spacer = new Spacer(before, Spacer.START_OF_CATEGORIES());
+          this.spacers.push(spacer);
+        } else {
+          const spacer = new Spacer(before, after);
+          this.spacers.push(spacer);
+        }
+      }
+    };
+
     const removeColorChoice = (category: Category) => {
       delete this.categoryColors[category.getType()];
     };
@@ -370,7 +401,7 @@ export class CategorizationScreen extends Component
     }
 
     this.setState({
-      screenSegmentPayloads : this.generatePayloadsForCurrentState()
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 

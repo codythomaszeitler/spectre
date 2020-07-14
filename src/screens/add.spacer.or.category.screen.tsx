@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { AddSpacerButton } from "./add.spacer.button.screen";
 import { AddCategoryButton } from "./add.category.button.screen";
 
-export class AddSpacerOrCategoryScreen extends Component{
+export class AddSpacerOrCategoryScreen extends Component {
   render() {
     return (
       <View
@@ -12,27 +12,34 @@ export class AddSpacerOrCategoryScreen extends Component{
           flexDirection: "row",
         }}
       >
-        <View style={{
-            flex : 1
-        }}></View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        ></View>
         <View
           style={{
             flex: 2,
           }}
         >
-          <AddSpacerButton></AddSpacerButton>
+          <AddSpacerButton
+            onPress={this.props.onSpacerAddPress}
+          ></AddSpacerButton>
         </View>
         <View
           style={{
-            flex: 8,
+            flex: 10,
           }}
         >
-          <AddCategoryButton onPress={this.props.onCategoryAddPress}></AddCategoryButton>
+          <AddCategoryButton
+            onPress={this.props.onCategoryAddPress}
+          ></AddCategoryButton>
         </View>
-        <View style={{
-            flex : 1 
-        }}>
-        </View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        ></View>
       </View>
     );
   }

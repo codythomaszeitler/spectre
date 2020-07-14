@@ -61,7 +61,7 @@ export class CategorizationScreen extends Component
     TransactionCategorizedListener {
   spectreUser: SpectreUser;
   state: State;
-  spacers : Array<Spacer>;
+  spacers: Array<Spacer>;
 
   categoryColors: Object;
 
@@ -73,6 +73,7 @@ export class CategorizationScreen extends Component
     this.onExportCategorized = this.onExportCategorized.bind(this);
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
     this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
+    this.onSpacerAddPress = this.onSpacerAddPress.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -147,12 +148,20 @@ export class CategorizationScreen extends Component
   generatePayloadsForCurrentState() {
     const payloads = [];
 
+    if (Spacer.hasSpacerAtBeginning(this.spacers)) {
+      payloads.push(new LineBreakScreenSegmentPayload());
+      payloads.push(new SpacerScreenSegmentPayload());
+    }
+
     const categories = this.spectreUser.getCategories();
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
       payloads.push(this.createPayloadFor(category));
-      payloads.push(new LineBreakScreenSegmentPayload());
-      payloads.push(new SpacerScreenSegmentPayload());
+
+      if (Spacer.containsSpacerAfter(this.spacers, category)) {
+        payloads.push(new LineBreakScreenSegmentPayload());
+        payloads.push(new SpacerScreenSegmentPayload());
+      }
     }
 
     return payloads;
@@ -183,6 +192,26 @@ export class CategorizationScreen extends Component
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
+    const getAndRemoveSpacerAtBottom = () => {
+      let foundIndex = -1;
+      for (let i = 0; i < this.spacers.length; i++) {
+        const spacer = this.spacers[i];
+        if (spacer.isAtEnd()) {
+          foundIndex = i;
+          break;
+        }
+      }
+
+      return this.spacers.splice(foundIndex, 1)[0];
+    };
+
+    if (Spacer.hasSpacerAtEnd(this.spacers)) {
+      const bottomMostSpacer = getAndRemoveSpacerAtBottom();
+
+      const spacer = new Spacer(bottomMostSpacer.getBefore(), event.category);
+      this.spacers.push(spacer);
+    }
+
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
     this.spectreUser.addTransactionUncategorizedListener(event.category, this);
 
@@ -309,33 +338,40 @@ export class CategorizationScreen extends Component
       const categories = this.spectreUser.getCategories();
       const lastAddedCategory = categories.pop();
       return lastAddedCategory;
-    }
+    };
 
     const hasAtLeastOneCategory = () => {
       const categories = this.spectreUser.getCategories();
       return categories.length != 0;
-    }
+    };
 
     const hasAtLeastOneSpacer = () => {
       return this.spacers.length != 0;
-    }
-
-    const hasSpacerAtBottom = () => { 
-      
-    }
+    };
 
     if (hasAtLeastOneCategory()) {
       const lastAddedCategory = getMostRecentlyAddedCategory();
 
-
+      if (!Spacer.hasSpacerAtEnd(this.spacers)) {
+        const spacer = new Spacer(
+          lastAddedCategory,
+          Spacer.END_OF_CATEGORIES()
+        );
+        this.spacers.push(spacer);
+      }
     } else {
       if (!hasAtLeastOneSpacer()) {
-        const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), Spacer.END_OF_CATEGORIES());
+        const spacer = new Spacer(
+          Spacer.START_OF_CATEGORIES(),
+          Spacer.END_OF_CATEGORIES()
+        );
         this.spacers.push(spacer);
       }
     }
 
-    const lastAddedCategory = getMostRecentlyAddedCategory();
+    this.setState({
+      screenSegmentPayloads : this.generatePayloadsForCurrentState()
+    });
   }
 
   render() {
@@ -398,14 +434,13 @@ export class CategorizationScreen extends Component
                 justifyContent: "flex-end",
               }}
             >
-              <AddSpacerOrCategoryScreen onSpacerAddPress={{
-                
-              }}
-              onCategoryAddPress={() => {
-                this.setState({
-                  showAddCategoryScreen : true
-                });
-              }}
+              <AddSpacerOrCategoryScreen
+                onSpacerAddPress={this.onSpacerAddPress}
+                onCategoryAddPress={() => {
+                  this.setState({
+                    showAddCategoryScreen: true,
+                  });
+                }}
               ></AddSpacerOrCategoryScreen>
             </View>
           </ScrollView>

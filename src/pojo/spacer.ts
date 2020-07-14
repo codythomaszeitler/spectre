@@ -14,15 +14,23 @@ export class Spacer {
     }
 
     if (before.equals(Spacer.END_OF_CATEGORIES())) {
-        throw new Error('Cannot use END OF CATEGORIES constant for before category');
+      throw new Error(
+        "Cannot use END OF CATEGORIES constant for before category"
+      );
     }
 
     if (after.equals(Spacer.START_OF_CATEGORIES())) {
-        throw new Error("Cannot use START OF CATEGORIES constant for after category");
+      throw new Error(
+        "Cannot use START OF CATEGORIES constant for after category"
+      );
     }
 
     this.before = before.copy();
     this.after = after.copy();
+  }
+
+  getBefore() {
+    return this.before.copy();
   }
 
   isAtBeginning() {
@@ -30,7 +38,7 @@ export class Spacer {
   }
 
   isAtEnd() {
-      return this.after.equals(Spacer.END_OF_CATEGORIES());
+    return this.after.equals(Spacer.END_OF_CATEGORIES());
   }
 
   copy() {
@@ -47,10 +55,10 @@ export class Spacer {
 
   static containsSpacerBefore(spacers: Spacer[], category: Category) {
     if (!spacers) {
-        throw new Error(
-          "Cannot check spacer location from a falsy list of spacers"
-        );
-      }
+      throw new Error(
+        "Cannot check spacer location from a falsy list of spacers"
+      );
+    }
 
     if (!category) {
       return false;
@@ -95,38 +103,35 @@ export class Spacer {
     return containsSpacerAfter;
   }
 
-  static hasSpacerAtBeginning(spacers : Array<Spacer>) {
-
+  static hasSpacerAtBeginning(spacers: Array<Spacer>) {
     if (!spacers) {
-        throw new Error('Cannot check hasSpacerAtBeginning without a list');
+      throw new Error("Cannot check hasSpacerAtBeginning without a list");
     }
 
     let hasSpacerAtBeginning = false;
     for (let i = 0; i < spacers.length; i++) {
-        const spacer = spacers[i];
-        if (spacer.isAtBeginning()) {
-            hasSpacerAtBeginning = true;
-            break;
-        }
+      const spacer = spacers[i];
+      if (spacer.isAtBeginning()) {
+        hasSpacerAtBeginning = true;
+        break;
+      }
     }
 
     return hasSpacerAtBeginning;
   }
 
-  static hasSpacerAtEnd(spacers : Array<Spacer>) {
-
+  static hasSpacerAtEnd(spacers: Array<Spacer>) {
     if (!spacers) {
-        throw new Error('Cannot check hasSpacerAtEnd without a list');
+      throw new Error("Cannot check hasSpacerAtEnd without a list");
     }
 
     let hasSpacerAtEnd = false;
     for (let i = 0; i < spacers.length; i++) {
-        const spacer = spacers[i];
-        if (spacer.isAtEnd()) {
-            hasSpacerAtEnd = true;
-            break;
-        }
-
+      const spacer = spacers[i];
+      if (spacer.isAtEnd()) {
+        hasSpacerAtEnd = true;
+        break;
+      }
     }
     return hasSpacerAtEnd;
   }

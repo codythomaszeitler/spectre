@@ -68,12 +68,28 @@ describe("Spacer", () => {
     expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(true);
   });
 
+
   it("should be able to tell if a spacer is not needed at the beginning of the collection using hasSpacerAtBeginning", () => {
     expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(false);
   });
 
   it('should return false if given an empty list to hasSpacerAtBeginning', () => {
     expect(Spacer.hasSpacerAtBeginning([])).toBe(false);
+  });
+
+  it('should be able to tell if a spacer is needed at the end using hasSpacerAtEnd', () => {
+    const end = new Spacer(beforeCategorization, Spacer.END_OF_CATEGORIES());
+    spacers.push(end);
+
+    expect(Spacer.hasSpacerAtEnd(spacers)).toBe(true);
+  });
+
+  it('should be able to tell if a spacer is not needed at the end using hasSpacerAtEnd', () => {
+    expect(Spacer.hasSpacerAtEnd(spacers)).toBe(false);
+  });
+
+  it('should return false if an empty list is given to hasSpacerAtEnd', () => {
+    expect(Spacer.hasSpacerAtEnd([])).toBe(false);
   });
 
   it('should throw an exception if a falsy list of spacers is given to hasSpacerAtBeginning', () => {
@@ -86,6 +102,18 @@ describe("Spacer", () => {
     }
 
     expect(caughtException.message).toBe('Cannot check hasSpacerAtBeginning without a list');
+  });
+
+  it('should throw an exception if a falsy list of spacers is given to hasSpacerAtEnd', () => {
+    let caughtException = null;
+
+    try {
+      Spacer.hasSpacerAtEnd(null);
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe('Cannot check hasSpacerAtEnd without a list');
   });
 
   it("should return false if the category is empty for containsSpacerBefore", () => {

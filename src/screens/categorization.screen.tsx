@@ -305,7 +305,37 @@ export class CategorizationScreen extends Component
   }
 
   onSpacerAddPress() {
-    
+    const getMostRecentlyAddedCategory = () => {
+      const categories = this.spectreUser.getCategories();
+      const lastAddedCategory = categories.pop();
+      return lastAddedCategory;
+    }
+
+    const hasAtLeastOneCategory = () => {
+      const categories = this.spectreUser.getCategories();
+      return categories.length != 0;
+    }
+
+    const hasAtLeastOneSpacer = () => {
+      return this.spacers.length != 0;
+    }
+
+    const hasSpacerAtBottom = () => { 
+      
+    }
+
+    if (hasAtLeastOneCategory()) {
+      const lastAddedCategory = getMostRecentlyAddedCategory();
+
+
+    } else {
+      if (!hasAtLeastOneSpacer()) {
+        const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), Spacer.END_OF_CATEGORIES());
+        this.spacers.push(spacer);
+      }
+    }
+
+    const lastAddedCategory = getMostRecentlyAddedCategory();
   }
 
   render() {

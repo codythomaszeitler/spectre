@@ -29,6 +29,10 @@ export class Spacer {
     return this.before.equals(Spacer.START_OF_CATEGORIES());
   }
 
+  isAtEnd() {
+      return this.after.equals(Spacer.END_OF_CATEGORIES());
+  }
+
   copy() {
     return new Spacer(this.before, this.after);
   }
@@ -107,5 +111,23 @@ export class Spacer {
     }
 
     return hasSpacerAtBeginning;
+  }
+
+  static hasSpacerAtEnd(spacers : Array<Spacer>) {
+
+    if (!spacers) {
+        throw new Error('Cannot check hasSpacerAtEnd without a list');
+    }
+
+    let hasSpacerAtEnd = false;
+    for (let i = 0; i < spacers.length; i++) {
+        const spacer = spacers[i];
+        if (spacer.isAtEnd()) {
+            hasSpacerAtEnd = true;
+            break;
+        }
+
+    }
+    return hasSpacerAtEnd;
   }
 }

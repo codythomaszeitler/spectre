@@ -37,6 +37,9 @@ import { CategoryScreenSegmentPayload } from "./category.screen.segment.payload"
 import { Color } from "../pojo/color";
 import { Spacer } from "../pojo/spacer";
 import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
+import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
+import { AddCategoryButton } from "./add.category.button.screen";
+import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 
 export interface Props {}
 
@@ -146,8 +149,8 @@ export class CategorizationScreen extends Component
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
       payloads.push(this.createPayloadFor(category));
+      payloads.push(new LineBreakScreenSegmentPayload());
       payloads.push(new SpacerScreenSegmentPayload());
-
     }
 
     return payloads;
@@ -359,29 +362,7 @@ export class CategorizationScreen extends Component
                 justifyContent: "flex-end",
               }}
             >
-              <Button
-                buttonStyle={{
-                  backgroundColor: "#ced4de",
-                  marginTop: 10,
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  marginLeft: 30,
-                  marginRight: 30,
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "#fff",
-                }}
-                icon={{
-                  name: "add",
-                  size: 15,
-                  color: "white",
-                }}
-                onPress={() => {
-                  this.setState({
-                    showAddCategoryScreen: true,
-                  });
-                }}
-              ></Button>
+              <AddSpacerOrCategoryScreen></AddSpacerOrCategoryScreen>
             </View>
           </ScrollView>
         </View>

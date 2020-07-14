@@ -372,6 +372,21 @@ export class SpectreUser {
   }
 
   getCategoryAfter(category: Category) {
+    if (!category) {
+      throw new Error(
+        "Cannot call getCategoryAfter with a null or undefined category"
+      );
+    }
+
+    const found = this._getCategory(category);
+    if (!found) {
+      throw new Error(
+        "Cannot call getCategoryAfter on category that does not exist within user [" +
+          category.getType() +
+          "]"
+      );
+    }
+
     const categories = this.getCategories();
     const foundIndex = this.indexOfCategory(category);
 

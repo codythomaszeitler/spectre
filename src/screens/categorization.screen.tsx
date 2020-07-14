@@ -10,6 +10,8 @@ import {
   OnCategoryRemovedEvent,
   TransactionCategorizedListener,
   OnTransactionCategorizedEvent,
+  OnBeforeCategoryRemovedEvent,
+  BeforeCategoryRemovedListener,
 } from "../pojo/spectre.user";
 import { Modal } from "./modal.screen";
 import { Transaction } from "../pojo/transaction";
@@ -58,6 +60,7 @@ export class CategorizationScreen extends Component
   implements
     DocumentLoadedListener,
     CategoryAddedListener,
+    BeforeCategoryRemovedListener,
     TransactionCategorizedListener {
   spectreUser: SpectreUser;
   state: State;
@@ -81,6 +84,7 @@ export class CategorizationScreen extends Component
 
     this.spectreUser.addOnCategoryAddedListener(this);
     this.spectreUser.addCategoryRemovedListener(this);
+    this.spectreUser.addBeforeCategoryRemovedListener(this);
 
     this.categoryColors = {};
     this.spacers = new Array<Spacer>();
@@ -109,6 +113,7 @@ export class CategorizationScreen extends Component
 
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
+    this.spectreUser.removeBeforeCategoryRemovedListener(this);
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
@@ -220,14 +225,12 @@ export class CategorizationScreen extends Component
     });
   }
 
-  onCategoryRemoved(event: OnCategoryRemovedEvent) {
+  onBeforeCategoryRemoved(event: OnBeforeCategoryRemovedEvent) {
     const removeAndRealignSpacers = (category: Category) => {
       const numSpacersBefore = this.spacers.length;
 
       this.spacers = this.spacers.filter((spacer) => {
-        return (
-          !spacer.isAfter(category) && !spacer.isBefore(category)
-        );
+        return !spacer.isAfter(category) && !spacer.isBefore(category);
       });
       const numSpacersAfter = this.spacers.length;
       const wasSpacerRemoved = numSpacersAfter != numSpacersBefore;
@@ -237,7 +240,10 @@ export class CategorizationScreen extends Component
         const after = this.spectreUser.getCategoryAfter(category);
 
         if (!before && !after) {
-          const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), Spacer.END_OF_CATEGORIES());
+          const spacer = new Spacer(
+            Spacer.START_OF_CATEGORIES(),
+            Spacer.END_OF_CATEGORIES()
+          );
           this.spacers.push(spacer);
         } else if (!before) {
           const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), after);
@@ -252,6 +258,10 @@ export class CategorizationScreen extends Component
       }
     };
 
+    removeAndRealignSpacers(event.category);
+  }
+
+  onCategoryRemoved(event: OnCategoryRemovedEvent) {
     const removeColorChoice = (category: Category) => {
       delete this.categoryColors[category.getType()];
     };

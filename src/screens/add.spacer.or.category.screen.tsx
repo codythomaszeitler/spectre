@@ -19,16 +19,19 @@ export class AddSpacerOrCategoryScreen extends Component {
         ></View>
         <View
           style={{
-            flex: 3,
+            flex: 2,
           }}
         >
           <AddSpacerButton
             onPress={this.props.onSpacerAddPress}
           ></AddSpacerButton>
         </View>
+        <View style={{
+          flex : .25
+        }}></View>
         <View
           style={{
-            flex: 7,
+            flex: 8,
           }}
         >
           <AddCategoryButton

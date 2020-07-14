@@ -29,8 +29,20 @@ export class Spacer {
     this.after = after.copy();
   }
 
+  isBefore(category : Category) {
+    return this.getBefore().equals(category);
+  }
+
+  isAfter(category : Category) {
+    return this.getAfter().equals(category);
+  }
+
   getBefore() {
     return this.before.copy();
+  }
+
+  getAfter() {
+    return this.after.copy();
   }
 
   isAtBeginning() {

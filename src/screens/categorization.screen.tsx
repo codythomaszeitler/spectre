@@ -362,7 +362,15 @@ export class CategorizationScreen extends Component
                 justifyContent: "flex-end",
               }}
             >
-              <AddSpacerOrCategoryScreen></AddSpacerOrCategoryScreen>
+              <AddSpacerOrCategoryScreen onSpacerAddPress={{
+                
+              }}
+              onCategoryAddPress={() => {
+                this.setState({
+                  showAddCategoryScreen : true
+                });
+              }}
+              ></AddSpacerOrCategoryScreen>
             </View>
           </ScrollView>
         </View>

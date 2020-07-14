@@ -12,6 +12,9 @@ export class AddSpacerOrCategoryScreen extends Component{
           flexDirection: "row",
         }}
       >
+        <View style={{
+            flex : 1
+        }}></View>
         <View
           style={{
             flex: 2,
@@ -24,7 +27,11 @@ export class AddSpacerOrCategoryScreen extends Component{
             flex: 8,
           }}
         >
-          <AddCategoryButton></AddCategoryButton>
+          <AddCategoryButton onPress={this.props.onCategoryAddPress}></AddCategoryButton>
+        </View>
+        <View style={{
+            flex : 1 
+        }}>
         </View>
       </View>
     );

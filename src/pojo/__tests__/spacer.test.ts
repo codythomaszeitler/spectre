@@ -72,6 +72,22 @@ describe("Spacer", () => {
     expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(false);
   });
 
+  it('should return false if given an empty list to hasSpacerAtBeginning', () => {
+    expect(Spacer.hasSpacerAtBeginning([])).toBe(false);
+  });
+
+  it('should throw an exception if a falsy list of spacers is given to hasSpacerAtBeginning', () => {
+    let caughtException = null;
+
+    try {
+      Spacer.hasSpacerAtBeginning(null);
+    } catch (e) {
+      caughtException = e;
+    }
+
+    expect(caughtException.message).toBe('Cannot check hasSpacerAtBeginning without a list');
+  });
+
   it("should return false if the category is empty for containsSpacerBefore", () => {
     expect(Spacer.containsSpacerBefore(spacers, null)).toBe(false);
   });

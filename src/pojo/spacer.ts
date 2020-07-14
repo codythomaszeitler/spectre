@@ -93,6 +93,10 @@ export class Spacer {
 
   static hasSpacerAtBeginning(spacers : Array<Spacer>) {
 
+    if (!spacers) {
+        throw new Error('Cannot check hasSpacerAtBeginning without a list');
+    }
+
     let hasSpacerAtBeginning = false;
     for (let i = 0; i < spacers.length; i++) {
         const spacer = spacers[i];

@@ -61,6 +61,7 @@ export class CategorizationScreen extends Component
     TransactionCategorizedListener {
   spectreUser: SpectreUser;
   state: State;
+  spacers : Array<Spacer>;
 
   categoryColors: Object;
 
@@ -81,6 +82,7 @@ export class CategorizationScreen extends Component
     this.spectreUser.addCategoryRemovedListener(this);
 
     this.categoryColors = {};
+    this.spacers = new Array<Spacer>();
 
     this.state = {
       screenSegmentPayloads: [],
@@ -300,6 +302,10 @@ export class CategorizationScreen extends Component
       currentTransaction: currentTransaction,
       numUncategorized: this.spectreUser.getUncategorized().length,
     });
+  }
+
+  onSpacerAddPress() {
+    
   }
 
   render() {

@@ -13,8 +13,20 @@ export class Spacer {
       throw new Error("Cannot create a spacer with a null after category");
     }
 
+    if (before.equals(Spacer.END_OF_CATEGORIES())) {
+        throw new Error('Cannot use END OF CATEGORIES constant for before category');
+    }
+
+    if (after.equals(Spacer.START_OF_CATEGORIES())) {
+        throw new Error("Cannot use START OF CATEGORIES constant for after category");
+    }
+
     this.before = before.copy();
     this.after = after.copy();
+  }
+
+  isAtBeginning() {
+    return this.before.equals(Spacer.START_OF_CATEGORIES());
   }
 
   copy() {
@@ -77,5 +89,19 @@ export class Spacer {
     }
 
     return containsSpacerAfter;
+  }
+
+  static hasSpacerAtBeginning(spacers : Array<Spacer>) {
+
+    let hasSpacerAtBeginning = false;
+    for (let i = 0; i < spacers.length; i++) {
+        const spacer = spacers[i];
+        if (spacer.isAtBeginning()) {
+            hasSpacerAtBeginning = true;
+            break;
+        }
+    }
+
+    return hasSpacerAtBeginning;
   }
 }

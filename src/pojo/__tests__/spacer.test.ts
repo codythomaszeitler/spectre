@@ -32,7 +32,7 @@ describe("Spacer", () => {
     );
   });
 
-  it("should be able to tell if a spacer is needed at the beginning of the collection", () => {
+  it("should be able to tell if a spacer is needed at the beginning of the collection using containsSpacerBefore", () => {
     const beginningSpacer = new Spacer(
       Spacer.START_OF_CATEGORIES(),
       afterCategorization
@@ -45,7 +45,7 @@ describe("Spacer", () => {
     );
   });
 
-  it("should be able to tell if a spacer is needed at the end of the collection", () => {
+  it("should be able to tell if a spacer is needed at the end of the collection using containsSpacerAfter", () => {
     const endSpencer = new Spacer(
       beforeCategorization,
       Spacer.END_OF_CATEGORIES()
@@ -56,6 +56,20 @@ describe("Spacer", () => {
     expect(Spacer.containsSpacerAfter(spacers, beforeCategorization)).toBe(
       true
     );
+  });
+
+  it("should be able to tell if a spacer is needed at the beginning of the collection using hasSpacerAtBeginning", () => {
+    const beginning = new Spacer(
+      Spacer.START_OF_CATEGORIES(),
+      afterCategorization
+    );
+    spacers.push(beginning);
+
+    expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(true);
+  });
+
+  it("should be able to tell if a spacer is not needed at the beginning of the collection using hasSpacerAtBeginning", () => {
+    expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(false);
   });
 
   it("should return false if the category is empty for containsSpacerBefore", () => {
@@ -104,7 +118,7 @@ describe("Spacer", () => {
     );
   });
 
-  it('should throw an exception for contains space after if a falsy spacers is given', () => {
+  it("should throw an exception for contains space after if a falsy spacers is given", () => {
     let caughtException = null;
     try {
       Spacer.containsSpacerAfter(null, beforeCategorization);
@@ -117,7 +131,7 @@ describe("Spacer", () => {
     );
   });
 
-  it('should throw an exception for contains space before if a falsy spacers is given', () => {
+  it("should throw an exception for contains space before if a falsy spacers is given", () => {
     let caughtException = null;
     try {
       Spacer.containsSpacerBefore(null, afterCategorization);
@@ -127,6 +141,30 @@ describe("Spacer", () => {
 
     expect(caughtException.message).toBe(
       "Cannot check spacer location from a falsy list of spacers"
+    );
+  });
+
+  it("should throw an exception if the END OF CATEGORIES is given for before", () => {
+    let caughtException = null;
+    try {
+      new Spacer(Spacer.END_OF_CATEGORIES(), afterCategorization);
+    } catch (e) {
+      caughtException = e;
+    }
+    expect(caughtException.message).toBe(
+      "Cannot use END OF CATEGORIES constant for before category"
+    );
+  });
+
+  it("should throw an exception if the START OF CATEGORIES is given for after", () => {
+    let caughtException = null;
+    try {
+      new Spacer(beforeCategorization, Spacer.START_OF_CATEGORIES());
+    } catch (e) {
+      caughtException = e;
+    }
+    expect(caughtException.message).toBe(
+      "Cannot use START OF CATEGORIES constant for after category"
     );
   });
 });

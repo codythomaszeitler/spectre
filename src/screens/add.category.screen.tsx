@@ -39,7 +39,7 @@ export class AddCategoryScreen extends Component {
         const category = new Category(this.state.categoryAddText);
         this.spectreUser.addCategory(category);
 
-        this.props.onSuccessfulAdd(category, new Color(this.state.color));
+        this.props.onSuccessfulAdd(category, this.state.color);
 
         this.setState({
           categoryAddText: "",
@@ -54,7 +54,6 @@ export class AddCategoryScreen extends Component {
 
   render() {
     return (
-      <Card title="Add Category">
         <View style={{ flex: 1 }}>
           <View
             style={{
@@ -68,6 +67,12 @@ export class AddCategoryScreen extends Component {
                   categoryAddText: text,
                 });
               }}
+              containerStyle={{
+                backgroundColor : this.state.color.hex(),
+                marginTop: 10,
+                borderRadius: 7,
+                borderWidth: 0
+              }}
               value={this.state.categoryAddText}
             />
           </View>
@@ -79,13 +84,10 @@ export class AddCategoryScreen extends Component {
           >
             {this.colors.map(
               (color) => {
-                const currentlySelected = this.state.color;
-                let displayColor = color;
-                if (!color.equals(currentlySelected)) {
-                  displayColor = color.lighterBy(1.2);
+                let lightnessFactor = 1.35;
+                if (color.equals(this.state.color)) {
+                  lightnessFactor = 1;
                 }
-
-                console.log(displayColor);
 
                 return (
                   <View
@@ -100,7 +102,8 @@ export class AddCategoryScreen extends Component {
                           color: colorChoice,
                         });
                       }}
-                      color={displayColor}
+                      lightnessFactor={lightnessFactor}
+                      color={color}
                       currentSelectedColor={this.state.color}
                     ></ColorChoiceScreenSegment>
                   </View>
@@ -135,7 +138,6 @@ export class AddCategoryScreen extends Component {
             ></Button>
           </View>
         </View>
-      </Card>
     );
   }
 }

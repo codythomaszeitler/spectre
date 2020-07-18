@@ -49,8 +49,9 @@ export class CategoryScreen extends Component
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
+    console.log(props.color);
     this.state = {
-      color: new Color(props.color.hex()),
+      color: props.color,
       category: props.category,
       numTransactions: props.category.getTransactions().length,
       shouldShowTransactions: false,

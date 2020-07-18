@@ -2,6 +2,10 @@ export class Color {
   hexCode: string;
 
   constructor(hexCode: string) {
+    if (typeof hexCode !== 'string') {
+      throw new Error('Cannot build without a hex string');
+    }
+
     this.hexCode = hexCode;
   }
 
@@ -18,6 +22,8 @@ export class Color {
   }
 
   darkerBy(factor: number) {
+    console.log('we are here');
+    console.log(this);
     const redHex = this.getRedHex();
     const greenHex = this.getGreenHex();
     const blueHex = this.getBlueHex();
@@ -26,7 +32,7 @@ export class Color {
     const darkerGreenHex = Math.floor(greenHex / factor);
     const darkerBlueHex = Math.floor(blueHex / factor);
 
-    const darkerHexCode = this.contactHexCode(
+    const darkerHexCode = this.concatHexCode(
       darkerRedHex,
       darkerGreenHex,
       darkerBlueHex
@@ -57,7 +63,7 @@ export class Color {
     const lighterGreenHex = multiplyByFactor(greenHex, factor);
     const lighterBlueHex = multiplyByFactor(blueHex, factor);
 
-    const lighterHexCode = this.contactHexCode(
+    const lighterHexCode = this.concatHexCode(
       lighterRexHex,
       lighterGreenHex,
       lighterBlueHex
@@ -83,6 +89,7 @@ export class Color {
   }
 
   withoutStartingPound() {
+    console.log(this.hexCode);
     return this.hexCode.replace("#", "");
   }
 
@@ -96,7 +103,7 @@ export class Color {
     return asHex.toUpperCase();
   }
 
-  contactHexCode(red: number, green: number, blue: number) {
+  concatHexCode(red: number, green: number, blue: number) {
     const fullHexCode =
       this.padAndCapitalizeHex(red) +
       this.padAndCapitalizeHex(green) +

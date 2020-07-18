@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Text } from "react-native-elements";
-import { TouchableOpacity } from "react-native";
 import { PerfectCircle } from "./perfect.circle";
 
 export class ColorChoiceScreenSegment extends Component {
@@ -15,10 +13,7 @@ export class ColorChoiceScreenSegment extends Component {
 
   render() {
     return (
-      <PerfectCircle color={this.props.color} onPress={this.onPress} diameter={30}>
-        <Text>
-          {this.props.currentSelectedColor === this.props.color ? "+" : "-"}
-        </Text>
+      <PerfectCircle color={this.props.color.lighterBy(this.props.lightnessFactor)} onPress={this.onPress} diameter={30}>
       </PerfectCircle>
     );
   }

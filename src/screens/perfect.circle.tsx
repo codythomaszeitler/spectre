@@ -7,7 +7,7 @@ export class PerfectCircle extends Component {
       <TouchableOpacity
         style={{
           borderWidth: 1,
-          borderColor: "rgba(255,0,0,0.2)",
+          borderColor: this.props.color.hex(),
           alignItems: "center",
           justifyContent: "center",
           width: this.props.diameter,

@@ -447,7 +447,7 @@ export class CategorizationScreen extends Component
           }}
         >
           <AddCategoryScreen
-            onSuccessfulAdd={(category, color) => {
+            onSuccessfulAdd={(category : Category, color: Color) => {
               this.setState({
                 showAddCategoryScreen: false,
               });

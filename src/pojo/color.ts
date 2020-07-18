@@ -46,7 +46,7 @@ export class Color {
         lighterHexCode = maxHex;
       }
 
-      return lighterHexCode;
+      return Math.floor(lighterHexCode);
     }
 
     const redHex = this.getRedHex();

@@ -82,7 +82,7 @@ export class AddCategoryScreen extends Component {
                 const currentlySelected = this.state.color;
                 let displayColor = color;
                 if (!color.equals(currentlySelected)) {
-                  displayColor = color.lighterBy(2);
+                  displayColor = color.lighterBy(1.2);
                 }
 
                 console.log(displayColor);

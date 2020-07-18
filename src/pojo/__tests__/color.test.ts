@@ -26,4 +26,12 @@ describe('Color', () => {
 
         expect(expected).toEqual(maxOutLighter);
     });
+
+    it('should be able to handle factors that are decimals', () => {
+        const testObject = new Color('#858585');
+
+        const lighter = testObject.lighterBy(1.2);
+        const expected = new Color('#9F9F9F');
+        expect(expected).toEqual(lighter);
+    });
 });

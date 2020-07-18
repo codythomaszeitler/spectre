@@ -10,8 +10,8 @@ export class PerfectCircle extends Component {
           borderColor: "rgba(255,0,0,0.2)",
           alignItems: "center",
           justifyContent: "center",
-          width: 75,
-          height: 75,
+          width: this.props.diameter,
+          height: this.props.diameter,
           backgroundColor: this.props.color.hex(),
           borderRadius: 50,
         }}

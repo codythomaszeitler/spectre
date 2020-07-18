@@ -16,6 +16,7 @@ import {
 import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
+import { PerfectCircle } from "./perfect.circle";
 
 export interface Props {
   color: Color;
@@ -182,22 +183,21 @@ export class CategoryScreen extends Component
                   flex: 2,
                 }}
               >
-                <Badge
-                  value={this.state.numTransactions}
-                  badgeStyle={{
-                    backgroundColor: this.state.color.darkerBy(1.2).hex(),
-                    borderColor : this.state.color.darkerBy(1.2).hex(),
-                  }}
-                  textStyle={{
-                    fontFamily: FontFamily,
-                  }}
-                />
+                <PerfectCircle
+                  color={this.state.color.darkerBy(1.2)}
+                  diameter={25}
+                >
+                  <Text style={{
+                    fontFamily : FontFamily,
+                    color:'white'
+                  }}>{this.state.numTransactions}</Text>
+                </PerfectCircle>
               </View>
               <View
                 style={{
                   justifyContent: "flex-end",
                   flex: 2,
-                  borderStyle : 'dashed'
+                  borderStyle: "dashed",
                 }}
               >
                 <TouchableOpacity onPress={this.onDeletePress}>
@@ -205,7 +205,7 @@ export class CategoryScreen extends Component
                     value="X"
                     badgeStyle={{
                       backgroundColor: this.state.color.darkerBy(1.2).hex(),
-                      borderColor : this.state.color.darkerBy(1.2).hex()
+                      borderColor: this.state.color.darkerBy(1.2).hex(),
                     }}
                     textStyle={{
                       fontFamily: FontFamily,

@@ -37,13 +37,25 @@ export class Color {
   }
 
   lighterBy(factor: number) {
+
+    const multiplyByFactor = (hexValue : number, factor : number) => {
+      const maxHex = 255;
+
+      let lighterHexCode = (hexValue * factor);
+      if (lighterHexCode > maxHex) {
+        lighterHexCode = maxHex;
+      }
+
+      return lighterHexCode;
+    }
+
     const redHex = this.getRedHex();
     const greenHex = this.getGreenHex();
     const blueHex = this.getBlueHex();
 
-    const lighterRexHex = Math.floor(redHex * factor);
-    const lighterGreenHex = Math.floor(greenHex * factor);
-    const lighterBlueHex = Math.floor(blueHex * factor);
+    const lighterRexHex = multiplyByFactor(redHex, factor);
+    const lighterGreenHex = multiplyByFactor(greenHex, factor);
+    const lighterBlueHex = multiplyByFactor(blueHex, factor);
 
     const lighterHexCode = this.contactHexCode(
       lighterRexHex,

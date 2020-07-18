@@ -17,4 +17,13 @@ describe('Color', () => {
 
         expect(expected).toEqual(lighter);
     });
+
+    it('should limit itself to max of FFFFFF if making lighter', () => {
+        const testObject = new Color('#858585');
+
+        const maxOutLighter = testObject.lighterBy(2);
+        const expected = new Color('#FFFFFF');
+
+        expect(expected).toEqual(maxOutLighter);
+    });
 });

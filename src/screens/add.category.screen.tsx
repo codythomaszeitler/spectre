@@ -12,13 +12,19 @@ import { Alert } from "./alert";
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
 
-  colors = CategoryColors;
+  colors : Array<Color>;
 
   constructor(props) {
     super(props);
     this.onAddCategoryPress = this.onAddCategoryPress.bind(this);
 
     this.spectreUser = datastore().get();
+
+    this.colors = [];
+
+    for (let i = 0; i < CategoryColors.length; i++) {
+      this.colors.push(new Color(CategoryColors[i]));
+    }
 
     this.state = {
       categoryAddText: "",
@@ -72,26 +78,32 @@ export class AddCategoryScreen extends Component {
             }}
           >
             {this.colors.map(
-              function (value) {
+              (color) => {
+                const currentlySelected = this.state.color;
+                let displayColor = color;
+                if (!color.equals(currentlySelected)) {
+                  displayColor = color.darkerBy(.5);
+                }
+
                 return (
                   <View
                     style={{
                       flex: 1,
                     }}
-                    key={value}
+                    key={color.hex()}
                   >
                     <ColorChoiceScreenSegment
-                      onPress={(color) => {
+                      onPress={(colorChoice : Color) => {
                         this.setState({
-                          color: color,
+                          color: colorChoice,
                         });
                       }}
-                      color={value}
+                      color={displayColor}
                       currentSelectedColor={this.state.color}
                     ></ColorChoiceScreenSegment>
                   </View>
                 );
-              }.bind(this)
+              }
             )}
           </View>
 

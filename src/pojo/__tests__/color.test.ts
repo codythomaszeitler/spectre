@@ -8,4 +8,13 @@ describe('Color', () => {
         const expected = new Color('#7F4000');
         expect(expected).toEqual(darker);
     });
+
+    it('should be able to make a color somewhat lighter', () => {
+        const testObject = new Color('#7F4000');
+
+        const lighter = testObject.lighterBy(2);
+        const expected = new Color("#FE8000");
+
+        expect(expected).toEqual(lighter);
+    });
 });

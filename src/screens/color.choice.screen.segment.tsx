@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text } from "react-native-elements";
 import { TouchableOpacity } from "react-native";
+import { PerfectCircle } from "./perfect.circle";
 
 export class ColorChoiceScreenSegment extends Component {
   constructor(props) {
@@ -14,21 +15,11 @@ export class ColorChoiceScreenSegment extends Component {
 
   render() {
     return (
-      <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.2)",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: this.props.color,
-          borderRadius: 50,
-        }}
-        onPress={this.onPress}
-      >
+      <PerfectCircle color={this.props.color} onPress={this.onPress} diameter={30}>
         <Text>
           {this.props.currentSelectedColor === this.props.color ? "+" : "-"}
         </Text>
-      </TouchableOpacity>
+      </PerfectCircle>
     );
   }
 }

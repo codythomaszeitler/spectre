@@ -42,6 +42,7 @@ import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
 import { AddCategoryButton } from "./add.category.button.screen";
 import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
+import { PerfectCircle } from "./perfect.circle";
 
 export interface Props {}
 
@@ -559,17 +560,8 @@ export class CategorizationScreen extends Component
                 flex: 3,
               }}
             >
-              <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  borderColor: "rgba(255,0,0,0.2)",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 75,
-                  height: 75,
-                  backgroundColor: "red",
-                  borderRadius: 50,
-                }}
+              <PerfectCircle
+                color={new Color('#FF0000')}
                 onPress={this.onCategorizationStart}
               >
                 <Text
@@ -581,7 +573,7 @@ export class CategorizationScreen extends Component
                 >
                   {this.state.numUncategorized}
                 </Text>
-              </TouchableOpacity>
+              </PerfectCircle>
             </View>
             <View style={{ flex: 0.5 }}></View>
           </View>

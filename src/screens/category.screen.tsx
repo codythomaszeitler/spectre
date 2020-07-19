@@ -18,7 +18,7 @@ import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { PerfectCircle } from "./perfect.circle";
 
-export const CATEGORY_BOX_HEIGHT = 45;
+export const CATEGORY_BOX_HEIGHT = 50;
 export const CATEGORY_BOX_INSET = 7;
 export const CATEGORY_FONT_SIZE = 20;
 
@@ -137,31 +137,33 @@ export class CategoryScreen extends Component
 
   render() {
     return (
-      <View
-      >
+      <View>
         <TouchableOpacity onPress={this.onPress}>
           <View
             style={{
-              height: CATEGORY_BOX_HEIGHT,
+              flexBasis: CATEGORY_BOX_HEIGHT,
               borderRadius: CATEGORY_BOX_INSET,
               backgroundColor: this.state.color.hex(),
               justifyContent: "center",
+              flexGrow: 1,
+              flex: 1,
             }}
           >
             <View
               style={{
                 flexDirection: "row",
+                alignItems: "center",
+                flex: 1,
               }}
             >
+              <View style={{
+                flex : .75
+              }}>
+
+              </View>
               <View
                 style={{
-                  flex: 0.65,
-                }}
-              ></View>
-              <View
-                style={{
-                  justifyContent: "flex-start",
-                  flex: 5,
+                  flex: 10,
                 }}
               >
                 <Text
@@ -177,13 +179,8 @@ export class CategoryScreen extends Component
 
               <View
                 style={{
-                  flex: 5,
-                }}
-              ></View>
-              <View
-                style={{
                   justifyContent: "flex-end",
-                  flex: 2,
+                  flex: 1,
                 }}
               >
                 <PerfectCircle
@@ -200,21 +197,21 @@ export class CategoryScreen extends Component
                   </Text>
                 </PerfectCircle>
               </View>
-              <View
-                style={{
-                  justifyContent: "flex-end",
-                  flex: 2,
-                }}
-              >
+
+              <View style={{
+                justifyContent : 'flex-end',
+                flex : .5
+              }}>
                 <PerfectCircle
                   color={this.state.color.darkerBy(1.2)}
-                  diameter={25}
+                  diameter={20}
                   onPress={this.onDeletePress}
                 >
                   <Text
                     style={{
                       fontFamily: FontFamily,
                       color: "white",
+                      fontSize : 12
                     }}
                   >
                     {"X"}

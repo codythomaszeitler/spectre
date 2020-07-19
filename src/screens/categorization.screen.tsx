@@ -43,6 +43,7 @@ import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.paylo
 import { AddCategoryButton } from "./add.category.button.screen";
 import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { PerfectCircle } from "./perfect.circle";
+import { AddCategoryScreenPayload } from "./add.category.screen.payload";
 
 export interface Props {}
 
@@ -78,6 +79,7 @@ export class CategorizationScreen extends Component
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
     this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
     this.onSpacerAddPress = this.onSpacerAddPress.bind(this);
+    this.onSuccessfulCategoryAdd = this.onSuccessfulCategoryAdd.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -168,6 +170,12 @@ export class CategorizationScreen extends Component
         payloads.push(new LineBreakScreenSegmentPayload());
         payloads.push(new SpacerScreenSegmentPayload());
       }
+    }
+
+    if (this.state.showAddCategoryScreen) {
+      const payload = new AddCategoryScreenPayload();
+      payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
+      payloads.push(payload);
     }
 
     return payloads;
@@ -416,6 +424,16 @@ export class CategorizationScreen extends Component
     });
   }
 
+  onSuccessfulCategoryAdd(category: Category, color: Color) {
+    this.state.showAddCategoryScreen = false;
+    this.forceUpdate();
+    this.onCategoryColorChoice(category, color);
+
+    this.setState({
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+    });
+  }
+
   render() {
     return (
       <View
@@ -438,39 +456,21 @@ export class CategorizationScreen extends Component
             <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
           </Card>
         </Modal>
-        <Modal
-          isVisible={this.state.showAddCategoryScreen}
-          onBackdropPress={() => {
-            this.setState({
-              showAddCategoryScreen: false,
-            });
-          }}
-        >
-          <AddCategoryScreen
-            onSuccessfulAdd={(category : Category, color: Color) => {
-              this.setState({
-                showAddCategoryScreen: false,
-              });
-              this.onCategoryColorChoice(category, color);
-            }}
-          ></AddCategoryScreen>
-        </Modal>
         <View
           style={{
             flex: 8,
           }}
         >
-          <ScrollView>
-            {
-              <View>
-                {this.state.screenSegmentPayloads.map(function (
-                  payload: ScreenSegmentPayload
-                ) {
-                  const factory = new ScreenSegmentFactory();
-                  return factory.create(payload);
-                })}
-              </View>
-            }
+          <ScrollView style={{
+            marginHorizontal : 10,
+            marginTop : 5
+          }}>
+              {this.state.screenSegmentPayloads.map(function (
+                payload: ScreenSegmentPayload
+              ) {
+                const factory = new ScreenSegmentFactory();
+                return factory.create(payload);
+              })}
             <View
               style={{
                 justifyContent: "flex-end",
@@ -479,8 +479,11 @@ export class CategorizationScreen extends Component
               <AddSpacerOrCategoryScreen
                 onSpacerAddPress={this.onSpacerAddPress}
                 onCategoryAddPress={() => {
+                  this.state.showAddCategoryScreen = true;
+                  this.forceUpdate();
+
                   this.setState({
-                    showAddCategoryScreen: true,
+                    screenSegmentPayloads: this.generatePayloadsForCurrentState(),
                   });
                 }}
               ></AddSpacerOrCategoryScreen>
@@ -561,7 +564,7 @@ export class CategorizationScreen extends Component
               }}
             >
               <PerfectCircle
-                color={new Color('#FF0000')}
+                color={new Color("#FF0000")}
                 onPress={this.onCategorizationStart}
                 diameter={75}
               >

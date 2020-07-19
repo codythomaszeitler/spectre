@@ -18,6 +18,10 @@ import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { PerfectCircle } from "./perfect.circle";
 
+export const CATEGORY_BOX_HEIGHT = 45;
+export const CATEGORY_BOX_INSET = 7;
+export const CATEGORY_FONT_SIZE = 20;
+
 export interface Props {
   color: Color;
   category: Category;
@@ -49,7 +53,6 @@ export class CategoryScreen extends Component
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
-    console.log(props.color);
     this.state = {
       color: props.color,
       category: props.category,
@@ -135,27 +138,26 @@ export class CategoryScreen extends Component
   render() {
     return (
       <View
-        style={{
-          flex: 1,
-        }}
       >
         <TouchableOpacity onPress={this.onPress}>
-          <Card
-            containerStyle={{
+          <View
+            style={{
+              height: CATEGORY_BOX_HEIGHT,
+              borderRadius: CATEGORY_BOX_INSET,
               backgroundColor: this.state.color.hex(),
-              marginTop: 10,
-              paddingTop: 15,
-              paddingBottom: 15,
-              borderRadius: 7,
-              borderWidth: 0,
+              justifyContent: "center",
             }}
           >
             <View
               style={{
                 flexDirection: "row",
-                flex: 1,
               }}
             >
+              <View
+                style={{
+                  flex: 0.65,
+                }}
+              ></View>
               <View
                 style={{
                   justifyContent: "flex-start",
@@ -165,7 +167,7 @@ export class CategoryScreen extends Component
                 <Text
                   style={{
                     color: "#fff",
-                    fontSize: 15,
+                    fontSize: CATEGORY_FONT_SIZE,
                     fontFamily: FontFamily,
                   }}
                 >
@@ -186,36 +188,41 @@ export class CategoryScreen extends Component
               >
                 <PerfectCircle
                   color={this.state.color.darkerBy(1.2)}
-                  diameter={25}
+                  diameter={30}
                 >
-                  <Text style={{
-                    fontFamily : FontFamily,
-                    color:'white'
-                  }}>{this.state.numTransactions}</Text>
+                  <Text
+                    style={{
+                      fontFamily: FontFamily,
+                      color: "white",
+                    }}
+                  >
+                    {this.state.numTransactions}
+                  </Text>
                 </PerfectCircle>
               </View>
               <View
                 style={{
                   justifyContent: "flex-end",
                   flex: 2,
-                  borderStyle: "dashed",
                 }}
               >
-                <TouchableOpacity onPress={this.onDeletePress}>
-                  <Badge
-                    value="X"
-                    badgeStyle={{
-                      backgroundColor: this.state.color.darkerBy(1.2).hex(),
-                      borderColor: this.state.color.darkerBy(1.2).hex(),
-                    }}
-                    textStyle={{
+                <PerfectCircle
+                  color={this.state.color.darkerBy(1.2)}
+                  diameter={25}
+                  onPress={this.onDeletePress}
+                >
+                  <Text
+                    style={{
                       fontFamily: FontFamily,
+                      color: "white",
                     }}
-                  />
-                </TouchableOpacity>
+                  >
+                    {"X"}
+                  </Text>
+                </PerfectCircle>
               </View>
             </View>
-          </Card>
+          </View>
         </TouchableOpacity>
         {!this.props.categorizationMode &&
           this.state.shouldShowTransactions &&
@@ -257,6 +264,20 @@ export class CategoryScreen extends Component
               </View>
             );
           })}
+      </View>
+    );
+  }
+}
+
+export class CategoryScreenSkeleton extends Component {
+  render() {
+    return (
+      <View
+        style={{
+          backgroundColor: this.props.color.hex(),
+        }}
+      >
+        {this.props.children}
       </View>
     );
   }

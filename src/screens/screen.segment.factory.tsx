@@ -15,6 +15,11 @@ import {
   LINE_BREAK_TYPE,
 } from "./line.break.screen.segment.payload";
 import { View } from "react-native";
+import {
+  AddCategoryScreenPayload,
+  ADD_CATEGORY_SCREEN_PAYLOAD_TYPE,
+} from "./add.category.screen.payload";
+import { AddCategoryScreen } from "./add.category.screen";
 
 export class ScreenSegmentFactory {
   create(payload: ScreenSegmentPayload) {
@@ -29,6 +34,9 @@ export class ScreenSegmentFactory {
     } else if (payload.getType() === LINE_BREAK_TYPE) {
       const factory = new LineBreakScreenSegmentFactory();
       creation = factory.create(payload as LineBreakScreenSegmentPayload);
+    } else if (payload.getType() === ADD_CATEGORY_SCREEN_PAYLOAD_TYPE) {
+      const factory = new AddCategoryScreenSegmentFactory();
+      creation = factory.create(payload as AddCategoryScreenPayload);
     } else {
       throw new Error(
         payload.getType() +
@@ -62,8 +70,22 @@ class SpacerScreenSegmentFactory {
 
 class LineBreakScreenSegmentFactory {
   create(payload: LineBreakScreenSegmentPayload) {
-    return <View style={{
-      height : 10
-    }}></View>;
+    return (
+      <View
+        style={{
+          height: 10,
+        }}
+      ></View>
+    );
+  }
+}
+
+class AddCategoryScreenSegmentFactory {
+  create(payload: AddCategoryScreenPayload) {
+    return (
+      <AddCategoryScreen
+        onSuccessfulAdd={payload.onSuccessfulAdd}
+      ></AddCategoryScreen>
+    );
   }
 }

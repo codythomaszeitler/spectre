@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import { View } from "react-native";
+import { TextInput } from "react-native";
 import { Card, Button, Input, Text } from "react-native-elements";
 import { SpectreUser } from "../pojo/spectre.user";
 import { Color } from "../pojo/color";
 import { datastore } from "../datastore/datastore";
 import { Category } from "../pojo/category";
 import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
-import { CategoryColors } from "../css/styles";
+import { CategoryColors, FontFamily } from "../css/styles";
 import { Alert } from "./alert";
+import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
 
-  colors : Array<Color>;
+  colors: Array<Color>;
 
   constructor(props) {
     super(props);
@@ -54,90 +56,110 @@ export class AddCategoryScreen extends Component {
 
   render() {
     return (
-        <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <Input
-              placeholder="Category"
-              onChangeText={(text) => {
-                this.setState({
-                  categoryAddText: text,
-                });
-              }}
-              containerStyle={{
-                backgroundColor : this.state.color.hex(),
-                marginTop: 10,
-                borderRadius: 7,
-                borderWidth: 0
-              }}
-              value={this.state.categoryAddText}
-            />
-          </View>
+      <View>
+        <View
+          style={{
+            backgroundColor: this.state.color.hex(),
+            height: CATEGORY_BOX_HEIGHT,
+            justifyContent: "center",
+            borderRadius: CATEGORY_BOX_INSET,
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
-              flex: 5,
+              justifyContent : 'center',
             }}
           >
-            {this.colors.map(
-              (color) => {
-                let lightnessFactor = 1.35;
-                if (color.equals(this.state.color)) {
-                  lightnessFactor = 1;
-                }
-
-                return (
-                  <View
-                    style={{
-                      flex: 1,
-                    }}
-                    key={color.hex()}
-                  >
-                    <ColorChoiceScreenSegment
-                      onPress={(colorChoice : Color) => {
-                        this.setState({
-                          color: colorChoice,
-                        });
-                      }}
-                      lightnessFactor={lightnessFactor}
-                      color={color}
-                      currentSelectedColor={this.state.color}
-                    ></ColorChoiceScreenSegment>
-                  </View>
-                );
-              }
-            )}
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <Button
-              buttonStyle={{
-                backgroundColor: "#ced4de",
-                marginTop: 10,
-                paddingTop: 15,
-                paddingBottom: 15,
-                marginLeft: 30,
-                marginRight: 30,
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: "#fff",
+            <View
+              style={{
+                flex: .25,
               }}
-              icon={{
-                name: "add",
-                size: 15,
-                color: "white",
+            ></View>
+            <View
+              style={{ 
+                flex: 5,
               }}
-              onPress={this.onAddCategoryPress}
-            ></Button>
+            >
+              <TextInput
+                placeholder="Category"
+                placeholderTextColor="white"
+                selectionColor="white"
+                style={{
+                  backgroundColor: this.state.color.hex(),
+                  fontFamily: FontFamily,
+                  fontSize: CATEGORY_FONT_SIZE,
+                  color: 'white'
+                }}
+                onChangeText={(categoryText) => {
+                  this.setState({
+                    categoryAddText : categoryText
+                  });
+                }}
+                value={this.state.categoryAddText}
+              />
+            </View>
+            <View
+              style={{
+                flex: .25,
+              }}
+            ></View>
           </View>
         </View>
+
+        <View
+          style={{
+            height: 10,
+          }}
+        ></View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          {this.colors.map((color) => {
+            let lightnessFactor = 1.35;
+            if (color.equals(this.state.color)) {
+              lightnessFactor = 1;
+            }
+
+            return (
+              <ColorChoiceScreenSegment
+                onPress={(colorChoice: Color) => {
+                  this.setState({
+                    color: colorChoice,
+                  });
+                }}
+                lightnessFactor={lightnessFactor}
+                color={color}
+                currentSelectedColor={this.state.color}
+              ></ColorChoiceScreenSegment>
+            );
+          })}
+        </View>
+
+        <Button
+          buttonStyle={{
+            backgroundColor: "#ced4de",
+            marginTop: 10,
+            paddingTop: 15,
+            paddingBottom: 15,
+            marginLeft: 30,
+            marginRight: 30,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: "#fff",
+          }}
+          icon={{
+            name: "add",
+            size: 15,
+            color: "white",
+          }}
+          onPress={this.onAddCategoryPress}
+        ></Button>
+      </View>
     );
   }
 }

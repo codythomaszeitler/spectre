@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { Card, Text, Badge } from "react-native-elements";
+import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { FontFamily } from "../css/styles";
 import { PerfectCircle } from "./perfect.circle";
+import {CATEGORY_FONT_SIZE} from './category.screen';
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
@@ -42,6 +43,7 @@ export class TransactionScreenSegment extends Component {
                     style={{
                       color: this.props.textColor,
                       fontFamily: FontFamily,
+                      fontSize : Math.floor(CATEGORY_FONT_SIZE * .8)
                     }}
                   >
                     {item.detail}

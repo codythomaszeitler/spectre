@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { FontFamily } from "../css/styles";
-import { PerfectCircle } from "./perfect.circle";
 import { CATEGORY_FONT_SIZE } from "./category.screen";
 import { DeleteButton } from "./delete.button";
 

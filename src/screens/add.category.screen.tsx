@@ -10,6 +10,8 @@ import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
 import { CategoryColors, FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
+import { TransactionCounter } from "./transaction.counter";
+import { DeleteButton } from "./delete.button";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
@@ -99,6 +101,21 @@ export class AddCategoryScreen extends Component {
                 }}
                 value={this.state.categoryAddText}
               />
+            </View>
+            <View style={{
+              flex : 1,
+              justifyContent : 'flex-end'
+            }}>
+              <TransactionCounter color={this.state.color} numTransactions={0}>
+
+              </TransactionCounter>
+            </View>
+            <View style={{
+              flex : 1,
+              justifyContent : 'flex-end'
+            }}>
+              <DeleteButton color={this.state.color} onPress={this.props.onStopAddCategory}>
+              </DeleteButton>
             </View>
             <View
               style={{

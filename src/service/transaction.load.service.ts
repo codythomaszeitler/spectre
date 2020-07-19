@@ -25,7 +25,6 @@ export class TransactionLoadService {
 
   async load() {
     const loadService = new DocumentLoadService(this.location);
-    console.log(loadService);
 
     let lines = await loadService.fetchall();
 

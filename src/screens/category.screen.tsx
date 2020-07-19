@@ -78,7 +78,6 @@ export class CategoryScreen extends Component
     try {
       this.spectreUser.removeCategory(this.props.category);
     } catch (e) {
-      console.log(e);
       const errorDialog = new Alert();
       errorDialog.show(e.message);
     }

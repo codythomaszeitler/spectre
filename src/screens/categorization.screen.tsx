@@ -178,6 +178,12 @@ export class CategorizationScreen extends Component
     if (this.state.showAddCategoryScreen) {
       const payload = new AddCategoryScreenPayload();
       payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
+      payload.setStopAddCategory(() => {
+        console.log('this was called');
+        this.setState({
+          showAddCategoryScreen : false
+        });
+      });
       payloads.push(payload);
     }
 

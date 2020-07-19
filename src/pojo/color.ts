@@ -22,8 +22,6 @@ export class Color {
   }
 
   darkerBy(factor: number) {
-    console.log('we are here');
-    console.log(this);
     const redHex = this.getRedHex();
     const greenHex = this.getGreenHex();
     const blueHex = this.getBlueHex();
@@ -89,7 +87,6 @@ export class Color {
   }
 
   withoutStartingPound() {
-    console.log(this.hexCode);
     return this.hexCode.replace("#", "");
   }
 

@@ -179,9 +179,11 @@ export class CategorizationScreen extends Component
       const payload = new AddCategoryScreenPayload();
       payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
       payload.setStopAddCategory(() => {
-        console.log('this was called');
+        this.state.showAddCategoryScreen = false;
+        this.forceUpdate();
+
         this.setState({
-          showAddCategoryScreen : false
+          screenSegmentPayloads : this.generatePayloadsForCurrentState()
         });
       });
       payloads.push(payload);

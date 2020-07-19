@@ -82,7 +82,6 @@ class LineBreakScreenSegmentFactory {
 
 class AddCategoryScreenSegmentFactory {
   create(payload: AddCategoryScreenPayload) {
-    console.log(payload);
     return (
       <AddCategoryScreen
         onSuccessfulAdd={payload.onSuccessfulAdd}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { Badge, Card, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 import { Category } from "../pojo/category";
 import {
   SpectreUser,
@@ -17,6 +17,7 @@ import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { PerfectCircle } from "./perfect.circle";
+import {DeleteButton} from './delete.button';
 
 export const CATEGORY_BOX_HEIGHT = 50;
 export const CATEGORY_BOX_INSET = 7;
@@ -206,21 +207,10 @@ export class CategoryScreen extends Component
                   flex: 1,
                 }}
               >
-                <PerfectCircle
-                  color={this.state.color.darkerBy(1.2)}
-                  diameter={20}
+                <DeleteButton
                   onPress={this.onDeletePress}
-                >
-                  <Text
-                    style={{
-                      fontFamily: FontFamily,
-                      color: "white",
-                      fontSize: 10,
-                    }}
-                  >
-                    {"X"}
-                  </Text>
-                </PerfectCircle>
+                  color={this.state.color}
+                ></DeleteButton>
               </View>
             </View>
           </View>

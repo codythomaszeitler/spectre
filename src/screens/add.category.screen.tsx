@@ -9,7 +9,7 @@ import { Category } from "../pojo/category";
 import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
 import { CategoryColors, FontFamily } from "../css/styles";
 import { Alert } from "./alert";
-import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
+import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE, CategoryScreenSkeleton } from "./category.screen";
 import { TransactionCounter } from "./transaction.counter";
 import { DeleteButton } from "./delete.button";
 
@@ -58,25 +58,28 @@ export class AddCategoryScreen extends Component {
 
   render() {
     return (
-      <View>
+      <View >
         <View
           style={{
-            backgroundColor: this.state.color.hex(),
-            flexBasis : CATEGORY_BOX_HEIGHT,
-            justifyContent: "center",
+            flexBasis: CATEGORY_BOX_HEIGHT,
             borderRadius: CATEGORY_BOX_INSET,
-            flexGrow : 1
+            backgroundColor: this.state.color.hex(),
+            justifyContent: "center",
+            flexGrow: 1,
+            flex: 1,
           }}
         >
           <View
             style={{
               flexDirection: "row",
               justifyContent : 'center',
+              alignItems : 'center',
+              flex : 1,
             }}
           >
             <View
               style={{
-                flex: .1,
+                flex: .25,
               }}
             ></View>
             <View
@@ -85,11 +88,10 @@ export class AddCategoryScreen extends Component {
               }}
             >
               <TextInput
-                placeholder="Press enter to finish adding category..."
+                placeholder="Enter category..."
                 placeholderTextColor="white"
                 selectionColor="white"
                 autoFocus={true}
-                onSubmitEditing={this.onAddCategoryPress}
                 style={{
                   backgroundColor: this.state.color.hex(),
                   fontFamily: FontFamily,
@@ -105,6 +107,9 @@ export class AddCategoryScreen extends Component {
               />
             </View>
             <View style={{
+              flex : 1.75
+            }}></View>
+            <View style={{
               flex : 1,
               justifyContent : 'flex-end'
             }}>
@@ -113,17 +118,18 @@ export class AddCategoryScreen extends Component {
               </TransactionCounter>
             </View>
             <View style={{
+              flex : .5
+            }}></View>
+            <View style={{
               flex : 1,
               justifyContent : 'flex-end'
             }}>
               <DeleteButton color={this.state.color} onPress={this.props.onStopAddCategory}>
               </DeleteButton>
             </View>
-            <View
-              style={{
-                flex: .25,
-              }}
-            ></View>
+            <View style={{
+              flex : .2
+            }}></View>
           </View>
         </View>
 
@@ -159,6 +165,27 @@ export class AddCategoryScreen extends Component {
             );
           })}
         </View>
+
+        <Button
+          buttonStyle={{
+            backgroundColor: "#ced4de",
+            marginTop: 10,
+            paddingTop: 15,
+            paddingBottom: 15,
+            marginLeft: 30,
+            marginRight: 30,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: "#fff",
+          }}
+          icon={{
+            name: "add",
+            size: 15,
+            color: "white",
+          }}
+          onPress={this.onAddCategoryPress}
+        ></Button>
+
       </View>
     );
   }

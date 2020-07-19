@@ -13,7 +13,6 @@ import {
   OnBeforeCategoryRemovedEvent,
   BeforeCategoryRemovedListener,
 } from "../pojo/spectre.user";
-import { Modal } from "./modal.screen";
 import { Transaction } from "../pojo/transaction";
 import { OnCategoryPressed } from "./category.screen";
 import { Category } from "../pojo/category";
@@ -30,7 +29,6 @@ import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
-import { AddCategoryScreen } from "./add.category.screen";
 import { FontFamily, CategoryColors } from "../css/styles";
 import { Alert } from "./alert";
 import { ScreenSegmentPayload } from "./screen.segment.payload";
@@ -40,7 +38,6 @@ import { Color } from "../pojo/color";
 import { Spacer } from "../pojo/spacer";
 import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
-import { AddCategoryButton } from "./add.category.button.screen";
 import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
@@ -73,7 +70,6 @@ export class CategorizationScreen extends Component
   constructor(props: Props) {
     super(props);
     this.onFileSelect = this.onFileSelect.bind(this);
-    this.onImportPress = this.onImportPress.bind(this);
     this.onCategoryPress = this.onCategoryPress.bind(this);
     this.onExportCategorized = this.onExportCategorized.bind(this);
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
@@ -122,12 +118,6 @@ export class CategorizationScreen extends Component
 
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-  }
-
-  onImportPress() {
-    this.setState({
-      showImportCsvScreen: true,
-    });
   }
 
   async onExportCategorized() {
@@ -183,7 +173,7 @@ export class CategorizationScreen extends Component
         this.forceUpdate();
 
         this.setState({
-          screenSegmentPayloads : this.generatePayloadsForCurrentState()
+          screenSegmentPayloads: this.generatePayloadsForCurrentState(),
         });
       });
       payloads.push(payload);
@@ -455,33 +445,23 @@ export class CategorizationScreen extends Component
           alignContent: "stretch",
         }}
       >
-        <Modal
-          isVisible={this.state.showImportCsvScreen}
-          onBackdropPress={() => {
-            this.setState({
-              showImportCsvScreen: false,
-            });
-          }}
-        >
-          <Card>
-            <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
-          </Card>
-        </Modal>
         <View
           style={{
             flex: 8,
           }}
         >
-          <ScrollView style={{
-            marginHorizontal : 10,
-            marginTop : 5
-          }}>
-              {this.state.screenSegmentPayloads.map(function (
-                payload: ScreenSegmentPayload
-              ) {
-                const factory = new ScreenSegmentFactory();
-                return factory.create(payload);
-              })}
+          <ScrollView
+            style={{
+              marginHorizontal: 10,
+              marginTop: 5,
+            }}
+          >
+            {this.state.screenSegmentPayloads.map(function (
+              payload: ScreenSegmentPayload
+            ) {
+              const factory = new ScreenSegmentFactory();
+              return factory.create(payload);
+            })}
             <View
               style={{
                 justifyContent: "flex-end",
@@ -490,12 +470,16 @@ export class CategorizationScreen extends Component
               <AddSpacerOrCategoryScreen
                 onSpacerAddPress={this.onSpacerAddPress}
                 onCategoryAddPress={() => {
-                  this.state.showAddCategoryScreen = true;
-                  this.forceUpdate();
+                  if (this.state.showAddCategoryScreen) {
+                    
+                  } else {
+                    this.state.showAddCategoryScreen = true;
+                    this.forceUpdate();
 
-                  this.setState({
-                    screenSegmentPayloads: this.generatePayloadsForCurrentState(),
-                  });
+                    this.setState({
+                      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+                    });
+                  }
                 }}
               ></AddSpacerOrCategoryScreen>
             </View>
@@ -520,26 +504,7 @@ export class CategorizationScreen extends Component
                 flex: 1,
               }}
             >
-              <TouchableOpacity
-                style={{
-                  marginTop: 10,
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  marginLeft: 30,
-                  marginRight: 30,
-                  backgroundColor: "#1FDA5D",
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "#fff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 50,
-                  height: 50,
-                }}
-                onPress={this.onImportPress}
-              >
-                <Icon name={"add"} size={15} color="#fff" />
-              </TouchableOpacity>
+              <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
             </View>
             <View
               style={{

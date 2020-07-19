@@ -12,7 +12,7 @@ export class TransactionScreenSegment extends Component {
     this.onDeletePress = this.onDeletePress.bind(this);
   }
 
-  onDeletePress(event) {
+  onDeletePress() {
     this.props.onDelete(new TransactionDeletePress(this.props.transaction));
   }
 

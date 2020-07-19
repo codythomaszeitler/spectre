@@ -76,6 +76,7 @@ export class CategoryScreen extends Component
     try {
       this.spectreUser.removeCategory(this.props.category);
     } catch (e) {
+      console.log(e);
       const errorDialog = new Alert();
       errorDialog.show(e.message);
     }
@@ -156,11 +157,11 @@ export class CategoryScreen extends Component
                 flex: 1,
               }}
             >
-              <View style={{
-                flex : .2
-              }}>
-
-              </View>
+              <View
+                style={{
+                  flex: 0.2,
+                }}
+              ></View>
               <View
                 style={{
                   flex: 10,
@@ -197,11 +198,14 @@ export class CategoryScreen extends Component
                   </Text>
                 </PerfectCircle>
               </View>
+              <View style={{ flex: 0.25 }}></View>
 
-              <View style={{
-                justifyContent : 'flex-end',
-                flex : .5
-              }}>
+              <View
+                style={{
+                  justifyContent: "flex-end",
+                  flex: 1,
+                }}
+              >
                 <PerfectCircle
                   color={this.state.color.darkerBy(1.2)}
                   diameter={20}
@@ -211,7 +215,7 @@ export class CategoryScreen extends Component
                     style={{
                       fontFamily: FontFamily,
                       color: "white",
-                      fontSize : 10
+                      fontSize: 10,
                     }}
                   >
                     {"X"}

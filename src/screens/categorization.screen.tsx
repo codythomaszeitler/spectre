@@ -159,6 +159,7 @@ export class CategorizationScreen extends Component
     if (Spacer.hasSpacerAtBeginning(this.spacers)) {
       payloads.push(new LineBreakScreenSegmentPayload());
       payloads.push(new SpacerScreenSegmentPayload());
+      payloads.push(new LineBreakScreenSegmentPayload());
     }
 
     const categories = this.spectreUser.getCategories();

@@ -261,7 +261,7 @@ export class CategorizationScreen extends Component
           const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), after);
           this.spacers.push(spacer);
         } else if (!after) {
-          const spacer = new Spacer(before, Spacer.START_OF_CATEGORIES());
+          const spacer = new Spacer(before, Spacer.END_OF_CATEGORIES());
           this.spacers.push(spacer);
         } else {
           const spacer = new Spacer(before, after);

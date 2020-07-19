@@ -4,7 +4,8 @@ import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { FontFamily } from "../css/styles";
 import { PerfectCircle } from "./perfect.circle";
-import {CATEGORY_FONT_SIZE} from './category.screen';
+import { CATEGORY_FONT_SIZE } from "./category.screen";
+import { DeleteButton } from "./delete.button";
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export class TransactionScreenSegment extends Component {
                     style={{
                       color: this.props.textColor,
                       fontFamily: FontFamily,
-                      fontSize : Math.floor(CATEGORY_FONT_SIZE * .8)
+                      fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.8),
                     }}
                   >
                     {item.detail}
@@ -58,19 +59,11 @@ export class TransactionScreenSegment extends Component {
               }}
             >
               {this.props.canDelete && (
-                <TouchableOpacity onPress={this.onDeletePress}>
-                  <PerfectCircle
-                    color={this.props.backgroundColor.darkerBy(1.2)}
-                    onPress={this.onDeletePress}
-                    diameter={20}
-                  >
-                    <Text style={{
-                      fontFamily :FontFamily,
-                      fontSize : 10,
-                      color : 'white'
-                    }}>X</Text>
-                  </PerfectCircle>
-                </TouchableOpacity>
+                <DeleteButton
+                  color={this.props.backgroundColor.darkerBy(1.2)}
+                  onPress={this.onDeletePress}
+                  diameter={20}
+                ></DeleteButton>
               )}
             </View>
           </View>

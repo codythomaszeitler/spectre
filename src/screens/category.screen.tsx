@@ -17,7 +17,8 @@ import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { PerfectCircle } from "./perfect.circle";
-import {DeleteButton} from './delete.button';
+import { DeleteButton } from "./delete.button";
+import { TransactionCounter } from "./transaction.counter";
 
 export const CATEGORY_BOX_HEIGHT = 50;
 export const CATEGORY_BOX_INSET = 7;
@@ -185,19 +186,10 @@ export class CategoryScreen extends Component
                   flex: 1,
                 }}
               >
-                <PerfectCircle
-                  color={this.state.color.darkerBy(1.2)}
-                  diameter={30}
-                >
-                  <Text
-                    style={{
-                      fontFamily: FontFamily,
-                      color: "white",
-                    }}
-                  >
-                    {this.state.numTransactions}
-                  </Text>
-                </PerfectCircle>
+                <TransactionCounter
+                  color={this.state.color}
+                  numTransactions={this.state.numTransactions}
+                ></TransactionCounter>
               </View>
               <View style={{ flex: 0.25 }}></View>
 

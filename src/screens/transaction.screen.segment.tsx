@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Card, Text, Badge } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
-import {FontFamily} from '../css/styles';
+import { FontFamily } from "../css/styles";
+import { PerfectCircle } from "./perfect.circle";
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export class TransactionScreenSegment extends Component {
                     key={item.detail}
                     style={{
                       color: this.props.textColor,
-                      fontFamily : FontFamily
+                      fontFamily: FontFamily,
                     }}
                   >
                     {item.detail}
@@ -56,16 +57,17 @@ export class TransactionScreenSegment extends Component {
             >
               {this.props.canDelete && (
                 <TouchableOpacity onPress={this.onDeletePress}>
-                  <Badge
-                    value="X"
-                    badgeStyle={{
-                      backgroundColor: this.props.backgroundColor.darkerBy(1.2).hex(),
-                      borderColor : this.props.backgroundColor.darkerBy(1.2).hex()
-                    }}
-                    textStyle={{
-                      fontFamily : FontFamily
-                    }}
-                  />
+                  <PerfectCircle
+                    color={this.props.backgroundColor.darkerBy(1.2)}
+                    onPress={this.onDeletePress}
+                    diameter={20}
+                  >
+                    <Text style={{
+                      fontFamily :FontFamily,
+                      fontSize : 10,
+                      color : 'white'
+                    }}>X</Text>
+                  </PerfectCircle>
                 </TouchableOpacity>
               )}
             </View>

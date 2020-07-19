@@ -170,6 +170,8 @@ export class CategorizationScreen extends Component
         payloads.push(new LineBreakScreenSegmentPayload());
         payloads.push(new SpacerScreenSegmentPayload());
       }
+
+      payloads.push(new LineBreakScreenSegmentPayload());
     }
 
     if (this.state.showAddCategoryScreen) {

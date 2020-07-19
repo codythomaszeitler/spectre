@@ -60,9 +60,10 @@ export class AddCategoryScreen extends Component {
         <View
           style={{
             backgroundColor: this.state.color.hex(),
-            height: CATEGORY_BOX_HEIGHT,
+            flexBasis : CATEGORY_BOX_HEIGHT,
             justifyContent: "center",
             borderRadius: CATEGORY_BOX_INSET,
+            flexGrow : 1
           }}
         >
           <View
@@ -73,7 +74,7 @@ export class AddCategoryScreen extends Component {
           >
             <View
               style={{
-                flex: .25,
+                flex: .1,
               }}
             ></View>
             <View
@@ -82,7 +83,7 @@ export class AddCategoryScreen extends Component {
               }}
             >
               <TextInput
-                placeholder="Category"
+                placeholder="Enter category here..."
                 placeholderTextColor="white"
                 selectionColor="white"
                 style={{

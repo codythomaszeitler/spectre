@@ -157,7 +157,7 @@ export class CategoryScreen extends Component
               }}
             >
               <View style={{
-                flex : .75
+                flex : .2
               }}>
 
               </View>
@@ -211,7 +211,7 @@ export class CategoryScreen extends Component
                     style={{
                       fontFamily: FontFamily,
                       color: "white",
-                      fontSize : 12
+                      fontSize : 10
                     }}
                   >
                     {"X"}

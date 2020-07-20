@@ -8,7 +8,15 @@ export class Category {
     transactions : Transaction[];
 
     constructor(type : string) {
-        this.type = type;
+        if (!type) {
+            throw new Error('Cannot build a category with a falsy type string');
+        }
+
+        if (type.trim().length === 0) {
+            throw new Error('Must give a value that is not just empty space');
+        }
+
+        this.type = type.trim();
         this.transactions = [];
     }
 

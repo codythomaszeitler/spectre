@@ -34,4 +34,31 @@ describe('Category', () => {
         const testObject = new Category('Test');
         expect(testObject.getTransactions().length).toBe(0);
     });
+
+    it('should throw an exception if an empty category type is given', () => {
+        let caughtException = null;
+        try {
+            new Category('    '); 
+        } catch (e) {
+            caughtException = e;
+        }
+
+        expect(caughtException.message).toBe('Must give a value that is not just empty space');
+    });
+
+    it('should trim off empty white space around the given type', () => {
+        const testObject = new Category('     a    ');
+        expect(testObject.getType()).toBe('a');
+    });
+
+    it('should throw an exception if a falsy type is given', () => {
+        let caughtException = null;
+        try {
+            new Category(null);
+        } catch (e) {
+            caughtException = e;
+        }
+
+        expect(caughtException.message).toBe('Cannot build a category with a falsy type string');
+    });
 });

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Animated, ScrollView } from "react-native";
-import { Button, Icon, Card, Text } from "react-native-elements";
+import { View, TouchableOpacity, ScrollView } from "react-native";
+import { Icon, Text } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -90,7 +90,6 @@ export class CategorizationScreen extends Component
 
     this.state = {
       screenSegmentPayloads: [],
-      pan: new Animated.ValueXY(),
       categories: this.spectreUser.getCategories(),
       showImportCsvScreen: false,
       showAddCategoryScreen: false,

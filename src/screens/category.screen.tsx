@@ -208,7 +208,7 @@ export class CategoryScreen extends Component
         </TouchableOpacity>
         {!this.props.categorizationMode &&
           this.state.shouldShowTransactions &&
-          this.state.category.getTransactions().map((data, index) => {
+          this.state.category.getTransactions().reverse().map((data, index) => {
             return (
               <View
                 key={data.id}

@@ -231,10 +231,10 @@ export class CategoryScreen extends Component
                     onDelete={this.onUncategorizePress}
                     transaction={data}
                     textColor="white"
-                    backgroundColor={new Color('#808080')}
+                    backgroundColor={new Color('#bdbdbd')}
                     containerStyle={{
-                      backgroundColor: '#808080',
-                      marginTop: 10,
+                      backgroundColor: '#bdbdbd',
+                      marginTop: 5,
                       paddingTop: 15,
                       paddingBottom: 15,
                       borderRadius: 7,

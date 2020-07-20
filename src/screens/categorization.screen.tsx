@@ -539,7 +539,7 @@ export class CategorizationScreen extends Component
               }}
             >
               <PerfectCircle
-                color={new Color("#FF0000")}
+                color={new Color("#f76f6f")}
                 onPress={this.onCategorizationStart}
                 diameter={75}
               >

@@ -19,4 +19,5 @@ describe('Transaction', () => {
 
         expect(a.equals(b)).toBe(false);
     });
+
 });

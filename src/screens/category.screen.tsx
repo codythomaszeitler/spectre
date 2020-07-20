@@ -16,7 +16,6 @@ import {
 import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
-import { PerfectCircle } from "./perfect.circle";
 import { DeleteButton } from "./delete.button";
 import { TransactionCounter } from "./transaction.counter";
 
@@ -228,6 +227,7 @@ export class CategoryScreen extends Component
                 >
                   <TransactionScreenSegment
                     canDelete={true}
+                    isHorizontal
                     onDelete={this.onUncategorizePress}
                     transaction={data}
                     textColor="white"

@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
-import { FontFamily } from "../css/styles";
-import { CATEGORY_FONT_SIZE } from "./category.screen";
 import { DeleteButton } from "./delete.button";
 import {TransactionDetail} from '../pojo/info.line';
+import { DetailsSceenSegement } from "./details.screen.segment";
+import { Color } from "../pojo/color";
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
@@ -19,7 +19,6 @@ export class TransactionScreenSegment extends Component {
 
   getTransactionDetailOrientation() {
     let orientation = 'column';
-    console.log(this.props.isHorizontal)
     if(this.props.isHorizontal) {
       orientation = 'row'; 
     }    
@@ -47,61 +46,7 @@ export class TransactionScreenSegment extends Component {
                 flex: 10,
               }}
             >
-              {this.props.transaction.getDetails().map((item, index) => {
-                const isLastFilledIn = () => {
-                  const details = this.props.transaction.getDetails();
-                  if ((details.length - 1) === index) {
-                    return true;
-                  }
-
-                  let isLastFilledIn = true;
-                  const toCheck = details.slice(index + 1, details.length);
-                  for (let i = 0; i < toCheck.length; i++) {
-                    const element = toCheck[i].getElement();
-                    if (element.trim().length !== 0) {
-                      isLastFilledIn = false;
-                      break;
-                    }
-                  }
-
-                  return isLastFilledIn;
-                }
-
-                const getPostfix = () => {
-                  let postFix = '';
-                  if (this.getTransactionDetailOrientation() === 'row') {
-                    postFix = ' | '
-                  }
-
-                  if (index === this.props.transaction.getDetails().length - 1) {
-                    postFix = '';
-                  }
-
-                  if (item.getElement().trim().length === 0) {
-                    postFix = '';
-                  }
-
-                  if (isLastFilledIn()) {
-                    postFix = '';
-                  }
-
-                  return postFix;
-                }
-                const postFix = getPostfix();
-
-                return (
-                  <Text
-                    key={item.detail}
-                    style={{
-                      color: this.props.textColor,
-                      fontFamily: FontFamily,
-                      fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.8),
-                    }}
-                  >
-                    {item.detail + postFix}
-                  </Text>
-                );
-              })}
+              <DetailsSceenSegement details={this.props.transaction.getDetails()} textColor={new Color('#FFFFFF')} orientation={this.getTransactionDetailOrientation()}></DetailsSceenSegement>
             </View>
             <View
               style={{

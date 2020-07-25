@@ -51,7 +51,6 @@ export interface State {
   showAddCategoryScreen: boolean;
   categoryAddText: string;
   currentTransaction: Transaction;
-  pan: Animated.ValueXY;
   isCategorizationMode: boolean;
 }
 
@@ -98,10 +97,9 @@ export class CategorizationScreen extends Component
       numUncategorized: 0,
       width: 0,
       height: 0,
+      bottomBarFlex : 1
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-
-    this.categoryBoxLocations = {};
   }
 
   componentDidMount() {
@@ -290,21 +288,26 @@ export class CategorizationScreen extends Component
 
   onCategorizationStart() {
     if (this.spectreUser.hasAnotherTransaction()) {
-      this.nextTransaction();
-
-      this.setState({
-        screenSegmentPayloads: this.generatePayloadsForCurrentState(),
-      });
+      this.nextTransaction(
+        () => {
+          this.setState({
+            screenSegmentPayloads : this.generatePayloadsForCurrentState(),
+            bottomBarFlex : 3
+          })
+        }
+      );
     }
   }
 
   onCategorizationEnd() {
-    this.state.currentTransaction = null;
-    this.state.isCategorizationMode = false;
-    this.forceUpdate();
-
     this.setState({
-      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+      currentTransaction : null,
+      isCategorizationMode : false,
+    }, () => {
+      this.setState({
+        screenSegmentPayloads : this.generatePayloadsForCurrentState(),
+        bottomBarFlex : 1        
+      })
     });
   }
 
@@ -351,15 +354,14 @@ export class CategorizationScreen extends Component
     }
   }
 
-  nextTransaction() {
+  nextTransaction(callbackAfterTransactionStateUpdate? : () => void) {
     if (this.spectreUser.hasAnotherTransaction()) {
-      const uncategorized = this.spectreUser.getUncategorized();
-      const transaction = uncategorized.shift();
+      const transaction = this.spectreUser.getNextTransaction();
 
-      this.state.currentTransaction = transaction;
-      this.state.isCategorizationMode = true;
-
-      this.forceUpdate();
+      this.setState({
+        currentTransaction : transaction,
+        isCategorizationMode : true
+      }, callbackAfterTransactionStateUpdate);
     } else {
       this.onCategorizationEnd();
     }
@@ -470,7 +472,6 @@ export class CategorizationScreen extends Component
                 onSpacerAddPress={this.onSpacerAddPress}
                 onCategoryAddPress={() => {
                   if (this.state.showAddCategoryScreen) {
-                    
                   } else {
                     this.state.showAddCategoryScreen = true;
                     this.forceUpdate();
@@ -489,173 +490,195 @@ export class CategorizationScreen extends Component
             flex: 0.25,
           }}
         ></View>
-        {!this.state.currentTransaction && (
-          <View
-            style={{
-              justifyContent: "flex-end",
-              flexDirection: "row",
-              flex: 1,
-            }}
-          >
-            <View
-              style={{
-                alignItems: "flex-start",
-                flex: 1,
-              }}
-            >
-              <DocumentPicker onSuccessfulLoadListener={this}></DocumentPicker>
-            </View>
-            <View
-              style={{
-                alignItems: "flex-start",
-                flex: 1,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  marginTop: 10,
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  marginLeft: 30,
-                  marginRight: 30,
-                  backgroundColor: "#DA9F1F",
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "#fff",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 50,
-                  height: 50,
-                }}
-                onPress={this.onExportCategorized}
-              >
-                <Icon name={"chevron-right"} size={15} color="#fff" />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                alignItems: "flex-end",
-                flex: 3,
-              }}
-            >
-              <PerfectCircle
-                color={new Color("#f76f6f")}
-                onPress={this.onCategorizationStart}
-                diameter={75}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontFamily: FontFamily,
-                    fontSize: 26,
-                  }}
-                >
-                  {this.state.numUncategorized}
-                </Text>
-              </PerfectCircle>
-            </View>
-            <View style={{ flex: 0.5 }}></View>
-          </View>
-        )}
-
-        {this.state.currentTransaction && (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
-            <View style={{ flex: 1 }}></View>
-            <View
-              style={{
-                flex: 1,
-                alignSelf: "flex-start",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  borderWidth: 2,
-                  borderColor: "rgba(255,0,0,1)",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 30,
-                  height: 30,
-                  backgroundColor: "white",
-                  borderRadius: 50,
-                }}
-                onPress={this.onCategorizationEnd}
-              >
-                <Text
-                  style={{
-                    color: "red",
-                  }}
-                >
-                  -
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flex: 8,
-              }}
-            >
-              <TransactionScreenSegment
-                canDelete={false}
-                transaction={this.state.currentTransaction}
-                textColor="black"
-                containerStyle={{
-                  shadowColor: "#000000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 3,
-                  },
-                  shadowRadius: 5,
-                  shadowOpacity: 1.0,
-                  marginTop: 10,
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  borderRadius: 7,
-                  borderWidth: 0,
-                }}
-              ></TransactionScreenSegment>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                alignSelf: "flex-end",
-              }}
-            ></View>
-          </View>
-        )}
         <View
           style={{
-            flex: 0.25,
+            flex: this.state.bottomBarFlex,
+            justifyContent: "flex-end",
           }}
-        ></View>
-        <form
-          action="https://www.paypal.com/cgi-bin/webscr"
-          method="post"
-          target="_top"
         >
-          <input type="hidden" name="cmd" value="_s-xclick" />
-          <input type="hidden" name="hosted_button_id" value="9EHAV84AATTWC" />
-          <input
-            type="image"
-            src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
-            border="0"
-            name="submit"
-            title="PayPal - The safer, easier way to pay online!"
-            alt="Donate with PayPal button"
-          />
-          <img
-            alt=""
-            border="0"
-            src="https://www.paypal.com/en_US/i/scr/pixel.gif"
-            width="1"
-            height="1"
-          />
-        </form>
+          {!this.state.currentTransaction && (
+            <View
+              style={{
+                justifyContent: "flex-end",
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "flex-end",
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "flex-start",
+                  flex: 1,
+                }}
+              >
+                <DocumentPicker
+                  onSuccessfulLoadListener={this}
+                ></DocumentPicker>
+              </View>
+              <View
+                style={{
+                  alignItems: "flex-start",
+                  flex: 1,
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    marginTop: 10,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    marginLeft: 30,
+                    marginRight: 30,
+                    backgroundColor: "#DA9F1F",
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: "#fff",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 50,
+                    height: 50,
+                  }}
+                  onPress={this.onExportCategorized}
+                >
+                  <Icon name={"chevron-right"} size={15} color="#fff" />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  alignItems: "flex-end",
+                  flex: 3,
+                }}
+              >
+                <PerfectCircle
+                  color={new Color("#f76f6f")}
+                  onPress={this.onCategorizationStart}
+                  diameter={75}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: "white",
+                      fontFamily: FontFamily,
+                      fontSize: 20,
+                    }}
+                  >
+                    {this.state.numUncategorized}
+                  </Text>
+                </PerfectCircle>
+              </View>
+              <View style={{ flex: 0.5 }}></View>
+            </View>
+          )}
+
+          {this.state.currentTransaction && (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-around",
+              }}
+            >
+              <View style={{ flex: 1 }}></View>
+              <View
+                style={{
+                  flex: 1,
+                  alignSelf: "flex-start",
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    borderWidth: 2,
+                    borderColor: "rgba(255,0,0,1)",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 30,
+                    height: 30,
+                    backgroundColor: "white",
+                    borderRadius: 50,
+                  }}
+                  onPress={this.onCategorizationEnd}
+                >
+                  <Text
+                    style={{
+                      color: "red",
+                    }}
+                  >
+                    -
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flex: 8,
+                }}
+              >
+                <TransactionScreenSegment
+                  canDelete={false}
+                  transaction={this.state.currentTransaction}
+                  textColor="black"
+                  containerStyle={{
+                    shadowColor: "#000000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 3,
+                    },
+                    opacity : .33,
+                    shadowRadius: 5,
+                    shadowOpacity: 1.0,
+                    marginTop: 10,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    borderRadius: 7,
+                    borderWidth: 0,
+                  }}
+                ></TransactionScreenSegment>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  alignSelf: "flex-end",
+                }}
+              ></View>
+            </View>
+          )}
+          <View
+            style={{
+              flex: 0.25,
+            }}
+          ></View>
+          <View style={{
+            flex : .5,
+            justifyContent : 'flex-end',
+            alignSelf : 'flex-start'
+          }}>
+            <form
+              action="https://www.paypal.com/cgi-bin/webscr"
+              method="post"
+              target="_top"
+            >
+              <input type="hidden" name="cmd" value="_s-xclick" />
+              <input
+                type="hidden"
+                name="hosted_button_id"
+                value="9EHAV84AATTWC"
+              />
+              <input
+                type="image"
+                src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
+                border="0"
+                name="submit"
+                title="PayPal - The safer, easier way to pay online!"
+                alt="Donate with PayPal button"
+              />
+              <img
+                alt=""
+                border="0"
+                src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+                width="1"
+                height="1"
+              />
+            </form>
+          </View>
+        </View>
       </View>
     );
   }

@@ -199,6 +199,12 @@ export class SpectreUser {
     return categories.length !== 0;
   }
 
+  getNextTransaction() {
+    const uncategorized = this.getUncategorized();
+    const transaction = uncategorized.shift();
+    return transaction;
+  }
+
   categorize(transaction: Transaction, category: Category) {
     const found = this._getCategory(category);
     if (!found) {

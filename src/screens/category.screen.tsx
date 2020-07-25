@@ -18,6 +18,7 @@ import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
 import { TransactionCounter } from "./transaction.counter";
+import { DetailsSceenSegement } from "./details.screen.segment";
 
 export const CATEGORY_BOX_HEIGHT = 50;
 export const CATEGORY_BOX_INSET = 7;

@@ -12,49 +12,16 @@ export class DetailsSceenSegement extends Component {
 
   getViewForHorizontalOrientation() {
 
-    const getFirstFilledInElementIndex = (details : TransactionDetail[]) => {
-      let firstFilledInIndex = 0;
-
-      for (let i = 0; i < details.length; i++) {
-        const detail = details[i];
-        if (detail) {
-          firstFilledInIndex = i;
-          break;
-        }
-      }
-
-      return firstFilledInIndex;
-    }
-
-    const getLastFilledInElementIndex = (details : TransactionDetail[]) => {
-      let lastFilledInIndex = 0;
-
-      for (let i = details.length - 1; i >= 0; i--) {
-        const detail = details[i];
-        if (detail) {
-          lastFilledInIndex = i;
-          break;
-        }
-      }
-
-      return lastFilledInIndex;
-    }
-
     const details = this.props.details;
     let horizontalText = "";
-
-    const lastFilledInElementIndex = getLastFilledInElementIndex(details);
-    console.log('Last Filled in index : ' + lastFilledInElementIndex);
-    for (let i = getFirstFilledInElementIndex(details); i < lastFilledInElementIndex; i++) {
+    for (let i = 0; i < details.length; i++) {
       const detail = details[i];
-      const detailElement = detail.getElement();
+      const element = detail.getElement() ? detail.getElement() : '-';
 
-      if (i == 0) {
-
-      } else if (lastFilledInElementIndex - 1 == i) {
-        horizontalText = horizontalText + ' | ' +  detailElement ;
-      } else if (detailElement.length !== 0) {
-        horizontalText = detailElement + " | " + horizontalText;
+      if (i != details.length - 1) {
+        horizontalText = horizontalText + element + ' | ';
+      } else {
+        horizontalText = horizontalText + element;
       }
     }
 

@@ -98,7 +98,7 @@ export class CategorizationScreen extends Component
       numUncategorized: 0,
       width: 0,
       height: 0,
-      bottomBarFlex : 1
+      bottomBarFlex: 1,
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -289,26 +289,27 @@ export class CategorizationScreen extends Component
 
   onCategorizationStart() {
     if (this.spectreUser.hasAnotherTransaction()) {
-      this.nextTransaction(
-        () => {
-          this.setState({
-            screenSegmentPayloads : this.generatePayloadsForCurrentState(),
-          })
-        }
-      );
+      this.nextTransaction(() => {
+        this.setState({
+          screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+        });
+      });
     }
   }
 
   onCategorizationEnd() {
-    this.setState({
-      currentTransaction : null,
-      isCategorizationMode : false,
-    }, () => {
-      this.setState({
-        screenSegmentPayloads : this.generatePayloadsForCurrentState(),
-        bottomBarFlex : 2        
-      })
-    });
+    this.setState(
+      {
+        currentTransaction: null,
+        isCategorizationMode: false,
+      },
+      () => {
+        this.setState({
+          screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+          bottomBarFlex: 2,
+        });
+      }
+    );
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
@@ -354,15 +355,18 @@ export class CategorizationScreen extends Component
     }
   }
 
-  nextTransaction(callbackAfterTransactionStateUpdate? : () => void) {
+  nextTransaction(callbackAfterTransactionStateUpdate?: () => void) {
     if (this.spectreUser.hasAnotherTransaction()) {
       const transaction = this.spectreUser.getNextTransaction();
 
-      this.setState({
-        currentTransaction : transaction,
-        isCategorizationMode : true,
-        bottomBarFlex : transaction.getNumDetails() / 1.5
-      }, callbackAfterTransactionStateUpdate);
+      this.setState(
+        {
+          currentTransaction: transaction,
+          isCategorizationMode: true,
+          bottomBarFlex: transaction.getNumDetails() / 1.5,
+        },
+        callbackAfterTransactionStateUpdate
+      );
     } else {
       this.onCategorizationEnd();
     }
@@ -522,7 +526,9 @@ export class CategorizationScreen extends Component
                   flex: 1,
                 }}
               >
-                <ExportButtonScreen onPress={this.onExportCategorized}></ExportButtonScreen>
+                <ExportButtonScreen
+                  onPress={this.onExportCategorized}
+                ></ExportButtonScreen>
               </View>
               <View
                 style={{
@@ -530,22 +536,38 @@ export class CategorizationScreen extends Component
                   flex: 3,
                 }}
               >
-                <PerfectCircle
-                  color={new Color("#f76f6f")}
-                  onPress={this.onCategorizationStart}
-                  diameter={75}
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "column",
+                  }}
                 >
-                  <Text
-                    numberOfLines={1}
+                  <View
                     style={{
-                      color: "white",
-                      fontFamily: FontFamily,
-                      fontSize: 20,
+                      flex: 0.5,
                     }}
-                  >
-                    {this.state.numUncategorized}
-                  </Text>
-                </PerfectCircle>
+                  ></View>
+                  <View style={{
+                    flex : 3
+                  }}>
+                    <PerfectCircle
+                      color={new Color("#f76f6f")}
+                      onPress={this.onCategorizationStart}
+                      diameter={75}
+                    >
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          color: "white",
+                          fontFamily: FontFamily,
+                          fontSize: 20,
+                        }}
+                      >
+                        {this.state.numUncategorized}
+                      </Text>
+                    </PerfectCircle>
+                  </View>
+                </View>
               </View>
               <View style={{ flex: 0.5 }}></View>
             </View>
@@ -596,14 +618,14 @@ export class CategorizationScreen extends Component
                 <TransactionScreenSegment
                   canDelete={false}
                   transaction={this.state.currentTransaction}
-                  textColor={new Color('#000000')}
+                  textColor={new Color("#000000")}
                   containerStyle={{
                     shadowColor: "#000000",
                     shadowOffset: {
                       width: 0,
                       height: 3,
                     },
-                    opacity : .33,
+                    opacity: 0.33,
                     shadowRadius: 5,
                     shadowOpacity: 1.0,
                     marginTop: 10,
@@ -627,11 +649,13 @@ export class CategorizationScreen extends Component
               flex: 0.25,
             }}
           ></View>
-          <View style={{
-            flex : .5,
-            justifyContent : 'flex-end',
-            alignSelf : 'flex-start'
-          }}>
+          <View
+            style={{
+              flex: 0.5,
+              justifyContent: "flex-end",
+              alignSelf: "flex-start",
+            }}
+          >
             <form
               action="https://www.paypal.com/cgi-bin/webscr"
               method="post"

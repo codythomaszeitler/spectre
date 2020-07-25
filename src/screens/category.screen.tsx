@@ -231,7 +231,7 @@ export class CategoryScreen extends Component
                     isHorizontal
                     onDelete={this.onUncategorizePress}
                     transaction={data}
-                    textColor="white"
+                    textColor={new Color('#FFFFFF')}
                     backgroundColor={new Color('#bdbdbd')}
                     containerStyle={{
                       backgroundColor: '#bdbdbd',

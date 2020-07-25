@@ -614,7 +614,7 @@ export class CategorizationScreen extends Component
                 <TransactionScreenSegment
                   canDelete={false}
                   transaction={this.state.currentTransaction}
-                  textColor="black"
+                  textColor={new Color('#000000')}
                   containerStyle={{
                     shadowColor: "#000000",
                     shadowOffset: {

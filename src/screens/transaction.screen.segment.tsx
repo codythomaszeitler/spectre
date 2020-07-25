@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { DeleteButton } from "./delete.button";
-import {TransactionDetail} from '../pojo/info.line';
+import { TransactionDetail } from "../pojo/info.line";
 import { DetailsSceenSegement } from "./details.screen.segment";
 import { Color } from "../pojo/color";
 
@@ -18,10 +18,10 @@ export class TransactionScreenSegment extends Component {
   }
 
   getTransactionDetailOrientation() {
-    let orientation = 'column';
-    if(this.props.isHorizontal) {
-      orientation = 'row'; 
-    }    
+    let orientation = "column";
+    if (this.props.isHorizontal) {
+      orientation = "row";
+    }
     return orientation;
   }
 
@@ -35,18 +35,23 @@ export class TransactionScreenSegment extends Component {
         <Card containerStyle={this.props.containerStyle}>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
               flex: 1,
             }}
           >
             <View
               style={{
                 alignSelf: "flex-start",
-                flexDirection : this.getTransactionDetailOrientation(),
+                flexDirection: this.getTransactionDetailOrientation(),
                 flex: 10,
               }}
             >
-              <DetailsSceenSegement details={this.props.transaction.getDetails()} textColor={new Color('#FFFFFF')} orientation={this.getTransactionDetailOrientation()}></DetailsSceenSegement>
+              <DetailsSceenSegement
+                details={this.props.transaction.getDetails()}
+                textColor={this.props.textColor}
+                orientation={this.getTransactionDetailOrientation()}
+                maxDetailStringLength={25}
+              ></DetailsSceenSegement>
             </View>
             <View
               style={{

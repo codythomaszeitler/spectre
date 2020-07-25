@@ -41,6 +41,7 @@ import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.paylo
 import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
+import { ExportButtonScreen } from "./export.button.screen";
 
 export interface Props {}
 
@@ -360,7 +361,7 @@ export class CategorizationScreen extends Component
       this.setState({
         currentTransaction : transaction,
         isCategorizationMode : true,
-        bottomBarFlex : transaction.getNumDetails() / 2
+        bottomBarFlex : transaction.getNumDetails() / 1.5
       }, callbackAfterTransactionStateUpdate);
     } else {
       this.onCategorizationEnd();
@@ -521,26 +522,7 @@ export class CategorizationScreen extends Component
                   flex: 1,
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    marginTop: 10,
-                    paddingTop: 15,
-                    paddingBottom: 15,
-                    marginLeft: 30,
-                    marginRight: 30,
-                    backgroundColor: "#DA9F1F",
-                    borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: "#fff",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 50,
-                    height: 50,
-                  }}
-                  onPress={this.onExportCategorized}
-                >
-                  <Icon name={"chevron-right"} size={15} color="#fff" />
-                </TouchableOpacity>
+                <ExportButtonScreen onPress={this.onExportCategorized}></ExportButtonScreen>
               </View>
               <View
                 style={{

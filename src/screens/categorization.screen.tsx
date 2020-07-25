@@ -292,7 +292,6 @@ export class CategorizationScreen extends Component
         () => {
           this.setState({
             screenSegmentPayloads : this.generatePayloadsForCurrentState(),
-            bottomBarFlex : 3
           })
         }
       );
@@ -306,7 +305,7 @@ export class CategorizationScreen extends Component
     }, () => {
       this.setState({
         screenSegmentPayloads : this.generatePayloadsForCurrentState(),
-        bottomBarFlex : 1        
+        bottomBarFlex : 2        
       })
     });
   }
@@ -360,7 +359,8 @@ export class CategorizationScreen extends Component
 
       this.setState({
         currentTransaction : transaction,
-        isCategorizationMode : true
+        isCategorizationMode : true,
+        bottomBarFlex : transaction.getNumDetails() / 2
       }, callbackAfterTransactionStateUpdate);
     } else {
       this.onCategorizationEnd();

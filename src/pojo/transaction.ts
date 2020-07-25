@@ -23,6 +23,11 @@ export class Transaction {
     return transaction;
   }
 
+  getNumDetails() {
+    const details = this.getDetails();
+    return details.length;
+  }
+
   getDetails() {
     const copied = [];
     for (let i = 0; i < this.details.length; i++) {

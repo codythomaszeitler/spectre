@@ -42,6 +42,7 @@ import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
 import { ExportButtonScreen } from "./export.button.screen";
+import { PaypalButtonScreen } from "./paypal.button.screen";
 
 export interface Props {}
 
@@ -664,33 +665,7 @@ export class CategorizationScreen extends Component
             alignSelf: "flex-start",
           }}
         >
-          <form
-            action="https://www.paypal.com/cgi-bin/webscr"
-            method="post"
-            target="_top"
-          >
-            <input type="hidden" name="cmd" value="_s-xclick" />
-            <input
-              type="hidden"
-              name="hosted_button_id"
-              value="9EHAV84AATTWC"
-            />
-            <input
-              type="image"
-              src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
-              border="0"
-              name="submit"
-              title="PayPal - The safer, easier way to pay online!"
-              alt="Donate with PayPal button"
-            />
-            <img
-              alt=""
-              border="0"
-              src="https://www.paypal.com/en_US/i/scr/pixel.gif"
-              width="1"
-              height="1"
-            />
-          </form>
+          <PaypalButtonScreen></PaypalButtonScreen>
         </View>
       </View>
     );

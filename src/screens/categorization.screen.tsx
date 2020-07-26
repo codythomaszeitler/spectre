@@ -505,12 +505,18 @@ export class CategorizationScreen extends Component
           }}
         >
           {!this.state.currentTransaction && (
-            <ViewModeBottomBar
-              onCategorizationStartPress={this.onCategorizationStart}
-              numUncategorized={this.state.numUncategorized}
-              onExportButtonPress={this.onExportCategorized}
-              onSuccessfulLoadListener={this}
-            ></ViewModeBottomBar>
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <ViewModeBottomBar
+                onCategorizationStartPress={this.onCategorizationStart}
+                numUncategorized={this.state.numUncategorized}
+                onExportButtonPress={this.onExportCategorized}
+                onSuccessfulLoadListener={this}
+              ></ViewModeBottomBar>
+            </View>
           )}
 
           {this.state.currentTransaction && (
@@ -525,7 +531,7 @@ export class CategorizationScreen extends Component
               <View
                 style={{
                   flex: 1,
-                  alignSelf: "flex-start",
+                  alignSelf: "flex-end",
                 }}
               >
                 <TouchableOpacity
@@ -558,16 +564,15 @@ export class CategorizationScreen extends Component
                 <TransactionScreenSegment
                   canDelete={false}
                   transaction={this.state.currentTransaction}
-                  textColor={new Color("#000000")}
+                  textColor={new Color("#696969")}
                   containerStyle={{
                     shadowColor: "#000000",
                     shadowOffset: {
                       width: 0,
                       height: 3,
                     },
-                    opacity: 0.33,
                     shadowRadius: 5,
-                    shadowOpacity: 1.0,
+                    shadowOpacity: .33,
                     marginTop: 10,
                     paddingTop: 15,
                     paddingBottom: 15,

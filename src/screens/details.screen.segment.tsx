@@ -66,7 +66,7 @@ export class DetailsSceenSegement extends Component {
             style={{
               color: this.props.textColor.hex(),
               fontFamily: FontFamily,
-              fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.75),
+              fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.65),
             }}
           >
             {getTruncatedString(detail)}

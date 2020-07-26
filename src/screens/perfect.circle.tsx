@@ -14,7 +14,7 @@ export class PerfectCircle extends Component {
   constructor(props: Props) {
     super(props);
 
-    this.onWithoutCircleShowing = this.onWithoutCircleShowing.bind(this);
+    this.onShow = this.onShow.bind(this);
 
     this.state = {
       diameter: '100%',
@@ -22,7 +22,7 @@ export class PerfectCircle extends Component {
     };
   }
 
-  onWithoutCircleShowing(event: LayoutChangeEvent) {
+  onShow(event: LayoutChangeEvent) {
     console.log("we are in hereerererererererereee");
     if (this.props.diameter) {
       console.log("we incorreclty got in here");
@@ -63,7 +63,7 @@ export class PerfectCircle extends Component {
           borderRadius : this.state.diameter
         }}
         onPress={this.props.onPress}
-        onLayout={this.onWithoutCircleShowing}
+        onLayout={this.onShow}
       >
         <View
           style={{

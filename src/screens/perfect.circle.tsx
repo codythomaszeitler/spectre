@@ -40,12 +40,12 @@ export class PerfectCircle extends Component {
     return (
       <TouchableOpacity
         style={{
-          borderWidth: 1,
-          borderColor: this.props.color.hex(),
+          borderWidth: 3,
+          borderColor: (this.props.borderColor ? this.props.borderColor.hex() : this.props.color.hex()),
           backgroundColor: this.props.color.hex(),
           width : this.state.diameter,
           height : this.state.diameter,
-          borderRadius : this.state.diameter
+          borderRadius : this.state.diameter,
         }}
         onPress={this.props.onPress}
         onLayout={this.onShow}

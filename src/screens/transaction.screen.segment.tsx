@@ -3,14 +3,20 @@ import { View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { DeleteButton } from "./delete.button";
-import { TransactionDetail } from "../pojo/info.line";
 import { DetailsSceenSegement } from "./details.screen.segment";
-import { Color } from "../pojo/color";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 export class TransactionScreenSegment extends Component {
   constructor(props) {
     super(props);
     this.onDeletePress = this.onDeletePress.bind(this);
+    this.showDeleteButton = this.showDeleteButton.bind(this);
+    this.hideDeleteButton = this.hideDeleteButton.bind(this);
+    this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(this);
+
+    this.state = {
+      showDeleteButton : false
+    }
   }
 
   onDeletePress() {
@@ -25,50 +31,70 @@ export class TransactionScreenSegment extends Component {
     return orientation;
   }
 
+  showDeleteButton() {
+    this.setState({
+      showDeleteButton: true
+    });
+  }
+
+  hideDeleteButton() {
+    this.setState({
+      showDeleteButton : false
+    });
+  }
+
+  onLongPressShowHideDeleteButton() {
+    this.setState({
+      showDeleteButton : !this.state.showDeleteButton
+    });
+  }
+
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
-        <Card containerStyle={this.props.containerStyle}>
-          <View
-            style={{
-              flexDirection: "row",
-              flex: 1,
-            }}
-          >
+      <View>
+        <GestureRecognizer
+          onSwipeLeft={this.showDeleteButton}
+          onSwipeRight={this.hideDeleteButton}
+        >
+          <Card containerStyle={this.props.containerStyle}>
             <View
               style={{
-                alignSelf: "flex-start",
-                flexDirection: this.getTransactionDetailOrientation(),
-                flex: 10,
-              }}
-            >
-              <DetailsSceenSegement
-                details={this.props.transaction.getDetails()}
-                textColor={this.props.textColor}
-                orientation={this.getTransactionDetailOrientation()}
-                maxDetailStringLength={25}
-              ></DetailsSceenSegement>
-            </View>
-            <View
-              style={{
-                alignSelf: "center",
+                flexDirection: "row",
                 flex: 1,
               }}
             >
-              {this.props.canDelete && (
-                <DeleteButton
-                  color={this.props.backgroundColor.darkerBy(1.2)}
-                  onPress={this.onDeletePress}
-                  diameter={20}
-                ></DeleteButton>
+              <View
+                style={{
+                  alignSelf: "flex-start",
+                  flexDirection: this.getTransactionDetailOrientation(),
+                  flex: 10,
+                }}
+              >
+                <DetailsSceenSegement
+                  details={this.props.transaction.getDetails()}
+                  textColor={this.props.textColor}
+                  orientation={this.getTransactionDetailOrientation()}
+                  maxDetailStringLength={40}
+                ></DetailsSceenSegement>
+              </View>
+
+              {this.props.canDelete && this.state.showDeleteButton && (
+                <View
+                  style={{
+                    alignSelf: "center",
+                    flex: 1,
+                  }}
+                >
+                  <DeleteButton
+                    color={this.props.backgroundColor.darkerBy(1.2)}
+                    onPress={this.onDeletePress}
+                    diameter={20}
+                  ></DeleteButton>
+                </View>
               )}
             </View>
-          </View>
-        </Card>
+          </Card>
+        </GestureRecognizer>
       </View>
     );
   }

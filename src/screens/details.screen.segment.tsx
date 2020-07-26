@@ -40,16 +40,6 @@ export class DetailsSceenSegement extends Component {
   }
 
   getViewForVerticalOrientation() {
-
-    const getTruncatedString = (detail : TransactionDetail) => {
-      let truncatedString = detail.getElement();
-      if (truncatedString.length > this.props.maxDetailStringLength) {
-        truncatedString = truncatedString.substring(0, this.props.maxDetailStringLength);
-        truncatedString = truncatedString + '...';
-      }
-      return truncatedString;
-    }
-
     const generateDetailLine = (detail: TransactionDetail) => {
       return (
         <View
@@ -65,9 +55,10 @@ export class DetailsSceenSegement extends Component {
               color: this.props.textColor.hex(),
               fontFamily: FontFamily,
               fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.65),
+              textAlign : 'right'
             }}
           >
-            {getTruncatedString(detail)}
+            {detail.getElement()}
           </Text>
         </View>
       );

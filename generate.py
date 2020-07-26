@@ -6,13 +6,13 @@ banks = ['Wells Fargo', 'Bank of America', 'Chase']
 buisnesses = ['Jack in the box', 'Mcdonalds', 'Wendys', 'Apple Store', 'Microsoft Store']
 
 contents = ''
-num_rows = 100000
+num_rows = 1000
 for i in range(num_rows):
     bank = banks[i % len(banks)]
     buisness = buisnesses[i % len(buisnesses)]
 
     if i % 2 == 0:
-        contents +=  'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,BBBBBBBB,CCCCC,DDDDD,' + bank + ',' + buisness + ',RANDOM' + '\n' 
+        contents +=  bank + ',' + buisness + ',RANDOM' + '\n' 
     else:
         contents +=  bank + ',' + '\n'
     

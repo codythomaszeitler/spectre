@@ -18,7 +18,7 @@ import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
 import { TransactionCounter } from "./transaction.counter";
-import { DetailsSceenSegement } from "./details.screen.segment";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 export const CATEGORY_BOX_HEIGHT = 50;
 export const CATEGORY_BOX_INSET = 7;
@@ -36,6 +36,7 @@ export interface State {
   category: Category;
   numTransactions: number;
   shouldShowTransactions: boolean;
+  showDeleteButton: boolean;
 }
 
 export class CategoryScreen extends Component
@@ -50,6 +51,9 @@ export class CategoryScreen extends Component
     this.onUncategorizePress = this.onUncategorizePress.bind(this);
     this.onCategoryDeletePress = this.onCategoryDeletePress.bind(this);
     this.onDeletePress = this.onDeletePress.bind(this);
+    this.showDeleteButton = this.showDeleteButton.bind(this);
+    this.hideDeleteButton = this.hideDeleteButton.bind(this);
+    this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(this);
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
@@ -60,6 +64,7 @@ export class CategoryScreen extends Component
       category: props.category,
       numTransactions: props.category.getTransactions().length,
       shouldShowTransactions: false,
+      showDeleteButton: false,
     };
   }
 
@@ -137,116 +142,145 @@ export class CategoryScreen extends Component
     }
   }
 
+  showDeleteButton() {
+    this.setState({
+      showDeleteButton: true
+    });
+  }
+
+  hideDeleteButton() {
+    this.setState({
+      showDeleteButton : false
+    });
+  }
+
+  onLongPressShowHideDeleteButton() {
+    this.setState({
+      showDeleteButton : !this.state.showDeleteButton
+    });
+  }
+
   render() {
     return (
       <View>
-        <TouchableOpacity onPress={this.onPress}>
-          <View
-            style={{
-              flexBasis: CATEGORY_BOX_HEIGHT,
-              borderRadius: CATEGORY_BOX_INSET,
-              backgroundColor: this.state.color.hex(),
-              justifyContent: "center",
-              flexGrow: 1,
-              flex: 1,
-            }}
+        <GestureRecognizer onSwipeLeft={this.showDeleteButton} onSwipeRight={this.hideDeleteButton}>
+          <TouchableOpacity
+            onPress={this.onPress}
+            onLongPress={this.onLongPressShowHideDeleteButton}
           >
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                flexBasis: CATEGORY_BOX_HEIGHT,
+                borderRadius: CATEGORY_BOX_INSET,
+                backgroundColor: this.state.color.hex(),
+                justifyContent: "center",
+                flexGrow: 1,
                 flex: 1,
               }}
             >
               <View
                 style={{
-                  flex: 0.2,
-                }}
-              ></View>
-              <View
-                style={{
-                  flex: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: CATEGORY_FONT_SIZE,
-                    fontFamily: FontFamily,
-                  }}
-                >
-                  {this.state.category.getType()}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  justifyContent: "flex-end",
-                  flex: 1,
-                }}
-              >
-                <TransactionCounter
-                  color={this.state.color}
-                  numTransactions={this.state.numTransactions}
-                ></TransactionCounter>
-              </View>
-              <View style={{ flex: 0.25 }}></View>
-
-              <View
-                style={{
-                  justifyContent: "flex-end",
-                  flex: 1,
-                }}
-              >
-                <DeleteButton
-                  onPress={this.onDeletePress}
-                  color={this.state.color}
-                ></DeleteButton>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-        {!this.props.categorizationMode &&
-          this.state.shouldShowTransactions &&
-          this.state.category.getTransactions().reverse().map((data, index) => {
-            return (
-              <View
-                key={data.id}
-                style={{
                   flexDirection: "row",
+                  alignItems: "center",
+                  flex: 1,
                 }}
               >
                 <View
                   style={{
-                    flex: 1,
+                    flex: 0.2,
                   }}
                 ></View>
                 <View
                   style={{
-                    flex: 9,
+                    flex: 10,
                   }}
                 >
-                  <TransactionScreenSegment
-                    canDelete={true}
-                    isHorizontal
-                    onDelete={this.onUncategorizePress}
-                    transaction={data}
-                    textColor={new Color('#FFFFFF')}
-                    backgroundColor={new Color('#bdbdbd')}
-                    containerStyle={{
-                      backgroundColor: '#bdbdbd',
-                      marginTop: 5,
-                      paddingTop: 15,
-                      paddingBottom: 15,
-                      borderRadius: 7,
-                      borderWidth: 0,
+                  <Text
+                    style={{
+                      color: "#fff",
+                      fontSize: CATEGORY_FONT_SIZE,
+                      fontFamily: FontFamily,
                     }}
-                    type={"row"}
-                  ></TransactionScreenSegment>
+                  >
+                    {this.state.category.getType()}
+                  </Text>
                 </View>
+
+                <View
+                  style={{
+                    justifyContent: "flex-end",
+                    flex: 1,
+                  }}
+                >
+                  <TransactionCounter
+                    color={this.state.color}
+                    numTransactions={this.state.numTransactions}
+                  ></TransactionCounter>
+                </View>
+                <View style={{ flex: 0.25 }}></View>
+
+                {this.state.showDeleteButton && (
+                  <View
+                    style={{
+                      justifyContent: "flex-end",
+                      flex: 1,
+                    }}
+                  >
+                    <DeleteButton
+                      onPress={this.onDeletePress}
+                      color={new Color('#fa756b')}
+                      diameter={25}
+                    ></DeleteButton>
+                  </View>
+                )}
               </View>
-            );
-          })}
+            </View>
+          </TouchableOpacity>
+        </GestureRecognizer>
+        {!this.props.categorizationMode &&
+          this.state.shouldShowTransactions &&
+          this.state.category
+            .getTransactions()
+            .reverse()
+            .map((data, index) => {
+              return (
+                <View
+                  key={data.id}
+                  style={{
+                    flexDirection: "row",
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                    }}
+                  ></View>
+                  <View
+                    style={{
+                      flex: 9,
+                    }}
+                  >
+                    <TransactionScreenSegment
+                      canDelete={true}
+                      isHorizontal
+                      onDelete={this.onUncategorizePress}
+                      transaction={data}
+                      textColor={new Color("#FFFFFF")}
+                      backgroundColor={new Color("#bdbdbd")}
+                      containerStyle={{
+                        backgroundColor: "#bdbdbd",
+                        marginTop: 5,
+                        paddingTop: 15,
+                        paddingBottom: 15,
+                        borderRadius: 7,
+                        borderWidth: 0,
+                      }}
+                      type={"row"}
+                    ></TransactionScreenSegment>
+                  </View>
+                </View>
+              );
+            })}
       </View>
     );
   }

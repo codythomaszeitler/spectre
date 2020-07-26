@@ -8,7 +8,7 @@ export class DeleteButton extends Component {
     return (
       <PerfectCircle
         color={this.props.color.darkerBy(1.2)}
-        diameter={20}
+        diameter={this.props.diameter ? this.props.diameter : 20}
         onPress={this.props.onPress}
       >
         <Text

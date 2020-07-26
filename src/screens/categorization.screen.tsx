@@ -367,7 +367,7 @@ export class CategorizationScreen extends Component
         {
           currentTransaction: transaction,
           isCategorizationMode: true,
-          bottomBarFlex: transaction.getNumDetails() / 1.5,
+          bottomBarFlex: transaction.getNumDetails() / 2,
         },
         callbackAfterTransactionStateUpdate
       );
@@ -527,63 +527,69 @@ export class CategorizationScreen extends Component
                 justifyContent: "space-around",
               }}
             >
-              <View style={{ flex: 1 }}></View>
+              <View style={{
+                flex : 2
+              }}></View>
               <View
                 style={{
                   flex: 1,
-                  alignSelf: "flex-end",
+                  alignSelf: "flex-start",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    borderWidth: 2,
-                    borderColor: "rgba(255,0,0,1)",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 30,
-                    height: 30,
-                    backgroundColor: "white",
-                    borderRadius: 50,
-                  }}
+                <PerfectCircle
+                  borderColor={new Color("#f76f6f")}
+                  color={new Color("#FFFFFF")}
                   onPress={this.onCategorizationEnd}
+                  diameter={30}
                 >
                   <Text
                     style={{
                       color: "red",
+                      fontSize: 30,
                     }}
                   >
                     -
                   </Text>
-                </TouchableOpacity>
+                </PerfectCircle>
               </View>
               <View
                 style={{
                   flex: 8,
+                  flexDirection: "column",
                 }}
               >
-                <TransactionScreenSegment
-                  canDelete={false}
-                  transaction={this.state.currentTransaction}
-                  textColor={new Color("#696969")}
-                  containerStyle={{
-                    shadowColor: "#000000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 3,
-                    },
-                    shadowRadius: 5,
-                    shadowOpacity: .33,
-                    marginTop: 10,
-                    paddingTop: 15,
-                    paddingBottom: 15,
-                    borderRadius: 7,
-                    borderWidth: 0,
+                <View
+                  style={{
+                    flex: 0.5,
                   }}
-                ></TransactionScreenSegment>
+                ></View>
+                <View
+                  style={{
+                    flex: 4,
+                  }}
+                >
+                  <TransactionScreenSegment
+                    canDelete={false}
+                    transaction={this.state.currentTransaction}
+                    textColor={new Color("#696969")}
+                    containerStyle={{
+                      shadowColor: "#000000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 3,
+                      },
+                      shadowRadius: 5,
+                      shadowOpacity: 0.33,
+                      borderRadius: 5,
+                    }}
+                  ></TransactionScreenSegment>
+                </View>
               </View>
               <View
                 style={{
-                  flex: 1,
+                  flex: 2.5,
                   alignSelf: "flex-end",
                 }}
               ></View>

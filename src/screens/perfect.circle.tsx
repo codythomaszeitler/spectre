@@ -23,9 +23,7 @@ export class PerfectCircle extends Component {
   }
 
   onShow(event: LayoutChangeEvent) {
-    console.log("we are in hereerererererererereee");
     if (this.props.diameter) {
-      console.log("we incorreclty got in here");
       this.setState({
         diameter: this.props.diameter,
       });
@@ -48,7 +46,6 @@ export class PerfectCircle extends Component {
       diameter: diameter,
       showCircle: true,
     });
-    console.log(diameter);
   }
 
   render() {

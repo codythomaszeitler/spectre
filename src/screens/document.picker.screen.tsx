@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity} from "react-native";
-import {Icon} from 'react-native-elements';
+import { View, TouchableOpacity } from "react-native";
+import { Icon } from "react-native-elements";
 import { Location } from "../service/location";
+import { PerfectSquare } from "./perfect.square";
+import { Color } from "../pojo/color";
 
 export interface Props {
   onSuccessfulLoadListener: DocumentLoadedListener;
@@ -47,22 +49,20 @@ export class DocumentPicker extends Component {
 
   render() {
     return (
-      <View style={{
-        flex : 1
-      }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#1FDA5D",
-            borderColor: "#fff",
-            justifyContent : 'center',
-            width : '100%',
-            height : '100%',
-            borderRadius : 10
-          }}
+      <View
+        style={{
+          flex: 1,
+          width : '100%',
+          height : '100%',
+          backgroundColor : 'red'
+        }}
+      >
+        <PerfectSquare
           onPress={this.onImportStart}
+          color={new Color("#1FDA5D")}
         >
           <Icon name={"add"} size={15} color="#fff" />
-        </TouchableOpacity>
+        </PerfectSquare>
         <input
           type="file"
           width="100%"
@@ -70,7 +70,7 @@ export class DocumentPicker extends Component {
           value={this.state.currentFile}
           onChange={this.onFilePick}
           style={{
-            display : 'none'
+            display: "none",
           }}
         ></input>
       </View>

@@ -519,7 +519,7 @@ export class CategorizationScreen extends Component
                 style={{
                   alignSelf: "stretch",
                   flex: 3,
-                  backgroundColor: "white",
+                  backgroundColor: "black",
                   width: "100%",
                   height: "100%",
                 }}
@@ -537,7 +537,6 @@ export class CategorizationScreen extends Component
                 style={{
                   alignSelf: "stretch",
                   flex: 3,
-                  backgroundColor: "white",
                   width: "100%",
                   height: "100%",
                 }}

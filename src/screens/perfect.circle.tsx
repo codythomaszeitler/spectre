@@ -30,20 +30,8 @@ export class PerfectCircle extends Component {
       return;
     }
 
-    const flexBoxWidth = event.nativeEvent.layout.width;
-    const flexBoxHeight = event.nativeEvent.layout.height;
-
-    let diameter;
-    if (flexBoxHeight > flexBoxWidth) {
-      diameter = flexBoxWidth;
-    } else if (flexBoxHeight < flexBoxWidth) {
-      diameter = flexBoxHeight;
-    } else {
-      diameter = flexBoxHeight;
-    }
-
     this.setState({
-      diameter: diameter,
+      diameter: getMinDimension(event),
       showCircle: true,
     });
   }
@@ -74,4 +62,20 @@ export class PerfectCircle extends Component {
       </TouchableOpacity>
     );
   }
+}
+
+export function getMinDimension(event : LayoutChangeEvent) {
+  const flexBoxWidth = event.nativeEvent.layout.width;
+  const flexBoxHeight = event.nativeEvent.layout.height;
+
+  let minimumDimension;
+  if (flexBoxHeight > flexBoxWidth) {
+    minimumDimension = flexBoxWidth;
+  } else if (flexBoxHeight < flexBoxWidth) {
+    minimumDimension = flexBoxHeight;
+  } else {
+    minimumDimension = flexBoxHeight;
+  }
+
+  return minimumDimension;
 }

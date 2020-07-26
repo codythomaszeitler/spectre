@@ -153,6 +153,7 @@ export class AddCategoryScreen extends Component {
 
             return (
               <ColorChoiceScreenSegment
+                key={color.hex()}
                 onPress={(colorChoice: Color) => {
                   this.setState({
                     color: colorChoice,

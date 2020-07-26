@@ -4,8 +4,15 @@ export const LINE_BREAK_TYPE = 'LINE BREAK TYPE';
 
 export class LineBreakScreenSegmentPayload extends ScreenSegmentPayload {
 
-    constructor() {
+    uniqueKey : string;
+
+    constructor(uniqueKey : string) {
         super();
+        this.uniqueKey = uniqueKey;
+    }
+
+    getUniqueKey() {
+        return this.uniqueKey;
     }
 
     getType() {

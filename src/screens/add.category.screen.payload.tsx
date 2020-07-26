@@ -23,6 +23,10 @@ export class AddCategoryScreenPayload extends ScreenSegmentPayload {
         this.onStopAddCategory = stopAddCategory;
     }
 
+    getUniqueKey() {
+        return ADD_CATEGORY_SCREEN_PAYLOAD_TYPE; 
+    }
+
     getType() {
         return ADD_CATEGORY_SCREEN_PAYLOAD_TYPE;
     }

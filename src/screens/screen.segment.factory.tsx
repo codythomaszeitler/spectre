@@ -19,6 +19,8 @@ import {
   AddCategoryScreenPayload,
   ADD_CATEGORY_SCREEN_PAYLOAD_TYPE,
 } from "./add.category.screen.payload";
+import { AddSpacerOrCategoryScreenPayload, ADD_SPACER_OR_CATEGORY_PAYLOAD_TYPE } from "./add.spacer.or.category.screen.payload";
+import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { AddCategoryScreen } from "./add.category.screen";
 
 export class ScreenSegmentFactory {
@@ -26,7 +28,7 @@ export class ScreenSegmentFactory {
     let creation;
 
     if (payload.getType() === CATEGORY_PAYLOAD_TYPE) {
-      const factory = new CategoryScreenSegementFactory();
+      const factory = new CategoryScreenSegmentFactory();
       creation = factory.create(payload as CategoryScreenSegmentPayload);
     } else if (payload.getType() === SPACER_PAYLOAD_TYPE) {
       const factory = new SpacerScreenSegmentFactory();
@@ -37,6 +39,9 @@ export class ScreenSegmentFactory {
     } else if (payload.getType() === ADD_CATEGORY_SCREEN_PAYLOAD_TYPE) {
       const factory = new AddCategoryScreenSegmentFactory();
       creation = factory.create(payload as AddCategoryScreenPayload);
+    } else if (payload.getType() === ADD_SPACER_OR_CATEGORY_PAYLOAD_TYPE) {
+      const factory = new AddCategoryOrSpacerScreenSegementFactory();
+      creation = factory.create(payload as AddSpacerOrCategoryScreenPayload);
     } else {
       throw new Error(
         payload.getType() +
@@ -48,7 +53,7 @@ export class ScreenSegmentFactory {
   }
 }
 
-class CategoryScreenSegementFactory {
+class CategoryScreenSegmentFactory {
   create(payload: CategoryScreenSegmentPayload) {
     return (
       <CategoryScreen
@@ -56,7 +61,7 @@ class CategoryScreenSegementFactory {
         category={payload.category}
         categorizationMode={payload.isCategorizationMode}
         onPress={payload.onPress}
-        key={payload.category.getType()}
+        key={payload.getUniqueKey()}
       ></CategoryScreen>
     );
   }
@@ -64,7 +69,7 @@ class CategoryScreenSegementFactory {
 
 class SpacerScreenSegmentFactory {
   create(payload: SpacerScreenSegmentPayload) {
-    return <SpacerScreenSegment numSmallDividers={6}></SpacerScreenSegment>;
+    return <SpacerScreenSegment numSmallDividers={6} key={payload.getUniqueKey()} uniqueKey={payload.getUniqueKey()}></SpacerScreenSegment>;
   }
 }
 
@@ -75,6 +80,7 @@ class LineBreakScreenSegmentFactory {
         style={{
           height: 10,
         }}
+        key={payload.getUniqueKey()}
       ></View>
     );
   }
@@ -84,9 +90,27 @@ class AddCategoryScreenSegmentFactory {
   create(payload: AddCategoryScreenPayload) {
     return (
       <AddCategoryScreen
+        key={payload.getUniqueKey()}
         onSuccessfulAdd={payload.onSuccessfulAdd}
         onStopAddCategory={payload.onStopAddCategory}
       ></AddCategoryScreen>
+    );
+  }
+}
+
+class AddCategoryOrSpacerScreenSegementFactory {
+  create(payload: AddSpacerOrCategoryScreenPayload) {
+    return (
+      <View
+        style={{
+          justifyContent: "flex-end",
+        }}
+      >
+        <AddSpacerOrCategoryScreen
+          onSpacerAddPress={payload.onSpacerAddPress}
+          onCategoryAddPress={payload.onCategoryAddPress}
+        ></AddSpacerOrCategoryScreen>
+      </View>
     );
   }
 }

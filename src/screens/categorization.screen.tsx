@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, ScrollView } from "react-native";
-import { Icon, Text } from "react-native-elements";
+import { View, FlatList } from "react-native";
+import { Text } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -17,7 +17,6 @@ import { Transaction } from "../pojo/transaction";
 import { OnCategoryPressed } from "./category.screen";
 import { Category } from "../pojo/category";
 import {
-  DocumentPicker,
   DocumentLoadedListener,
   OnFileSelectedEvent,
 } from "./document.picker.screen";
@@ -29,7 +28,7 @@ import { CsvExporter } from "../export/csv.exporter";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
-import { FontFamily, CategoryColors } from "../css/styles";
+import { CategoryColors } from "../css/styles";
 import { Alert } from "./alert";
 import { ScreenSegmentPayload } from "./screen.segment.payload";
 import { ScreenSegmentFactory } from "./screen.segment.factory";
@@ -41,9 +40,9 @@ import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.paylo
 import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
-import { ExportButtonScreen } from "./export.button.screen";
 import { PaypalButtonScreen } from "./paypal.button.screen";
 import { ViewModeBottomBar } from "./view.mode.bottom.bar";
+import { AddSpacerOrCategoryScreenPayload } from "./add.spacer.or.category.screen.payload";
 
 export interface Props {}
 
@@ -80,6 +79,10 @@ export class CategorizationScreen extends Component
     this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
     this.onSpacerAddPress = this.onSpacerAddPress.bind(this);
     this.onSuccessfulCategoryAdd = this.onSuccessfulCategoryAdd.bind(this);
+    this.renderScreenSegmentPayload = this.renderScreenSegmentPayload.bind(this);
+    this.generatePayloadsForCurrentState = this.generatePayloadsForCurrentState.bind(this);
+    this.createAddSpacerOrCategoryScreenPayload = this.createAddSpacerOrCategoryScreenPayload.bind(this);
+    this.createAddCategoryScreenPayload = this.createAddCategoryScreenPayload.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -110,6 +113,9 @@ export class CategorizationScreen extends Component
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
+    this.setState({
+      screenSegmentPayloads : this.generatePayloadsForCurrentState()
+    });
   }
 
   componentWillUnmount() {
@@ -145,13 +151,18 @@ export class CategorizationScreen extends Component
     }
   }
 
+  renderScreenSegmentPayload ({ item }: { item: ScreenSegmentPayload}) {
+    const factory = new ScreenSegmentFactory();
+    return factory.create(item);
+  }
+
   generatePayloadsForCurrentState() {
     const payloads = [];
 
     if (Spacer.hasSpacerAtBeginning(this.spacers)) {
-      payloads.push(new LineBreakScreenSegmentPayload());
-      payloads.push(new SpacerScreenSegmentPayload());
-      payloads.push(new LineBreakScreenSegmentPayload());
+      payloads.push(new LineBreakScreenSegmentPayload('AT-BEG-FIRST-LINEBREAK-1'));
+      payloads.push(new SpacerScreenSegmentPayload('AT-BEG-FIRST-SPACER-1'));
+      payloads.push(new LineBreakScreenSegmentPayload('AT-BEG-SECOND-LINEBREAK-1'));
     }
 
     const categories = this.spectreUser.getCategories();
@@ -160,26 +171,18 @@ export class CategorizationScreen extends Component
       payloads.push(this.createPayloadFor(category));
 
       if (Spacer.containsSpacerAfter(this.spacers, category)) {
-        payloads.push(new LineBreakScreenSegmentPayload());
-        payloads.push(new SpacerScreenSegmentPayload());
+        payloads.push(new LineBreakScreenSegmentPayload(i + 'LINE-BREAK'));
+        payloads.push(new SpacerScreenSegmentPayload(i + 'SPACER'));
       }
 
-      payloads.push(new LineBreakScreenSegmentPayload());
+      payloads.push(new LineBreakScreenSegmentPayload((-1 * i) + 'LINE-BREAK'));
     }
 
     if (this.state.showAddCategoryScreen) {
-      const payload = new AddCategoryScreenPayload();
-      payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
-      payload.setStopAddCategory(() => {
-        this.state.showAddCategoryScreen = false;
-        this.forceUpdate();
-
-        this.setState({
-          screenSegmentPayloads: this.generatePayloadsForCurrentState(),
-        });
-      });
-      payloads.push(payload);
+      payloads.push(this.createAddCategoryScreenPayload());
     }
+
+    payloads.push(this.createAddSpacerOrCategoryScreenPayload());
 
     return payloads;
   }
@@ -206,6 +209,40 @@ export class CategorizationScreen extends Component
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
+  }
+
+  createAddCategoryScreenPayload() {
+    const payload = new AddCategoryScreenPayload();
+    payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
+    payload.setStopAddCategory(() => {
+      if (this.state.showAddCategoryScreen) {
+      } else {
+        this.state.showAddCategoryScreen = true;
+        this.forceUpdate();
+
+        this.setState({
+          screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+        });
+      }
+    });
+    return payload;
+  }
+
+  createAddSpacerOrCategoryScreenPayload() {
+    const payload = new AddSpacerOrCategoryScreenPayload().
+       setOnSpacerAddPress(this.onSpacerAddPress).
+       setOnCategoryAddPress(() => {
+        if (this.state.showAddCategoryScreen) {
+        } else {
+          this.state.showAddCategoryScreen = true;
+          this.forceUpdate();
+
+          this.setState({
+            screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+          });
+        }
+      });
+      return payload;
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
@@ -460,39 +497,18 @@ export class CategorizationScreen extends Component
             flex: 8,
           }}
         >
-          <ScrollView
+          <FlatList
+          data={this.state.screenSegmentPayloads}
+          renderItem={this.renderScreenSegmentPayload}
+          keyExtractor={(payload) => {
+            return payload.getUniqueKey();
+          }}
             style={{
               marginHorizontal: 10,
               marginTop: 5,
             }}
           >
-            {this.state.screenSegmentPayloads.map(function (
-              payload: ScreenSegmentPayload
-            ) {
-              const factory = new ScreenSegmentFactory();
-              return factory.create(payload);
-            })}
-            <View
-              style={{
-                justifyContent: "flex-end",
-              }}
-            >
-              <AddSpacerOrCategoryScreen
-                onSpacerAddPress={this.onSpacerAddPress}
-                onCategoryAddPress={() => {
-                  if (this.state.showAddCategoryScreen) {
-                  } else {
-                    this.state.showAddCategoryScreen = true;
-                    this.forceUpdate();
-
-                    this.setState({
-                      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
-                    });
-                  }
-                }}
-              ></AddSpacerOrCategoryScreen>
-            </View>
-          </ScrollView>
+          </FlatList>
         </View>
         <View
           style={{

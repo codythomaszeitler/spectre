@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { DeleteButton } from "./delete.button";
@@ -12,11 +12,13 @@ export class TransactionScreenSegment extends Component {
     this.onDeletePress = this.onDeletePress.bind(this);
     this.showDeleteButton = this.showDeleteButton.bind(this);
     this.hideDeleteButton = this.hideDeleteButton.bind(this);
-    this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(this);
+    this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(
+      this
+    );
 
     this.state = {
-      showDeleteButton : false
-    }
+      showDeleteButton: false,
+    };
   }
 
   onDeletePress() {
@@ -33,19 +35,19 @@ export class TransactionScreenSegment extends Component {
 
   showDeleteButton() {
     this.setState({
-      showDeleteButton: true
+      showDeleteButton: true,
     });
   }
 
   hideDeleteButton() {
     this.setState({
-      showDeleteButton : false
+      showDeleteButton: false,
     });
   }
 
   onLongPressShowHideDeleteButton() {
     this.setState({
-      showDeleteButton : !this.state.showDeleteButton
+      showDeleteButton: !this.state.showDeleteButton,
     });
   }
 
@@ -56,44 +58,46 @@ export class TransactionScreenSegment extends Component {
           onSwipeLeft={this.showDeleteButton}
           onSwipeRight={this.hideDeleteButton}
         >
-          <Card containerStyle={this.props.containerStyle}>
-            <View
-              style={{
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
+          <TouchableOpacity onLongPress={this.onLongPressShowHideDeleteButton}>
+            <Card containerStyle={this.props.containerStyle}>
               <View
                 style={{
-                  alignSelf: "flex-start",
-                  flexDirection: this.getTransactionDetailOrientation(),
-                  flex: 10,
+                  flexDirection: "row",
+                  flex: 1,
                 }}
               >
-                <DetailsSceenSegement
-                  details={this.props.transaction.getDetails()}
-                  textColor={this.props.textColor}
-                  orientation={this.getTransactionDetailOrientation()}
-                  maxDetailStringLength={40}
-                ></DetailsSceenSegement>
-              </View>
-
-              {this.props.canDelete && this.state.showDeleteButton && (
                 <View
                   style={{
-                    alignSelf: "center",
-                    flex: 1,
+                    alignSelf: "flex-start",
+                    flexDirection: this.getTransactionDetailOrientation(),
+                    flex: 10,
                   }}
                 >
-                  <DeleteButton
-                    color={this.props.backgroundColor.darkerBy(1.2)}
-                    onPress={this.onDeletePress}
-                    diameter={20}
-                  ></DeleteButton>
+                  <DetailsSceenSegement
+                    details={this.props.transaction.getDetails()}
+                    textColor={this.props.textColor}
+                    orientation={this.getTransactionDetailOrientation()}
+                    maxDetailStringLength={40}
+                  ></DetailsSceenSegement>
                 </View>
-              )}
-            </View>
-          </Card>
+
+                {this.props.canDelete && this.state.showDeleteButton && (
+                  <View
+                    style={{
+                      alignSelf: "center",
+                      flex: 1,
+                    }}
+                  >
+                    <DeleteButton
+                      color={this.props.backgroundColor.darkerBy(1.2)}
+                      onPress={this.onDeletePress}
+                      diameter={20}
+                    ></DeleteButton>
+                  </View>
+                )}
+              </View>
+            </Card>
+          </TouchableOpacity>
         </GestureRecognizer>
       </View>
     );

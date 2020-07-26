@@ -57,7 +57,7 @@ export interface State {
   isCategorizationMode: boolean;
 }
 
-const VIEWING_MODE_BOTTOM_BAR_FLEX = 1;
+const VIEWING_MODE_BOTTOM_BAR_FLEX = 1.15;
 
 export class CategorizationScreen extends Component
   implements

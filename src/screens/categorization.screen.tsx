@@ -43,6 +43,7 @@ import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
 import { ExportButtonScreen } from "./export.button.screen";
 import { PaypalButtonScreen } from "./paypal.button.screen";
+import { ViewModeBottomBar } from "./view.mode.bottom.bar";
 
 export interface Props {}
 
@@ -504,88 +505,12 @@ export class CategorizationScreen extends Component
           }}
         >
           {!this.state.currentTransaction && (
-            <View
-              style={{
-                flexDirection: "row",
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "space-around",
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                }}
-              ></View>
-              <View style={{
-                flexDirection : 'row',
-                flex : 5,
-                alignSelf : 'stretch',
-                alignContent: 'center',
-                justifyContent : 'center'
-              }}>
-                <View
-                  style={{
-                    alignSelf: "center",
-                    flex: 3,
-                    width: "75%",
-                    height: "75%",
-                  }}
-                >
-                  <DocumentPicker
-                    onSuccessfulLoadListener={this}
-                  ></DocumentPicker>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                  }}
-                ></View>
-                <View
-                  style={{
-                    alignSelf: "center",
-                    flex: 3,
-                    width: "75%",
-                    height: "75%",
-                  }}
-                >
-                  <ExportButtonScreen
-                    onPress={this.onExportCategorized}
-                  ></ExportButtonScreen>
-                </View>
-              </View>
-              <View
-                style={{
-                  flex: 5,
-                }}
-              ></View>
-              <View
-                style={{
-                  alignItems: "flex-end",
-                  justifyContent: "center",
-                  flex: 3,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <PerfectCircle
-                  color={new Color("#f76f6f")}
-                  onPress={this.onCategorizationStart}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      color: "white",
-                      fontFamily: FontFamily,
-                      fontSize: 20,
-                    }}
-                  >
-                    {this.state.numUncategorized}
-                  </Text>
-                </PerfectCircle>
-              </View>
-              <View style={{ flex: 1 }}></View>
-            </View>
+            <ViewModeBottomBar
+              onCategorizationStartPress={this.onCategorizationStart}
+              numUncategorized={this.state.numUncategorized}
+              onExportButtonPress={this.onExportCategorized}
+              onSuccessfulLoadListener={this}
+            ></ViewModeBottomBar>
           )}
 
           {this.state.currentTransaction && (

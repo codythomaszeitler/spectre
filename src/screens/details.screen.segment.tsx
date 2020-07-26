@@ -25,8 +25,6 @@ export class DetailsSceenSegement extends Component {
       }
     }
 
-    horizontalText = horizontalText.replace(new RegExp(' | ' + '$'), '');
-
     return (
       <Text
         numberOfLines={1}

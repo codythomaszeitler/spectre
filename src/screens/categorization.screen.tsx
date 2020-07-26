@@ -553,9 +553,9 @@ export class CategorizationScreen extends Component
               ></View>
               <View
                 style={{
-                  alignItems: "stretch",
+                  alignItems: "flex-end",
+                  justifyContent : 'center',
                   flex: 3,
-                  backgroundColor: "red",
                   width: "100%",
                   height: "100%",
                 }}

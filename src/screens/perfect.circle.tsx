@@ -17,7 +17,7 @@ export class PerfectCircle extends Component {
     this.onWithoutCircleShowing = this.onWithoutCircleShowing.bind(this);
 
     this.state = {
-      diameter: 0,
+      diameter: '100%',
       showCircle: false,
     };
   }
@@ -58,14 +58,12 @@ export class PerfectCircle extends Component {
           borderWidth: 1,
           borderColor: this.props.color.hex(),
           backgroundColor: this.props.color.hex(),
-          width : '100%',
-          height : '100%',
-          alignItems : 'center'
+          width : this.state.diameter,
+          height : this.state.diameter,
+          borderRadius : this.state.diameter
         }}
         onPress={this.props.onPress}
-        onLayout={(event) => {
-          console.log(event);
-        }}
+        onLayout={this.onWithoutCircleShowing}
       >
         <View
           style={{

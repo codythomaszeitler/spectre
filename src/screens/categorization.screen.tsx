@@ -498,7 +498,6 @@ export class CategorizationScreen extends Component
         <View
           style={{
             flex: this.state.bottomBarFlex,
-            backgroundColor: "purple",
           }}
         >
           {!this.state.currentTransaction && (
@@ -515,45 +514,52 @@ export class CategorizationScreen extends Component
                   flex: 1,
                 }}
               ></View>
-              <View
-                style={{
-                  alignSelf: "stretch",
-                  flex: 3,
-                  backgroundColor: "black",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <DocumentPicker
-                  onSuccessfulLoadListener={this}
-                ></DocumentPicker>
+              <View style={{
+                flexDirection : 'row',
+                flex : 5,
+                alignSelf : 'stretch',
+                alignContent: 'center',
+                justifyContent : 'center'
+              }}>
+                <View
+                  style={{
+                    alignSelf: "center",
+                    flex: 3,
+                    width: "75%",
+                    height: "75%",
+                  }}
+                >
+                  <DocumentPicker
+                    onSuccessfulLoadListener={this}
+                  ></DocumentPicker>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    alignSelf: "center",
+                    flex: 3,
+                    width: "75%",
+                    height: "75%",
+                  }}
+                >
+                  <ExportButtonScreen
+                    onPress={this.onExportCategorized}
+                  ></ExportButtonScreen>
+                </View>
               </View>
               <View
                 style={{
-                  flex: 1,
-                }}
-              ></View>
-              <View
-                style={{
-                  alignSelf: "stretch",
-                  flex: 3,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <ExportButtonScreen
-                  onPress={this.onExportCategorized}
-                ></ExportButtonScreen>
-              </View>
-              <View
-                style={{
-                  flex: 1,
+                  flex: 5,
                 }}
               ></View>
               <View
                 style={{
                   alignItems: "flex-end",
-                  justifyContent : 'center',
+                  justifyContent: "center",
                   flex: 3,
                   width: "100%",
                   height: "100%",
@@ -575,7 +581,7 @@ export class CategorizationScreen extends Component
                   </Text>
                 </PerfectCircle>
               </View>
-              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 1 }}></View>
             </View>
           )}
 
@@ -650,18 +656,12 @@ export class CategorizationScreen extends Component
               ></View>
             </View>
           )}
-          <View
-            style={{
-              flex: 0.25,
-            }}
-          ></View>
         </View>
         <View
           style={{
             flex: 0.5,
             justifyContent: "flex-end",
             alignSelf: "flex-start",
-            backgroundColor: "pink",
           }}
         >
           <form

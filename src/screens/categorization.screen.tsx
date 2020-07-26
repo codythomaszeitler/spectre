@@ -56,6 +56,8 @@ export interface State {
   isCategorizationMode: boolean;
 }
 
+const VIEWING_MODE_BOTTOM_BAR_FLEX = 1;
+
 export class CategorizationScreen extends Component
   implements
     DocumentLoadedListener,
@@ -99,7 +101,7 @@ export class CategorizationScreen extends Component
       numUncategorized: 0,
       width: 0,
       height: 0,
-      bottomBarFlex: 1,
+      bottomBarFlex: VIEWING_MODE_BOTTOM_BAR_FLEX,
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -307,7 +309,7 @@ export class CategorizationScreen extends Component
       () => {
         this.setState({
           screenSegmentPayloads: this.generatePayloadsForCurrentState(),
-          bottomBarFlex: 2,
+          bottomBarFlex: VIEWING_MODE_BOTTOM_BAR_FLEX,
         });
       }
     );

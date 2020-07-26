@@ -47,22 +47,17 @@ export class DocumentPicker extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{
+        flex : 1
+      }}>
         <TouchableOpacity
           style={{
-            marginTop: 10,
-            paddingTop: 15,
-            paddingBottom: 15,
-            marginLeft: 30,
-            marginRight: 30,
             backgroundColor: "#1FDA5D",
-            borderRadius: 10,
-            borderWidth: 1,
             borderColor: "#fff",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 50,
-            height: 50,
+            justifyContent : 'center',
+            width : '100%',
+            height : '100%',
+            borderRadius : 10
           }}
           onPress={this.onImportStart}
         >

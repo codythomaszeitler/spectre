@@ -498,22 +498,30 @@ export class CategorizationScreen extends Component
         <View
           style={{
             flex: this.state.bottomBarFlex,
-            justifyContent: "flex-end",
+            backgroundColor: "purple",
           }}
         >
           {!this.state.currentTransaction && (
             <View
               style={{
-                justifyContent: "flex-end",
                 flexDirection: "row",
                 flex: 1,
-                alignItems: "flex-end",
+                alignItems: "center",
+                justifyContent: "space-around",
               }}
             >
               <View
                 style={{
-                  alignItems: "flex-start",
                   flex: 1,
+                }}
+              ></View>
+              <View
+                style={{
+                  alignSelf: "stretch",
+                  flex: 3,
+                  backgroundColor: "white",
+                  width: "100%",
+                  height: "100%",
                 }}
               >
                 <DocumentPicker
@@ -522,8 +530,16 @@ export class CategorizationScreen extends Component
               </View>
               <View
                 style={{
-                  alignItems: "flex-start",
                   flex: 1,
+                }}
+              ></View>
+              <View
+                style={{
+                  alignSelf: "stretch",
+                  flex: 3,
+                  backgroundColor: "white",
+                  width: "100%",
+                  height: "100%",
                 }}
               >
                 <ExportButtonScreen
@@ -532,42 +548,33 @@ export class CategorizationScreen extends Component
               </View>
               <View
                 style={{
-                  alignItems: "flex-end",
+                  flex: 1,
+                }}
+              ></View>
+              <View
+                style={{
+                  alignItems: "stretch",
                   flex: 3,
+                  backgroundColor: "red",
+                  width: "100%",
+                  height: "100%",
                 }}
               >
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "column",
-                  }}
+                <PerfectCircle
+                  color={new Color("#f76f6f")}
+                  onPress={this.onCategorizationStart}
                 >
-                  <View
+                  <Text
+                    numberOfLines={1}
                     style={{
-                      flex: 0.5,
+                      color: "white",
+                      fontFamily: FontFamily,
+                      fontSize: 20,
                     }}
-                  ></View>
-                  <View style={{
-                    flex : 3
-                  }}>
-                    <PerfectCircle
-                      color={new Color("#f76f6f")}
-                      onPress={this.onCategorizationStart}
-                      diameter={75}
-                    >
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          color: "white",
-                          fontFamily: FontFamily,
-                          fontSize: 20,
-                        }}
-                      >
-                        {this.state.numUncategorized}
-                      </Text>
-                    </PerfectCircle>
-                  </View>
-                </View>
+                  >
+                    {this.state.numUncategorized}
+                  </Text>
+                </PerfectCircle>
               </View>
               <View style={{ flex: 0.5 }}></View>
             </View>
@@ -649,41 +656,42 @@ export class CategorizationScreen extends Component
               flex: 0.25,
             }}
           ></View>
-          <View
-            style={{
-              flex: 0.5,
-              justifyContent: "flex-end",
-              alignSelf: "flex-start",
-            }}
+        </View>
+        <View
+          style={{
+            flex: 0.5,
+            justifyContent: "flex-end",
+            alignSelf: "flex-start",
+            backgroundColor: "pink",
+          }}
+        >
+          <form
+            action="https://www.paypal.com/cgi-bin/webscr"
+            method="post"
+            target="_top"
           >
-            <form
-              action="https://www.paypal.com/cgi-bin/webscr"
-              method="post"
-              target="_top"
-            >
-              <input type="hidden" name="cmd" value="_s-xclick" />
-              <input
-                type="hidden"
-                name="hosted_button_id"
-                value="9EHAV84AATTWC"
-              />
-              <input
-                type="image"
-                src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
-                border="0"
-                name="submit"
-                title="PayPal - The safer, easier way to pay online!"
-                alt="Donate with PayPal button"
-              />
-              <img
-                alt=""
-                border="0"
-                src="https://www.paypal.com/en_US/i/scr/pixel.gif"
-                width="1"
-                height="1"
-              />
-            </form>
-          </View>
+            <input type="hidden" name="cmd" value="_s-xclick" />
+            <input
+              type="hidden"
+              name="hosted_button_id"
+              value="9EHAV84AATTWC"
+            />
+            <input
+              type="image"
+              src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
+              border="0"
+              name="submit"
+              title="PayPal - The safer, easier way to pay online!"
+              alt="Donate with PayPal button"
+            />
+            <img
+              alt=""
+              border="0"
+              src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+              width="1"
+              height="1"
+            />
+          </form>
         </View>
       </View>
     );

@@ -36,8 +36,8 @@ export class ViewModeBottomBar extends Component {
             style={{
               alignSelf: "center",
               flex: 3,
-              width: "60%",
-              height: "60%",
+              width: "65%",
+              height: "65%",
             }}
           >
             <DocumentPicker
@@ -53,8 +53,8 @@ export class ViewModeBottomBar extends Component {
             style={{
               alignSelf: "center",
               flex: 3,
-              width: "60%",
-              height: "60%",
+              width: "65%",
+              height: "65%",
             }}
           >
             <ExportButtonScreen

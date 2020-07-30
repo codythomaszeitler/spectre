@@ -20,9 +20,9 @@ import { DeleteButton } from "./delete.button";
 import { TransactionCounter } from "./transaction.counter";
 import GestureRecognizer from "react-native-swipe-gestures";
 
-export const CATEGORY_BOX_HEIGHT = 50;
-export const CATEGORY_BOX_INSET = 7;
-export const CATEGORY_FONT_SIZE = 20;
+export const CATEGORY_BOX_HEIGHT = 47;
+export const CATEGORY_BOX_INSET = 6;
+export const CATEGORY_FONT_SIZE = 21;
 
 export interface Props {
   color: Color;
@@ -187,22 +187,24 @@ export class CategoryScreen extends Component
               >
                 <View
                   style={{
-                    flex: 0.2,
+                    flex: 0.45,
                   }}
                 ></View>
                 <View
                   style={{
-                    flex: 10,
+                    flex: 18.5,
                   }}
                 >
                   <Text
                     style={{
                       color: "#fff",
-                      fontSize: CATEGORY_FONT_SIZE,
+                      fontSize: CATEGORY_FONT_SIZE + 3,
                       fontFamily: FontFamily,
+                      fontWeight : 'bold',
+                      marginBottom : 1
                     }}
                   >
-                    {this.state.category.getType()}
+                    <b>{this.state.category.getType()}</b>
                   </Text>
                 </View>
 
@@ -217,7 +219,6 @@ export class CategoryScreen extends Component
                     numTransactions={this.state.numTransactions}
                   ></TransactionCounter>
                 </View>
-                <View style={{ flex: 0.25 }}></View>
 
                 {this.state.showDeleteButton && (
                   <View

@@ -46,7 +46,7 @@ export class DetailsSceenSegement extends Component {
           key={detail.getElement()}
           style={{
             flex: 1,
-            alignSelf : 'flex-end',
+            alignSelf : 'flex-start',
           }}
         >
           <Text
@@ -54,8 +54,8 @@ export class DetailsSceenSegement extends Component {
             style={{
               color: this.props.textColor.hex(),
               fontFamily: FontFamily,
-              fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.65),
-              textAlign : 'right'
+              fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.8),
+              textAlign : 'left'
             }}
           >
             {detail.getElement()}

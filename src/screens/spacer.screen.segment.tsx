@@ -9,7 +9,7 @@ export class SpacerScreenSegment extends Component {
       smallDividers.push(
         <View
           style={{
-            flex: 1,
+            flex: .75,
           }}
           key={this.props.uniqueKey + '' + i + '1'}
         ></View>
@@ -17,20 +17,21 @@ export class SpacerScreenSegment extends Component {
       smallDividers.push(
         <View
           style={{
-            flex: 3,
+            flex: .4,
           }}
           key={this.props.uniqueKey + '' + i + '2'}
         >
           <Divider style={{
               borderBottomWidth : 2,
-              borderColor : "#B6B3AE"
+              borderColor : "#D5D5D5",
+              width : 16
           }}></Divider>
         </View>
       );
       smallDividers.push(
         <View
           style={{
-            flex: 1,
+            flex: .40,
           }}
           key={this.props.uniqueKey + '' + i + '3'}
         ></View>

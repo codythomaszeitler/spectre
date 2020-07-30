@@ -79,7 +79,7 @@ export class AddCategoryScreen extends Component {
           >
             <View
               style={{
-                flex: .25,
+                flex: .33,
               }}
             ></View>
             <View
@@ -92,10 +92,11 @@ export class AddCategoryScreen extends Component {
                 placeholderTextColor="white"
                 selectionColor="white"
                 autoFocus={true}
+                onSubmitEditing={this.onAddCategoryPress}
                 style={{
                   backgroundColor: this.state.color.hex(),
                   fontFamily: FontFamily,
-                  fontSize: CATEGORY_FONT_SIZE,
+                  fontSize: CATEGORY_FONT_SIZE + 3,
                   color: 'white'
                 }}
                 onChangeText={(categoryText) => {
@@ -135,7 +136,7 @@ export class AddCategoryScreen extends Component {
 
         <View
           style={{
-            height: 10,
+            height: 15,
           }}
         ></View>
 
@@ -166,26 +167,6 @@ export class AddCategoryScreen extends Component {
             );
           })}
         </View>
-
-        <Button
-          buttonStyle={{
-            backgroundColor: "#ced4de",
-            marginTop: 10,
-            paddingTop: 15,
-            paddingBottom: 15,
-            marginLeft: 30,
-            marginRight: 30,
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: "#fff",
-          }}
-          icon={{
-            name: "add",
-            size: 15,
-            color: "white",
-          }}
-          onPress={this.onAddCategoryPress}
-        ></Button>
 
       </View>
     );

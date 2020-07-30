@@ -78,7 +78,7 @@ class LineBreakScreenSegmentFactory {
     return (
       <View
         style={{
-          height: 10,
+          height: 16,
         }}
         key={payload.getUniqueKey()}
       ></View>

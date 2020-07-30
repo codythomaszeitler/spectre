@@ -34,7 +34,7 @@ export class PerfectSquare extends Component {
           justifyContent: "center",
           width: this.state.width,
           height: this.state.width,
-          borderRadius: 10,
+          borderRadius : this.props.borderRadius
         }}
         onPress={this.props.onPress}
         onLayout={this.onShow}

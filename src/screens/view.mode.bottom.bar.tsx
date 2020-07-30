@@ -6,6 +6,7 @@ import { ExportButtonScreen } from "./export.button.screen";
 import { PerfectCircle } from "./perfect.circle";
 import { Color } from "./../pojo/color";
 import { FontFamily } from "../css/styles";
+import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export class ViewModeBottomBar extends Component {
   render() {
@@ -36,11 +37,13 @@ export class ViewModeBottomBar extends Component {
             style={{
               alignSelf: "center",
               flex: 3,
-              width: "65%",
-              height: "65%",
+              width: CATEGORY_BOX_HEIGHT,
+              height: CATEGORY_BOX_HEIGHT,
+              borderRadius : CATEGORY_BOX_INSET
             }}
           >
             <DocumentPicker
+              borderRadius={CATEGORY_BOX_INSET}
               onSuccessfulLoadListener={this.props.onSuccessfulLoadListener}
             ></DocumentPicker>
           </View>
@@ -53,11 +56,13 @@ export class ViewModeBottomBar extends Component {
             style={{
               alignSelf: "center",
               flex: 3,
-              width: "65%",
-              height: "65%",
+              borderRadius : CATEGORY_BOX_INSET,
+              width: CATEGORY_BOX_HEIGHT,
+              height: CATEGORY_BOX_HEIGHT,
             }}
           >
             <ExportButtonScreen
+            borderRadius={CATEGORY_BOX_INSET}
               onPress={this.props.onExportButtonPress}
             ></ExportButtonScreen>
           </View>
@@ -77,7 +82,7 @@ export class ViewModeBottomBar extends Component {
           }}
         >
           <PerfectCircle
-            color={new Color("#f76f6f")}
+            color={new Color("#FF7676")}
             onPress={this.props.onCategorizationStartPress}
           >
             <Text
@@ -85,7 +90,7 @@ export class ViewModeBottomBar extends Component {
               style={{
                 color: "white",
                 fontFamily: FontFamily,
-                fontSize: 20,
+                fontSize: 32,
               }}
             >
               {this.props.numUncategorized}

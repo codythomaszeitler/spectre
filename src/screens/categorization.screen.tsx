@@ -37,7 +37,7 @@ import { Color } from "../pojo/color";
 import { Spacer } from "../pojo/spacer";
 import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
-import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
+import {FontFamily} from '../css/styles';
 import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
 import { PaypalButtonScreen } from "./paypal.button.screen";
@@ -79,10 +79,18 @@ export class CategorizationScreen extends Component
     this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
     this.onSpacerAddPress = this.onSpacerAddPress.bind(this);
     this.onSuccessfulCategoryAdd = this.onSuccessfulCategoryAdd.bind(this);
-    this.renderScreenSegmentPayload = this.renderScreenSegmentPayload.bind(this);
-    this.generatePayloadsForCurrentState = this.generatePayloadsForCurrentState.bind(this);
-    this.createAddSpacerOrCategoryScreenPayload = this.createAddSpacerOrCategoryScreenPayload.bind(this);
-    this.createAddCategoryScreenPayload = this.createAddCategoryScreenPayload.bind(this);
+    this.renderScreenSegmentPayload = this.renderScreenSegmentPayload.bind(
+      this
+    );
+    this.generatePayloadsForCurrentState = this.generatePayloadsForCurrentState.bind(
+      this
+    );
+    this.createAddSpacerOrCategoryScreenPayload = this.createAddSpacerOrCategoryScreenPayload.bind(
+      this
+    );
+    this.createAddCategoryScreenPayload = this.createAddCategoryScreenPayload.bind(
+      this
+    );
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -114,7 +122,7 @@ export class CategorizationScreen extends Component
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
     this.setState({
-      screenSegmentPayloads : this.generatePayloadsForCurrentState()
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 
@@ -151,7 +159,7 @@ export class CategorizationScreen extends Component
     }
   }
 
-  renderScreenSegmentPayload ({ item }: { item: ScreenSegmentPayload}) {
+  renderScreenSegmentPayload({ item }: { item: ScreenSegmentPayload }) {
     const factory = new ScreenSegmentFactory();
     return factory.create(item);
   }
@@ -160,9 +168,13 @@ export class CategorizationScreen extends Component
     const payloads = [];
 
     if (Spacer.hasSpacerAtBeginning(this.spacers)) {
-      payloads.push(new LineBreakScreenSegmentPayload('AT-BEG-FIRST-LINEBREAK-1'));
-      payloads.push(new SpacerScreenSegmentPayload('AT-BEG-FIRST-SPACER-1'));
-      payloads.push(new LineBreakScreenSegmentPayload('AT-BEG-SECOND-LINEBREAK-1'));
+      payloads.push(
+        new LineBreakScreenSegmentPayload("AT-BEG-FIRST-LINEBREAK-1")
+      );
+      payloads.push(new SpacerScreenSegmentPayload("AT-BEG-FIRST-SPACER-1"));
+      payloads.push(
+        new LineBreakScreenSegmentPayload("AT-BEG-SECOND-LINEBREAK-1")
+      );
     }
 
     const categories = this.spectreUser.getCategories();
@@ -171,18 +183,18 @@ export class CategorizationScreen extends Component
       payloads.push(this.createPayloadFor(category));
 
       if (Spacer.containsSpacerAfter(this.spacers, category)) {
-        payloads.push(new LineBreakScreenSegmentPayload(i + 'LINE-BREAK'));
-        payloads.push(new SpacerScreenSegmentPayload(i + 'SPACER'));
+        payloads.push(new LineBreakScreenSegmentPayload(i + "LINE-BREAK"));
+        payloads.push(new SpacerScreenSegmentPayload(i + "SPACER"));
       }
 
-      payloads.push(new LineBreakScreenSegmentPayload((-1 * i) + 'LINE-BREAK'));
+      payloads.push(new LineBreakScreenSegmentPayload(-1 * i + "LINE-BREAK"));
     }
 
     if (this.state.showAddCategoryScreen) {
       payloads.push(this.createAddCategoryScreenPayload());
+    } else {
+      payloads.push(this.createAddSpacerOrCategoryScreenPayload());
     }
-
-    payloads.push(this.createAddSpacerOrCategoryScreenPayload());
 
     return payloads;
   }
@@ -229,9 +241,9 @@ export class CategorizationScreen extends Component
   }
 
   createAddSpacerOrCategoryScreenPayload() {
-    const payload = new AddSpacerOrCategoryScreenPayload().
-       setOnSpacerAddPress(this.onSpacerAddPress).
-       setOnCategoryAddPress(() => {
+    const payload = new AddSpacerOrCategoryScreenPayload()
+      .setOnSpacerAddPress(this.onSpacerAddPress)
+      .setOnCategoryAddPress(() => {
         if (this.state.showAddCategoryScreen) {
         } else {
           this.state.showAddCategoryScreen = true;
@@ -242,7 +254,7 @@ export class CategorizationScreen extends Component
           });
         }
       });
-      return payload;
+    return payload;
   }
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
@@ -404,7 +416,7 @@ export class CategorizationScreen extends Component
         {
           currentTransaction: transaction,
           isCategorizationMode: true,
-          bottomBarFlex: transaction.getNumDetails() / 2,
+          bottomBarFlex: 3,
         },
         callbackAfterTransactionStateUpdate
       );
@@ -486,10 +498,11 @@ export class CategorizationScreen extends Component
     return (
       <View
         style={{
-          width: this.state.width,
+          width : 800,
           height: this.state.height,
           justifyContent: "space-around",
           alignContent: "stretch",
+          alignSelf : 'center'
         }}
       >
         <View
@@ -498,17 +511,16 @@ export class CategorizationScreen extends Component
           }}
         >
           <FlatList
-          data={this.state.screenSegmentPayloads}
-          renderItem={this.renderScreenSegmentPayload}
-          keyExtractor={(payload) => {
-            return payload.getUniqueKey();
-          }}
+            data={this.state.screenSegmentPayloads}
+            renderItem={this.renderScreenSegmentPayload}
+            keyExtractor={(payload) => {
+              return payload.getUniqueKey();
+            }}
             style={{
               marginHorizontal: 10,
-              marginTop: 5,
+              marginTop: 90 ,
             }}
-          >
-          </FlatList>
+          ></FlatList>
         </View>
         <View
           style={{
@@ -539,76 +551,117 @@ export class CategorizationScreen extends Component
             <View
               style={{
                 flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-around",
               }}
             >
-              <View style={{
-                flex : 2
-              }}></View>
+              
               <View
                 style={{
                   flex: 1,
-                  alignSelf: "flex-start",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <PerfectCircle
-                  borderColor={new Color("#f76f6f")}
-                  color={new Color("#FFFFFF")}
-                  onPress={this.onCategorizationEnd}
-                  diameter={30}
-                >
-                  <Text
-                    style={{
-                      color: "red",
-                      fontSize: 30,
-                    }}
-                  >
-                    -
-                  </Text>
-                </PerfectCircle>
-              </View>
-              <View
-                style={{
-                  flex: 8,
-                  flexDirection: "column",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
                 }}
               >
                 <View
                   style={{
-                    flex: 0.5,
+                    flex: 2,
                   }}
                 ></View>
                 <View
                   style={{
-                    flex: 4,
+                    flex: 1,
+                    alignSelf: "flex-start",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
                   }}
                 >
-                  <TransactionScreenSegment
-                    canDelete={false}
-                    transaction={this.state.currentTransaction}
-                    textColor={new Color("#696969")}
-                    containerStyle={{
-                      shadowColor: "#000000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 3,
-                      },
-                      shadowRadius: 5,
-                      shadowOpacity: 0.33,
-                      borderRadius: 5,
-                    }}
-                  ></TransactionScreenSegment>
+                  <PerfectCircle
+                    borderColor={new Color("#FF7676")}
+                    color={new Color("#FFFFFF")}
+                    onPress={this.onCategorizationEnd}
+                    diameter={30}
+                  >
+                    <Text
+                      style={{
+                        color: "red",
+                        fontSize: 30,
+                      }}
+                    >
+                      -
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 5,
+                      }}
+                    >
+                      {"  "}
+                    </Text>
+                  </PerfectCircle>
                 </View>
+                <View
+                  style={{
+                    flex: 8,
+                    flexDirection: "column",
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 0.5,
+                    }}
+                  ></View>
+                  <View
+                    style={{
+                      flex: 4,
+                    }}
+                  >
+                    <TransactionScreenSegment
+                      canDelete={false}
+                      transaction={this.state.currentTransaction}
+                      textColor={new Color("#7a7a7a").darkerBy(1.5)}
+                      containerStyle={{
+                        shadowColor: "#000000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 3,
+                        },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        borderRadius: 5,
+                        opacity: 0.7,
+                      }}
+                    ></TransactionScreenSegment>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flex: 2.5,
+                    alignSelf: "flex-end",
+                  }}
+                ></View>
               </View>
               <View
                 style={{
-                  flex: 2.5,
-                  alignSelf: "flex-end",
+                  alignSelf: "center",
+                  alignItems: "stretch",
+                  justifyContent : 'flex-end',
+                  flex: 0.5,
+                  width: 25,
+                  height: 25,
+                  zIndex : -1
                 }}
-              ></View>
+              >
+                <PerfectCircle color={new Color("#f76f6f")} diameter={75}>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: "white",
+                      fontFamily: FontFamily,
+                      fontSize: 20,
+                    }}
+                  >
+                    {this.state.numUncategorized}
+                  </Text>
+                </PerfectCircle>
+              </View>
             </View>
           )}
         </View>
@@ -616,7 +669,7 @@ export class CategorizationScreen extends Component
           style={{
             flex: 0.5,
             justifyContent: "flex-end",
-            alignSelf: "flex-start",
+            alignSelf: "center",
           }}
         >
           <PaypalButtonScreen></PaypalButtonScreen>

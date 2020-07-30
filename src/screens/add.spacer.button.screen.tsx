@@ -7,17 +7,17 @@ export class AddSpacerButton extends Component {
       <Button
         buttonStyle={{
           backgroundColor: "white",
-          marginTop: 10,
-          paddingTop: 15,
-          paddingBottom: 15,
+          marginTop: 13,
+          paddingTop: 10,
+          paddingBottom: 6,
           borderRadius: 10,
-          borderWidth: 1,
+          borderWidth: 2,
           borderStyle : 'dashed',
-          borderColor: "gray",
+          borderColor: "#cdcdcd",
         }}
         icon={{
           name: "add",
-          size: 15,
+          size: 25,
           color: "gray",
         }}
         onPress={this.props.onPress}

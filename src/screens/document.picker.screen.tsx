@@ -58,7 +58,8 @@ export class DocumentPicker extends Component {
       >
         <PerfectSquare
           onPress={this.onImportStart}
-          color={new Color("#1FDA5D")}
+          color={new Color("#79D75D")}
+          borderRadius={this.props.borderRadius}
         >
           <Icon name={"add"} size={15} color="#fff" />
         </PerfectSquare>

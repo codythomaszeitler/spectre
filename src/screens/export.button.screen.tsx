@@ -16,7 +16,8 @@ export class ExportButtonScreen extends Component {
       >
         <PerfectSquare
           onPress={this.props.onPress}
-          color={new Color("#DA9F1F")}
+          color={new Color("#EDB373")}
+          borderRadius={this.props.borderRadius}
         >
           <Icon name={"chevron-right"} size={15} color="#fff" />
         </PerfectSquare>

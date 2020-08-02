@@ -24,7 +24,6 @@ export class PerfectCircle extends Component {
 
   onShow(event: LayoutChangeEvent) {
     if (this.props.diameter) {
-      console.log('we got in here where we wanted to be.' + this.props.diameter);
       this.setState({
         diameter: this.props.diameter,
       });

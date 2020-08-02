@@ -43,7 +43,6 @@ export class DocumentPicker extends Component {
   }
 
   onImportStart() {
-    console.log(this.fileInputRef);
     this.fileInputRef.current.click();
   }
 

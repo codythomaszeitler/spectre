@@ -70,7 +70,7 @@ export class DocumentPicker extends Component {
             <Image
               source={require("../../assets/upload.png")}
               style={{
-                width: 25,
+                width: 20,
                 height: 25,
               }}
             ></Image>

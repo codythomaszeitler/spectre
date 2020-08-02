@@ -29,7 +29,7 @@ export class ExportButtonScreen extends Component {
             <Image
               source={require("../../assets/download.png")}
               style={{
-                width: 25,
+                width: 15,
                 height: 25,
               }}
             ></Image>

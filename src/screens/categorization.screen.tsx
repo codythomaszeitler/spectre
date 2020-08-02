@@ -244,15 +244,13 @@ export class CategorizationScreen extends Component
     const payload = new AddCategoryScreenPayload();
     payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
     payload.setStopAddCategory(() => {
-      if (this.state.showAddCategoryScreen) {
-      } else {
-        this.state.showAddCategoryScreen = true;
-        this.forceUpdate();
-
+      this.setState({
+        showAddCategoryScreen : false
+      }, () => {
         this.setState({
-          screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+          screenSegmentPayloads : this.generatePayloadsForCurrentState()
         });
-      }
+      });
     });
     return payload;
   }

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, FlatList } from "react-native";
-import { Text } from "react-native-elements";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -25,10 +24,9 @@ import { LocalFileLocation } from "../service/local.file.location";
 import { CsvImporter } from "../export/csv.importer";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
-import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
-import { CategoryColors } from "../css/styles";
+import { CategoryColors, FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { ScreenSegmentPayload } from "./screen.segment.payload";
 import { ScreenSegmentFactory } from "./screen.segment.factory";
@@ -37,12 +35,12 @@ import { Color } from "../pojo/color";
 import { Spacer } from "../pojo/spacer";
 import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
-import { FontFamily } from "../css/styles";
-import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
 import { PaypalButtonScreen } from "./paypal.button.screen";
 import { ViewModeBottomBar } from "./view.mode.bottom.bar";
 import { AddSpacerOrCategoryScreenPayload } from "./add.spacer.or.category.screen.payload";
+import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";
+import { Text } from "react-native-elements";
 
 export interface Props {}
 
@@ -244,13 +242,16 @@ export class CategorizationScreen extends Component
     const payload = new AddCategoryScreenPayload();
     payload.setOnSuccessfulAdd(this.onSuccessfulCategoryAdd);
     payload.setStopAddCategory(() => {
-      this.setState({
-        showAddCategoryScreen : false
-      }, () => {
-        this.setState({
-          screenSegmentPayloads : this.generatePayloadsForCurrentState()
-        });
-      });
+      this.setState(
+        {
+          showAddCategoryScreen: false,
+        },
+        () => {
+          this.setState({
+            screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+          });
+        }
+      );
     });
     return payload;
   }
@@ -547,7 +548,23 @@ export class CategorizationScreen extends Component
             flex: this.state.bottomBarFlex,
           }}
         >
-          {!this.state.currentTransaction && (
+          {this.state.showAddCategoryScreen && (
+            <View style={{
+              flex : 1,
+              justifyContent : 'center',
+              alignItems : 'center'
+            }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: FontFamily,
+                }}
+              >
+                Press enter to complete
+              </Text>
+            </View>
+          )}
+          {!this.state.showAddCategoryScreen && !this.state.currentTransaction && (
             <View
               style={{
                 flex: 1,
@@ -562,122 +579,13 @@ export class CategorizationScreen extends Component
             </View>
           )}
 
-          {this.state.currentTransaction && (
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                <View
-                  style={{
-                    flex: 2,
-                  }}
-                ></View>
-                <View
-                  style={{
-                    flex: 1,
-                    alignSelf: "flex-start",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <PerfectCircle
-                    borderColor={new Color("#FF7676")}
-                    color={new Color("#FFFFFF")}
-                    onPress={this.onCategorizationEnd}
-                    diameter={30}
-                  >
-                    <Text
-                      style={{
-                        color: "red",
-                        fontSize: 30,
-                      }}
-                    >
-                      -
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 5,
-                      }}
-                    >
-                      {"  "}
-                    </Text>
-                  </PerfectCircle>
-                </View>
-                <View
-                  style={{
-                    flex: 8,
-                    flexDirection: "column",
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 0.5,
-                    }}
-                  ></View>
-                  <View
-                    style={{
-                      flex: 4,
-                    }}
-                  >
-                    <TransactionScreenSegment
-                      canDelete={false}
-                      transaction={this.state.currentTransaction}
-                      textColor={new Color("#7a7a7a").darkerBy(1.5)}
-                      containerStyle={{
-                        shadowColor: "#000000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 3,
-                        },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        borderRadius: 5,
-                        opacity: 0.7,
-                      }}
-                    ></TransactionScreenSegment>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flex: 2.5,
-                    alignSelf: "flex-end",
-                  }}
-                ></View>
-              </View>
-              <View
-                style={{
-                  alignSelf: "center",
-                  alignItems: "stretch",
-                  justifyContent: "flex-end",
-                  flex: 0.5,
-                  width: 25,
-                  height: 25,
-                  zIndex: -1,
-                }}
-              >
-                <PerfectCircle color={new Color("#f76f6f")} diameter={75}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      color: "white",
-                      fontFamily: FontFamily,
-                      fontSize: 20,
-                    }}
-                  >
-                    {this.state.numUncategorized}
-                  </Text>
-                </PerfectCircle>
-              </View>
-            </View>
-          )}
+          {!this.state.showAddCategoryScreen &&
+            this.state.currentTransaction && (
+              <CategorizationModeBottomBar
+                onCategorizationEnd={this.onCategorizationEnd}
+                currentTransaction={this.state.currentTransaction}
+              ></CategorizationModeBottomBar>
+            )}
         </View>
         <View
           style={{

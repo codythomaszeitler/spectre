@@ -19,13 +19,13 @@ export class ExportButtonScreen extends Component {
           color={new Color("#EDB373")}
           borderRadius={this.props.borderRadius}
         >
-            <Image
-              source={require("../../assets/download.png")}
-              style={{
-                width: 15,
-                height: 25,
-              }}
-            ></Image>
+          <Image
+            source={require("../../assets/download.png")}
+            style={{
+              width: 15,
+              height: 25,
+            }}
+          ></Image>
         </PerfectSquare>
       </View>
     );

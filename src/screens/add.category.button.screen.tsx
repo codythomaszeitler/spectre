@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Button } from "react-native-elements";
+import { TouchableOpacity } from "react-native";
 import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export class AddCategoryButton extends Component {

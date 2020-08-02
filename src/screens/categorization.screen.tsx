@@ -37,7 +37,7 @@ import { Color } from "../pojo/color";
 import { Spacer } from "../pojo/spacer";
 import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
-import {FontFamily} from '../css/styles';
+import { FontFamily } from "../css/styles";
 import { PerfectCircle } from "./perfect.circle";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
 import { PaypalButtonScreen } from "./paypal.button.screen";
@@ -133,7 +133,24 @@ export class CategorizationScreen extends Component
   }
 
   updateWindowDimensions() {
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
+    const currentWidowWidth = window.innerWidth;
+    const currentWindowHeight = window.innerHeight;
+
+    this.setState({
+      width: this.conformToMinWidth(currentWidowWidth),
+      height: currentWindowHeight,
+    });
+  }
+
+  conformToMinWidth(currentWindowWidth: number) {
+    const MAX_WINDOW_WIDTH = 800;
+
+    let conformed = currentWindowWidth;
+    if (currentWindowWidth > MAX_WINDOW_WIDTH) {
+      conformed = MAX_WINDOW_WIDTH;
+    }
+
+    return conformed;
   }
 
   async onExportCategorized() {
@@ -498,11 +515,11 @@ export class CategorizationScreen extends Component
     return (
       <View
         style={{
-          width : 800,
+          width: this.state.width,
           height: this.state.height,
           justifyContent: "space-around",
           alignContent: "stretch",
-          alignSelf : 'center'
+          alignSelf: "center",
         }}
       >
         <View
@@ -518,7 +535,7 @@ export class CategorizationScreen extends Component
             }}
             style={{
               marginHorizontal: 10,
-              marginTop: 90 ,
+              marginTop: 90,
             }}
           ></FlatList>
         </View>
@@ -553,7 +570,6 @@ export class CategorizationScreen extends Component
                 flex: 1,
               }}
             >
-              
               <View
                 style={{
                   flex: 1,
@@ -642,11 +658,11 @@ export class CategorizationScreen extends Component
                 style={{
                   alignSelf: "center",
                   alignItems: "stretch",
-                  justifyContent : 'flex-end',
+                  justifyContent: "flex-end",
                   flex: 0.5,
                   width: 25,
                   height: 25,
-                  zIndex : -1
+                  zIndex: -1,
                 }}
               >
                 <PerfectCircle color={new Color("#f76f6f")} diameter={75}>

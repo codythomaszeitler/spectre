@@ -1,20 +1,36 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
-import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
+import { View, Image, TouchableOpacity } from "react-native";
+import { CATEGORY_BOX_INSET } from "./category.screen";
 
 export class AddCategoryButton extends Component {
   render() {
     return (
-        <TouchableOpacity
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          backgroundColor: "#cdcdcd",
+          borderRadius: CATEGORY_BOX_INSET,
+          borderColor: "#fff",
+        }}
+        onPress={this.props.onPress}
+      >
+        <View
           style={{
             flex: 1,
             justifyContent: "center",
-            backgroundColor: "#cdcdcd",
-            borderRadius: CATEGORY_BOX_INSET,
-            borderColor: "#fff",
+            alignItems: "center",
           }}
-          onPress={this.props.onPress}
-        ></TouchableOpacity>
+        >
+          <Image
+            source={require("../../assets/folder.png")}
+            style={{
+              width: 30,
+              height: 30,
+            }}
+          ></Image>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

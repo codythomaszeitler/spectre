@@ -30,13 +30,12 @@ export class ViewModeBottomBar extends Component {
             flex: 5,
             alignSelf: "stretch",
             alignContent: "center",
-            justifyContent: "center",
+            justifyContent: "flex-start",
           }}
         >
           <View
             style={{
               alignSelf: "center",
-              flex: 3,
               width: CATEGORY_BOX_HEIGHT,
               height: CATEGORY_BOX_HEIGHT,
               borderRadius : CATEGORY_BOX_INSET
@@ -49,13 +48,12 @@ export class ViewModeBottomBar extends Component {
           </View>
           <View
             style={{
-              flex: 1,
+              width : 5
             }}
           ></View>
           <View
             style={{
               alignSelf: "center",
-              flex: 3,
               borderRadius : CATEGORY_BOX_INSET,
               width: CATEGORY_BOX_HEIGHT,
               height: CATEGORY_BOX_HEIGHT,

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Icon } from "react-native-elements";
+import { View } from "react-native";
+import { Image } from "react-native-elements";
 import { Location } from "../service/location";
 import { PerfectSquare } from "./perfect.square";
 import { Color } from "../pojo/color";
@@ -51,8 +51,8 @@ export class DocumentPicker extends Component {
       <View
         style={{
           flex: 1,
-          width : '100%',
-          height : '100%',
+          width: "100%",
+          height: "100%",
         }}
       >
         <PerfectSquare
@@ -60,7 +60,21 @@ export class DocumentPicker extends Component {
           color={new Color("#79D75D")}
           borderRadius={this.props.borderRadius}
         >
-          <Icon name={"add"} size={15} color="#fff" />
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../../assets/upload.png")}
+              style={{
+                width: 25,
+                height: 25,
+              }}
+            ></Image>
+          </View>
         </PerfectSquare>
         <input
           type="file"

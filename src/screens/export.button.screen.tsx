@@ -19,13 +19,6 @@ export class ExportButtonScreen extends Component {
           color={new Color("#EDB373")}
           borderRadius={this.props.borderRadius}
         >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
             <Image
               source={require("../../assets/download.png")}
               style={{
@@ -33,7 +26,6 @@ export class ExportButtonScreen extends Component {
                 height: 25,
               }}
             ></Image>
-          </View>
         </PerfectSquare>
       </View>
     );

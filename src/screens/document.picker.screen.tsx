@@ -28,7 +28,6 @@ export class DocumentPicker extends Component {
       currentFile: "",
     };
   }
-
   onFileSelect(contents: File) {
     for (let i = 0; i < this.documentLoadedListeners.length; i++) {
       this.documentLoadedListeners[i].onFileSelect(
@@ -60,13 +59,6 @@ export class DocumentPicker extends Component {
           color={new Color("#79D75D")}
           borderRadius={this.props.borderRadius}
         >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
             <Image
               source={require("../../assets/upload.png")}
               style={{
@@ -74,7 +66,6 @@ export class DocumentPicker extends Component {
                 height: 25,
               }}
             ></Image>
-          </View>
         </PerfectSquare>
         <input
           type="file"

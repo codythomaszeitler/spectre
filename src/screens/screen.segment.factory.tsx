@@ -4,7 +4,7 @@ import {
   CategoryScreenSegmentPayload,
   CATEGORY_PAYLOAD_TYPE,
 } from "./category.screen.segment.payload";
-import { CategoryScreen } from "./category.screen";
+import { CategoryScreen, CATEGORY_BOX_HEIGHT } from "./category.screen";
 import {
   SpacerScreenSegmentPayload,
   SPACER_PAYLOAD_TYPE,
@@ -103,7 +103,8 @@ class AddCategoryOrSpacerScreenSegementFactory {
     return (
       <View
         style={{
-          justifyContent: "flex-end",
+          flex : 1,
+          height : CATEGORY_BOX_HEIGHT,
         }}
       >
         <AddSpacerOrCategoryScreen

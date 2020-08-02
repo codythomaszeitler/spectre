@@ -1,26 +1,21 @@
 import React, { Component } from "react";
+import { View, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
-import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET } from "./category.screen";
+import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export class AddCategoryButton extends Component {
   render() {
     return (
-      <Button
-        buttonStyle={{
-          backgroundColor: "#cdcdcd",
-          marginTop: 12,
-          borderRadius: CATEGORY_BOX_INSET,
-          borderWidth: 1,
-          borderColor: "#fff",
-          height : CATEGORY_BOX_HEIGHT,
-        }}
-        icon={{
-          name: "add",
-          size: 25,
-          color: "white",
-        }}
-        onPress={this.props.onPress}
-      ></Button>
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            backgroundColor: "#cdcdcd",
+            borderRadius: CATEGORY_BOX_INSET,
+            borderColor: "#fff",
+          }}
+          onPress={this.props.onPress}
+        ></TouchableOpacity>
     );
   }
 }

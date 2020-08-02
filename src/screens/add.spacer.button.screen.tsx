@@ -1,27 +1,22 @@
 import React, { Component } from "react";
-import { Button } from "react-native-elements";
+import { View, TouchableOpacity } from "react-native";
+import { CATEGORY_BOX_INSET } from "./category.screen";
 
 export class AddSpacerButton extends Component {
   render() {
     return (
-      <Button
-        buttonStyle={{
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          justifyContent: "center",
           backgroundColor: "white",
-          marginTop: 13,
-          paddingTop: 10,
-          paddingBottom: 6,
-          borderRadius: 10,
+          borderRadius: CATEGORY_BOX_INSET,
           borderWidth: 2,
-          borderStyle : 'dashed',
+          borderStyle: "dashed",
           borderColor: "#cdcdcd",
         }}
-        icon={{
-          name: "add",
-          size: 25,
-          color: "gray",
-        }}
         onPress={this.props.onPress}
-      ></Button>
+      ></TouchableOpacity>
     );
   }
 }

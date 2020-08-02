@@ -7,6 +7,7 @@ import { AppLoading } from "expo";
 const fetchFonts = () => {
   return Font.loadAsync({
     "Open Sans Semi-Bold": require("./assets/fonts/OpenSans-SemiBold.ttf"),
+    "Open Sans Bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 };
 

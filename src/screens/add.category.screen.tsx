@@ -64,7 +64,7 @@ export class AddCategoryScreen extends Component {
   }
 
   getColorChoiceBarWidth(currentWidth : number) {
-    const NORMAL_WIDTH = 600;
+    const NORMAL_WIDTH = 400;
     let width = NORMAL_WIDTH;
     if (currentWidth < NORMAL_WIDTH) {
       width = currentWidth;

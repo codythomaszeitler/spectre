@@ -7,6 +7,7 @@ import { PerfectCircle } from "./perfect.circle";
 import { Color } from "./../pojo/color";
 import { BoldFontFamily } from "../css/styles";
 import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
+import {PaypalButtonScreen} from './paypal.button.screen';
 
 export class ViewModeBottomBar extends Component {
   render() {
@@ -38,7 +39,7 @@ export class ViewModeBottomBar extends Component {
               alignSelf: "center",
               width: CATEGORY_BOX_HEIGHT,
               height: CATEGORY_BOX_HEIGHT,
-              borderRadius : CATEGORY_BOX_INSET
+              borderRadius: CATEGORY_BOX_INSET,
             }}
           >
             <DocumentPicker
@@ -48,28 +49,36 @@ export class ViewModeBottomBar extends Component {
           </View>
           <View
             style={{
-              width : 5
+              width: 5,
             }}
           ></View>
           <View
             style={{
               alignSelf: "center",
-              borderRadius : CATEGORY_BOX_INSET,
+              borderRadius: CATEGORY_BOX_INSET,
               width: CATEGORY_BOX_HEIGHT,
               height: CATEGORY_BOX_HEIGHT,
             }}
           >
             <ExportButtonScreen
-            borderRadius={CATEGORY_BOX_INSET}
+              borderRadius={CATEGORY_BOX_INSET}
               onPress={this.props.onExportButtonPress}
             ></ExportButtonScreen>
           </View>
         </View>
         <View
           style={{
-            flex: 5,
+            flex: 3,
+            justifyContent: "center",
+            alignSelf: "center",
           }}
-        ></View>
+        >
+          <PaypalButtonScreen></PaypalButtonScreen>
+        </View>
+        <View style={{
+          flex : 1.5
+        }}></View>
+
         <View
           style={{
             alignItems: "flex-end",

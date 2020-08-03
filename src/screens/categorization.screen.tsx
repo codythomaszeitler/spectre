@@ -588,15 +588,9 @@ export class CategorizationScreen extends Component
               ></CategorizationModeBottomBar>
             )}
         </View>
-        <View
-          style={{
-            flex: 0.5,
-            justifyContent: "flex-end",
-            alignSelf: "center",
-          }}
-        >
-          <PaypalButtonScreen></PaypalButtonScreen>
-        </View>
+        <View style={{
+          flex : .25
+        }}></View>
       </View>
     );
   }

@@ -584,6 +584,7 @@ export class CategorizationScreen extends Component
               <CategorizationModeBottomBar
                 onCategorizationEnd={this.onCategorizationEnd}
                 currentTransaction={this.state.currentTransaction}
+                numUncategorized={this.state.numUncategorized}
               ></CategorizationModeBottomBar>
             )}
         </View>

@@ -5,6 +5,7 @@ import { Text } from "react-native-elements";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Color } from "../pojo/color";
 import { Transaction } from "../pojo/transaction";
+import {FontFamily} from '../css/styles';
 
 interface Props {
     onCategorizationEnd : () => void;

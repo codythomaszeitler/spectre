@@ -46,7 +46,7 @@ export class ColorChoicesBar extends Component {
 
     this.setState({
       colorChoiceDiameter: this.props.diameter,
-      emptySpaceWidth: emptySpaceWidth
+      emptySpaceWidth: emptySpaceWidth,
     });
   }
 
@@ -78,9 +78,11 @@ export class ColorChoicesBar extends Component {
 
           return (
             <View
+              key={color.hex()}
               style={{
-                width : this.state.colorChoiceDiameter + this.state.emptySpaceWidth,
-                height : this.props.height,
+                width:
+                  this.state.colorChoiceDiameter + this.state.emptySpaceWidth,
+                height: this.props.height,
                 flexDirection: "row",
               }}
             >
@@ -91,7 +93,6 @@ export class ColorChoicesBar extends Component {
                 }}
               >
                 <ColorChoiceScreenSegment
-                  key={color.hex()}
                   onPress={this.onColorSelect}
                   lightnessFactor={lightnessFactor}
                   color={color}
@@ -103,7 +104,7 @@ export class ColorChoicesBar extends Component {
                 style={{
                   width: this.state.emptySpaceLength,
                   height: this.state.emptySpaceLength,
-                  backgroundColor : 'black'
+                  backgroundColor: "black",
                 }}
               ></View>
             </View>

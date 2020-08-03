@@ -16,7 +16,6 @@ export class ColorChoiceScreenSegment extends Component {
       <PerfectCircle
         color={this.props.color.lighterBy(this.props.lightnessFactor)}
         onPress={this.onPress}
-        diameter={35}
         opacity={this.props.isSelected ? 1 : 0.67}
       ></PerfectCircle>
     );

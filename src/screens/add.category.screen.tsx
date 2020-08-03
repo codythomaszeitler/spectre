@@ -5,7 +5,6 @@ import { SpectreUser } from "../pojo/spectre.user";
 import { Color } from "../pojo/color";
 import { datastore } from "../datastore/datastore";
 import { Category } from "../pojo/category";
-import { ColorChoiceScreenSegment } from "./color.choice.screen.segment";
 import { CategoryColors, FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import {
@@ -15,11 +14,10 @@ import {
 } from "./category.screen";
 import { TransactionCounter } from "./transaction.counter";
 import { DeleteButton } from "./delete.button";
+import { ColorChoicesBar } from "./color.choices.bar";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
-
-  colors: Array<Color>;
 
   constructor(props) {
     super(props);
@@ -29,15 +27,10 @@ export class AddCategoryScreen extends Component {
 
     this.textBoxReference = React.createRef();
 
-    this.colors = [];
-
-    for (let i = 0; i < CategoryColors.length; i++) {
-      this.colors.push(new Color(CategoryColors[i]));
-    }
-
     this.state = {
       categoryAddText: "",
-      color: this.colors[0],
+      color: new Color(CategoryColors[0]),
+      colorChoiceDiameter: 35,
     };
   }
 
@@ -52,7 +45,7 @@ export class AddCategoryScreen extends Component {
 
         this.setState({
           categoryAddText: "",
-          color: this.colors[0],
+          color: CategoryColors[0],
         });
       }
     } catch (e) {
@@ -161,35 +154,16 @@ export class AddCategoryScreen extends Component {
           }}
         ></View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
+        <ColorChoicesBar  
+          diameter={35}
+          onColorSelect={(colorChoice: Color) => {
+            this.setState({
+              color: colorChoice,
+            });
+            this.textBoxReference.focus();
           }}
-        >
-          {this.colors.map((color) => {
-            let lightnessFactor = 1.35;
-            if (color.equals(this.state.color)) {
-              lightnessFactor = 1;
-            }
-
-            return (
-              <ColorChoiceScreenSegment
-                key={color.hex()}
-                onPress={(colorChoice: Color) => {
-                  this.setState({
-                    color: colorChoice,
-                  });
-                  this.textBoxReference.focus();
-                }}
-                lightnessFactor={lightnessFactor}
-                color={color}
-                currentSelectedColor={this.state.color}
-                isSelected={lightnessFactor === 1}
-              ></ColorChoiceScreenSegment>
-            );
-          })}
-        </View>
+          width={600}
+        ></ColorChoicesBar>
       </View>
     );
   }

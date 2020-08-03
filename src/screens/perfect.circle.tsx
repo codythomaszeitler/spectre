@@ -30,6 +30,8 @@ export class PerfectCircle extends Component {
       return;
     }
 
+    console.log(event);
+
     this.setState({
       diameter: getMinDimension(event),
       showCircle: true,
@@ -40,12 +42,11 @@ export class PerfectCircle extends Component {
     return (
       <TouchableOpacity
         style={{
-          borderWidth: 3,
           borderColor: (this.props.borderColor ? this.props.borderColor.hex() : this.props.color.hex()),
           backgroundColor: this.props.color.hex(),
           width : this.state.diameter,
           height : this.state.diameter,
-          borderRadius : this.state.diameter,
+          borderRadius : this.state.diameter / 2,
           opacity : this.props.opacity
         }}
         onPress={this.props.onPress}

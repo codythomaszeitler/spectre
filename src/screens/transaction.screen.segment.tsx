@@ -53,7 +53,16 @@ export class TransactionScreenSegment extends Component {
 
   render() {
     return (
-      <View>
+      <View onMouseEnter={() => {
+        this.setState({
+          showDeleteButton : true
+        });
+      }}
+      onMouseLeave={() => {
+        this.setState({
+          showDeleteButton : false
+        });
+      }} >
         <GestureRecognizer
           onSwipeLeft={this.showDeleteButton}
           onSwipeRight={this.hideDeleteButton}

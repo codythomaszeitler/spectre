@@ -53,7 +53,9 @@ export class CategoryScreen extends Component
     this.onDeletePress = this.onDeletePress.bind(this);
     this.showDeleteButton = this.showDeleteButton.bind(this);
     this.hideDeleteButton = this.hideDeleteButton.bind(this);
-    this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(this);
+    this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(
+      this
+    );
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
@@ -144,26 +146,39 @@ export class CategoryScreen extends Component
 
   showDeleteButton() {
     this.setState({
-      showDeleteButton: true
+      showDeleteButton: true,
     });
   }
 
   hideDeleteButton() {
     this.setState({
-      showDeleteButton : false
+      showDeleteButton: false,
     });
   }
 
   onLongPressShowHideDeleteButton() {
     this.setState({
-      showDeleteButton : !this.state.showDeleteButton
+      showDeleteButton: !this.state.showDeleteButton,
     });
   }
 
   render() {
     return (
-      <View>
-        <GestureRecognizer onSwipeLeft={this.showDeleteButton} onSwipeRight={this.hideDeleteButton}>
+      <View onMouseEnter={() => {
+        this.setState({
+          showDeleteButton : true
+        });
+      }}
+      onMouseLeave={() => {
+        this.setState({
+          showDeleteButton : false
+        });
+      }} 
+      >
+        <GestureRecognizer
+          onSwipeLeft={this.showDeleteButton}
+          onSwipeRight={this.hideDeleteButton}
+        >
           <TouchableOpacity
             onPress={this.onPress}
             onLongPress={this.onLongPressShowHideDeleteButton}
@@ -200,7 +215,7 @@ export class CategoryScreen extends Component
                       color: "#fff",
                       fontSize: CATEGORY_FONT_SIZE + 3,
                       fontFamily: BoldFontFamily,
-                      marginBottom : 1
+                      marginBottom: 1,
                     }}
                   >
                     <b>{this.state.category.getType()}</b>
@@ -228,7 +243,7 @@ export class CategoryScreen extends Component
                   >
                     <DeleteButton
                       onPress={this.onDeletePress}
-                      color={new Color('#fa756b')}
+                      color={new Color("#fa756b")}
                       diameter={25}
                     ></DeleteButton>
                   </View>

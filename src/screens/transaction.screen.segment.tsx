@@ -94,7 +94,7 @@ export class TransactionScreenSegment extends Component {
                   <View
                     style={{
                       alignSelf: "center",
-                      flex: 1,
+                      flex: .25,
                     }}
                   >
                     <DeleteButton

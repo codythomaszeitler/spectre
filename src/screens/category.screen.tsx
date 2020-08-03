@@ -13,7 +13,7 @@ import {
   TransactionScreenSegment,
   TransactionDeletePress,
 } from "./transaction.screen.segment";
-import { FontFamily } from "../css/styles";
+import { BoldFontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
@@ -199,8 +199,7 @@ export class CategoryScreen extends Component
                     style={{
                       color: "#fff",
                       fontSize: CATEGORY_FONT_SIZE + 3,
-                      fontFamily: FontFamily,
-                      fontWeight : 'bold',
+                      fontFamily: BoldFontFamily,
                       marginBottom : 1
                     }}
                   >

@@ -5,7 +5,7 @@ import { DocumentPicker } from "./document.picker.screen";
 import { ExportButtonScreen } from "./export.button.screen";
 import { PerfectCircle } from "./perfect.circle";
 import { Color } from "./../pojo/color";
-import { FontFamily } from "../css/styles";
+import { BoldFontFamily } from "../css/styles";
 import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export class ViewModeBottomBar extends Component {
@@ -87,7 +87,7 @@ export class ViewModeBottomBar extends Component {
               numberOfLines={1}
               style={{
                 color: "white",
-                fontFamily: FontFamily,
+                fontFamily: BoldFontFamily,
                 fontSize: 32,
               }}
             >

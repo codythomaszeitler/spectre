@@ -49,6 +49,7 @@ export class CategorizationModeBottomBar extends Component {
                 style={{
                   color: "white",
                   fontSize: 30,
+                  fontFamily : BoldFontFamily
                 }}
               >
                 -

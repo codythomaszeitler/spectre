@@ -107,7 +107,7 @@ export class AddCategoryScreen extends Component {
                 ref={(reference) => {
                   this.textBoxReference = reference;
                 }}
-                placeholder="Enter category..."
+                placeholder=""
                 placeholderTextColor="white"
                 selectionColor="white"
                 autoFocus={true}

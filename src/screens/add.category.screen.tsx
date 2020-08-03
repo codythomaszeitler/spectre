@@ -12,7 +12,6 @@ import {
   CATEGORY_BOX_HEIGHT,
   CATEGORY_BOX_INSET,
   CATEGORY_FONT_SIZE,
-  CategoryScreenSkeleton,
 } from "./category.screen";
 import { TransactionCounter } from "./transaction.counter";
 import { DeleteButton } from "./delete.button";
@@ -186,6 +185,7 @@ export class AddCategoryScreen extends Component {
                 lightnessFactor={lightnessFactor}
                 color={color}
                 currentSelectedColor={this.state.color}
+                isSelected={lightnessFactor === 1}
               ></ColorChoiceScreenSegment>
             );
           })}

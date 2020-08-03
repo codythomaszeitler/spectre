@@ -13,8 +13,12 @@ export class ColorChoiceScreenSegment extends Component {
 
   render() {
     return (
-      <PerfectCircle color={this.props.color.lighterBy(this.props.lightnessFactor)} onPress={this.onPress} diameter={35}>
-      </PerfectCircle>
+      <PerfectCircle
+        color={this.props.color.lighterBy(this.props.lightnessFactor)}
+        onPress={this.onPress}
+        diameter={35}
+        opacity={this.props.isSelected ? 1 : 0.67}
+      ></PerfectCircle>
     );
   }
 }

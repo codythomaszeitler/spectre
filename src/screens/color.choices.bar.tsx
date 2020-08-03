@@ -44,11 +44,9 @@ export class ColorChoicesBar extends Component {
     const leftoverWidth = this.props.width - usedWithFromChoices;
     const emptySpaceWidth = leftoverWidth / (numColors - 1);
 
-    console.log('Empty Space Width: ' + emptySpaceWidth);
-
     this.setState({
       colorChoiceDiameter: this.props.diameter,
-      emptySpaceWidth: emptySpaceWidth,
+      emptySpaceWidth: emptySpaceWidth
     });
   }
 

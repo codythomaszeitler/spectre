@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, LayoutChangeEvent } from "react-native";
 import { TextInput } from "react-native";
 import { SpectreUser } from "../pojo/spectre.user";
 import { Color } from "../pojo/color";
@@ -22,6 +22,7 @@ export class AddCategoryScreen extends Component {
   constructor(props) {
     super(props);
     this.onAddCategoryPress = this.onAddCategoryPress.bind(this);
+    this.onLayout = this.onLayout.bind(this);
 
     this.spectreUser = datastore().get();
 
@@ -31,6 +32,7 @@ export class AddCategoryScreen extends Component {
       categoryAddText: "",
       color: new Color(CategoryColors[0]),
       colorChoiceDiameter: 35,
+      colorChoiceBarWidth : 500,
     };
   }
 
@@ -54,9 +56,25 @@ export class AddCategoryScreen extends Component {
     }
   }
 
+  onLayout(event : LayoutChangeEvent) {
+    const componentWidth = event.nativeEvent.layout.width; 
+    this.setState({
+      colorChoiceBarWidth : this.getColorChoiceBarWidth(componentWidth)
+    });
+  }
+
+  getColorChoiceBarWidth(currentWidth : number) {
+    const NORMAL_WIDTH = 600;
+    let width = NORMAL_WIDTH;
+    if (currentWidth < NORMAL_WIDTH) {
+      width = currentWidth;
+    }
+    return width;
+  }
+
   render() {
     return (
-      <View>
+      <View onLayout={this.onLayout}>
         <View
           style={{
             flexBasis: CATEGORY_BOX_HEIGHT,
@@ -162,7 +180,7 @@ export class AddCategoryScreen extends Component {
             });
             this.textBoxReference.focus();
           }}
-          width={600}
+          width={this.state.colorChoiceBarWidth}
         ></ColorChoicesBar>
       </View>
     );

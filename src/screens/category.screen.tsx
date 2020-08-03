@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, LayoutChangeEvent } from "react-native";
 import { Text } from "react-native-elements";
 import { Category } from "../pojo/category";
 import {
@@ -37,6 +37,7 @@ export interface State {
   numTransactions: number;
   shouldShowTransactions: boolean;
   showDeleteButton: boolean;
+  deleteButtonWidth : number;
 }
 
 export class CategoryScreen extends Component
@@ -56,6 +57,7 @@ export class CategoryScreen extends Component
     this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(
       this
     );
+
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
@@ -67,6 +69,7 @@ export class CategoryScreen extends Component
       numTransactions: props.category.getTransactions().length,
       shouldShowTransactions: false,
       showDeleteButton: false,
+      deleteButtonWidth : CATEGORY_BOX_HEIGHT,
     };
   }
 
@@ -238,13 +241,14 @@ export class CategoryScreen extends Component
                   <View
                     style={{
                       justifyContent: "flex-end",
-                      flex: 1,
+                      width: this.state.deleteButtonWidth,
+                      height: this.state.deleteButtonWidth,
                     }}
                   >
                     <DeleteButton
                       onPress={this.onDeletePress}
                       color={new Color("#fa756b")}
-                      diameter={25}
+                      borderRadius={CATEGORY_BOX_INSET}
                     ></DeleteButton>
                   </View>
                 )}
@@ -263,6 +267,7 @@ export class CategoryScreen extends Component
                   key={data.id}
                   style={{
                     flexDirection: "row",
+                    flex : 1
                   }}
                 >
                   <View
@@ -275,6 +280,9 @@ export class CategoryScreen extends Component
                       flex: 9,
                     }}
                   >
+                    <View style={{
+                      height : 5,
+                    }}></View>
                     <TransactionScreenSegment
                       canDelete={true}
                       isHorizontal
@@ -284,11 +292,8 @@ export class CategoryScreen extends Component
                       backgroundColor={new Color("#bdbdbd")}
                       containerStyle={{
                         backgroundColor: "#bdbdbd",
-                        marginTop: 5,
-                        paddingTop: 15,
-                        paddingBottom: 15,
                         borderRadius: 7,
-                        borderWidth: 0,
+                        height : CATEGORY_BOX_HEIGHT
                       }}
                       type={"row"}
                     ></TransactionScreenSegment>

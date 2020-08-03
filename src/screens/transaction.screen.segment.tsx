@@ -1,12 +1,20 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, LayoutChangeEvent } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { Transaction } from "../pojo/transaction";
 import { DeleteButton } from "./delete.button";
-import { DetailsSceenSegement } from "./details.screen.segment";
+import { DetailsScreenSegment } from "./details.screen.segment";
 import GestureRecognizer from "react-native-swipe-gestures";
+import { CATEGORY_BOX_INSET } from "./category.screen";
+
+interface State {
+  showDeleteButton: boolean;
+  deleteButtonWidth: number;
+}
 
 export class TransactionScreenSegment extends Component {
+  state: State;
+
   constructor(props) {
     super(props);
     this.onDeletePress = this.onDeletePress.bind(this);
@@ -15,9 +23,11 @@ export class TransactionScreenSegment extends Component {
     this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(
       this
     );
+    this.onLayout = this.onLayout.bind(this);
 
     this.state = {
       showDeleteButton: false,
+      deleteButtonWidth: 10,
     };
   }
 
@@ -51,64 +61,76 @@ export class TransactionScreenSegment extends Component {
     });
   }
 
+  onLayout(event: LayoutChangeEvent) {
+    const componentHeight = event.nativeEvent.layout.height;
+
+    this.setState({
+      deleteButtonWidth: componentHeight,
+    });
+  }
+
   render() {
     return (
-      <View onMouseEnter={() => {
-        this.setState({
-          showDeleteButton : true
-        });
-      }}
-      onMouseLeave={() => {
-        this.setState({
-          showDeleteButton : false
-        });
-      }} >
-        <GestureRecognizer
-          onSwipeLeft={this.showDeleteButton}
-          onSwipeRight={this.hideDeleteButton}
+      <GestureRecognizer
+        onSwipeLeft={this.showDeleteButton}
+        onSwipeRight={this.hideDeleteButton}
+      >
+        <View
+          onMouseEnter={() => {
+            this.setState({
+              showDeleteButton: true,
+            });
+          }}
+          onMouseLeave={() => {
+            this.setState({
+              showDeleteButton: false,
+            });
+          }}
+          style={{
+            ...this.props.containerStyle,
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+          onLayout={this.onLayout}
         >
-          <TouchableOpacity onLongPress={this.onLongPressShowHideDeleteButton}>
-            <Card containerStyle={this.props.containerStyle}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flex: 1,
-                }}
-              >
-                <View
-                  style={{
-                    alignSelf: "flex-start",
-                    flexDirection: this.getTransactionDetailOrientation(),
-                    flex: 10,
-                  }}
-                >
-                  <DetailsSceenSegement
-                    details={this.props.transaction.getDetails()}
-                    textColor={this.props.textColor}
-                    orientation={this.getTransactionDetailOrientation()}
-                    maxDetailStringLength={40}
-                  ></DetailsSceenSegement>
-                </View>
+          <View
+            style={{
+              flex: 0.15,
+            }}
+          ></View>
+          <View
+            style={{
+              flexDirection: this.getTransactionDetailOrientation(),
+              flex: 10,
+              alignSelf: "center",
+            }}
+          >
+            <DetailsScreenSegment
+              details={this.props.transaction.getDetails()}
+              textColor={this.props.textColor}
+              orientation={this.getTransactionDetailOrientation()}
+              maxDetailStringLength={40}
+            ></DetailsScreenSegment>
+          </View>
 
-                {this.props.canDelete && this.state.showDeleteButton && (
-                  <View
-                    style={{
-                      alignSelf: "center",
-                      flex: .25,
-                    }}
-                  >
-                    <DeleteButton
-                      color={this.props.backgroundColor.darkerBy(1.2)}
-                      onPress={this.onDeletePress}
-                      diameter={20}
-                    ></DeleteButton>
-                  </View>
-                )}
-              </View>
-            </Card>
-          </TouchableOpacity>
-        </GestureRecognizer>
-      </View>
+          {this.props.canDelete && this.state.showDeleteButton && (
+            <View
+              style={{
+                justifyContent: "flex-end",
+                width: this.state.deleteButtonWidth,
+                height: this.state.deleteButtonWidth,
+                borderRadius: CATEGORY_BOX_INSET,
+              }}
+            >
+              <DeleteButton
+                color={this.props.backgroundColor.darkerBy(1.2)}
+                onPress={this.onDeletePress}
+                borderRadius={CATEGORY_BOX_INSET}
+              ></DeleteButton>
+            </View>
+          )}
+        </View>
+      </GestureRecognizer>
     );
   }
 }

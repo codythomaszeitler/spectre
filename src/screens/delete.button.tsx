@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Text } from "react-native-elements";
-import { PerfectCircle } from "./perfect.circle";
+import { PerfectSquare } from "./perfect.square";
 import {FontFamily} from '../css/styles';
 
 export class DeleteButton extends Component {
   render() {
     return (
-      <PerfectCircle
+      <PerfectSquare
         color={this.props.color.darkerBy(1.2)}
-        diameter={this.props.diameter ? this.props.diameter : 20}
         onPress={this.props.onPress}
+        borderRadius={this.props.borderRadius}
       >
         <Text
           style={{
@@ -20,7 +20,7 @@ export class DeleteButton extends Component {
         >
           {"X"}
         </Text>
-      </PerfectCircle>
+      </PerfectSquare>
     );
   }
 }

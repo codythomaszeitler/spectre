@@ -89,7 +89,7 @@ export class CategorizationModeBottomBar extends Component {
                     backgroundColor : '#d6d6d6',
                     borderColor : '#969696',
                     borderWidth : 3,
-                    borderRadius : 15
+                    borderRadius : 10
                 }}
               ></TransactionScreenSegment>
             </View>

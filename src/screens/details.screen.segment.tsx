@@ -2,24 +2,34 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-elements";
 import { CATEGORY_FONT_SIZE } from "./category.screen";
-import { FontFamily } from "../css/styles";
+import { BoldFontFamily, FontFamily } from "../css/styles";
 import { TransactionDetail } from "../pojo/info.line";
 
-export class DetailsSceenSegement extends Component {
+interface State {
+  fontSize : number;
+}
+
+export class DetailsScreenSegment extends Component {
+
+  state : State;
+
   constructor(props) {
     super(props);
+
+    this.state = {
+      fontSize : Math.floor(CATEGORY_FONT_SIZE * .8)
+    }
   }
 
   getViewForHorizontalOrientation() {
-
     const details = this.props.details;
     let horizontalText = "";
     for (let i = 0; i < details.length; i++) {
       const detail = details[i];
-      const element = detail.getElement() ? detail.getElement() : '-';
+      const element = detail.getElement() ? detail.getElement() : "-";
 
       if (i != details.length - 1) {
-        horizontalText = horizontalText + element + ' | ';
+        horizontalText = horizontalText + element + " | ";
       } else {
         horizontalText = horizontalText + element;
       }
@@ -30,8 +40,8 @@ export class DetailsSceenSegement extends Component {
         numberOfLines={1}
         style={{
           color: this.props.textColor.hex(),
-          fontFamily: FontFamily,
-          fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.8),
+          fontFamily: BoldFontFamily,
+          fontSize: this.state.fontSize,
         }}
       >
         {horizontalText}
@@ -46,20 +56,30 @@ export class DetailsSceenSegement extends Component {
           key={detail.getElement()}
           style={{
             flex: 1,
-            alignSelf : 'flex-start',
+            alignSelf: "flex-start",
           }}
         >
+          <View
+            style={{
+              height: 3,
+            }}
+          ></View>
           <Text
             numberOfLines={1}
             style={{
               color: this.props.textColor.hex(),
               fontFamily: FontFamily,
-              fontSize: Math.floor(CATEGORY_FONT_SIZE * 0.8),
-              textAlign : 'left'
+              fontSize: this.state.fontSize,
+              textAlign: "left",
             }}
           >
             {detail.getElement()}
           </Text>
+          <View
+            style={{
+              height: 3,
+            }}
+          ></View>
         </View>
       );
     };
@@ -78,10 +98,14 @@ export class DetailsSceenSegement extends Component {
       <View
         style={{
           flex: 1,
+          justifyContent: "space-around",
+          alignContent: "space-around",
         }}
       >
-        {this.props.orientation == 'row' && this.getViewForHorizontalOrientation()}
-        {this.props.orientation == 'column' && this.getViewForVerticalOrientation()}
+        {this.props.orientation == "row" &&
+          this.getViewForHorizontalOrientation()}
+        {this.props.orientation == "column" &&
+          this.getViewForVerticalOrientation()}
       </View>
     );
   }

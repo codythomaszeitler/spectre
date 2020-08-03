@@ -198,11 +198,11 @@ export class CategorizationScreen extends Component
       payloads.push(this.createPayloadFor(category));
 
       if (Spacer.containsSpacerAfter(this.spacers, category)) {
-        payloads.push(new LineBreakScreenSegmentPayload(i + "LINE-BREAK"));
-        payloads.push(new SpacerScreenSegmentPayload(i + "SPACER"));
+        payloads.push(new LineBreakScreenSegmentPayload((i+1) + "LINE-BREAK"));
+        payloads.push(new SpacerScreenSegmentPayload((i+1) + "SPACER"));
       }
 
-      payloads.push(new LineBreakScreenSegmentPayload(-1 * i + "LINE-BREAK"));
+      payloads.push(new LineBreakScreenSegmentPayload((-1 * (i+1)) + "LINE-BREAK"));
     }
 
     if (this.state.showAddCategoryScreen) {

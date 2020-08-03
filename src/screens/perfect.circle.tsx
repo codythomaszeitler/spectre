@@ -30,8 +30,6 @@ export class PerfectCircle extends Component {
       return;
     }
 
-    console.log(event);
-
     this.setState({
       diameter: getMinDimension(event),
       showCircle: true,

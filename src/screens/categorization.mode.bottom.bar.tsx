@@ -5,18 +5,17 @@ import { Text } from "react-native-elements";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Color } from "../pojo/color";
 import { Transaction } from "../pojo/transaction";
-import {FontFamily} from '../css/styles';
+import { BoldFontFamily } from "../css/styles";
 
 interface Props {
-    onCategorizationEnd : () => void;
-    currentTransaction : Transaction;
+  onCategorizationEnd: () => void;
+  currentTransaction: Transaction;
 }
 
 export class CategorizationModeBottomBar extends Component {
-
-    constructor(props : Props) {
-        super(props);
-    }
+  constructor(props: Props) {
+    super(props);
+  }
 
   render() {
     return (
@@ -28,32 +27,27 @@ export class CategorizationModeBottomBar extends Component {
         <View
           style={{
             flex: 1,
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "space-around",
           }}
         >
           <View
             style={{
-              flex: 2,
-            }}
-          ></View>
-          <View
-            style={{
               flex: 1,
-              alignSelf: "flex-start",
+              alignSelf: "center",
               alignItems: "center",
               justifyContent: "flex-end",
             }}
           >
             <PerfectCircle
-              borderColor={new Color("#FF7676")}
-              color={new Color("#FFFFFF")}
+              borderColor={new Color("#f76f6f")}
+              color={new Color("#f76f6f")}
               onPress={this.props.onCategorizationEnd}
               diameter={30}
             >
               <Text
                 style={{
-                  color: "red",
+                  color: "white",
                   fontSize: 30,
                 }}
               >
@@ -81,7 +75,9 @@ export class CategorizationModeBottomBar extends Component {
             ></View>
             <View
               style={{
-                flex: 4,
+                flex: 8,
+                width : '60%',
+                alignSelf : 'center'
               }}
             >
               <TransactionScreenSegment
@@ -89,44 +85,37 @@ export class CategorizationModeBottomBar extends Component {
                 transaction={this.props.currentTransaction}
                 textColor={new Color("#7a7a7a").darkerBy(1.5)}
                 containerStyle={{
-                  shadowColor: "#000000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 3,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 5,
-                  borderRadius: 5,
-                  opacity: 0.7,
+                    backgroundColor : '#d6d6d6',
+                    borderColor : '#969696',
+                    borderWidth : 3,
+                    borderRadius : 15
                 }}
               ></TransactionScreenSegment>
             </View>
           </View>
-          <View
-            style={{
-              flex: 2.5,
-              alignSelf: "flex-end",
-            }}
-          ></View>
         </View>
+
         <View
           style={{
-            alignSelf: "center",
-            alignItems: "stretch",
+            flex: 2.5,
+            alignSelf: "flex-end",
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 1,
             justifyContent: "flex-end",
-            flex: 0.5,
-            width: 25,
-            height: 25,
-            zIndex: -1,
+            alignSelf: "flex-end",
+            marginRight : 30
           }}
         >
-          <PerfectCircle color={new Color("#f76f6f")} diameter={75}>
+          <PerfectCircle color={new Color("#f76f6f")} diameter={100}>
             <Text
               numberOfLines={1}
               style={{
                 color: "white",
-                fontFamily: FontFamily,
-                fontSize: 20,
+                fontFamily: BoldFontFamily,
+                fontSize: 32,
               }}
             >
               {this.props.numUncategorized}

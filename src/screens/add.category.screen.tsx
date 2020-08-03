@@ -151,18 +151,17 @@ export class AddCategoryScreen extends Component {
               style={{
                 flex: 1,
                 justifyContent: "flex-end",
+                alignItems : 'flex-end',
+                width : CATEGORY_BOX_HEIGHT,
+                height : CATEGORY_BOX_HEIGHT,
               }}
             >
               <DeleteButton
                 color={this.state.color}
                 onPress={this.props.onStopAddCategory}
+                borderRadius={CATEGORY_BOX_INSET}
               ></DeleteButton>
             </View>
-            <View
-              style={{
-                flex: 0.2,
-              }}
-            ></View>
           </View>
         </View>
 

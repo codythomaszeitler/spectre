@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Linking, TouchableOpacity } from "react-native";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -41,6 +41,7 @@ import { ViewModeBottomBar } from "./view.mode.bottom.bar";
 import { AddSpacerOrCategoryScreenPayload } from "./add.spacer.or.category.screen.payload";
 import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";
 import { Text } from "react-native-elements";
+import { PerfectCircle } from "./perfect.circle";
 
 export interface Props {}
 
@@ -89,6 +90,7 @@ export class CategorizationScreen extends Component
     this.createAddCategoryScreenPayload = this.createAddCategoryScreenPayload.bind(
       this
     );
+    this.loadHelpYoutubeWebsite = this.loadHelpYoutubeWebsite.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -198,11 +200,13 @@ export class CategorizationScreen extends Component
       payloads.push(this.createPayloadFor(category));
 
       if (Spacer.containsSpacerAfter(this.spacers, category)) {
-        payloads.push(new LineBreakScreenSegmentPayload((i+1) + "LINE-BREAK"));
-        payloads.push(new SpacerScreenSegmentPayload((i+1) + "SPACER"));
+        payloads.push(new LineBreakScreenSegmentPayload(i + 1 + "LINE-BREAK"));
+        payloads.push(new SpacerScreenSegmentPayload(i + 1 + "SPACER"));
       }
 
-      payloads.push(new LineBreakScreenSegmentPayload((-1 * (i+1)) + "LINE-BREAK"));
+      payloads.push(
+        new LineBreakScreenSegmentPayload(-1 * (i + 1) + "LINE-BREAK")
+      );
     }
 
     if (this.state.showAddCategoryScreen) {
@@ -510,6 +514,10 @@ export class CategorizationScreen extends Component
     });
   }
 
+  loadHelpYoutubeWebsite() {
+    Linking.openURL("https://www.youtube.com/watch?v=8LEqwPOehpE");
+  }
+
   render() {
     return (
       <View
@@ -523,6 +531,36 @@ export class CategorizationScreen extends Component
       >
         <View
           style={{
+            flex: 0.25,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 0.5,
+            alignItems: "center",
+          }}
+        >
+          <PerfectCircle color={new Color("#9c9c9c")}>
+            <TouchableOpacity onPress={this.loadHelpYoutubeWebsite}>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontFamily: FontFamily,
+                  color: "white",
+                }}
+              >
+                ?
+              </Text>
+            </TouchableOpacity>
+          </PerfectCircle>
+        </View>
+        <View
+          style={{
+            flex: 0.25,
+          }}
+        ></View>
+        <View
+          style={{
             flex: 8,
           }}
         >
@@ -534,7 +572,6 @@ export class CategorizationScreen extends Component
             }}
             style={{
               marginHorizontal: 10,
-              marginTop: 90,
             }}
           ></FlatList>
         </View>
@@ -549,11 +586,13 @@ export class CategorizationScreen extends Component
           }}
         >
           {this.state.showAddCategoryScreen && (
-            <View style={{
-              flex : 1,
-              justifyContent : 'center',
-              alignItems : 'center'
-            }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{
                   fontSize: 12,
@@ -588,9 +627,11 @@ export class CategorizationScreen extends Component
               ></CategorizationModeBottomBar>
             )}
         </View>
-        <View style={{
-          flex : .25
-        }}></View>
+        <View
+          style={{
+            flex: 0.25,
+          }}
+        ></View>
       </View>
     );
   }

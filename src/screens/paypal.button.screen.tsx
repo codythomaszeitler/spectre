@@ -1,9 +1,20 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { Text } from "react-native-elements";
 import { FontFamily } from "../css/styles";
 
 export class PaypalButtonScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.paypalButtonRef = React.createRef();
+
+    this.goToPaypalDonationPage = this.goToPaypalDonationPage.bind(this);
+  }
+
+  goToPaypalDonationPage() {
+    this.paypalButtonRef.current.click();
+  }
+
   render() {
     return (
       <View
@@ -17,39 +28,62 @@ export class PaypalButtonScreen extends Component {
             flexDirection: "row",
           }}
         >
-          <Image
-            source={require("../../assets/btc-icon.png")}
-            resizeMode="contain"
+          <TouchableOpacity
+            onPress={this.goToPaypalDonationPage}
             style={{
               width: 150,
               height: 75,
               flex: 1,
             }}
-          ></Image>
+          >
+            <Image
+              source={require("../../assets/btc-icon.png")}
+              resizeMode="contain"
+              style={{
+                width : 75,
+                flex: 1,
+              }}
+            ></Image>
+          </TouchableOpacity>
           <View
             style={{
-              flex: 5,
+              flex: .25,
             }}
           ></View>
-          <Image
-            source={require("../../assets/paypal.png")}
-            resizeMode="contain"
+          <TouchableOpacity
+            onPress={this.goToPaypalDonationPage}
             style={{
               width: 150,
               height: 75,
               flex: 1,
             }}
-          ></Image>
+          >
+            <Image
+              source={require("../../assets/paypal.png")}
+              resizeMode="contain"
+              style={{
+                width : 75,
+                flex: 1,
+              }}
+            ></Image>
+          </TouchableOpacity>
         </View>
-        <View style={{
-          flex : 1,
-          justifyContent : 'center',
-          alignItems : 'center'
-        }}>
-          <Text style={{
-            fontSize : 12,
-            fontFamily : FontFamily
-          }}> Donations Accepted</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: FontFamily,
+            }}
+          >
+            {" "}
+            Donations Accepted
+          </Text>
         </View>
 
         <form
@@ -66,6 +100,7 @@ export class PaypalButtonScreen extends Component {
             name="submit"
             title="PayPal - The safer, easier way to pay online!"
             alt="Donate with PayPal button"
+            ref={this.paypalButtonRef}
             hidden={true}
           />
           <img

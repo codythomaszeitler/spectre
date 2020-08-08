@@ -7,7 +7,7 @@ import { PerfectCircle } from "./perfect.circle";
 import { Color } from "./../pojo/color";
 import { BoldFontFamily } from "../css/styles";
 import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
-import {PaypalButtonScreen} from './paypal.button.screen';
+import {PaypalButtonScreen} from './donation.screen';
 
 export class ViewModeBottomBar extends Component {
   render() {

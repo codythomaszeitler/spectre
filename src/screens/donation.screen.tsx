@@ -26,13 +26,15 @@ export class PaypalButtonScreen extends Component {
           style={{
             flex: 1,
             flexDirection: "row",
+            flexBasis: 50,
+            flexShrink : 1,
+            width : '100%',
+            height : '100%'
           }}
         >
           <TouchableOpacity
             onPress={this.goToPaypalDonationPage}
             style={{
-              width: 150,
-              height: 75,
               flex: 1,
             }}
           >
@@ -40,7 +42,8 @@ export class PaypalButtonScreen extends Component {
               source={require("../../assets/btc-icon.png")}
               resizeMode="contain"
               style={{
-                width : 75,
+                width : undefined,
+                height : undefined,
                 flex: 1,
               }}
             ></Image>
@@ -53,8 +56,6 @@ export class PaypalButtonScreen extends Component {
           <TouchableOpacity
             onPress={this.goToPaypalDonationPage}
             style={{
-              width: 150,
-              height: 75,
               flex: 1,
             }}
           >
@@ -62,7 +63,8 @@ export class PaypalButtonScreen extends Component {
               source={require("../../assets/paypal.png")}
               resizeMode="contain"
               style={{
-                width : 75,
+                width : undefined,
+                height : undefined,
                 flex: 1,
               }}
             ></Image>
@@ -73,12 +75,17 @@ export class PaypalButtonScreen extends Component {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            width : '100%',
+            height : '100%',
+            flexBasis : 25,
+            flexShrink : 1
           }}
         >
           <Text
             style={{
               fontSize: 12,
               fontFamily: FontFamily,
+              textAlign : 'center'
             }}
           >
             {" "}

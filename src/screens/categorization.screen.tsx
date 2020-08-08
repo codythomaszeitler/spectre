@@ -36,7 +36,6 @@ import { Spacer } from "../pojo/spacer";
 import { SpacerScreenSegmentPayload } from "./spacer.screen.segment.payload";
 import { LineBreakScreenSegmentPayload } from "./line.break.screen.segment.payload";
 import { AddCategoryScreenPayload } from "./add.category.screen.payload";
-import { PaypalButtonScreen } from "./paypal.button.screen";
 import { ViewModeBottomBar } from "./view.mode.bottom.bar";
 import { AddSpacerOrCategoryScreenPayload } from "./add.spacer.or.category.screen.payload";
 import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, LayoutChangeEvent } from "react-native";
 import { TextInput } from "react-native";
+import { Text } from "react-native-elements";
 import { SpectreUser } from "../pojo/spectre.user";
 import { Color } from "../pojo/color";
 import { datastore } from "../datastore/datastore";
@@ -12,9 +13,9 @@ import {
   CATEGORY_BOX_INSET,
   CATEGORY_FONT_SIZE,
 } from "./category.screen";
-import { TransactionCounter } from "./transaction.counter";
 import { DeleteButton } from "./delete.button";
 import { ColorChoicesBar } from "./color.choices.bar";
+import { TRANSACTION_DIAMETER } from "./category.screen";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
@@ -32,7 +33,8 @@ export class AddCategoryScreen extends Component {
       categoryAddText: "",
       color: new Color(CategoryColors[0]),
       colorChoiceDiameter: 35,
-      colorChoiceBarWidth : 500,
+      colorChoiceBarWidth: 500,
+      numTransactionsDiameter: TRANSACTION_DIAMETER,
     };
   }
 
@@ -56,14 +58,14 @@ export class AddCategoryScreen extends Component {
     }
   }
 
-  onLayout(event : LayoutChangeEvent) {
-    const componentWidth = event.nativeEvent.layout.width; 
+  onLayout(event: LayoutChangeEvent) {
+    const componentWidth = event.nativeEvent.layout.width;
     this.setState({
-      colorChoiceBarWidth : this.getColorChoiceBarWidth(componentWidth)
+      colorChoiceBarWidth: this.getColorChoiceBarWidth(componentWidth),
     });
   }
 
-  getColorChoiceBarWidth(currentWidth : number) {
+  getColorChoiceBarWidth(currentWidth: number) {
     const NORMAL_WIDTH = 400;
     let width = NORMAL_WIDTH;
     if (currentWidth < NORMAL_WIDTH) {
@@ -133,14 +135,31 @@ export class AddCategoryScreen extends Component {
             ></View>
             <View
               style={{
-                flex: 1,
                 justifyContent: "flex-end",
+                width: this.state.numTransactionsDiameter,
+                height: this.state.numTransactionsDiameter,
+                backgroundColor: this.state.color.darkerBy(1.2).hex(),
+                borderRadius: this.state.numTransactionsDiameter,
+                alignItems: "center",
               }}
             >
-              <TransactionCounter
-                color={this.state.color}
-                numTransactions={0}
-              ></TransactionCounter>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignContent: "center",
+                  flex: 1,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: FontFamily,
+                    color: "white",
+                    fontSize: 17,
+                  }}
+                >
+                  0
+                </Text>
+              </View>
             </View>
             <View
               style={{
@@ -149,16 +168,14 @@ export class AddCategoryScreen extends Component {
             ></View>
             <View
               style={{
-                flex: 1,
                 justifyContent: "flex-end",
-                alignItems : 'flex-end',
-                width : CATEGORY_BOX_HEIGHT,
-                height : CATEGORY_BOX_HEIGHT,
+                width: CATEGORY_BOX_HEIGHT,
+                height: CATEGORY_BOX_HEIGHT,
               }}
             >
               <DeleteButton
-                color={this.state.color}
-                onPress={this.props.onStopAddCategory}
+                onPress={this.onDeletePress}
+                color={new Color("#fa756b")}
                 borderRadius={CATEGORY_BOX_INSET}
               ></DeleteButton>
             </View>
@@ -171,7 +188,7 @@ export class AddCategoryScreen extends Component {
           }}
         ></View>
 
-        <ColorChoicesBar  
+        <ColorChoicesBar
           diameter={35}
           onColorSelect={(colorChoice: Color) => {
             this.setState({

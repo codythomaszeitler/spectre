@@ -17,8 +17,8 @@ import { BoldFontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
-import { TransactionCounter } from "./transaction.counter";
 import GestureRecognizer from "react-native-swipe-gestures";
+import { FontFamily } from "../css/styles";
 
 export const CATEGORY_BOX_HEIGHT = 47;
 export const CATEGORY_BOX_INSET = 6;
@@ -37,8 +37,11 @@ export interface State {
   numTransactions: number;
   shouldShowTransactions: boolean;
   showDeleteButton: boolean;
-  deleteButtonWidth : number;
+  deleteButtonWidth: number;
+  numTransactionsDiameter: number;
 }
+
+export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.2;
 
 export class CategoryScreen extends Component
   implements TransactionCategorizedListener {
@@ -69,7 +72,8 @@ export class CategoryScreen extends Component
       numTransactions: props.category.getTransactions().length,
       shouldShowTransactions: false,
       showDeleteButton: false,
-      deleteButtonWidth : CATEGORY_BOX_HEIGHT,
+      deleteButtonWidth: CATEGORY_BOX_HEIGHT,
+      numTransactionsDiameter: TRANSACTION_DIAMETER,
     };
   }
 
@@ -167,16 +171,17 @@ export class CategoryScreen extends Component
 
   render() {
     return (
-      <View onMouseEnter={() => {
-        this.setState({
-          showDeleteButton : true
-        });
-      }}
-      onMouseLeave={() => {
-        this.setState({
-          showDeleteButton : false
-        });
-      }} 
+      <View
+        onMouseEnter={() => {
+          this.setState({
+            showDeleteButton: true,
+          });
+        }}
+        onMouseLeave={() => {
+          this.setState({
+            showDeleteButton: false,
+          });
+        }}
       >
         <GestureRecognizer
           onSwipeLeft={this.showDeleteButton}
@@ -193,7 +198,8 @@ export class CategoryScreen extends Component
                 backgroundColor: this.state.color.hex(),
                 justifyContent: "center",
                 flexGrow: 1,
-                flex: 1,
+                flexShrink: 1,
+                flex: 0,
               }}
             >
               <View
@@ -221,22 +227,43 @@ export class CategoryScreen extends Component
                       marginBottom: 1,
                     }}
                   >
-                    <b>{this.state.category.getType()}</b>
+                    {this.state.category.getType()}
                   </Text>
                 </View>
 
                 <View
                   style={{
                     justifyContent: "flex-end",
-                    flex: 1,
+                    width: this.state.numTransactionsDiameter,
+                    height: this.state.numTransactionsDiameter,
+                    backgroundColor: this.state.color.darkerBy(1.2).hex(),
+                    borderRadius: this.state.numTransactionsDiameter,
+                    alignItems: "center",
                   }}
                 >
-                  <TransactionCounter
-                    color={this.state.color}
-                    numTransactions={this.state.numTransactions}
-                  ></TransactionCounter>
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignContent: "center",
+                      flex: 1,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: FontFamily,
+                        color: "white",
+                        fontSize: 17,
+                      }}
+                    >
+                      {this.state.numTransactions}
+                    </Text>
+                  </View>
                 </View>
-
+                <View
+                  style={{
+                    flex: 0.25,
+                  }}
+                ></View>
                 {this.state.showDeleteButton && (
                   <View
                     style={{
@@ -267,7 +294,7 @@ export class CategoryScreen extends Component
                   key={data.id}
                   style={{
                     flexDirection: "row",
-                    flex : 1
+                    flex: 1,
                   }}
                 >
                   <View
@@ -280,9 +307,11 @@ export class CategoryScreen extends Component
                       flex: 9,
                     }}
                   >
-                    <View style={{
-                      height : 5,
-                    }}></View>
+                    <View
+                      style={{
+                        height: 5,
+                      }}
+                    ></View>
                     <TransactionScreenSegment
                       canDelete={true}
                       isHorizontal
@@ -293,7 +322,7 @@ export class CategoryScreen extends Component
                       containerStyle={{
                         backgroundColor: "#bdbdbd",
                         borderRadius: 7,
-                        height : CATEGORY_BOX_HEIGHT
+                        height: CATEGORY_BOX_HEIGHT,
                       }}
                       type={"row"}
                     ></TransactionScreenSegment>

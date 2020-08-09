@@ -3,6 +3,10 @@ import { View, Image, TouchableOpacity, Clipboard } from "react-native";
 import { Text } from "react-native-elements";
 import { FontFamily } from "../css/styles";
 
+interface State {
+  textUnderButtons : string;
+}
+
 export class PaypalButtonScreen extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +14,10 @@ export class PaypalButtonScreen extends Component {
 
     this.goToPaypalDonationPage = this.goToPaypalDonationPage.bind(this);
     this.copyBitcoinAddress = this.copyBitcoinAddress.bind(this);
+
+    this.state = {
+      textUnderButtons : "Donations Accepted"
+    }
   }
 
   goToPaypalDonationPage() {
@@ -18,6 +26,9 @@ export class PaypalButtonScreen extends Component {
 
   async copyBitcoinAddress() {
     await Clipboard.setString('19Xgnv9qrkZEzPYzhfNF9E87BRNyxqpxK1');
+    this.setState({
+      textUnderButtons : 'Bitcoin address copied!'
+    });
   }
 
   render() {
@@ -94,7 +105,7 @@ export class PaypalButtonScreen extends Component {
             }}
           >
             {" "}
-            Donations Accepted
+            {this.state.textUnderButtons}
           </Text>
         </View>
 

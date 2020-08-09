@@ -13,19 +13,18 @@ import {
   TransactionScreenSegment,
   TransactionDeletePress,
 } from "./transaction.screen.segment";
-import { BoldFontFamily } from "../css/styles";
+import { BoldFontFamily, FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
 import GestureRecognizer from "react-native-swipe-gestures";
-import { FontFamily } from "../css/styles";
 import { isMobile } from "react-device-detect";
 
 export const CATEGORY_BOX_HEIGHT = isMobile ? 35 : 47;
 export const CATEGORY_BOX_INSET = 6;
 export const CATEGORY_FONT_SIZE = 21;
-export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.2;
-export const WHITESPACE_LEFT_OF_CATEGORY_TEXT = 10;
+export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.4;
+export const WHITESPACE_LEFT_OF_CATEGORY_TEXT = (10 * 3) - 5 ;
 
 export interface Props {
   color: Color;
@@ -224,8 +223,8 @@ export class CategoryScreen extends Component
                     style={{
                       color: "#fff",
                       fontSize: isMobile ? CATEGORY_FONT_SIZE :  CATEGORY_FONT_SIZE + 3,
-                      fontFamily: BoldFontFamily,
-                      marginBottom: 3,
+                      fontFamily: FontFamily,
+                      marginBottom: 1,
                     }}
                   >
                     {this.state.category.getType()}

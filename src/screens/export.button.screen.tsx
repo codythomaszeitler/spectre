@@ -22,9 +22,10 @@ export class ExportButtonScreen extends Component {
         >
           <Image
             source={require("../../assets/download.png")}
+            resizeMode='contain'
             style={{
-              width: isMobile ? 10 : 15,
-              height: isMobile ? 15 : 25,
+              width: isMobile ? 10 : 25,
+              height: isMobile ? 15 : 40,
             }}
           ></Image>
         </PerfectSquare>

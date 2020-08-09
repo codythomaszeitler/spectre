@@ -27,8 +27,8 @@ export class AddSpacerButton extends Component {
         >
           <View
             style={{
-              width: "50%",
-              height: "50%",
+              width: "37%",
+              height: "37%",
             }}
           >
             <Image

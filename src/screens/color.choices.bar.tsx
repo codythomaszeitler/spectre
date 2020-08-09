@@ -28,7 +28,7 @@ export class ColorChoicesBar extends Component {
 
     this.state = {
       colorChoiceDiameter: this.props.diameter,
-      emptySpaceWidth: 10,
+      emptySpaceWidth: 9,
       currentlySelectedColor: this.colors[0],
     };
   }

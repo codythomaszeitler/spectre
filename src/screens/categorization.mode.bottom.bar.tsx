@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { PerfectCircle } from "./perfect.circle";
 import { Text } from "react-native-elements";
 import { TransactionScreenSegment } from "./transaction.screen.segment";
@@ -44,29 +44,21 @@ export class CategorizationModeBottomBar extends Component {
               borderColor={new Color("#f76f6f")}
               color={new Color("#f76f6f")}
               onPress={this.props.onCategorizationEnd}
-              diameter={30}
+              diameter={32}
             >
-              <Text
+              <Image
+                source={require("../../assets/minus-dash.png")}
+                resizeMode="contain"
                 style={{
-                  color: "white",
-                  fontSize: 50,
-                  fontFamily: BoldFontFamily,
+                  width: isMobile ? 10 : 20,
+                  height: isMobile ? 15 : 35,
                 }}
-              >
-                -
-              </Text>
-              <Text
-                style={{
-                  fontSize: 10,
-                }}
-              >
-                {"  "}
-              </Text>
+              ></Image>
             </PerfectCircle>
           </View>
           <View
             style={{
-              flex: 5,
+              flex: 1,
             }}
           ></View>
           <View
@@ -77,7 +69,7 @@ export class CategorizationModeBottomBar extends Component {
           >
             <View
               style={{
-                flex: 0.5,
+                flex: 1,
               }}
             ></View>
             <View
@@ -90,12 +82,12 @@ export class CategorizationModeBottomBar extends Component {
               <TransactionScreenSegment
                 canDelete={false}
                 transaction={this.props.currentTransaction}
-                textColor={new Color("#7a7a7a").darkerBy(1.5)}
+                textColor={new Color("#787878")}
                 containerStyle={{
-                  backgroundColor: "#d6d6d6",
-                  borderColor: "#969696",
-                  borderWidth: 3,
-                  borderRadius: 10,
+                  backgroundColor: "#F7F7F7",
+                  borderColor: "#989898",
+                  borderWidth: 4.4,
+                  borderRadius: 16,
                 }}
               ></TransactionScreenSegment>
             </View>
@@ -118,7 +110,7 @@ export class CategorizationModeBottomBar extends Component {
               marginRight: 30,
             }}
           >
-            <PerfectCircle color={new Color("#f76f6f")} diameter={100}>
+            <PerfectCircle color={new Color("#f76f6f")} diameter={83}>
               <Text
                 numberOfLines={1}
                 style={{
@@ -132,6 +124,9 @@ export class CategorizationModeBottomBar extends Component {
             </PerfectCircle>
           </View>
         )}
+        <View style={{
+          height : 10
+        }}></View>
       </View>
     );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Image, TouchableOpacity, Clipboard } from "react-native";
 import { Text } from "react-native-elements";
-import { FontFamily } from "../css/styles";
+import { RegularFontFamily } from "../css/styles";
 import {isMobile} from 'react-device-detect';
 
 interface State {
@@ -103,9 +103,10 @@ export class PaypalButtonScreen extends Component {
         >
           <Text
             style={{
-              fontSize: isMobile ? 8 : 12,
-              fontFamily: FontFamily,
-              textAlign : 'center'
+                fontSize: 12,
+                fontFamily: RegularFontFamily,
+                color : '#7A7A7A',
+                letterSpacing : .40
             }}
           >
             {" "}

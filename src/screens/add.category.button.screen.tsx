@@ -24,8 +24,8 @@ export class AddCategoryButton extends Component {
         >
           <View
             style={{
-              width: CATEGORY_BOX_HEIGHT / 1.8,
-              height: CATEGORY_BOX_HEIGHT / 1.8,
+              width: (CATEGORY_BOX_HEIGHT / 2) + 4,
+              height: CATEGORY_BOX_HEIGHT / 2,
             }}
           >
             <Image

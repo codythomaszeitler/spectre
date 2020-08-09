@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Linking, TouchableOpacity } from "react-native";
+import { View, FlatList, Image } from "react-native";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -26,7 +26,7 @@ import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
-import { CategoryColors, FontFamily } from "../css/styles";
+import { CategoryColors, FontFamily, RegularFontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { ScreenSegmentPayload } from "./screen.segment.payload";
 import { ScreenSegmentFactory } from "./screen.segment.factory";
@@ -538,7 +538,7 @@ export class CategorizationScreen extends Component
       >
         <View
           style={{
-            flex: 0.25,
+            flex: 0.42,
           }}
         ></View>
         <View
@@ -559,39 +559,20 @@ export class CategorizationScreen extends Component
             });
           }}
         >
-          {!this.state.isHoveringOverHelp && (
-            <PerfectCircle
-              color={new Color("#FFFFFF")}
-              borderColor={new Color("#9c9c9c")}
-              onPress={this.loadHelpYoutubeWebsite}
-            >
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontFamily: FontFamily,
-                  color: "white",
-                }}
-              >
-                {"  "}
-              </Text>
-            </PerfectCircle>
-          )}
-          {this.state.isHoveringOverHelp && (
-            <PerfectCircle
-              color={new Color("#9c9c9c")}
-              onPress={this.loadHelpYoutubeWebsite}
-            >
-              <Text
-                style={{
-                  fontSize: isMobile ? 16 : 30,
-                  fontFamily: FontFamily,
-                  color: "white",
-                }}
-              >
-                ?
-              </Text>
-            </PerfectCircle>
-          )}
+          <PerfectCircle
+            color={new Color("#A2A2A2")}
+            onPress={this.loadHelpYoutubeWebsite}
+          >
+            <Image
+            resizeMode='contain'
+              source={require("../../assets/question-mark.png")}
+              style={{
+                width: isMobile ? 10 : 18,
+                marginLeft : 2,
+                height: isMobile ? 15 : 25,
+              }}
+            ></Image>
+          </PerfectCircle>
         </View>
         <View
           style={{
@@ -611,6 +592,7 @@ export class CategorizationScreen extends Component
             }}
             style={{
               marginHorizontal: 10,
+              marginVertical: 6,
             }}
           ></FlatList>
         </View>
@@ -635,10 +617,12 @@ export class CategorizationScreen extends Component
               <Text
                 style={{
                   fontSize: 12,
-                  fontFamily: FontFamily,
+                  fontFamily: RegularFontFamily,
+                  color: "#A2A2A2",
+                  letterSpacing: 0.4,
                 }}
               >
-                Press enter to complete
+                Press enter to complete.
               </Text>
             </View>
           )}

@@ -71,6 +71,7 @@ export class ViewModeBottomBar extends Component {
         <View
           style={{
             flex: 3,
+            marginTop : 27,
             justifyContent: "center",
             alignSelf: "center",
           }}
@@ -88,8 +89,8 @@ export class ViewModeBottomBar extends Component {
             alignItems: "flex-end",
             justifyContent: "center",
             flex: 3,
-            width: "100%",
-            height: "100%",
+            width: "85%",
+            height: "85%",
           }}
         >
           <PerfectCircle
@@ -108,7 +109,7 @@ export class ViewModeBottomBar extends Component {
             </Text>
           </PerfectCircle>
         </View>
-        <View style={{ flex: 1 }}></View>
+        <View style={{ flex:.5 }}></View>
       </View>
     );
   }

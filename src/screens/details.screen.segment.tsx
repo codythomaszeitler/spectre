@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-elements";
 import { CATEGORY_FONT_SIZE } from "./category.screen";
-import { BoldFontFamily, FontFamily } from "../css/styles";
+import { BoldFontFamily, FontFamily, RegularFontFamily } from "../css/styles";
 import { TransactionDetail } from "../pojo/info.line";
 
 interface State {
@@ -17,7 +17,7 @@ export class DetailsScreenSegment extends Component {
     super(props);
 
     this.state = {
-      fontSize : Math.floor(CATEGORY_FONT_SIZE * .8)
+      fontSize : Math.floor(CATEGORY_FONT_SIZE * .90 )
     }
   }
 
@@ -40,7 +40,7 @@ export class DetailsScreenSegment extends Component {
         numberOfLines={1}
         style={{
           color: this.props.textColor.hex(),
-          fontFamily: BoldFontFamily,
+          fontFamily: FontFamily,
           fontSize: this.state.fontSize,
         }}
       >
@@ -70,10 +70,10 @@ export class DetailsScreenSegment extends Component {
               color: this.props.textColor.hex(),
               fontFamily: FontFamily,
               fontSize: this.state.fontSize,
-              textAlign: "left",
+              marginLeft : 5,
             }}
           >
-            {detail.getElement()}
+            { detail.getElement()}
           </Text>
           <View
             style={{
@@ -87,9 +87,15 @@ export class DetailsScreenSegment extends Component {
     const details = this.props.details;
     const views = [];
 
+    views.push(<View style={{
+      height : 6 
+    }}></View>);
     for (let i = 0; i < details.length; i < i++) {
       views.push(generateDetailLine(details[i]));
     }
+    views.push(<View style={{
+      height : 6 
+    }}></View>);
     return views;
   }
 

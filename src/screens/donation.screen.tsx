@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, Clipboard } from "react-native";
 import { Text } from "react-native-elements";
 import { FontFamily } from "../css/styles";
 
@@ -9,10 +9,15 @@ export class PaypalButtonScreen extends Component {
     this.paypalButtonRef = React.createRef();
 
     this.goToPaypalDonationPage = this.goToPaypalDonationPage.bind(this);
+    this.copyBitcoinAddress = this.copyBitcoinAddress.bind(this);
   }
 
   goToPaypalDonationPage() {
     this.paypalButtonRef.current.click();
+  }
+
+  async copyBitcoinAddress() {
+    await Clipboard.setString('19Xgnv9qrkZEzPYzhfNF9E87BRNyxqpxK1');
   }
 
   render() {
@@ -33,7 +38,7 @@ export class PaypalButtonScreen extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={this.goToPaypalDonationPage}
+            onPress={this.copyBitcoinAddress}
             style={{
               flex: 1,
             }}

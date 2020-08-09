@@ -8,6 +8,9 @@ interface State {
 }
 
 export class PaypalButtonScreen extends Component {
+
+  state : State;
+
   constructor(props) {
     super(props);
     this.paypalButtonRef = React.createRef();

@@ -173,16 +173,6 @@ export class CategoryScreen extends Component
   render() {
     return (
       <View
-        onMouseEnter={() => {
-          this.setState({
-            showDeleteButton: true,
-          });
-        }}
-        onMouseLeave={() => {
-          this.setState({
-            showDeleteButton: false,
-          });
-        }}
       >
         <GestureRecognizer
           onSwipeLeft={this.showDeleteButton}
@@ -201,6 +191,16 @@ export class CategoryScreen extends Component
                 flexGrow: 1,
                 flexShrink: 1,
                 flex: 0,
+              }}
+              onMouseEnter={() => {
+                this.setState({
+                  showDeleteButton: true,
+                });
+              }}
+              onMouseLeave={() => {
+                this.setState({
+                  showDeleteButton: false,
+                });
               }}
             >
               <View

@@ -128,7 +128,7 @@ export class TransactionScreenSegment extends Component {
                 borderRadius={CATEGORY_BOX_INSET}
               ></DeleteButton>
             </View>
-          )}
+              )}
         </View>
       </GestureRecognizer>
     );

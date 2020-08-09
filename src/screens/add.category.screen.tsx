@@ -15,7 +15,7 @@ import {
 } from "./category.screen";
 import { DeleteButton } from "./delete.button";
 import { ColorChoicesBar } from "./color.choices.bar";
-import { TRANSACTION_DIAMETER } from "./category.screen";
+import { TRANSACTION_DIAMETER, WHITESPACE_LEFT_OF_CATEGORY_TEXT } from "./category.screen";
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
@@ -97,7 +97,7 @@ export class AddCategoryScreen extends Component {
           >
             <View
               style={{
-                flex: 0.33,
+                width : WHITESPACE_LEFT_OF_CATEGORY_TEXT
               }}
             ></View>
             <View
@@ -128,39 +128,7 @@ export class AddCategoryScreen extends Component {
                 value={this.state.categoryAddText}
               />
             </View>
-            <View
-              style={{
-                flex: 1.75,
-              }}
-            ></View>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                width: this.state.numTransactionsDiameter,
-                height: this.state.numTransactionsDiameter,
-                backgroundColor: this.state.color.darkerBy(1.2).hex(),
-                borderRadius: this.state.numTransactionsDiameter,
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignContent: "center",
-                  flex: 1,
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: FontFamily,
-                    color: "white",
-                    fontSize: 17,
-                  }}
-                >
-                  0
-                </Text>
-              </View>
-            </View>
+
             <View
               style={{
                 flex: 0.5,
@@ -174,7 +142,7 @@ export class AddCategoryScreen extends Component {
               }}
             >
               <DeleteButton
-                onPress={this.onDeletePress}
+                onPress={this.props.onStopAddCategory}
                 color={new Color("#fa756b")}
                 borderRadius={CATEGORY_BOX_INSET}
               ></DeleteButton>

@@ -59,13 +59,13 @@ export class DocumentPicker extends Component {
           color={new Color("#79D75D")}
           borderRadius={this.props.borderRadius}
         >
-            <Image
-              source={require("../../assets/upload.png")}
-              style={{
-                width: 20,
-                height: 25,
-              }}
-            ></Image>
+          <Image
+            source={require("../../assets/upload.png")}
+            style={{
+              width: 20,
+              height: 25,
+            }}
+          ></Image>
         </PerfectSquare>
         <input
           type="file"

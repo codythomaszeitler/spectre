@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, LayoutChangeEvent } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-elements";
 import { Category } from "../pojo/category";
 import {
@@ -23,6 +23,8 @@ import { FontFamily } from "../css/styles";
 export const CATEGORY_BOX_HEIGHT = 47;
 export const CATEGORY_BOX_INSET = 6;
 export const CATEGORY_FONT_SIZE = 21;
+export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.2;
+export const WHITESPACE_LEFT_OF_CATEGORY_TEXT = 10;
 
 export interface Props {
   color: Color;
@@ -41,7 +43,6 @@ export interface State {
   numTransactionsDiameter: number;
 }
 
-export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.2;
 
 export class CategoryScreen extends Component
   implements TransactionCategorizedListener {
@@ -211,7 +212,7 @@ export class CategoryScreen extends Component
               >
                 <View
                   style={{
-                    flex: 0.45,
+                    width : WHITESPACE_LEFT_OF_CATEGORY_TEXT
                   }}
                 ></View>
                 <View
@@ -249,11 +250,7 @@ export class CategoryScreen extends Component
                     }}
                   >
                     <Text
-                      style={{
-                        fontFamily: FontFamily,
-                        color: "white",
-                        fontSize: 17,
-                      }}
+                      style={styles.numTransactionCounterText}
                     >
                       {this.state.numTransactions}
                     </Text>
@@ -261,7 +258,7 @@ export class CategoryScreen extends Component
                 </View>
                 <View
                   style={{
-                    flex: 0.25,
+                    width : 10
                   }}
                 ></View>
                 {this.state.showDeleteButton && (
@@ -366,3 +363,11 @@ export class OnLocationChange {
     this.box = box.copy();
   }
 }
+
+export const styles = StyleSheet.create({
+  numTransactionCounterText : {
+      fontFamily: BoldFontFamily,
+      color: "white",
+      fontSize: 17,
+  }
+});

@@ -41,6 +41,7 @@ import { AddSpacerOrCategoryScreenPayload } from "./add.spacer.or.category.scree
 import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";
 import { Text } from "react-native-elements";
 import { PerfectCircle } from "./perfect.circle";
+import { isMobile } from "react-device-detect";
 
 export interface Props {}
 

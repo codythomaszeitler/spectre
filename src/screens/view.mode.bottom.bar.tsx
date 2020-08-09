@@ -7,9 +7,11 @@ import { PerfectCircle } from "./perfect.circle";
 import { Color } from "./../pojo/color";
 import { BoldFontFamily } from "../css/styles";
 import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
-import {PaypalButtonScreen} from './donation.screen';
+import { PaypalButtonScreen } from "./donation.screen";
+import { isMobile, isBrowser } from 'react-device-detect';
 
 export class ViewModeBottomBar extends Component {
+
   render() {
     return (
       <View
@@ -75,9 +77,11 @@ export class ViewModeBottomBar extends Component {
         >
           <PaypalButtonScreen></PaypalButtonScreen>
         </View>
-        <View style={{
-          flex : 1.5
-        }}></View>
+        <View
+          style={{
+            flex: 1.5,
+          }}
+        ></View>
 
         <View
           style={{
@@ -97,7 +101,7 @@ export class ViewModeBottomBar extends Component {
               style={{
                 color: "white",
                 fontFamily: BoldFontFamily,
-                fontSize: 32,
+                fontSize: (isMobile ? 16 : 32),
               }}
             >
               {this.props.numUncategorized}

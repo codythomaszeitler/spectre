@@ -18,18 +18,28 @@ export class AddSpacerButton extends Component {
         }}
         onPress={this.props.onPress}
       >
-        <View style={{
-          flex : 1,
-          justifyContent : 'center',
-          alignItems : 'center'
-        }}>
-          <Image
-            source={require("../../assets/plus.png")}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
             style={{
-              width : 30,
-              height : 30
+              width: "50%",
+              height: "50%",
             }}
-          ></Image>
+          >
+            <Image
+              source={require("../../assets/plus.png")}
+              style={{
+                width : undefined,
+                height : undefined,
+                flex : 1
+              }}
+            ></Image>
+          </View>
         </View>
       </TouchableOpacity>
     );

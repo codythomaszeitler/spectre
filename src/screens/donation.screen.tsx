@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image, TouchableOpacity, Clipboard } from "react-native";
 import { Text } from "react-native-elements";
 import { FontFamily } from "../css/styles";
+import {isMobile} from 'react-device-detect';
 
 interface State {
   textUnderButtons : string;
@@ -96,13 +97,13 @@ export class PaypalButtonScreen extends Component {
             alignItems: "center",
             width : '100%',
             height : '100%',
-            flexBasis : 25,
+            flexBasis : isMobile? 12.5 : 25,
             flexShrink : 1
           }}
         >
           <Text
             style={{
-              fontSize: 12,
+              fontSize: isMobile ? 8 : 12,
               fontFamily: FontFamily,
               textAlign : 'center'
             }}

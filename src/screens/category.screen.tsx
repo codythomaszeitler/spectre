@@ -19,8 +19,9 @@ import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { FontFamily } from "../css/styles";
+import { isMobile } from "react-device-detect";
 
-export const CATEGORY_BOX_HEIGHT = 47;
+export const CATEGORY_BOX_HEIGHT = isMobile ? 35 : 47;
 export const CATEGORY_BOX_INSET = 6;
 export const CATEGORY_FONT_SIZE = 21;
 export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.2;
@@ -42,7 +43,6 @@ export interface State {
   deleteButtonWidth: number;
   numTransactionsDiameter: number;
 }
-
 
 export class CategoryScreen extends Component
   implements TransactionCategorizedListener {
@@ -172,8 +172,7 @@ export class CategoryScreen extends Component
 
   render() {
     return (
-      <View
-      >
+      <View>
         <GestureRecognizer
           onSwipeLeft={this.showDeleteButton}
           onSwipeRight={this.hideDeleteButton}
@@ -207,12 +206,13 @@ export class CategoryScreen extends Component
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                   flex: 1,
                 }}
               >
                 <View
                   style={{
-                    width : WHITESPACE_LEFT_OF_CATEGORY_TEXT
+                    width: WHITESPACE_LEFT_OF_CATEGORY_TEXT,
                   }}
                 ></View>
                 <View
@@ -225,7 +225,7 @@ export class CategoryScreen extends Component
                       color: "#fff",
                       fontSize: CATEGORY_FONT_SIZE + 3,
                       fontFamily: BoldFontFamily,
-                      marginBottom: 1,
+                      marginBottom: 3,
                     }}
                   >
                     {this.state.category.getType()}
@@ -249,16 +249,14 @@ export class CategoryScreen extends Component
                       flex: 1,
                     }}
                   >
-                    <Text
-                      style={styles.numTransactionCounterText}
-                    >
+                    <Text style={styles.numTransactionCounterText}>
                       {this.state.numTransactions}
                     </Text>
                   </View>
                 </View>
                 <View
                   style={{
-                    width : 10
+                    width: 10,
                   }}
                 ></View>
                 {this.state.showDeleteButton && (
@@ -365,9 +363,9 @@ export class OnLocationChange {
 }
 
 export const styles = StyleSheet.create({
-  numTransactionCounterText : {
-      fontFamily: BoldFontFamily,
-      color: "white",
-      fontSize: 17,
-  }
+  numTransactionCounterText: {
+    fontFamily: BoldFontFamily,
+    color: "white",
+    fontSize: 17,
+  },
 });

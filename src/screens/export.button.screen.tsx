@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Image } from "react-native-elements";
 import { PerfectSquare } from "./perfect.square";
 import { Color } from "../pojo/color";
+import { isMobile } from 'react-device-detect';
 
 export class ExportButtonScreen extends Component {
   render() {
@@ -22,8 +23,8 @@ export class ExportButtonScreen extends Component {
           <Image
             source={require("../../assets/download.png")}
             style={{
-              width: 15,
-              height: 25,
+              width: isMobile ? 10 : 15,
+              height: isMobile ? 15 : 25,
             }}
           ></Image>
         </PerfectSquare>

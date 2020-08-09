@@ -6,6 +6,7 @@ import { TransactionScreenSegment } from "./transaction.screen.segment";
 import { Color } from "../pojo/color";
 import { Transaction } from "../pojo/transaction";
 import { BoldFontFamily } from "../css/styles";
+import { isMobile, isBrowser } from "react-device-detect";
 
 interface Props {
   onCategorizationEnd: () => void;
@@ -49,7 +50,7 @@ export class CategorizationModeBottomBar extends Component {
                 style={{
                   color: "white",
                   fontSize: 50,
-                  fontFamily : BoldFontFamily
+                  fontFamily: BoldFontFamily,
                 }}
               >
                 -
@@ -63,9 +64,11 @@ export class CategorizationModeBottomBar extends Component {
               </Text>
             </PerfectCircle>
           </View>
-          <View style={{
-            flex : 5
-          }}></View>
+          <View
+            style={{
+              flex: 5,
+            }}
+          ></View>
           <View
             style={{
               flex: 8,
@@ -80,8 +83,8 @@ export class CategorizationModeBottomBar extends Component {
             <View
               style={{
                 flex: 8,
-                width : '60%',
-                alignSelf : 'center'
+                width: "60%",
+                alignSelf: "center",
               }}
             >
               <TransactionScreenSegment
@@ -89,10 +92,10 @@ export class CategorizationModeBottomBar extends Component {
                 transaction={this.props.currentTransaction}
                 textColor={new Color("#7a7a7a").darkerBy(1.5)}
                 containerStyle={{
-                    backgroundColor : '#d6d6d6',
-                    borderColor : '#969696',
-                    borderWidth : 3,
-                    borderRadius : 10
+                  backgroundColor: "#d6d6d6",
+                  borderColor: "#969696",
+                  borderWidth: 3,
+                  borderRadius: 10,
                 }}
               ></TransactionScreenSegment>
             </View>
@@ -105,27 +108,30 @@ export class CategorizationModeBottomBar extends Component {
             alignSelf: "flex-end",
           }}
         ></View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            alignSelf: "flex-end",
-            marginRight : 30
-          }}
-        >
-          <PerfectCircle color={new Color("#f76f6f")} diameter={100}>
-            <Text
-              numberOfLines={1}
-              style={{
-                color: "white",
-                fontFamily: BoldFontFamily,
-                fontSize: 32,
-              }}
-            >
-              {this.props.numUncategorized}
-            </Text>
-          </PerfectCircle>
-        </View>
+
+        {!isMobile && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "flex-end",
+              alignSelf: "flex-end",
+              marginRight: 30,
+            }}
+          >
+            <PerfectCircle color={new Color("#f76f6f")} diameter={100}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  color: "white",
+                  fontFamily: BoldFontFamily,
+                  fontSize: 32,
+                }}
+              >
+                {this.props.numUncategorized}
+              </Text>
+            </PerfectCircle>
+          </View>
+        )}
       </View>
     );
   }

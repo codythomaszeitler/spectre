@@ -4,6 +4,7 @@ import { Image } from "react-native-elements";
 import { Location } from "../service/location";
 import { PerfectSquare } from "./perfect.square";
 import { Color } from "../pojo/color";
+import { isMobile } from 'react-device-detect';
 
 export interface Props {
   onSuccessfulLoadListener: DocumentLoadedListener;
@@ -62,8 +63,8 @@ export class DocumentPicker extends Component {
           <Image
             source={require("../../assets/upload.png")}
             style={{
-              width: 20,
-              height: 25,
+              width: isMobile ? 10 : 20,
+              height: isMobile ? 15 : 25
             }}
           ></Image>
         </PerfectSquare>

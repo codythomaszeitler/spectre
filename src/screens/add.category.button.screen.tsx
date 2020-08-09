@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image, TouchableOpacity } from "react-native";
-import { CATEGORY_BOX_INSET } from "./category.screen";
+import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export class AddCategoryButton extends Component {
   render() {
@@ -22,13 +22,21 @@ export class AddCategoryButton extends Component {
             alignItems: "center",
           }}
         >
-          <Image
-            source={require("../../assets/folder.png")}
+          <View
             style={{
-              width: 30,
-              height: 30,
+              width: CATEGORY_BOX_HEIGHT / 1.8,
+              height: CATEGORY_BOX_HEIGHT / 1.8,
             }}
-          ></Image>
+          >
+            <Image
+              source={require("../../assets/folder.png")}
+              style={{
+                width : undefined,
+                height : undefined,
+                flex : 1
+              }}
+            ></Image>
+          </View>
         </View>
       </TouchableOpacity>
     );

@@ -113,6 +113,7 @@ export class CategorizationScreen extends Component
       width: 0,
       height: 0,
       bottomBarFlex: VIEWING_MODE_BOTTOM_BAR_FLEX,
+      isHoveringOverHelp: false,
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -514,7 +515,10 @@ export class CategorizationScreen extends Component
   }
 
   loadHelpYoutubeWebsite() {
-    Linking.openURL("https://www.youtube.com/watch?v=8LEqwPOehpE");
+    const win = window.open("https://www.youtube.com/watch?v=8LEqwPOehpE", '_blank');
+    if (win != null) {
+      win.focus();
+    }
   }
 
   render() {
@@ -537,21 +541,50 @@ export class CategorizationScreen extends Component
           style={{
             flex: 0.5,
             alignItems: "center",
+            alignSelf : 'center',
+            width : 50
+          }}
+          onMouseEnter={() => {
+            this.setState({
+              isHoveringOverHelp: true,
+            });
+          }}
+          onMouseLeave={() => {
+            this.setState({
+              isHoveringOverHelp: false,
+            });
           }}
         >
-          <PerfectCircle color={new Color("#9c9c9c")}>
-            <TouchableOpacity onPress={this.loadHelpYoutubeWebsite}>
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontFamily: FontFamily,
-                  color: "white",
-                }}
-              >
-                ?
-              </Text>
-            </TouchableOpacity>
-          </PerfectCircle>
+          {!this.state.isHoveringOverHelp && (
+            <PerfectCircle color={new Color("#FFFFFF")} borderColor={new Color("#9c9c9c")} diameter={50}>
+              <TouchableOpacity onPress={this.loadHelpYoutubeWebsite}>
+                <Text
+                  style={{
+                    fontSize: 22,
+                    fontFamily: FontFamily,
+                    color: "white",
+                  }}
+                >
+                  {"  "}
+                </Text>
+              </TouchableOpacity>
+            </PerfectCircle>
+          )}
+          {this.state.isHoveringOverHelp && (
+            <PerfectCircle color={new Color("#9c9c9c")} diameter={50}>
+              <TouchableOpacity onPress={this.loadHelpYoutubeWebsite}>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    fontFamily: FontFamily,
+                    color: "white",
+                  }}
+                >
+                  ?
+                </Text>
+              </TouchableOpacity>
+            </PerfectCircle>
+          )}
         </View>
         <View
           style={{

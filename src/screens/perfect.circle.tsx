@@ -45,7 +45,7 @@ export class PerfectCircle extends Component {
           backgroundColor: this.props.color.hex(),
           width : this.state.diameter,
           height : this.state.diameter,
-          borderRadius : this.state.diameter / 2,
+          borderRadius : (this.state.diameter === '100%' ? 100 : this.state.diameter / 2),
           opacity : this.props.opacity
         }}
         onPress={this.props.onPress}

@@ -48,7 +48,7 @@ export class CategorizationModeBottomBar extends Component {
               <Text
                 style={{
                   color: "white",
-                  fontSize: 30,
+                  fontSize: 50,
                   fontFamily : BoldFontFamily
                 }}
               >
@@ -56,13 +56,16 @@ export class CategorizationModeBottomBar extends Component {
               </Text>
               <Text
                 style={{
-                  fontSize: 5,
+                  fontSize: 10,
                 }}
               >
                 {"  "}
               </Text>
             </PerfectCircle>
           </View>
+          <View style={{
+            flex : 5
+          }}></View>
           <View
             style={{
               flex: 8,

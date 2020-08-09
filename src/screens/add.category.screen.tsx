@@ -16,6 +16,7 @@ import {
 import { DeleteButton } from "./delete.button";
 import { ColorChoicesBar } from "./color.choices.bar";
 import { TRANSACTION_DIAMETER, WHITESPACE_LEFT_OF_CATEGORY_TEXT } from "./category.screen";
+import {isMobile} from 'react-device-detect';
 
 export class AddCategoryScreen extends Component {
   spectreUser: SpectreUser;
@@ -117,7 +118,7 @@ export class AddCategoryScreen extends Component {
                 style={{
                   backgroundColor: this.state.color.hex(),
                   fontFamily: FontFamily,
-                  fontSize: CATEGORY_FONT_SIZE + 3,
+                  fontSize: isMobile ? CATEGORY_FONT_SIZE : CATEGORY_FONT_SIZE + 3,
                   color: "white",
                 }}
                 onChangeText={(categoryText) => {

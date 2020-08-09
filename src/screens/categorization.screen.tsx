@@ -583,7 +583,7 @@ export class CategorizationScreen extends Component
             >
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: isMobile ? 16 : 30,
                   fontFamily: FontFamily,
                   color: "white",
                 }}

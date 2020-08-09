@@ -223,7 +223,7 @@ export class CategoryScreen extends Component
                   <Text
                     style={{
                       color: "#fff",
-                      fontSize: CATEGORY_FONT_SIZE + 3,
+                      fontSize: isMobile ? CATEGORY_FONT_SIZE :  CATEGORY_FONT_SIZE + 3,
                       fontFamily: BoldFontFamily,
                       marginBottom: 3,
                     }}

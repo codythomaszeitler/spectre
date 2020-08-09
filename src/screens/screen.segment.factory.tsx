@@ -19,9 +19,13 @@ import {
   AddCategoryScreenPayload,
   ADD_CATEGORY_SCREEN_PAYLOAD_TYPE,
 } from "./add.category.screen.payload";
-import { AddSpacerOrCategoryScreenPayload, ADD_SPACER_OR_CATEGORY_PAYLOAD_TYPE } from "./add.spacer.or.category.screen.payload";
+import {
+  AddSpacerOrCategoryScreenPayload,
+  ADD_SPACER_OR_CATEGORY_PAYLOAD_TYPE,
+} from "./add.spacer.or.category.screen.payload";
 import { AddSpacerOrCategoryScreen } from "./add.spacer.or.category.screen";
 import { AddCategoryScreen } from "./add.category.screen";
+import { isMobile } from "react-device-detect";
 
 export class ScreenSegmentFactory {
   create(payload: ScreenSegmentPayload) {
@@ -69,7 +73,13 @@ class CategoryScreenSegmentFactory {
 
 class SpacerScreenSegmentFactory {
   create(payload: SpacerScreenSegmentPayload) {
-    return <SpacerScreenSegment numSmallDividers={6} key={payload.getUniqueKey()} uniqueKey={payload.getUniqueKey()}></SpacerScreenSegment>;
+    return (
+      <SpacerScreenSegment
+        numSmallDividers={6}
+        key={payload.getUniqueKey()}
+        uniqueKey={payload.getUniqueKey()}
+      ></SpacerScreenSegment>
+    );
   }
 }
 
@@ -78,7 +88,7 @@ class LineBreakScreenSegmentFactory {
     return (
       <View
         style={{
-          height: 16,
+          height: isMobile ? 10 : 16,
         }}
         key={payload.getUniqueKey()}
       ></View>
@@ -103,8 +113,8 @@ class AddCategoryOrSpacerScreenSegementFactory {
     return (
       <View
         style={{
-          flex : 1,
-          height : CATEGORY_BOX_HEIGHT,
+          flex: 1,
+          height: CATEGORY_BOX_HEIGHT,
         }}
       >
         <AddSpacerOrCategoryScreen

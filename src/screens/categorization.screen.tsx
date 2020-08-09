@@ -562,7 +562,6 @@ export class CategorizationScreen extends Component
             <PerfectCircle
               color={new Color("#FFFFFF")}
               borderColor={new Color("#9c9c9c")}
-              diameter={50}
               onPress={this.loadHelpYoutubeWebsite}
             >
               <Text
@@ -579,7 +578,6 @@ export class CategorizationScreen extends Component
           {this.state.isHoveringOverHelp && (
             <PerfectCircle
               color={new Color("#9c9c9c")}
-              diameter={50}
               onPress={this.loadHelpYoutubeWebsite}
             >
               <Text

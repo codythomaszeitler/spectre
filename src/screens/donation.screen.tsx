@@ -103,7 +103,7 @@ export class PaypalButtonScreen extends Component {
         >
           <Text
             style={{
-                fontSize: 12,
+                fontSize: isMobile ? 6 : 12,
                 fontFamily: RegularFontFamily,
                 color : '#7A7A7A',
                 letterSpacing : .40

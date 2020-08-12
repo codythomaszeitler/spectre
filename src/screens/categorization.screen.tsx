@@ -546,7 +546,7 @@ export class CategorizationScreen extends Component
             flex: 0.5,
             alignItems: "center",
             alignSelf: "center",
-            width: 50,
+            width: isMobile ? 75 : 50,
           }}
           onMouseEnter={() => {
             this.setState({

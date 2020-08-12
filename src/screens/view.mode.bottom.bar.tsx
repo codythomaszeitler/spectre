@@ -130,7 +130,7 @@ export class ViewModeBottomBar extends Component {
             </Text>
           </PerfectCircle>
         </View>
-        <View style={{ flex: 0.5 }}></View>
+        <View style={{ flex: isMobile ? 1 : 0.5 }}></View>
       </View>
     );
   }

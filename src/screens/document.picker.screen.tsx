@@ -63,8 +63,8 @@ export class DocumentPicker extends Component {
           <Image
             source={require("../../assets/upload.png")}
             style={{
-              width: 15,
-              height: 25,
+              width: isMobile ? 10 : 20,
+              height: isMobile ? 15 : 25
             }}
           ></Image>
           <input

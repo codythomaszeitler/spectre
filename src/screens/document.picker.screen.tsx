@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Image } from "react-native-elements";
 import { Location } from "../service/location";
 import { PerfectSquare } from "./perfect.square";
 import { Color } from "../pojo/color";
-import { isMobile } from 'react-device-detect';
+import { isMobile } from "react-device-detect";
+import { CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export interface Props {
   onSuccessfulLoadListener: DocumentLoadedListener;
@@ -48,37 +49,36 @@ export class DocumentPicker extends Component {
 
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <PerfectSquare
-          onPress={this.onImportStart}
-          color={new Color("#79D75D")}
-          borderRadius={this.props.borderRadius}
+      <TouchableOpacity onPress={this.onImportStart} style={{
+        flex : 1
+      }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: new Color("#79D75D").hex(),
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           <Image
             source={require("../../assets/upload.png")}
             style={{
-              width: isMobile ? 10 : 20,
-              height: isMobile ? 15 : 25
+              width: 15,
+              height: 25,
             }}
           ></Image>
-        </PerfectSquare>
-        <input
-          type="file"
-          width="100%"
-          ref={this.fileInputRef}
-          value={this.state.currentFile}
-          onChange={this.onFilePick}
-          style={{
-            display: "none",
-          }}
-        ></input>
-      </View>
+          <input
+            type="file"
+            width="100%"
+            ref={this.fileInputRef}
+            value={this.state.currentFile}
+            onChange={this.onFilePick}
+            style={{
+              display: "none",
+            }}
+          ></input>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

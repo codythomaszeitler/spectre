@@ -8,14 +8,11 @@ buisnesses = ['Jack in the box', 'Mcdonalds', 'Wendys', 'Apple Store', 'Microsof
 contents = ''
 num_rows = 8888
 for i in range(num_rows):
+
     bank = banks[i % len(banks)]
     buisness = buisnesses[i % len(buisnesses)]
 
-    if i % 2 == 0:
-        contents +=  bank + ',' + buisness + ',RANDOM' + '\n' 
-    else:
-        contents +=  bank + ',' + '\n'
-    
+    contents += '$' + str(i) + '.25,' + bank + ',' + buisness + '\n' 
 
 full = header + contents
 print (full)

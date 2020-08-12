@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { Text } from "react-native-elements";
 import { DocumentPicker } from "./document.picker.screen";
 import { ExportButtonScreen } from "./export.button.screen";
@@ -8,10 +8,9 @@ import { Color } from "./../pojo/color";
 import { BoldFontFamily } from "../css/styles";
 import { CATEGORY_BOX_INSET, CATEGORY_BOX_HEIGHT } from "./category.screen";
 import { PaypalButtonScreen } from "./donation.screen";
-import { isMobile, isBrowser } from 'react-device-detect';
+import { isMobile, isBrowser } from "react-device-detect";
 
 export class ViewModeBottomBar extends Component {
-
   render() {
     return (
       <View
@@ -31,21 +30,20 @@ export class ViewModeBottomBar extends Component {
           style={{
             flexDirection: "row",
             flex: 5,
-            alignSelf: "stretch",
-            alignContent: "center",
             justifyContent: "flex-start",
           }}
         >
           <View
             style={{
-              alignSelf: "center",
               width: CATEGORY_BOX_HEIGHT,
               height: CATEGORY_BOX_HEIGHT,
               borderRadius: CATEGORY_BOX_INSET,
+              alignContent: "center",
+              justifyContent: "center",
+              overflow : 'hidden'
             }}
           >
             <DocumentPicker
-              borderRadius={CATEGORY_BOX_INSET}
               onSuccessfulLoadListener={this.props.onSuccessfulLoadListener}
             ></DocumentPicker>
           </View>
@@ -55,6 +53,29 @@ export class ViewModeBottomBar extends Component {
             }}
           ></View>
           <View
+            style={{
+              width: CATEGORY_BOX_HEIGHT,
+              height: CATEGORY_BOX_HEIGHT,
+              borderRadius: CATEGORY_BOX_INSET,
+              alignContent: "center",
+              justifyContent: "center",
+              overflow : 'hidden'
+            }}
+          >
+            <ExportButtonScreen
+              onPress={this.props.onExportButtonPress}
+            ></ExportButtonScreen>
+          </View>
+          {/* <DocumentPicker
+              borderRadius={CATEGORY_BOX_INSET}
+              onSuccessfulLoadListener={this.props.onSuccessfulLoadListener}
+            ></DocumentPicker> */}
+          {/* <View
+            style={{
+              width: 5,
+            }}
+          ></View> */}
+          {/* <View
             style={{
               alignSelf: "center",
               borderRadius: CATEGORY_BOX_INSET,
@@ -66,12 +87,12 @@ export class ViewModeBottomBar extends Component {
               borderRadius={CATEGORY_BOX_INSET}
               onPress={this.props.onExportButtonPress}
             ></ExportButtonScreen>
-          </View>
+          </View> */}
         </View>
         <View
           style={{
             flex: 3,
-            marginTop : 27,
+            marginTop: 27,
             justifyContent: "center",
             alignSelf: "center",
           }}
@@ -102,14 +123,14 @@ export class ViewModeBottomBar extends Component {
               style={{
                 color: "white",
                 fontFamily: BoldFontFamily,
-                fontSize: (isMobile ? 16 : 32),
+                fontSize: isMobile ? 16 : 32,
               }}
             >
               {this.props.numUncategorized}
             </Text>
           </PerfectCircle>
         </View>
-        <View style={{ flex:.5 }}></View>
+        <View style={{ flex: 0.5 }}></View>
       </View>
     );
   }

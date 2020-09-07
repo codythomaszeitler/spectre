@@ -29,6 +29,7 @@
     "react-native-svg": "11.0.1",
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-web": "~0.11.7",
+    "react-papaparse": "^3.8.0",
     "react-textfit": "^1.1.0"
   },
   "devDependencies": {

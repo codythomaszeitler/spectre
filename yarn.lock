@@ -1483,6 +1483,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/papaparse@^5.0.4":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@types/papaparse/-/papaparse-5.2.2.tgz#225c34ec6b2d55932375c86e56baad8d9d259ec3"
+  integrity sha512-e+3C4Mw/15uNC70ctfeehGooRlGv/h7fW8cf8HfBNDUngC/Ajtc6dqizx+ncDz7nj3/R1cshmYZnu86xZHvwRw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/prettier@^2.0.0":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.2.tgz#5bb52ee68d0f8efa9cc0099920e56be6cc4e37f3"
@@ -5669,6 +5676,11 @@ papaparse@^5.1.1:
   resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.2.0.tgz#97976a1b135c46612773029153dc64995caa3b7b"
   integrity sha512-ylq1wgUSnagU+MKQtNeVqrPhZuMYBvOSL00DHycFTCxownF95gpLAk1HiHdUW77N8yxRq1qHXLdlIPyBSG9NSA==
 
+papaparse@^5.2.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.0.tgz#ab1702feb96e79ab4309652f36db9536563ad05a"
+  integrity sha512-Lb7jN/4bTpiuGPrYy4tkKoUS8sTki8zacB5ke1p5zolhcSE4TlWgrlsxjrDTbG/dFVh07ck7X36hUf/b5V68pg==
+
 parse-json@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-2.2.0.tgz#f480f40434ef80741f8469099f8dea18f55a4dc9"
@@ -6106,6 +6118,14 @@ react-native-web@~0.11.7:
     scheduler "0.15.0"
     stacktrace-parser "^0.1.3"
     whatwg-fetch "^3.0.0"
+
+react-papaparse@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-papaparse/-/react-papaparse-3.8.0.tgz#493752590c88096a1f59c191808298123fd223f1"
+  integrity sha512-JAzUIiUUOTrkyl1xbKp2jqEC1azs7pqCcVp4jC2DymvYF/bNQ1L09o9B3DJn18tAPfrBw+YLOrhWead5xLWdgA==
+  dependencies:
+    "@types/papaparse" "^5.0.4"
+    papaparse "^5.2.0"
 
 react-refresh@^0.4.0:
   version "0.4.3"

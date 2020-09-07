@@ -408,6 +408,7 @@ export class CategorizationScreen extends Component
         numUncategorized: this.spectreUser.getUncategorized().length,
       });
     } catch (e) {
+      console.log(e);
       let errorDialog = new Alert();
       errorDialog.show(e.message);
     }

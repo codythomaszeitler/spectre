@@ -3,7 +3,7 @@ header = 'Charge Amount,Bank,Place of Business\n'
 
 
 banks = ['Wells Fargo', 'Bank of America', 'Chase']
-buisnesses = ['Jack in the box', 'Mcdonalds', 'Wendys', 'Apple Store', 'Microsoft Store']
+buisnesses = ['"Jack in\\n the box"', '"Mcdon\\nalds"', '"Wen\\ndys"', '"Apple\\n Store"', '"Microsoft\\n Store"']
 
 contents = ''
 num_rows = 8888

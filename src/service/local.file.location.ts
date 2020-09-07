@@ -1,5 +1,7 @@
 import { Location } from "./location";
 import FileSaver from "file-saver";
+import { readString } from 'react-papaparse'
+
 
 export class LocalFileLocation implements Location {
   file: File;
@@ -20,28 +22,38 @@ export class LocalFileLocation implements Location {
   }
 
   async hasNext() {
-    if (!this.startedReadingFile) {
-      const contents = await this.readFile(this.file);
-      this.lines = contents.split("\n");
-    }
-
+    this.lines = await this.readFileAsArray(this.file);
     return this.wasRead;
   }
 
   async peek() {
-    const contents = await this.readFile(this.file);
-    this.lines = contents.split("\n");
+    await this.readFileAsArray(this.file);
     return this.lines[0];
   }
 
   async read() {
-    if (!this.startedReadingFile) {
-      const contents = await this.readFile(this.file);
-      this.lines = contents.split("\n");
-    }
+    const lines = await this.readFileAsArray(this.file);
 
     this.wasRead = false;
-    return this.lines.slice(1);
+    return lines.slice(1);
+  }
+
+  async readFileAsArray(file : File) {
+    if (this.lines.length !== 0) {
+      return this.lines;
+    }
+
+    const lines = [];
+    const contents = await this.readFile(file);
+    const asPapaParse = readString(contents);
+    for (let i = 0; i < asPapaParse.data.length; i++) {
+      const papaParseArray = asPapaParse.data[i];
+      const line = papaParseArray.join();
+      lines.push(line);
+    }
+
+    this.lines = lines;
+    return lines;
   }
 
   readFile(file: File) {

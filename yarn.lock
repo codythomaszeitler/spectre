@@ -5968,10 +5968,10 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-react-csv-reader@^3.0.6:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-csv-reader/-/react-csv-reader-3.1.0.tgz#c7bf8ad9d7571a511317e03749c5733e96ab2e13"
-  integrity sha512-ZIPhKtitu2UlXJKCQJWJvvJ12GXuQLtQjsiTRubBT1sRNPc85rCT8w5LSHDdvvnCVoDcamqq5Cus2bBrsm/ypw==
+react-csv-reader@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-csv-reader/-/react-csv-reader-3.1.1.tgz#a0fe4c30152b9fa149e34abcdcdd98866dc28490"
+  integrity sha512-rPe7/aMT8W0VAkdiXQwC14wjyVP1hejRzLT344Hpu4LACL1YoDPD6AANkHFfC5YMmpDExlgp0XQZCBkJAAdAsQ==
   dependencies:
     "@types/papaparse" "^5.0.3"
     papaparse "^5.1.1"

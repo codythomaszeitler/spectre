@@ -26,8 +26,8 @@ export class ExportButtonScreen extends Component {
             source={require("../../assets/download.png")}
             resizeMode="contain"
             style={{
-              width: isMobile ? 15 : 25,
-              height: isMobile ? 20 : 40,
+              width: isMobile ? 15 : 23,
+              height: isMobile ? 20 : 37,
             }}
           ></Image>
         </View>

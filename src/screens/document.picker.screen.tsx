@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Image } from "react-native-elements";
-import { Location } from "../service/location";
-import { PerfectSquare } from "./perfect.square";
 import { Color } from "../pojo/color";
 import { isMobile } from "react-device-detect";
-import { CATEGORY_BOX_HEIGHT } from "./category.screen";
 
 export interface Props {
   onSuccessfulLoadListener: DocumentLoadedListener;
@@ -30,6 +27,7 @@ export class DocumentPicker extends Component {
       currentFile: "",
     };
   }
+
   onFileSelect(contents: File) {
     for (let i = 0; i < this.documentLoadedListeners.length; i++) {
       this.documentLoadedListeners[i].onFileSelect(
@@ -62,8 +60,9 @@ export class DocumentPicker extends Component {
         >
           <Image
             source={require("../../assets/upload.png")}
+            resizeMode='contain'
             style={{
-              width: isMobile ? 10 : 20,
+              width: isMobile ? 10 : 21,
               height: isMobile ? 15 : 25
             }}
           ></Image>

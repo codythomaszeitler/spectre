@@ -568,7 +568,6 @@ export class CategorizationScreen extends Component
               source={require("../../assets/question-mark.png")}
               style={{
                 width: isMobile ? 8 : 18,
-                marginLeft : 2,
                 height: isMobile ? 13 : 25,
               }}
             ></Image>

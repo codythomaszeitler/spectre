@@ -35,7 +35,7 @@ export class ViewModeBottomBar extends Component {
         >
           <View
             style={{
-              width: CATEGORY_BOX_HEIGHT,
+              width: CATEGORY_BOX_HEIGHT + 6,
               height: CATEGORY_BOX_HEIGHT,
               borderRadius: CATEGORY_BOX_INSET,
               alignContent: "center",
@@ -54,7 +54,7 @@ export class ViewModeBottomBar extends Component {
           ></View>
           <View
             style={{
-              width: CATEGORY_BOX_HEIGHT,
+              width: CATEGORY_BOX_HEIGHT + 6,
               height: CATEGORY_BOX_HEIGHT,
               borderRadius: CATEGORY_BOX_INSET,
               alignContent: "center",
@@ -66,28 +66,6 @@ export class ViewModeBottomBar extends Component {
               onPress={this.props.onExportButtonPress}
             ></ExportButtonScreen>
           </View>
-          {/* <DocumentPicker
-              borderRadius={CATEGORY_BOX_INSET}
-              onSuccessfulLoadListener={this.props.onSuccessfulLoadListener}
-            ></DocumentPicker> */}
-          {/* <View
-            style={{
-              width: 5,
-            }}
-          ></View> */}
-          {/* <View
-            style={{
-              alignSelf: "center",
-              borderRadius: CATEGORY_BOX_INSET,
-              width: CATEGORY_BOX_HEIGHT,
-              height: CATEGORY_BOX_HEIGHT,
-            }}
-          >
-            <ExportButtonScreen
-              borderRadius={CATEGORY_BOX_INSET}
-              onPress={this.props.onExportButtonPress}
-            ></ExportButtonScreen>
-          </View> */}
         </View>
         <View
           style={{

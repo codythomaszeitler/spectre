@@ -5,12 +5,19 @@ export const AMOUNT_TYPE = "Amount";
 
 export class Transaction {
 
+  /*
+   Are these necessary sorted?
+  */
   details : TransactionDetail[];
   id : number;
 
   constructor(otherInfo : TransactionDetail[]) {
     this.details = otherInfo.slice();
     this.id = -1;
+  }
+
+  getDetailByColumnIndex(columnIndex : number) {
+    return this.details[columnIndex];
   }
 
   isCategorized() {

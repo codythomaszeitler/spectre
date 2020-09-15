@@ -396,6 +396,12 @@ export class CategorizationScreen extends Component
       const estimator = new ColumnEstimation();
       const columns = await estimator.estimateByLocation(location);
 
+      // This on file select thing might get tricky with the new way that they want to do it...
+      // For each file we should have an associated file type. We should have 
+      // We may have to move this to a different function. We are going to have to have an association
+      // that is mapped between file and the type. It is not odd to say that we are going to be able to
+      // create a local file location and a type.
+
       const loadService = new TransactionLoadService(
         this.spectreUser,
         location,

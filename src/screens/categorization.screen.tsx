@@ -42,6 +42,9 @@ import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";
 import { Text } from "react-native-elements";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
+import { ChaseBankConfig } from "../mappings/chase.bank";
+import { CsvColumnIndexConfig } from "../export/csv.column.index.mapping";
+import { ByColumnIndexCsvImporter } from "../export/by.column.index.csv.converter";
 
 export interface Props {}
 
@@ -57,7 +60,8 @@ export interface State {
 
 const VIEWING_MODE_BOTTOM_BAR_FLEX = 1.15;
 
-export class CategorizationScreen extends Component
+export class CategorizationScreen
+  extends Component
   implements
     DocumentLoadedListener,
     CategoryAddedListener,
@@ -396,8 +400,10 @@ export class CategorizationScreen extends Component
       const estimator = new ColumnEstimation();
       const columns = await estimator.estimateByLocation(location);
 
+      const config = new CsvColumnIndexConfig(ChaseBankConfig);
+
       // This on file select thing might get tricky with the new way that they want to do it...
-      // For each file we should have an associated file type. We should have 
+      // For each file we should have an associated file type. We should have
       // We may have to move this to a different function. We are going to have to have an association
       // that is mapped between file and the type. It is not odd to say that we are going to be able to
       // create a local file location and a type.
@@ -405,7 +411,7 @@ export class CategorizationScreen extends Component
       const loadService = new TransactionLoadService(
         this.spectreUser,
         location,
-        new CsvImporter(columns)
+        new ByColumnIndexCsvImporter(columns, config)
       );
       await loadService.load();
 
@@ -571,7 +577,7 @@ export class CategorizationScreen extends Component
             onPress={this.loadHelpYoutubeWebsite}
           >
             <Image
-            resizeMode='contain'
+              resizeMode="contain"
               source={require("../../assets/question-mark.png")}
               style={{
                 width: isMobile ? 8 : 18,

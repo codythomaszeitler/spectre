@@ -1,5 +1,5 @@
 
-export class CsvColumnIndexConfig {
+export class CsvColumnNameConfig {
 
     mappings : Array<Object>;
 
@@ -13,25 +13,25 @@ export class CsvColumnIndexConfig {
 
         for (let i = 0; i < mappings.length; i++) {
             const mapping = mappings[i];
-            converted.push(new CsvColumnIndexMapping(mapping.csvIndex - 1, mapping.nodeFormat));
+            converted.push(new CsvColumnNameMapping(mapping.csvHeaderName, mapping.nodeFormatName));
         }
 
         return converted;
     }
 }
 
-class CsvColumnIndexMapping {
+class CsvColumnNameMapping {
 
-    columnIndex : number;
+    columnHeaderName : string;
     nodeFormat : string;
 
-    constructor(columnIndex : number, nodeFormat : string) {
-        this.columnIndex = columnIndex;
+    constructor(columnHeaderName : string, nodeFormat : string) {
+        this.columnHeaderName = columnHeaderName;
         this.nodeFormat = nodeFormat;
     }
 
-    getColumnIndex() {
-        return this.columnIndex;
+    getColumnHeader() {
+        return this.columnHeaderName;
     }
 
     getNodeName() {

@@ -94,7 +94,10 @@ export class Transaction {
       for (let i = 0; i < aDetails.length; i++) {
         let foundMatch = false;
         for (let j = 0; j < bDetails.length; j++) {
-          if (aDetails[i].equals(bDetails[j])) {
+          const aDetail = aDetails[i];
+          const bDetail = bDetails[j];
+
+          if (aDetail.equals(bDetail)) {
             foundMatch = true;
             break;
           }

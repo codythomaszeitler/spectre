@@ -29,13 +29,7 @@ export class TransactionDetail {
   }
 
   equals(transactionDetail: TransactionDetail) {
-    const areDetailsEquivalent = () => {
-      let areDetailsEquivalent = false;
-      areDetailsEquivalent = this.detail === transactionDetail.detail;
-      return areDetailsEquivalent;
-    };
-
-    return areDetailsEquivalent() && this.type === transactionDetail.type;
+    return this.detail === transactionDetail.detail && this.type === transactionDetail.type;
   }
 
   getElement() {

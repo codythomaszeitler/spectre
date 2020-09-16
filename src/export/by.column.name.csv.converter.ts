@@ -3,7 +3,6 @@ import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/info.line";
 import { Transaction } from "../pojo/transaction";
 import { CsvColumnNameConfig } from "./csv.column.name.config";
-import { transform } from "@babel/core";
 
 export class ByColumnNameCsvImporter  extends CsvImporter {
 

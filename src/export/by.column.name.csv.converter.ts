@@ -27,7 +27,7 @@ export class ByColumnNameCsvImporter  extends CsvImporter {
         for (let i = 0; i < mappings.length; i++) {
             const mapping = mappings[i];
             if (!converted.hasDetailWithColumnName(mapping.getColumnHeader())) {
-                throw new Error('Imported CSV did not the following column: ' + mapping.getColumnHeader());
+                throw new Error('Imported CSV did not have the following column: ' + mapping.getColumnHeader());
             }
         }
 

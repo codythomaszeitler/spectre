@@ -22,7 +22,7 @@ export class ColumnEstimation {
     let config: Object = {};
     for (let i = 0; i < headerSegments.length; i++) {
       config[i] = {
-        name: "column" + i,
+        name: headerSegments[i],
         type: "string",
       };
     }

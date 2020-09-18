@@ -147,7 +147,7 @@ describe("By Column Name Csv Converter", () => {
         caughtException = e;
     }
     
-    expect(caughtException.message).toBe('Imported CSV did not the following column: Test2Type');
+    expect(caughtException.message).toBe('Imported CSV did not have the following column: Test2Type');
   });
 
   it('should be able to handle the transaction not having an element, while the columns do have it', () => {

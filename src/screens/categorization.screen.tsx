@@ -21,12 +21,11 @@ import {
 } from "./document.picker.screen";
 import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
-import { CsvImporter } from "../export/csv.importer";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
 import { Location } from "../service/location";
 import { ColumnEstimation } from "../service/column.estimation";
-import { CategoryColors, FontFamily, RegularFontFamily } from "../css/styles";
+import { CategoryColors, RegularFontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { ScreenSegmentPayload } from "./screen.segment.payload";
 import { ScreenSegmentFactory } from "./screen.segment.factory";
@@ -43,8 +42,9 @@ import { Text } from "react-native-elements";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
 import { ChaseBankConfig } from "../mappings/chase.bank";
-import { CsvColumnIndexConfig } from "../export/csv.column.index.mapping";
-import { ByColumnIndexCsvImporter } from "../export/by.column.index.csv.converter";
+import { CsvColumnNameConfig } from "../export/csv.column.name.config";
+import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
+import { PaypalBankConfig } from "../mappings/paypal.bank";
 
 export interface Props {}
 
@@ -391,6 +391,7 @@ export class CategorizationScreen
   }
 
   async onFileSelect(event: OnFileSelectedEvent) {
+    console.log(event.file);
     try {
       const location = new LocalFileLocation(event.file);
       if (await location.isEmpty()) {
@@ -399,8 +400,14 @@ export class CategorizationScreen
 
       const estimator = new ColumnEstimation();
       const columns = await estimator.estimateByLocation(location);
+      console.log(JSON.stringify(columns));
 
-      const config = new CsvColumnIndexConfig(ChaseBankConfig);
+      let config;
+      if (event.file.name.includes('chase')) {
+        config = new CsvColumnNameConfig(ChaseBankConfig);
+      } else {
+        config = new CsvColumnNameConfig(PaypalBankConfig);
+      }
 
       // This on file select thing might get tricky with the new way that they want to do it...
       // For each file we should have an associated file type. We should have
@@ -411,7 +418,7 @@ export class CategorizationScreen
       const loadService = new TransactionLoadService(
         this.spectreUser,
         location,
-        new ByColumnIndexCsvImporter(columns, config)
+        new ByColumnNameCsvImporter(columns, config)
       );
       await loadService.load();
 

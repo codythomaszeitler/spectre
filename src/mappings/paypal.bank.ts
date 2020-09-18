@@ -1,11 +1,11 @@
-export const ChaseBankConfig = {
+export const PaypalBankConfig = {
     mappings : [
         {
-            csvHeaderName : 'Amount',
+            csvHeaderName : 'Gross',
             nodeFormatName : 'Amount'
         },
         {
-            csvHeaderName : 'Post Date',
+            csvHeaderName : 'Date',
             nodeFormatName : 'Date'
         }
     ]

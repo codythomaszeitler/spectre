@@ -3,12 +3,13 @@ import { View, Image } from "react-native";
 import { CsvType } from "../../export/csv.type";
 import { MasterBankConfigParser } from "../../mappings/master.bank.config.parser";
 import { MasterBankConfig } from "../../mappings/master.bank.config";
-import { BankConfig } from "../../mappings/bank.config";
+import {BankConfig} from "../../mappings/bank.config";
+import { Picker } from "@react-native-community/picker";
 
 export class CsvTypeSelectionScreen extends Component {
   listeners: CsvTypeSelectedListener[];
 
-  masterMappingInfo: MasterMappingInfo;
+  masterMappingInfo: MasterBankConfigParser;
 
   constructor(props) {
     super(props);
@@ -19,13 +20,11 @@ export class CsvTypeSelectionScreen extends Component {
     }
 
     this.masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
-
-    const defaultMapping = this.masterMappingInfo.getDefaultConfigName();
-    const config = this.masterMappingInfo.getConfigFor(defaultMapping);
+    const defaultConfig = this.masterMappingInfo.getDefaultConfig();
 
     this.state = {
-      currentChoice: defaultMapping,
-      imageFilePath: config.getFilePath(),
+      currentChoice: defaultConfig.getName(),
+      currentImage: defaultConfig.getFilePath(),
     };
   }
 
@@ -50,7 +49,6 @@ export class CsvTypeSelectionScreen extends Component {
           borderRadius: 3,
           borderStyle: "solid",
           borderColor: "black",
-          backgroundColor: "blue",
         }}
       >
         <View
@@ -73,17 +71,17 @@ export class CsvTypeSelectionScreen extends Component {
             }}
           >
             <Image
-              source={require("../../../" + this.state.imageFilePath)}
-              resizeMode="center"
+              source={this.state.currentImage}
+              resizeMode="cover"
               style={{
-                width: 50,
-                height: 50,
+                width: 30,
+                height: 30,
               }}
             ></Image>
           </View>
           <View
             style={{
-              flex: 1,
+              flex: .25,
             }}
           ></View>
           <View
@@ -91,6 +89,29 @@ export class CsvTypeSelectionScreen extends Component {
               flex: 3,
             }}
           >
+           <Picker
+              selectedValue={this.state.currentChoice}
+              style={{ flex: 1, borderColor: "white", fontSize : 18 }}
+              onValueChange={(itemValue: string) => {
+                const config = this.masterMappingInfo.getConfigFor(itemValue);
+                this.setState({
+                  currentChoice: itemValue,
+                  currentImage: config.getFilePath(),
+                });
+                this.onCsvTypeSelected(itemValue);
+              }}
+            >
+              {this.masterMappingInfo
+                .getConfigs()
+                .map((currentValue: BankConfig) => {
+                  return (
+                    <Picker.Item
+                      label={currentValue.getName()}
+                      value={currentValue.getName()}
+                    />
+                  );
+                })}
+            </Picker>
           </View>
         </View>
         <View

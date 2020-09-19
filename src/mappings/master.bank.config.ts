@@ -3,7 +3,7 @@ export const MasterBankConfig = {
   configs: [
     {
       name: "Chase",
-      imageFilePath: "assets/Chase-logo.png",
+      imageFilePath: require("../../assets/Chase-logo.png"),
       default: true,
       mappings: [
         {
@@ -18,7 +18,7 @@ export const MasterBankConfig = {
     },
     {
       name : 'Paypal',
-      imageFilePath: "assets/tiny_paypal.png",
+      imageFilePath: require("../../assets/tiny_paypal.png"),
       default: false,
       mappings: [
         {

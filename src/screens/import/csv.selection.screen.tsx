@@ -39,7 +39,7 @@ export class CsvSelectionScreen
 
     this.selectedTypes = {};
     for (let i = 0; i < this.numFileSelections; i++) {
-      this.selectedTypes[i] = new CsvType("chase");
+      this.selectedTypes[i] = new CsvType("Chase");
     }
   }
 

@@ -11,6 +11,10 @@ export class MasterBankConfigParser {
     return this.config.default;
   }
 
+  getDefaultConfig() {
+    return this.getConfigFor(this.getDefaultConfigName());
+  }
+
   getConfigurationCount() {
     return this.config.configs.length;
   }

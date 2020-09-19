@@ -402,7 +402,9 @@ export class CategorizationScreen
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i];
       const file = pair.file;
+      console.log(file);
       const csvType = pair.supportedType;
+      console.log(csvType);
 
       try {
         const location = new LocalFileLocation(file);
@@ -415,6 +417,7 @@ export class CategorizationScreen
 
         const masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
         const config = masterMappingInfo.getConfigFor(csvType.get());
+        console.log(config);
 
         const loadService = new TransactionLoadService(
           this.spectreUser,
@@ -609,17 +612,19 @@ export class CategorizationScreen
             });
           }}
         >
-          <View
-            style={{
-              justifyContent: "center",
-              alignContent: "center",
-              alignSelf: "center",
-            }}
-          >
-            <CsvSelectionScreen
-              onFileCsvTypeDuoSelectedListener={this}
-            ></CsvSelectionScreen>
-          </View>
+          {this.state.showImportCsvScreen && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignContent: "center",
+                alignSelf: "center",
+              }}
+            >
+              <CsvSelectionScreen
+                onFileCsvTypeDuoSelectedListener={this}
+              ></CsvSelectionScreen>
+            </View>
+          )}
         </Modal>
         <View
           style={{

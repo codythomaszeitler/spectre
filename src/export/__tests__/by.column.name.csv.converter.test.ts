@@ -2,7 +2,7 @@ import { Columns } from "../columns";
 import { AMOUNT_TYPE, Transaction } from "../../pojo/transaction";
 import { Currency } from "../../pojo/currency";
 import { TransactionDetail } from "../../pojo/info.line";
-import { CsvColumnNameConfig } from "../csv.column.name.config";
+import { BankConfig } from "../../mappings/bank.config";
 import { CsvExporter } from "../csv.exporter";
 import { ByColumnNameCsvImporter } from "../by.column.name.csv.converter";
 
@@ -29,7 +29,7 @@ describe("By Column Name Csv Converter", () => {
       new TransactionDetail("This is another detail", "Test2Type", "Test2Type"),
     ];
 
-    const byColumnIndexMapping = new CsvColumnNameConfig({
+    const byColumnIndexMapping = new BankConfig({
       mappings: [
         {
           csvHeaderName: "Test2Type",
@@ -76,7 +76,7 @@ describe("By Column Name Csv Converter", () => {
       new TransactionDetail("This is another detail", "Test2Type", "Test2Type"),
     ];
 
-    const byColumnIndexMapping = new CsvColumnNameConfig({
+    const byColumnIndexMapping = new BankConfig({
       mappings: [
         {
           csvHeaderName: "Test2Type",
@@ -123,7 +123,7 @@ describe("By Column Name Csv Converter", () => {
       new TransactionDetail("This is a detail", "Test1Type", "Test1Type"),
     ];
 
-    const byColumnIndexMapping = new CsvColumnNameConfig({
+    const byColumnIndexMapping = new BankConfig({
       mappings: [
         {
           csvHeaderName: "Test2Type",
@@ -166,7 +166,7 @@ describe("By Column Name Csv Converter", () => {
       TransactionDetail.withCurrency(new Currency(400), "Amount"),
     ];
 
-    const byColumnIndexMapping = new CsvColumnNameConfig({
+    const byColumnIndexMapping = new BankConfig({
       mappings: [
         {
           csvHeaderName: "Test1Type",

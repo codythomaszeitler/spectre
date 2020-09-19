@@ -45,6 +45,7 @@ export class ViewModeBottomBar extends Component {
           >
             <DocumentPicker
               onSuccessfulLoadListener={this.props.onSuccessfulLoadListener}
+              onImportButtonPress={this.props.onImportButtonPress}
             ></DocumentPicker>
           </View>
           <View

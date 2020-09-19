@@ -2,13 +2,13 @@ import { CsvImporter } from "./csv.importer";
 import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/info.line";
 import { Transaction } from "../pojo/transaction";
-import { CsvColumnNameConfig } from "./csv.column.name.config";
+import { BankConfig } from "../mappings/bank.config";
 
 export class ByColumnNameCsvImporter  extends CsvImporter {
 
-    config : CsvColumnNameConfig;
+    config : BankConfig;
 
-    constructor(columns : Columns, config : CsvColumnNameConfig) {
+    constructor(columns : Columns, config : BankConfig) {
         super(columns);
         this.config = config;
     }

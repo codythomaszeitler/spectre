@@ -1,14 +1,22 @@
 
-export class CsvColumnNameConfig {
+export class BankConfig {
 
-    mappings : Array<Object>;
+    asJson : Object;
 
     constructor(asJson : Object) {
-       this.mappings = asJson.mappings; 
+       this.asJson = JSON.parse(JSON.stringify(asJson));
+    }
+
+    getName() {
+        return this.asJson.name;
+    }
+
+    getFilePath() {
+        return this.asJson.imageFilePath;
     }
 
     getMappings() {
-        const mappings = this.mappings;
+        const mappings = this.asJson.mappings;
         const converted = [];
 
         for (let i = 0; i < mappings.length; i++) {

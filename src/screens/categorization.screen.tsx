@@ -15,10 +15,6 @@ import {
 import { Transaction } from "../pojo/transaction";
 import { OnCategoryPressed } from "./category.screen";
 import { Category } from "../pojo/category";
-import {
-  DocumentLoadedListener,
-  OnFileSelectedEvent,
-} from "./document.picker.screen";
 import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { TransactionSaveService } from "../service/transaction.save.service";
@@ -42,9 +38,17 @@ import { Text } from "react-native-elements";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
 import { ChaseBankConfig } from "../mappings/chase.bank";
-import { CsvColumnNameConfig } from "../export/csv.column.name.config";
+import { BankConfig } from "../mappings/bank.config";
 import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
 import { PaypalBankConfig } from "../mappings/paypal.bank";
+import { Modal } from "./modal.screen";
+import {
+  CsvSelectionScreen,
+  OnFilesWithCsvTypeSelectedEvent,
+} from "./import/csv.selection.screen";
+import { FileCsvTypeDuoSelectedListener } from "./import/csv.selection.screen";
+import { MasterMappingInfo } from "../mappings/master.info";
+import { MasterConfig } from "../mappings/master.config";
 
 export interface Props {}
 
@@ -63,10 +67,10 @@ const VIEWING_MODE_BOTTOM_BAR_FLEX = 1.15;
 export class CategorizationScreen
   extends Component
   implements
-    DocumentLoadedListener,
     CategoryAddedListener,
     BeforeCategoryRemovedListener,
-    TransactionCategorizedListener {
+    TransactionCategorizedListener,
+    FileCsvTypeDuoSelectedListener {
   spectreUser: SpectreUser;
   state: State;
   spacers: Array<Spacer>;
@@ -75,13 +79,15 @@ export class CategorizationScreen
 
   constructor(props: Props) {
     super(props);
-    this.onFileSelect = this.onFileSelect.bind(this);
     this.onCategoryPress = this.onCategoryPress.bind(this);
     this.onExportCategorized = this.onExportCategorized.bind(this);
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
     this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
     this.onSpacerAddPress = this.onSpacerAddPress.bind(this);
     this.onSuccessfulCategoryAdd = this.onSuccessfulCategoryAdd.bind(this);
+    this.onFilesWithTypeSelectedListener = this.onFilesWithTypeSelectedListener.bind(
+      this
+    );
     this.renderScreenSegmentPayload = this.renderScreenSegmentPayload.bind(
       this
     );
@@ -390,48 +396,89 @@ export class CategorizationScreen
     );
   }
 
-  async onFileSelect(event: OnFileSelectedEvent) {
-    console.log(event.file);
-    try {
-      const location = new LocalFileLocation(event.file);
-      if (await location.isEmpty()) {
-        return;
+  async onFilesWithTypeSelectedListener(
+    event: OnFilesWithCsvTypeSelectedEvent
+  ) {
+    const pairs = event.pairs;
+
+    for (let i = 0; i < pairs.length; i++) {
+      const pair = pairs[i];
+      const file = pair.file;
+      const csvType = pair.supportedType;
+
+      try {
+        const location = new LocalFileLocation(file);
+        if (await location.isEmpty()) {
+          return;
+        }
+
+        const estimator = new ColumnEstimation();
+        const columns = await estimator.estimateByLocation(location);
+
+        const masterMappingInfo = new MasterMappingInfo(MasterConfig);
+        const config = masterMappingInfo.getConfigFor(csvType.get());
+
+        const loadService = new TransactionLoadService(
+          this.spectreUser,
+          location,
+          new ByColumnNameCsvImporter(columns, config)
+        );
+        await loadService.load();
+
+        this.setState({
+          showImportCsvScreen: false,
+          numUncategorized: this.spectreUser.getUncategorized().length,
+        });
+      } catch (e) {
+        console.log(e);
+        let errorDialog = new Alert();
+        errorDialog.show(e.message);
       }
-
-      const estimator = new ColumnEstimation();
-      const columns = await estimator.estimateByLocation(location);
-      console.log(JSON.stringify(columns));
-
-      let config;
-      if (event.file.name.includes('chase')) {
-        config = new CsvColumnNameConfig(ChaseBankConfig);
-      } else {
-        config = new CsvColumnNameConfig(PaypalBankConfig);
-      }
-
-      // This on file select thing might get tricky with the new way that they want to do it...
-      // For each file we should have an associated file type. We should have
-      // We may have to move this to a different function. We are going to have to have an association
-      // that is mapped between file and the type. It is not odd to say that we are going to be able to
-      // create a local file location and a type.
-
-      const loadService = new TransactionLoadService(
-        this.spectreUser,
-        location,
-        new ByColumnNameCsvImporter(columns, config)
-      );
-      await loadService.load();
-
-      this.setState({
-        showImportCsvScreen: false,
-        numUncategorized: this.spectreUser.getUncategorized().length,
-      });
-    } catch (e) {
-      console.log(e);
-      let errorDialog = new Alert();
-      errorDialog.show(e.message);
     }
   }
+
+  // async onFileSelect(event: OnFileSelectedEvent) {
+  //   console.log(event.file);
+  //   try {
+  //     const location = new LocalFileLocation(event.file);
+  //     if (await location.isEmpty()) {
+  //       return;
+  //     }
+
+  //     const estimator = new ColumnEstimation();
+  //     const columns = await estimator.estimateByLocation(location);
+  //     console.log(JSON.stringify(columns));
+
+  //     let config;
+  //     if (event.file.name.includes("chase")) {
+  //       config = new CsvColumnNameConfig(ChaseBankConfig);
+  //     } else {
+  //       config = new CsvColumnNameConfig(PaypalBankConfig);
+  //     }
+
+  //     // This on file select thing might get tricky with the new way that they want to do it...
+  //     // For each file we should have an associated file type. We should have
+  //     // We may have to move this to a different function. We are going to have to have an association
+  //     // that is mapped between file and the type. It is not odd to say that we are going to be able to
+  //     // create a local file location and a type.
+
+  //     const loadService = new TransactionLoadService(
+  //       this.spectreUser,
+  //       location,
+  //       new ByColumnNameCsvImporter(columns, config)
+  //     );
+  //     await loadService.load();
+
+  //     this.setState({
+  //       showImportCsvScreen: false,
+  //       numUncategorized: this.spectreUser.getUncategorized().length,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //     let errorDialog = new Alert();
+  //     errorDialog.show(e.message);
+  //   }
+  // }
 
   onCategoryPress(event: OnCategoryPressed) {
     try {
@@ -556,6 +603,26 @@ export class CategorizationScreen
           alignSelf: "center",
         }}
       >
+        <Modal
+          isVisible={this.state.showImportCsvScreen}
+          onBackdropPress={() => {
+            this.setState({
+              showImportCsvScreen: false,
+            });
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignContent: "center",
+              alignSelf: "center",
+            }}
+          >
+            <CsvSelectionScreen
+              onFileCsvTypeDuoSelectedListener={this}
+            ></CsvSelectionScreen>
+          </View>
+        </Modal>
         <View
           style={{
             flex: 0.42,
@@ -653,6 +720,12 @@ export class CategorizationScreen
             >
               <ViewModeBottomBar
                 onCategorizationStartPress={this.onCategorizationStart}
+                onImportButtonPress={() => {
+                  console.log("We got in here");
+                  this.setState({
+                    showImportCsvScreen: true,
+                  });
+                }}
                 numUncategorized={this.state.numUncategorized}
                 onExportButtonPress={this.onExportCategorized}
                 onSuccessfulLoadListener={this}

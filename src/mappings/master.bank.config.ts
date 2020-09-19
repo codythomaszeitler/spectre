@@ -1,4 +1,4 @@
-export const MasterConfig = {
+export const MasterBankConfig = {
   default: "Chase",
   configs: [
     {

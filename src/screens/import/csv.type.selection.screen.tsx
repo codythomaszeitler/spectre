@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { View, Image } from "react-native";
-import { Picker } from "@react-native-community/picker";
 import { CsvType } from "../../export/csv.type";
-import { MasterMappingInfo } from "../../mappings/master.info";
-import { MasterConfig } from "../../mappings/master.config";
+import { MasterBankConfigParser } from "../../mappings/master.bank.config.parser";
+import { MasterBankConfig } from "../../mappings/master.bank.config";
 import { BankConfig } from "../../mappings/bank.config";
 
 export class CsvTypeSelectionScreen extends Component {
@@ -19,7 +18,7 @@ export class CsvTypeSelectionScreen extends Component {
       this.listeners.push(this.props.onCsvTypeSelectedListener);
     }
 
-    this.masterMappingInfo = new MasterMappingInfo(MasterConfig);
+    this.masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
 
     const defaultMapping = this.masterMappingInfo.getDefaultConfigName();
     const config = this.masterMappingInfo.getConfigFor(defaultMapping);
@@ -92,30 +91,6 @@ export class CsvTypeSelectionScreen extends Component {
               flex: 3,
             }}
           >
-            <Picker
-              selectedValue={this.state.currentChoice}
-              style={{ flex: 1, borderColor: "white" }}
-              onValueChange={(itemValue: string) => {
-                const config = this.masterMappingInfo.getConfigFor(itemValue);
-                console.log(config.getFilePath());
-                this.setState({
-                  currentChoice: itemValue,
-                  imageFilePath: config.getFilePath(),
-                });
-                this.onCsvTypeSelected(itemValue);
-              }}
-            >
-              {/* {this.masterMappingInfo
-                .getConfigs()
-                .map((currentValue: BankConfig) => {
-                  return (
-                    <Picker.Item
-                      label={currentValue.getName()}
-                      value={currentValue.getName()}
-                    />
-                  );
-                })} */}
-            </Picker>
           </View>
         </View>
         <View

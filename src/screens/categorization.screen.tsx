@@ -37,18 +37,16 @@ import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";
 import { Text } from "react-native-elements";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
-import { ChaseBankConfig } from "../mappings/chase.bank";
 import { BankConfig } from "../mappings/bank.config";
 import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
-import { PaypalBankConfig } from "../mappings/paypal.bank";
 import { Modal } from "./modal.screen";
 import {
   CsvSelectionScreen,
   OnFilesWithCsvTypeSelectedEvent,
 } from "./import/csv.selection.screen";
 import { FileCsvTypeDuoSelectedListener } from "./import/csv.selection.screen";
-import { MasterMappingInfo } from "../mappings/master.info";
-import { MasterConfig } from "../mappings/master.config";
+import { MasterBankConfigParser } from "../mappings/master.bank.config.parser";
+import { MasterBankConfig } from "../mappings/master.bank.config";
 
 export interface Props {}
 
@@ -415,7 +413,7 @@ export class CategorizationScreen
         const estimator = new ColumnEstimation();
         const columns = await estimator.estimateByLocation(location);
 
-        const masterMappingInfo = new MasterMappingInfo(MasterConfig);
+        const masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
         const config = masterMappingInfo.getConfigFor(csvType.get());
 
         const loadService = new TransactionLoadService(

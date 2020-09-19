@@ -1,6 +1,6 @@
 import { BankConfig } from "./bank.config";
 
-export class MasterMappingInfo {
+export class MasterBankConfigParser {
   config: Object;
 
   constructor(config: Object) {

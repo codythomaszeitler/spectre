@@ -1,5 +1,5 @@
 import { SpectreUser } from "../pojo/spectre.user";
-import { RawDataLocation } from "./scepter.location";
+import { RawDataLocation } from "./raw.data.location";
 import { TransactionLoader } from "./transaction.loader";
 import { ScepterFormatImporter } from "./scepter.format.importer";
 

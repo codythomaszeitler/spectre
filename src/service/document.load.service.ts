@@ -1,4 +1,4 @@
-import { RawDataLocation } from "./scepter.location";
+import { RawDataLocation } from "./raw.data.location";
 
 export class DocumentLoadService {
   location: RawDataLocation;

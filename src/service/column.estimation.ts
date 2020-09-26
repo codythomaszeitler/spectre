@@ -1,4 +1,4 @@
-import { Location } from "./scepter.location";
+import { Location } from "./raw.data.location";
 import { Columns, nameKey, columnNameDelimeter } from "../export/columns";
 import { SpectreUser } from "../pojo/spectre.user";
 import {CATEGORY_TYPE} from '../pojo/category';

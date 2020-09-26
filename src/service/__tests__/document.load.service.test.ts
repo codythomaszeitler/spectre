@@ -1,5 +1,5 @@
 import { DocumentLoadService } from "../document.load.service";
-import { Location } from "../scepter.location";
+import { Location } from "../raw.data.location";
 import { TestLocation } from "./test.location";
 
 describe("Document Load Service", () => {

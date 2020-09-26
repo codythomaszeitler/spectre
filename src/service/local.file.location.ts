@@ -1,4 +1,4 @@
-import { RawDataLocation } from "./scepter.location";
+import { RawDataLocation } from "./raw.data.location";
 import FileSaver from "file-saver";
 import { readString } from 'react-papaparse'
 

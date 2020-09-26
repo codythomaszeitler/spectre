@@ -1,6 +1,6 @@
 import { SpectreUser } from "../pojo/spectre.user";
 import { Importer } from "../export/importer";
-import { RawDataLocation } from "./scepter.location";
+import { RawDataLocation } from "./raw.data.location";
 import { DocumentLoadService } from "./document.load.service";
 import { Columns } from "../export/columns";
 

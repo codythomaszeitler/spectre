@@ -1,4 +1,4 @@
-import { Location } from "../scepter.location";
+import { Location } from "../raw.data.location";
 
 export class TestLocation implements Location {
   items: string[];

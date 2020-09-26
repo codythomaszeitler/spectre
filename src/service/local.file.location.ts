@@ -1,9 +1,9 @@
-import { Location } from "./location";
+import { ScepterLocation } from "./scepter.location";
 import FileSaver from "file-saver";
 import { readString } from 'react-papaparse'
 
 
-export class LocalFileLocation implements Location {
+export class LocalFileLocation implements ScepterLocation {
   file: File;
   lines: string[];
   wasRead: boolean;

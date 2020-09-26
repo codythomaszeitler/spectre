@@ -1,10 +1,10 @@
-import { Location } from "./location";
+import { ScepterLocation } from "./scepter.location";
 
 export class DocumentSaveService {
 
-    location : Location;
+    location : ScepterLocation;
 
-    constructor(location : Location) {
+    constructor(location : ScepterLocation) {
         this.location = location;
     }
 

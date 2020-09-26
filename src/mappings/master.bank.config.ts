@@ -14,6 +14,10 @@ export const MasterBankConfig = {
           csvHeaderName: "Post Date",
           nodeFormatName: "Date",
         },
+        {
+          csvHeaderName: "Description",
+          nodeFormatName: "Name",
+        }
       ],
     },
     {
@@ -29,6 +33,10 @@ export const MasterBankConfig = {
           csvHeaderName: "Date",
           nodeFormatName: "Date",
         },
+        {
+          csvHeaderName: "Name",
+          nodeFormatName: "Name",
+        }
       ],
     },
   ],

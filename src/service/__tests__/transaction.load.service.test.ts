@@ -37,7 +37,7 @@ describe("Transaction Load Service", () => {
     expect(spectreUser.getUncategorized().length).toBe(1);
   });
 
-  it('should be able to load a transaction when the line is has more elements than columns defines', async () => {
+  it('should be able to load a transaction when the line has more elements than columns defines', async () => {
     const columns = new Columns({
       0: {
         name : 'default',

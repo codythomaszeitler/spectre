@@ -227,7 +227,7 @@ export class CategoryScreen extends Component
                       marginBottom: 1,
                     }}
                   >
-                    {this.state.category.getType()}
+                    {this.state.category.getName()}
                   </Text>
                 </View>
 

@@ -48,7 +48,7 @@ export class CsvExporter implements Exporter {
         if (detail) {
           converted += escapeCsvElement(detail.getElement()) + ",";
         } else {
-          converted += escapeCsvElement(category.getType()) + ",";
+          converted += escapeCsvElement(category.getName()) + ",";
         }
         continue;
       }
@@ -57,7 +57,7 @@ export class CsvExporter implements Exporter {
       const nameOrNames = this.columns.getName(i);
 
       if (type === CATEGORY_TYPE) {
-        converted += escapeCsvElement(category.getType()) + ",";
+        converted += escapeCsvElement(category.getName()) + ",";
       } else if (!nameOrNames) {
         converted += ",";
       } else {

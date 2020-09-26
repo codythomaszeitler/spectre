@@ -93,11 +93,22 @@ export class SpectreUser {
     );
   }
 
+  hasCategory(category : Category) {
+    let hasCategory = false;
+    for (let i = 0; i < this.categories.length; i++) {
+      if (category.equals(this.categories[i])) {
+        hasCategory = true;
+        break;
+      }
+    }
+    return hasCategory;
+  }
+
   addCategory(category: Category) {
     const found = this._getCategory(category);
     if (found) {
       throw new Error(
-        "Category [" + category.getType() + "] was already added"
+        "Category [" + category.getName() + "] was already added"
       );
     }
 
@@ -131,7 +142,7 @@ export class SpectreUser {
     if (!removed) {
       throw new Error(
         "Cannot remove a category that does not exist [" +
-          category.getType() +
+          category.getName() +
           "]"
       );
     }
@@ -209,7 +220,7 @@ export class SpectreUser {
     const found = this._getCategory(category);
     if (!found) {
       throw new Error(
-        "[" + category.getType() + "] category was not registered in user"
+        "[" + category.getName() + "] category was not registered in user"
       );
     }
 
@@ -362,7 +373,7 @@ export class SpectreUser {
     if (!found) {
       throw new Error(
         "Cannot call getCategoryBefore on category that does not exist within user [" +
-          category.getType() +
+          category.getName() +
           "]"
       );
     }
@@ -388,7 +399,7 @@ export class SpectreUser {
     if (!found) {
       throw new Error(
         "Cannot call getCategoryAfter on category that does not exist within user [" +
-          category.getType() +
+          category.getName() +
           "]"
       );
     }

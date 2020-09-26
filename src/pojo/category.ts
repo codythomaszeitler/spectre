@@ -4,24 +4,24 @@ export const CATEGORY_TYPE = 'Category';
 
 export class Category {
 
-    type : string;
+    name : string;
     transactions : Transaction[];
 
-    constructor(type : string) {
-        if (!type) {
+    constructor(name : string) {
+        if (!name) {
             throw new Error('Cannot build a category with a falsy type string');
         }
 
-        if (type.trim().length === 0) {
+        if (name.trim().length === 0) {
             throw new Error('Must give a value that is not just empty space');
         }
 
-        this.type = type.trim();
+        this.name = name.trim();
         this.transactions = [];
     }
 
-    getType() {
-        return this.type;
+    getName() {
+        return this.name;
     }
 
     associate(transaction : Transaction) {
@@ -43,11 +43,11 @@ export class Category {
     }
 
     equals(category : Category) {
-        return this.type === category.type;
+        return this.name === category.name;
     }
 
     copy() {
-        const category = new Category(this.type);
+        const category = new Category(this.name);
         for (let i = 0; i < this.transactions.length; i++) {
             category.associate(this.transactions[i]);
         }

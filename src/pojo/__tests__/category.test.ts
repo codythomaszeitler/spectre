@@ -48,7 +48,7 @@ describe('Category', () => {
 
     it('should trim off empty white space around the given type', () => {
         const testObject = new Category('     a    ');
-        expect(testObject.getType()).toBe('a');
+        expect(testObject.getName()).toBe('a');
     });
 
     it('should throw an exception if a falsy type is given', () => {

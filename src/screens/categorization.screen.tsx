@@ -236,14 +236,14 @@ export class CategorizationScreen
 
   getColorFor(category: Category) {
     let color = new Color(CategoryColors[0]);
-    if (category.getType() in this.categoryColors) {
-      color = this.categoryColors[category.getType()].copy();
+    if (category.getName() in this.categoryColors) {
+      color = this.categoryColors[category.getName()].copy();
     }
     return color;
   }
 
   onCategoryColorChoice(category: Category, color: Color) {
-    this.categoryColors[category.getType()] = color;
+    this.categoryColors[category.getName()] = color;
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
@@ -352,7 +352,7 @@ export class CategorizationScreen
 
   onCategoryRemoved(event: OnCategoryRemovedEvent) {
     const removeColorChoice = (category: Category) => {
-      delete this.categoryColors[category.getType()];
+      delete this.categoryColors[category.getName()];
     };
 
     this.spectreUser.removeTransactionCategorizedListener(event.category, this);

@@ -2,12 +2,12 @@ import { Category } from "../pojo/category";
 import { Transaction } from "../pojo/transaction";
 
 export interface ScepterFormatImporter {
-    convert : (item : string) => ScepterFormatLine;
+    convert : (item : string) => ScepterFormattedLine;
 }
 
 export const SCEPTER_CATEGORY_COLUMN_NAME = 'Category';
 
-export class ScepterFormatLine {
+export class ScepterFormattedLine {
 
     transaction : Transaction;
     category : Category;

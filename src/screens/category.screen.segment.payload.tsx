@@ -35,7 +35,7 @@ export class CategoryScreenSegmentPayload extends ScreenSegmentPayload {
   }
 
   getUniqueKey() {
-    return this.category.getType();
+    return this.category.getName();
   }
 
   getType() {

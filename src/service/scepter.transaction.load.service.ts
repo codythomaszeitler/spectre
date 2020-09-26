@@ -11,10 +11,20 @@ export class ScepterTransactionLoadService implements TransactionLoader {
   }
 
   async load(scepterUser: SpectreUser, location: RawDataLocation) {
-    const transactions = null;
+    while (await location.hasNext()) {
+      const lines = await location.read();
+      for (let i = 0; i < lines.length; i++) {
+        const transactionAndCategory = this.importer.convert(lines[i]);
+        const transaction = transactionAndCategory.getTransaction();
+        const category = transactionAndCategory.getCategory();
 
+        if (!scepterUser.hasCategory(category)) {
+          scepterUser.addCategory(category);
+        }
 
-
-
+        scepterUser.readyForCategorization(transaction);
+        scepterUser.categorize(transaction, category);
+      }
+    }
   }
 }

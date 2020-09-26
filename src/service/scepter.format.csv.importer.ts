@@ -4,7 +4,7 @@ import { Category } from "../pojo/category";
 import { Transaction } from "../pojo/transaction";
 import {
   ScepterFormatImporter,
-  ScepterFormatLine,
+  ScepterFormattedLine,
   SCEPTER_CATEGORY_COLUMN_NAME
 } from "./scepter.format.importer";
 
@@ -37,7 +37,7 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
         }
     }
 
-    return new ScepterFormatLine(new Transaction(detailsForConversion), category);
+    return new ScepterFormattedLine(new Transaction(detailsForConversion), category);
   }
 
 

@@ -101,13 +101,13 @@ describe("Transaction Save Service", () => {
     expect(lines.length).toBe(3);
 
     expect(lines[0]).toBe(
-      '"test1","test2",,,' + escapeCsvElement(category.getType()) + '\n'
+      '"test1","test2",,,' + escapeCsvElement(category.getName()) + '\n'
     );
     expect(lines[1]).toBe(
-      '"test1","test2","test3","test4",' + escapeCsvElement(category.getType()) + '\n'
+      '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
     expect(lines[2]).toBe(
-      '"test1","test2","test3","test4",' + escapeCsvElement(category.getType()) + '\n'
+      '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
   });
 
@@ -161,13 +161,13 @@ describe("Transaction Save Service", () => {
     expect(lines.length).toBe(3);
 
     expect(lines[0]).toBe(
-      '"test1","test2",,,' + escapeCsvElement(category.getType()) + '\n'
+      '"test1","test2",,,' + escapeCsvElement(category.getName()) + '\n'
     );
     expect(lines[1]).toBe(
-      '"test1","test2","test3","test4",' + escapeCsvElement(category.getType()) + '\n'
+      '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
     expect(lines[2]).toBe(
-      '"test1","test2","test3","test4",' + escapeCsvElement(category.getType()) + '\n'
+      '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
   });
 

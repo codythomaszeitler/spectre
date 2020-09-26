@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Text } from "react-native-elements";
 import { CATEGORY_FONT_SIZE } from "./category.screen";
 import { BoldFontFamily, FontFamily, RegularFontFamily } from "../css/styles";
-import { TransactionDetail } from "../pojo/info.line";
+import { TransactionDetail } from "../pojo/transaction.detail";
 
 interface State {
   fontSize : number;

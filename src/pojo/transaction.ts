@@ -1,4 +1,4 @@
-import { TransactionDetail } from "./info.line";
+import { TransactionDetail } from "./transaction.detail";
 import { DetailConverter } from "../export/detail.converter";
 
 export const AMOUNT_TYPE = "Amount";

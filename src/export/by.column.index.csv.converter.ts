@@ -1,7 +1,7 @@
 import { CsvImporter } from "./csv.importer";
 import { Columns } from "./columns";
 import { CsvColumnIndexConfig as CsvColumnIndexConfig } from "./csv.column.index.mapping";
-import { TransactionDetail } from "../pojo/info.line";
+import { TransactionDetail } from "../pojo/transaction.detail";
 import { Transaction } from "../pojo/transaction";
 
 export class ByColumnIndexCsvImporter  extends CsvImporter {

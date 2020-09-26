@@ -7,7 +7,7 @@ import { DocumentLoadService } from "../document.load.service";
 import { Category, CATEGORY_TYPE } from "../../pojo/category";
 import { Currency } from "../../pojo/currency";
 import { TransactionSaveService } from "../transaction.save.service";
-import { TransactionDetail } from "../../pojo/info.line";
+import { TransactionDetail } from "../../pojo/transaction.detail";
 
 describe("Transaction Save Service", () => {
   it("should write all categorized transactions to the given location", async () => {

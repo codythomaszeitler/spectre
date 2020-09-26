@@ -1,4 +1,4 @@
-import { TransactionDetail } from "../pojo/info.line";
+import { TransactionDetail } from "../pojo/transaction.detail";
 import { CurrencyConverter } from "../transaction.info.converter/currency.converter";
 import { AMOUNT_TYPE } from "../pojo/transaction";
 

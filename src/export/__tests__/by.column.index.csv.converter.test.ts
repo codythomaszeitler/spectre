@@ -1,7 +1,7 @@
 import { Columns } from "../columns";
 import { AMOUNT_TYPE, Transaction } from "../../pojo/transaction";
 import { Currency } from "../../pojo/currency";
-import { TransactionDetail } from "../../pojo/info.line";
+import { TransactionDetail } from "../../pojo/transaction.detail";
 import { CsvColumnIndexConfig } from "../csv.column.index.mapping";
 import { ByColumnIndexCsvImporter } from "../by.column.index.csv.converter";
 import { CsvExporter } from "../csv.exporter";

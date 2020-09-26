@@ -2,7 +2,7 @@ import { Columns } from "../columns";
 import { Export } from "../export";
 import { CsvExporter } from "../csv.exporter";
 import { Transaction, AMOUNT_TYPE} from "../../pojo/transaction";
-import { TransactionDetail } from "../../pojo/info.line";
+import { TransactionDetail } from "../../pojo/transaction.detail";
 import { SpectreUser } from "../../pojo/spectre.user";
 import { Category, CATEGORY_TYPE } from "../../pojo/category";
 import { Currency } from "../../pojo/currency";

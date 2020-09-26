@@ -1,7 +1,7 @@
 import { Category } from "../category";
 import { Currency } from "../currency";
 import {Transaction } from '../transaction';
-import { TransactionDetail } from "../info.line";
+import { TransactionDetail } from "../transaction.detail";
 
 describe('Category', () => {
     it('should respect equality', () => {

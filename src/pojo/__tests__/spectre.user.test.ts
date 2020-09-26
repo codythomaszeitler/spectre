@@ -6,7 +6,7 @@ import {
 } from "../spectre.user";
 import { Category } from "../category";
 import { Currency } from "../currency";
-import { TransactionDetail } from "../info.line";
+import { TransactionDetail } from "../transaction.detail";
 import { Transaction, AMOUNT_TYPE } from "../transaction";
 import { OnCategoryAddedEvent, CategoryAddedListener } from "../spectre.user";
 

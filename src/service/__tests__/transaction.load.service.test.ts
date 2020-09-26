@@ -6,7 +6,7 @@ import { Columns } from "../../export/columns";
 import { CsvExporter } from "../../export/csv.exporter";
 import { CsvImporter } from "../../export/csv.importer";
 import {TransactionLoadService} from '../transaction.load.service';
-import { TransactionDetail } from "../../pojo/info.line";
+import { TransactionDetail } from "../../pojo/transaction.detail";
 
 describe("Transaction Load Service", () => {
   it("should be able to load transactions from a location", async () => {

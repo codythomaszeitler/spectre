@@ -1,6 +1,6 @@
 import {Transaction, AMOUNT_TYPE} from '../transaction';
 import {Currency} from '../currency';
-import {TransactionDetail} from '../info.line';
+import {TransactionDetail} from '../transaction.detail';
 
 describe('Transaction', () => {
     it('should return false when transactions do not have the same details', () => {

@@ -1,6 +1,6 @@
 import { CsvImporter } from "./csv.importer";
 import { Columns } from "./columns";
-import { TransactionDetail } from "../pojo/info.line";
+import { TransactionDetail } from "../pojo/transaction.detail";
 import { Transaction } from "../pojo/transaction";
 import { BankConfig } from "../mappings/bank.config";
 

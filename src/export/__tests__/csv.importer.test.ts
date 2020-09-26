@@ -6,7 +6,7 @@ import {
 import { CsvExporter } from "../csv.exporter";
 import { Currency } from "../../pojo/currency";
 import { CsvImporter, unescapeCsvElement } from "../csv.importer";
-import { TransactionDetail } from "../../pojo/info.line";
+import { TransactionDetail } from "../../pojo/transaction.detail";
 
 describe("Csv Importer", () => {
   it("should be able to import items into that were exported", () => {

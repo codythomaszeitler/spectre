@@ -1,17 +1,17 @@
 import { SpectreUser } from "../pojo/spectre.user";
 import { Exporter } from "../export/exporter";
-import { ScepterLocation } from "./scepter.location";
+import { RawDataLocation } from "./scepter.location";
 import { DocumentSaveService } from "./document.save.service";
 import { ColumnEstimation } from "./column.estimation";
 
 export class TransactionSaveService {
   spectreUser: SpectreUser;
-  location: ScepterLocation;
+  location: RawDataLocation;
   exporter: Exporter;
 
   constructor(
     spectreUser: SpectreUser,
-    location: ScepterLocation,
+    location: RawDataLocation,
     exporter: Exporter
   ) {
     this.spectreUser = spectreUser;

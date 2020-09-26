@@ -1,18 +1,20 @@
 import { SpectreUser } from "../pojo/spectre.user";
-import { TransactionLoadService } from "./transaction.load.service";
-import { Importer } from "../export/importer";
-import { ScepterLocation } from "./scepter.location";
+import { RawDataLocation } from "./scepter.location";
+import { TransactionLoader } from "./transaction.loader";
+import { ScepterFormatImporter } from "./scepter.format.importer";
 
-export class ScepterTransactionLoadService extends TransactionLoadService {
-  constructor(
-    scepterUser: SpectreUser,
-    location: ScepterLocation,
-    importer: Importer
-  ) {
-    super(scepterUser, location, importer);
+export class ScepterTransactionLoadService implements TransactionLoader {
+  importer: ScepterFormatImporter;
+
+  constructor(importer: ScepterFormatImporter) {
+    this.importer = importer;
   }
 
-  async load() {
-      const transactions = 
+  async load(scepterUser: SpectreUser, location: RawDataLocation) {
+    const transactions = null;
+
+
+
+
   }
 }

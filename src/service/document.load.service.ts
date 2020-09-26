@@ -1,10 +1,10 @@
-import { ScepterLocation } from "./scepter.location";
+import { RawDataLocation } from "./scepter.location";
 
 export class DocumentLoadService {
-  location: ScepterLocation;
+  location: RawDataLocation;
   lines: string[];
 
-  constructor(location: ScepterLocation) {
+  constructor(location: RawDataLocation) {
     this.location = location;
     this.lines = [];
   }

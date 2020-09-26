@@ -19,7 +19,6 @@ import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
-import { ScepterLocation } from "../service/scepter.location";
 import { ColumnEstimation } from "../service/column.estimation";
 import { CategoryColors, RegularFontFamily } from "../css/styles";
 import { Alert } from "./alert";

@@ -1,6 +1,6 @@
 import { SpectreUser } from "../pojo/spectre.user";
-import { ScepterLocation } from "./scepter.location";
+import { RawDataLocation } from "./scepter.location";
 
 export interface TransactionLoader {
-    load: (scepterUser : SpectreUser, location : ScepterLocation) => Promise<void>;
+    load: (scepterUser : SpectreUser, location : RawDataLocation) => Promise<void>;
 }

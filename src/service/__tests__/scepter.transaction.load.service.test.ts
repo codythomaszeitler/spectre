@@ -1,16 +1,15 @@
 import { CsvExporter } from "../../export/csv.exporter";
-import { CsvImporter } from "../../export/csv.importer";
 import { Category } from "../../pojo/category";
 import { TransactionDetail } from "../../pojo/transaction.detail";
 import { SpectreUser } from "../../pojo/spectre.user";
 import { Transaction } from "../../pojo/transaction";
-import { TransactionLoadService } from "../transaction.load.service";
 import { TestLocation } from "./test.location";
 import { Columns } from "../../export/columns";
+import { ScepterFormatCsvImporter } from "../scepter.format.csv.importer";
 
 describe('Scepter Transaction Load Service', () => {
 
-    it('should add columns when loading in a scepter csv file', async () => {
+    it('should add columns to scepter user when loading in a scepter csv file', async () => {
         const columns = new Columns({
             0: {
               name : 'TestColumn',
@@ -36,15 +35,18 @@ describe('Scepter Transaction Load Service', () => {
         const exporter = new CsvExporter(columns);
 
         const location = new TestLocation([exporter.convert(scepterTransaction, category)]);
-        const importer = new CsvImporter(columns);
+
+        // I'm not really even sure what columns means here...
+        // Which columns is this representing?
+        // Columns is representing the imported data header.
+        const importer = new ScepterFormatCsvImporter(columns);
         const testObject = new ScepterTransactionLoadService(
-            scepterUser,
-            location,
             importer
         );
 
-        await testObject.load();
+        const newScepterUser = new SpectreUser();
+        await testObject.load(newScepterUser, location);
 
-        expect(scepterUser.getCategories().length).toBe(1);
+        expect(newScepterUser.getCategories().length).toBe(1);
     });
 });

@@ -1,3 +1,6 @@
+import { Columns } from "../export/columns";
+
 export interface Importer {
-    convert : (item : string) => Object;
+  defineIncomingFormat: (columns: Columns) => void;
+  convert: (item: string) => Object;
 }

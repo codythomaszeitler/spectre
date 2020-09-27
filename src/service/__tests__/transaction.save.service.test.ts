@@ -27,24 +27,21 @@ describe("Transaction Save Service", () => {
     spectreUser.addCategory(category);
 
     for (let i = 0; i < 10; i++) {
-      const details = [
+      const transaction = new Transaction([
         TransactionDetail.withCurrency(new Currency(400), columns.getName(0)),
-      ];
-      const transaction = new Transaction(details);
+      ]);
       spectreUser.readyForCategorization(transaction);
       spectreUser.categorize(transaction, category);
     }
 
     const location = new TestLocation([]);
-    const exporter = new CsvExporter(columns);
+    const exporter = new CsvExporter();
 
     const testObject = new TransactionSaveService(
-      spectreUser,
-      location,
       exporter
     );
 
-    await testObject.save();
+    await testObject.save(spectreUser, location);
 
     const loadDocument = new DocumentLoadService(location);
     const lines = await loadDocument.fetchall();
@@ -84,17 +81,13 @@ describe("Transaction Save Service", () => {
     spectreUser.categorize(thirdTransaction, category);
 
     const location = new TestLocation([]);
-    const exporter = new CsvExporter(
-      TransactionSaveService.generateCompliantColumns(spectreUser)
-    );
+    const exporter = new CsvExporter();
 
     const testObject = new TransactionSaveService(
-      spectreUser,
-      location,
       exporter
     );
 
-    await testObject.save();
+    await testObject.save(spectreUser, location);
 
     const loadDocument = new DocumentLoadService(location);
     const lines = await loadDocument.fetchall();
@@ -144,17 +137,13 @@ describe("Transaction Save Service", () => {
     spectreUser.categorize(thirdTransaction, category);
 
     const location = new TestLocation([]);
-    const exporter = new CsvExporter(
-      TransactionSaveService.generateCompliantColumns(spectreUser)
-    );
+    const exporter = new CsvExporter();
 
     const testObject = new TransactionSaveService(
-      spectreUser,
-      location,
       exporter
     );
 
-    await testObject.save();
+    await testObject.save(spectreUser, location);
 
     const loadDocument = new DocumentLoadService(location);
     const lines = await loadDocument.fetchall();

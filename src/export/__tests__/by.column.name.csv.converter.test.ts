@@ -40,11 +40,13 @@ describe("By Column Name Csv Converter", () => {
 
     const transaction = new Transaction(details);
 
-    const exporter = new CsvExporter(columns);
+    const exporter = new CsvExporter();
+    exporter.defineOutgoingFormat(columns);
+
     const testObject = new ByColumnNameCsvImporter(
-      columns,
       byColumnIndexMapping
     );
+    testObject.defineIncomingFormat(columns);
 
     const expected = new Transaction([
       new TransactionDetail("This is another detail", "Test", "Test2Type"),
@@ -91,11 +93,13 @@ describe("By Column Name Csv Converter", () => {
 
     const transaction = new Transaction(details);
 
-    const exporter = new CsvExporter(columns);
+    const exporter = new CsvExporter();
+    exporter.defineOutgoingFormat(columns);
+
     const testObject = new ByColumnNameCsvImporter(
-      columns,
       byColumnIndexMapping
     );
+    testObject.defineIncomingFormat(columns);
 
     const expected = new Transaction([
       new TransactionDetail("This is another detail", "Test", "Test2Type"),
@@ -135,8 +139,9 @@ describe("By Column Name Csv Converter", () => {
     const transaction = new Transaction(details);
 
     const exporter = new CsvExporter(columns);
+    exporter.defineOutgoingFormat(columns);
+
     const testObject = new ByColumnNameCsvImporter(
-      columns,
       byColumnIndexMapping
     );
 
@@ -177,11 +182,13 @@ describe("By Column Name Csv Converter", () => {
 
     const transaction = new Transaction(details);
 
-    const exporter = new CsvExporter(columns);
+    const exporter = new CsvExporter();
+    exporter.defineOutgoingFormat(columns);
+
     const testObject = new ByColumnNameCsvImporter(
-      columns,
       byColumnIndexMapping
     );
+    testObject.defineIncomingFormat(columns);
 
     const expected = new Transaction([
         new TransactionDetail("", "Test", "Test1Type"),

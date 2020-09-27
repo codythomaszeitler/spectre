@@ -8,11 +8,14 @@ export class ByColumnNameCsvImporter  extends CsvImporter {
 
     config : BankConfig;
 
-    constructor(columns : Columns, config : BankConfig) {
-        super(columns);
+    constructor(config : BankConfig) {
+        super();
         this.config = config;
     }
 
+    defineIncomingFormat(columns : Columns) {
+        super.defineIncomingFormat(columns);
+    }
 
     convert(string : string) {
         const converted = super.convert(string);    

@@ -8,8 +8,24 @@ import { DetailConverter } from "./detail.converter";
 export class CsvExporter implements Exporter {
   columns: Columns;
 
-  constructor(columns: Columns) {
+  constructor() {
+    this.columns = new Columns({});
+  }
+
+  defineOutgoingFormat(columns : Columns) {
     this.columns = columns.copy();
+  }
+
+  convertColumns(columns : Columns) {
+    let converted = '';
+    for (let i = 0; i < columns.getNumColumns(); i++) {
+      if (i === 0) {
+        converted = columns.getName(i);
+      } else {
+        converted = converted + ',' + columns.getName(i);
+      }
+    }
+    return converted;
   }
 
   convert(transaction: Transaction, category?: Category) {
@@ -77,9 +93,13 @@ export class CsvExporter implements Exporter {
       }
     }
 
-    let withoutLastComma = converted.substring(0, converted.length - 1);
-    return withoutLastComma;
+    return removeCommaAtEnd(converted);
   }
+}
+
+export function removeCommaAtEnd(toRemoveFrom : string) {
+    let withoutLastComma = toRemoveFrom.substring(0, toRemoveFrom.length - 1);
+    return withoutLastComma;
 }
 
 export function escapeCsvElement(raw: string) {

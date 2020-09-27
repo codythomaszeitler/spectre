@@ -11,12 +11,17 @@ import {
 export class ScepterFormatCsvImporter implements ScepterFormatImporter {
   columns: Columns;
 
-  constructor(columns: Columns) {
-    this.columns = columns;
+  constructor() {
+    this.columns = new Columns({});
+  }
+
+  defineIncomingFormat(columns : Columns) {
+    this.columns = columns.copy();
   }
 
   convert(item: string) {
-    const csvImporter = new CsvImporter(this.columns);
+    const csvImporter = new CsvImporter();
+    csvImporter.defineIncomingFormat(this.columns);
 
     const transactionWithCategory = csvImporter.convert(item);
 

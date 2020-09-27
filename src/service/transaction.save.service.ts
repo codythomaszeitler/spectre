@@ -5,29 +5,27 @@ import { DocumentSaveService } from "./document.save.service";
 import { ColumnEstimation } from "./column.estimation";
 
 export class TransactionSaveService {
-  spectreUser: SpectreUser;
-  location: RawDataLocation;
+
   exporter: Exporter;
 
   constructor(
-    spectreUser: SpectreUser,
-    location: RawDataLocation,
     exporter: Exporter
   ) {
-    this.spectreUser = spectreUser;
-    this.location = location;
     this.exporter = exporter;
   }
 
-  async save() {
+  async save(scepterUser : SpectreUser, location : RawDataLocation) {
+
+    const estimator = new ColumnEstimation();
+    const structureOfCsv = estimator.estimateBySpectreUser(scepterUser);
+    this.exporter.defineOutgoingFormat(structureOfCsv);
 
     let converted = [];
-
-    const categories = this.spectreUser.getCategories();
+    const categories = scepterUser.getCategories();
     for (let i = 0; i < categories.length; i++) {
         const category = categories[i];
 
-        const transactions = this.spectreUser.getTransactionsFor(category);
+        const transactions = scepterUser.getTransactionsFor(category);
         for (let j = 0; j < transactions.length; j++) {
             const transaction = transactions[j].copy();
 
@@ -36,10 +34,12 @@ export class TransactionSaveService {
         }
     }
 
-    const documentSaveService = new DocumentSaveService(this.location);
+    const documentSaveService = new DocumentSaveService(location);
     await documentSaveService.save(converted);
   }
 
+  // This function should go through every transaction and ensure that the
+  // exported 
   static generateCompliantColumns(spectreUser : SpectreUser) {
     const estimator = new ColumnEstimation();
     return estimator.estimateBySpectreUser(spectreUser);

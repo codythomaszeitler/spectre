@@ -7,7 +7,11 @@ import { Importer } from "./importer";
 export class CsvImporter implements Importer {
   columns: Columns;
 
-  constructor(columns: Columns) {
+  constructor() {
+    this.columns = new Columns({});
+  }
+
+  defineIncomingFormat(columns : Columns) {
     this.columns = columns.copy();
   }
 

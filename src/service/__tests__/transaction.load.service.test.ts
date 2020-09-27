@@ -19,8 +19,10 @@ describe("Transaction Load Service", () => {
 
     const details = [TransactionDetail.withCurrency(new Currency(400), 'Amount')];
     const transaction = new Transaction(details);
-    const exporter = new CsvExporter(columns);
-    const importer = new CsvImporter(columns);
+    const exporter = new CsvExporter();
+    exporter.defineOutgoingFormat(columns);
+    const importer = new CsvImporter();
+    importer.defineIncomingFormat(columns);
 
     const items = [exporter.convert(transaction)];
 
@@ -45,7 +47,8 @@ describe("Transaction Load Service", () => {
       },
     }); 
 
-    const importer = new CsvImporter(columns);
+    const importer = new CsvImporter();
+    importer.defineIncomingFormat(columns);
 
     const lines = ['TEST,EXTRA ELEMENT'];
     const location = new TestLocation(lines);
@@ -77,7 +80,8 @@ describe("Transaction Load Service", () => {
       }
     }); 
 
-    const importer = new CsvImporter(columns);
+    const importer = new CsvImporter();
+    importer.defineIncomingFormat(columns);
 
     const lines = ['TEST,ELEMENT1,ELEMENT2'];
     const location = new TestLocation(lines);

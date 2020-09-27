@@ -1,3 +1,5 @@
+import { Transaction } from "../../pojo/transaction";
+import { TransactionDetail } from "../../pojo/transaction.detail";
 import { ColumnEstimation } from "../column.estimation";
 import { TestLocation } from "./test.location";
 
@@ -8,11 +10,11 @@ describe("Column Estimation", () => {
     const columns = await testObject.estimateByLocation(location);
 
     expect(columns.getNumColumns()).toBe(3);
-    expect(columns.getName(0)).toBe("column0");
+    expect(columns.getName(0)).toBe("a");
     expect(columns.getType(0)).toBe("string");
-    expect(columns.getName(1)).toBe("column1");
+    expect(columns.getName(1)).toBe("b");
     expect(columns.getType(1)).toBe("string");
-    expect(columns.getName(2)).toBe("column2");
+    expect(columns.getName(2)).toBe("c");
     expect(columns.getType(2)).toBe("string");
   });
 
@@ -22,7 +24,7 @@ describe("Column Estimation", () => {
     const columns = await testObject.estimateByLocation(location);
 
     expect(columns.getNumColumns()).toBe(1);
-    expect(columns.getName(0)).toBe("column0");
+    expect(columns.getName(0)).toBe("a");
     expect(columns.getType(0)).toBe("string");
   });
 
@@ -82,5 +84,18 @@ describe("Column Estimation", () => {
     expect(caughtException.message).toBe(
       "Location returned an empty line during a peek, cannot parse column from an empty string"
     );
+  });
+
+  it('should be able to estimate what the columns look like given a transaction', () => {
+    const columnName = 'Test Column Name';
+
+    const transaction = new Transaction([
+      new TransactionDetail('Test Detail', columnName, 'String')
+    ]);
+
+    const testObject = new ColumnEstimation();
+    const estimated = testObject.estimateByTransaction(transaction);
+
+    expect(estimated.hasColumnWithName(columnName)).toBeTruthy();
   });
 });

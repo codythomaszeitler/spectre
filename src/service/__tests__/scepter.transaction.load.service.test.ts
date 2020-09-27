@@ -22,27 +22,20 @@ describe("Scepter Transaction Load Service", () => {
       },
     });
 
-    const scepterUser = new SpectreUser();
-
     const scepterTransaction = new Transaction([
-      new TransactionDetail("Test String", "TestColumn", "String"),
+      new TransactionDetail("Test String", columns.getName(0), columns.getType(0)),
     ]);
-
     const category = new Category("Test Category");
-    scepterUser.addCategory(category);
-    scepterUser.readyForCategorization(scepterTransaction);
-    scepterUser.categorize(scepterTransaction, category);
 
-    const exporter = new CsvExporter(columns);
-
+    const exporter = new CsvExporter();
+    exporter.defineOutgoingFormat(columns);
     const location = new TestLocation([
+      exporter.convertColumns(columns),
       exporter.convert(scepterTransaction, category),
     ]);
 
-    // I'm not really even sure what columns means here...
-    // Which columns is this representing?
-    // Columns is representing the imported data header.
-    const importer = new ScepterFormatCsvImporter(columns);
+    const importer = new ScepterFormatCsvImporter();
+
     const testObject = new ScepterTransactionLoadService(importer);
 
     const newScepterUser = new SpectreUser();

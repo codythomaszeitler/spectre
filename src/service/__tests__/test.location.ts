@@ -1,6 +1,6 @@
-import { Location } from "../raw.data.location";
+import { RawDataLocation} from "../raw.data.location";
 
-export class TestLocation implements Location {
+export class TestLocation implements RawDataLocation {
   items: string[];
   parsed: string[];
   written: string[];

@@ -45,7 +45,8 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "<rootDir>/src/service/__tests__/test.location.ts"
+      "<rootDir>/src/service/__tests__/test.location.ts",
+      "<rootDir>/src/service/__tests__/transaction.test.util.ts"
     ]
   },
   "private": true

@@ -3,8 +3,8 @@ export const columnNameDelimeter = '|';
 export const nameKey = 'name';
 
 export class Columns {
-  configuration : Object;
-  constructor(configuration : Object) {
+  configuration : any;
+  constructor(configuration : any) {
     this.configuration = JSON.parse(JSON.stringify(configuration));
   }
 
@@ -28,6 +28,18 @@ export class Columns {
 
   hasColumn(columnIndex : number) {
     return (columnIndex in this.configuration);
+  }
+
+  hasColumnWithName(columnName : string) {
+    let hasColumnWithName = false;
+    for (let i = 0; i < this.getNumColumns(); i++) {
+      if (columnName === this.configuration[i]['name']) {
+        hasColumnWithName = true;
+        break;
+      }
+    }
+
+    return hasColumnWithName;
   }
 
   _checkColumnIndex(columnIndex : number) {

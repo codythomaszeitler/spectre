@@ -13,6 +13,10 @@ export class CsvType {
     equals(csvType : CsvType) {
         return this.type === csvType.type;
     }
+
+    copy() {
+        return new CsvType(this.type);
+    }
 }
 
 export const SCEPTER_FORMAT = new CsvType('Scepter');

@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { TouchableOpacity, TextInput } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { BoldFontFamily } from "../../css/styles";
+import {
+  CsvToImport,
+  OnCsvFileSelectedEvent,
+  OnCsvFileSelectedListener,
+} from "./csv.to.import";
+
+export interface Props {
+  csvToImport: CsvToImport;
+}
 
 export class CsvFileSelectionScreen extends Component {
-  listeners: FileSelectedListener[];
-
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.onFilePick = this.onFilePick.bind(this);
@@ -19,23 +26,17 @@ export class CsvFileSelectionScreen extends Component {
     }
 
     this.state = {
+      selectedFilePath: this.props.csvToImport.getImportFile().name,
       currentFile: "",
-      selectedFilePath : "Select a file..."
     };
   }
 
   onFilePick(event: Object) {
-    for (let i = 0; i < this.listeners.length; i++) {
-      const fileSelectedEvent = new OnFileSelectedEvent(event.target.files[0]);
-      fileSelectedEvent.id = this.props.id;
-
-      const listener = this.listeners[i];
-      listener.onFileSelect(fileSelectedEvent);
-    }
-
     this.setState({
-        selectedFilePath : event.target.files[0].name
+      selectedFilePath: event.target.files[0].name,
     });
+
+    this.props.csvToImport.setImportFile(event.target.files[0]);
   }
 
   render() {
@@ -46,7 +47,7 @@ export class CsvFileSelectionScreen extends Component {
           justifyContent: "center",
           backgroundColor: "grey",
           flexDirection: "row",
-          borderRadius : 5
+          borderRadius: 5,
         }}
       >
         <View
@@ -63,13 +64,15 @@ export class CsvFileSelectionScreen extends Component {
             this.fileInputRef.current.click();
           }}
         >
-            <Text style={{
-                color : 'white',
-                fontFamily : BoldFontFamily,
-                fontSize : 18
-            }}>
-                {this.state.selectedFilePath}
-            </Text>
+          <Text
+            style={{
+              color: "white",
+              fontFamily: BoldFontFamily,
+              fontSize: 18,
+            }}
+          >
+            {this.state.selectedFilePath}
+          </Text>
         </TouchableOpacity>
         <input
           type="file"
@@ -83,18 +86,5 @@ export class CsvFileSelectionScreen extends Component {
         ></input>
       </View>
     );
-  }
-}
-
-export interface FileSelectedListener {
-  onFileSelect: (event: OnFileSelectedEvent) => void;
-}
-
-export class OnFileSelectedEvent {
-  file: File;
-  id: number;
-
-  constructor(file: File) {
-    this.file = file;
   }
 }

@@ -3,24 +3,24 @@ import { View, Image } from "react-native";
 import { CsvType } from "../../export/csv.type";
 import { MasterBankConfigParser } from "../../mappings/master.bank.config.parser";
 import { MasterBankConfig } from "../../mappings/master.bank.config";
-import {BankConfig} from "../../mappings/bank.config";
+import { BankConfig } from "../../mappings/bank.config";
 import { Picker } from "@react-native-community/picker";
+import {
+  OnCsvTypeSelectedEvent,
+  OnCsvTypeSelectedListener,
+} from "./csv.to.import";
 
-export class CsvTypeSelectionScreen extends Component {
-  listeners: CsvTypeSelectedListener[];
-
+export class CsvTypeSelectionScreen
+  extends Component
+  implements OnCsvTypeSelectedListener {
   masterMappingInfo: MasterBankConfigParser;
 
   constructor(props) {
     super(props);
 
-    this.listeners = [];
-    if (this.props.onCsvTypeSelectedListener) {
-      this.listeners.push(this.props.onCsvTypeSelectedListener);
-    }
-
     this.masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
     const defaultConfig = this.masterMappingInfo.getDefaultConfig();
+
 
     this.state = {
       currentChoice: defaultConfig.getName(),
@@ -28,17 +28,20 @@ export class CsvTypeSelectionScreen extends Component {
     };
   }
 
-  onCsvTypeSelected(type: string) {
-    const csvType = new CsvType(type);
+  componentDidMount() {
+    this.props.csvToImport.addOnCsvTypeSelectedListener(this);
+  }
 
-    const event = new OnCsvTypeSelectedEvent();
-    event.csvType = csvType;
-    event.id = this.props.id;
+  componentWillUnmount() {
+    this.props.csvToImport.removeOnCsvTypeSelectedListener(this);
+  }
 
-    for (let i = 0; i < this.listeners.length; i++) {
-      const listener = this.listeners[i];
-      listener.onCsvTypeSelected(event);
-    }
+  onCsvTypeSeleted(event: OnCsvTypeSelectedEvent) {
+    const config = this.masterMappingInfo.getConfigFor(event.csvType.get());
+    this.setState({
+      currentChoice: event.csvType.get(),
+      currentImage: config.getFilePath(),
+    });
   }
 
   render() {
@@ -81,7 +84,7 @@ export class CsvTypeSelectionScreen extends Component {
           </View>
           <View
             style={{
-              flex: .25,
+              flex: 0.25,
             }}
           ></View>
           <View
@@ -89,16 +92,11 @@ export class CsvTypeSelectionScreen extends Component {
               flex: 3,
             }}
           >
-           <Picker
+            <Picker
               selectedValue={this.state.currentChoice}
-              style={{ flex: 1, borderColor: "white", fontSize : 18 }}
+              style={{ flex: 1, borderColor: "white", fontSize: 18 }}
               onValueChange={(itemValue: string) => {
-                const config = this.masterMappingInfo.getConfigFor(itemValue);
-                this.setState({
-                  currentChoice: itemValue,
-                  currentImage: config.getFilePath(),
-                });
-                this.onCsvTypeSelected(itemValue);
+                this.props.csvToImport.setCsvType(new CsvType(itemValue));
               }}
             >
               {this.masterMappingInfo
@@ -122,13 +120,4 @@ export class CsvTypeSelectionScreen extends Component {
       </View>
     );
   }
-}
-
-export interface CsvTypeSelectedListener {
-  onCsvTypeSelected: (event: OnCsvTypeSelectedEvent) => void;
-}
-
-export class OnCsvTypeSelectedEvent {
-  csvType: CsvType;
-  id: number;
 }

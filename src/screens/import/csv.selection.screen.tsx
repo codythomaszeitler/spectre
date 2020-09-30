@@ -1,128 +1,93 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import {
-  CsvFileSelectionScreen,
-  OnFileSelectedEvent,
-} from "./csv.file.selection.screen";
-import { FileSelectedListener } from "./csv.file.selection.screen";
-import {
-  CsvTypeSelectionScreen,
-  CsvTypeSelectedListener,
-  OnCsvTypeSelectedEvent,
-} from "./csv.type.selection.screen";
-import { CsvType } from "../../export/csv.type";
+import { View, Button } from "react-native";
+import { CsvType, RAW_FORMAT } from "../../export/csv.type";
 import { DocumentPicker } from "../document.picker.screen";
 import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET } from "../category.screen";
+import {
+  CsvToImport,
+  OnCsvTypeSelectedEvent,
+  OnCsvTypeSelectedListener,
+} from "./csv.to.import";
+import { CsvToImportLine } from "./csv.to.import.line.screen";
+
+export interface State {
+  csvsToImport: Array<CsvToImport>;
+}
 
 export class CsvSelectionScreen
   extends Component
-  implements FileSelectedListener, CsvTypeSelectedListener {
-  selectedFiles: Map<number, File>;
-  selectedTypes: Map<number, CsvType>;
-
+  implements OnCsvTypeSelectedListener {
   listeners: FileCsvTypeDuoSelectedListener[];
-  numFileSelections: number;
 
   constructor(props) {
     super(props);
 
     this.onFilesImportStart = this.onFilesImportStart.bind(this);
+    this.onFilePick = this.onFilePick.bind(this);
+
+    this.fileInputRef = React.createRef();
 
     this.listeners = [];
     if (this.props.onFileCsvTypeDuoSelectedListener) {
       this.listeners.push(this.props.onFileCsvTypeDuoSelectedListener);
     }
 
-    this.numFileSelections = 10;
+    this.state = {
+      csvsToImport: [],
+      currentFile: "",
+    };
+  }
 
-    this.selectedFiles = {};
+  onCsvTypeSeleted(event: OnCsvTypeSelectedEvent) {
+    if (event.csvType.equals(RAW_FORMAT)) {
+      for (let i = 0; i < this.state.csvsToImport.length; i++) {
+        const csvToImport = this.state.csvsToImport[i];
 
-    this.selectedTypes = {};
-    for (let i = 0; i < this.numFileSelections; i++) {
-      this.selectedTypes[i] = new CsvType("Chase");
+        if (!csvToImport.csvType.equals(event.csvType)) {
+          csvToImport.setCsvType(event.csvType.copy());
+        }
+      }
     }
   }
 
   onFilesImportStart() {
-    const event = new OnFilesWithCsvTypeSelectedEvent();
 
     const pairs = [];
-    for (const [identifier, file] of Object.entries(this.selectedFiles)) {
-      const csvType = this.selectedTypes[identifier];
-      pairs.push(new CsvSelectionPair(file, csvType));
+    for (let i = 0; i < this.state.csvsToImport.length; i++) {
+      const csvToImport = this.state.csvsToImport[i];
+      pairs.push(csvToImport);
     }
-    event.pairs = pairs;
 
+    const event = new OnFilesWithCsvTypeSelectedEvent();
+    event.pairs = pairs;
+    
     for (let i = 0; i < this.listeners.length; i++) {
       const listener = this.listeners[i];
       listener.onFilesWithTypeSelectedListener(event);
     }
   }
 
-  onFileSelect(event: OnFileSelectedEvent) {
-    this.selectedFiles[event.id] = event.file;
-  }
+  onFilePick(event: Object) {
+    const files = event.target.files;
 
-  onCsvTypeSelected(event: OnCsvTypeSelectedEvent) {
-    this.selectedTypes[event.id] = event.csvType;
-  }
+    const csvsToImport = [...this.state.csvsToImport];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
 
-  fileSelections() {
-    const fileSelections = [];
+      const csvToImport = new CsvToImport();
+      csvToImport.setImportFile(file);
+      csvToImport.setCsvType(new CsvType("Chase"));
 
-    for (let i = 0; i < this.numFileSelections; i++) {
-      fileSelections.push(
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              flex: 1,
-            }}
-          >
-            <View
-              style={{
-                flex: 5,
-                justifyContent: "center",
-              }}
-            >
-              <CsvFileSelectionScreen
-                onFileSelectedListener={this}
-                id={i}
-              ></CsvFileSelectionScreen>
-            </View>
+      csvToImport.addOnCsvTypeSelectedListener(this);
 
-            <View
-              style={{
-                flex: 0.5,
-              }}
-            ></View>
-
-            <View
-              style={{
-                flex: 2,
-              }}
-            >
-              <CsvTypeSelectionScreen
-                onCsvTypeSelectedListener={this}
-                id={i}
-              ></CsvTypeSelectionScreen>
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 0.25,
-            }}
-          ></View>
-        </View>
-      );
+      csvsToImport.push(csvToImport);
     }
 
-    return fileSelections;
+    this.setState({
+      csvsToImport : csvsToImport
+    });
   }
+
 
   render() {
     return (
@@ -138,7 +103,7 @@ export class CsvSelectionScreen
       >
         <View
           style={{
-            flex: .5,
+            flex: 0.5,
           }}
         ></View>
 
@@ -153,7 +118,11 @@ export class CsvSelectionScreen
               flex: 5,
             }}
           >
-            {this.fileSelections()}
+            {this.state.csvsToImport.map((csvToImport: CsvToImport) => {
+              return (
+                <CsvToImportLine csvToImport={csvToImport}></CsvToImportLine>
+              );
+            })}
           </View>
           <View
             style={{
@@ -162,12 +131,32 @@ export class CsvSelectionScreen
           ></View>
         </View>
 
+        <Button
+          title="Click me to start importing"
+          onPress={() => {
+            this.fileInputRef.current.click();
+          }}
+        ></Button>
 
-        <View style={{
-            flex : 1, 
-            justifyContent : 'center',
-            alignSelf : 'center'
-        }}>
+        <input
+          type="file"
+          width="100%"
+          ref={this.fileInputRef}
+          value={this.state.currentFile}
+          onChange={this.onFilePick}
+          style={{
+            display: "none",
+          }}
+          multiple
+        ></input>
+
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignSelf: "center",
+          }}
+        >
           <View
             style={{
               width: CATEGORY_BOX_HEIGHT + 6,
@@ -183,7 +172,6 @@ export class CsvSelectionScreen
             ></DocumentPicker>
           </View>
         </View>
-
       </View>
     );
   }
@@ -196,15 +184,5 @@ export interface FileCsvTypeDuoSelectedListener {
 }
 
 export class OnFilesWithCsvTypeSelectedEvent {
-  pairs: CsvSelectionPair[];
-}
-
-class CsvSelectionPair {
-  file: File;
-  supportedType: CsvType;
-
-  constructor(file: File, supportedType: CsvType) {
-    this.file = file;
-    this.supportedType = supportedType;
-  }
+  pairs: CsvToImport[];
 }

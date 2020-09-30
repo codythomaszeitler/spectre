@@ -390,7 +390,7 @@ export class CategorizationScreen
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i];
       const file = pair.file;
-      const csvType = pair.supportedType;
+      const csvType = pair.csvType;
 
       try {
         const location = new LocalFileLocation(file);

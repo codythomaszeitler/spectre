@@ -15,11 +15,9 @@ import {
 import { Transaction } from "../pojo/transaction";
 import { OnCategoryPressed } from "./category.screen";
 import { Category } from "../pojo/category";
-import { TransactionLoadService } from "../service/transaction.load.service";
 import { LocalFileLocation } from "../service/local.file.location";
 import { TransactionSaveService } from "../service/transaction.save.service";
 import { CsvExporter } from "../export/csv.exporter";
-import { ColumnEstimation } from "../service/column.estimation";
 import { CategoryColors, RegularFontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import { ScreenSegmentPayload } from "./screen.segment.payload";
@@ -36,16 +34,13 @@ import { CategorizationModeBottomBar } from "./categorization.mode.bottom.bar";
 import { Text } from "react-native-elements";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
-import { BankConfig } from "../mappings/bank.config";
-import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
 import { Modal } from "./modal.screen";
 import {
   CsvSelectionScreen,
   OnFilesWithCsvTypeSelectedEvent,
 } from "./import/csv.selection.screen";
 import { FileCsvTypeDuoSelectedListener } from "./import/csv.selection.screen";
-import { MasterBankConfigParser } from "../mappings/master.bank.config.parser";
-import { MasterBankConfig } from "../mappings/master.bank.config";
+import { TransactionLoaderFactory } from "../service/transaction.loader.factory";
 
 export interface Props {}
 
@@ -167,17 +162,11 @@ export class CategorizationScreen
         type: "text/plain;charset=utf-8",
       });
       const location = new LocalFileLocation(file);
-      const columns = TransactionSaveService.generateCompliantColumns(
-        this.spectreUser
-      );
-
       const transactionSaveService = new TransactionSaveService(
-        this.spectreUser,
-        location,
-        new CsvExporter(columns)
+        new CsvExporter()
       );
 
-      await transactionSaveService.save();
+      await transactionSaveService.save(this.spectreUser, location);
     } catch (e) {
       let errorDialog = new Alert();
       errorDialog.show(e.message);
@@ -401,9 +390,7 @@ export class CategorizationScreen
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i];
       const file = pair.file;
-      console.log(file);
       const csvType = pair.supportedType;
-      console.log(csvType);
 
       try {
         const location = new LocalFileLocation(file);
@@ -411,19 +398,9 @@ export class CategorizationScreen
           return;
         }
 
-        const estimator = new ColumnEstimation();
-        const columns = await estimator.estimateByLocation(location);
-
-        const masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
-        const config = masterMappingInfo.getConfigFor(csvType.get());
-        console.log(config);
-
-        const loadService = new TransactionLoadService(
-          this.spectreUser,
-          location,
-          new ByColumnNameCsvImporter(columns, config)
-        );
-        await loadService.load();
+        const factory = new TransactionLoaderFactory();
+        const service = factory.create(csvType);
+        await service.load(this.spectreUser, location);
 
         this.setState({
           showImportCsvScreen: false,
@@ -436,49 +413,6 @@ export class CategorizationScreen
       }
     }
   }
-
-  // async onFileSelect(event: OnFileSelectedEvent) {
-  //   console.log(event.file);
-  //   try {
-  //     const location = new LocalFileLocation(event.file);
-  //     if (await location.isEmpty()) {
-  //       return;
-  //     }
-
-  //     const estimator = new ColumnEstimation();
-  //     const columns = await estimator.estimateByLocation(location);
-  //     console.log(JSON.stringify(columns));
-
-  //     let config;
-  //     if (event.file.name.includes("chase")) {
-  //       config = new CsvColumnNameConfig(ChaseBankConfig);
-  //     } else {
-  //       config = new CsvColumnNameConfig(PaypalBankConfig);
-  //     }
-
-  //     // This on file select thing might get tricky with the new way that they want to do it...
-  //     // For each file we should have an associated file type. We should have
-  //     // We may have to move this to a different function. We are going to have to have an association
-  //     // that is mapped between file and the type. It is not odd to say that we are going to be able to
-  //     // create a local file location and a type.
-
-  //     const loadService = new TransactionLoadService(
-  //       this.spectreUser,
-  //       location,
-  //       new ByColumnNameCsvImporter(columns, config)
-  //     );
-  //     await loadService.load();
-
-  //     this.setState({
-  //       showImportCsvScreen: false,
-  //       numUncategorized: this.spectreUser.getUncategorized().length,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //     let errorDialog = new Alert();
-  //     errorDialog.show(e.message);
-  //   }
-  // }
 
   onCategoryPress(event: OnCategoryPressed) {
     try {

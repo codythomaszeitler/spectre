@@ -24,7 +24,7 @@ export const CATEGORY_BOX_HEIGHT = isMobile ? 35 : 47;
 export const CATEGORY_BOX_INSET = 6;
 export const CATEGORY_FONT_SIZE = 21;
 export const TRANSACTION_DIAMETER = CATEGORY_BOX_HEIGHT / 1.4;
-export const WHITESPACE_LEFT_OF_CATEGORY_TEXT = (10 * 3) - 5 ;
+export const WHITESPACE_LEFT_OF_CATEGORY_TEXT = 10 * 3 - 5;
 
 export interface Props {
   color: Color;
@@ -43,7 +43,8 @@ export interface State {
   numTransactionsDiameter: number;
 }
 
-export class CategoryScreen extends Component
+export class CategoryScreen
+  extends Component
   implements TransactionCategorizedListener {
   state: State;
   spectreUser: SpectreUser;
@@ -66,6 +67,8 @@ export class CategoryScreen extends Component
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
+    this.cachedTransactionsView = [];
+
     this.state = {
       color: props.color,
       category: props.category,
@@ -75,6 +78,62 @@ export class CategoryScreen extends Component
       deleteButtonWidth: CATEGORY_BOX_HEIGHT,
       numTransactionsDiameter: TRANSACTION_DIAMETER,
     };
+  }
+
+  componentDidMount() {
+    this.cachedTransactionsView = this.generateTransactionsViews();
+  }
+
+  generateTransactionsViews() {
+    return this.state.category
+      .getTransactions()
+      .reverse()
+      .map((data) => {
+        return this.generateTransactionsView(data);
+      });
+  }
+
+  generateTransactionsView(data) {
+    return (
+      <View
+        key={data.id}
+        style={{
+          flexDirection: "row",
+          flex: 1,
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 9,
+          }}
+        >
+          <View
+            style={{
+              height: 5,
+            }}
+          ></View>
+          <TransactionScreenSegment
+            canDelete={true}
+            isHorizontal
+            onDelete={this.onUncategorizePress}
+            transaction={data}
+            textColor={new Color("#FFFFFF")}
+            backgroundColor={new Color("#bdbdbd")}
+            containerStyle={{
+              backgroundColor: "#bdbdbd",
+              borderRadius: 7,
+              height: CATEGORY_BOX_HEIGHT,
+            }}
+            type={"row"}
+          ></TransactionScreenSegment>
+        </View>
+      </View>
+    );
   }
 
   componentWillUnmount() {
@@ -114,6 +173,7 @@ export class CategoryScreen extends Component
       numTransactions: numTransactions,
       category: event.category.copy(),
     });
+    this.cachedTransactionsView = this.generateTransactionsViews();
   }
 
   onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
@@ -124,6 +184,7 @@ export class CategoryScreen extends Component
       numTransactions: numTransactions,
       category: event.category.copy(),
     });
+    this.cachedTransactionsView = this.generateTransactionsViews();
   }
 
   onPress() {
@@ -222,7 +283,9 @@ export class CategoryScreen extends Component
                   <Text
                     style={{
                       color: "#fff",
-                      fontSize: isMobile ? CATEGORY_FONT_SIZE :  CATEGORY_FONT_SIZE + 3,
+                      fontSize: isMobile
+                        ? CATEGORY_FONT_SIZE
+                        : CATEGORY_FONT_SIZE + 3,
                       fontFamily: FontFamily,
                       marginBottom: 1,
                     }}
@@ -279,51 +342,7 @@ export class CategoryScreen extends Component
         </GestureRecognizer>
         {!this.props.categorizationMode &&
           this.state.shouldShowTransactions &&
-          this.state.category
-            .getTransactions()
-            .reverse()
-            .map((data, index) => {
-              return (
-                <View
-                  key={data.id}
-                  style={{
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                    }}
-                  ></View>
-                  <View
-                    style={{
-                      flex: 9,
-                    }}
-                  >
-                    <View
-                      style={{
-                        height: 5,
-                      }}
-                    ></View>
-                    <TransactionScreenSegment
-                      canDelete={true}
-                      isHorizontal
-                      onDelete={this.onUncategorizePress}
-                      transaction={data}
-                      textColor={new Color("#FFFFFF")}
-                      backgroundColor={new Color("#bdbdbd")}
-                      containerStyle={{
-                        backgroundColor: "#bdbdbd",
-                        borderRadius: 7,
-                        height: CATEGORY_BOX_HEIGHT,
-                      }}
-                      type={"row"}
-                    ></TransactionScreenSegment>
-                  </View>
-                </View>
-              );
-            })}
+          this.cachedTransactionsView}
       </View>
     );
   }

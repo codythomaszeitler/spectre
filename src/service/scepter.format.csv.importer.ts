@@ -5,7 +5,7 @@ import { Transaction } from "../pojo/transaction";
 import {
   ScepterFormatImporter,
   ScepterFormattedLine,
-  SCEPTER_CATEGORY_COLUMN_NAME
+  SCEPTER_CATEGORY_COLUMN_NAME,
 } from "./scepter.format.importer";
 
 export class ScepterFormatCsvImporter implements ScepterFormatImporter {
@@ -15,7 +15,7 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
     this.columns = new Columns({});
   }
 
-  defineIncomingFormat(columns : Columns) {
+  defineIncomingFormat(columns: Columns) {
     this.columns = columns.copy();
   }
 
@@ -25,27 +25,35 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
 
     const transactionWithCategory = csvImporter.convert(item);
 
-    const details = transactionWithCategory.getDetails();
-    const detailsForConversion = [];
-    for (let i = 0; i < details.length; i++) {
-        const detail = details[i];
-        if (detail.getColumnName() !== SCEPTER_CATEGORY_COLUMN_NAME) {
-            detailsForConversion.push(detail);
-        }
-    }
-
-    let category = null;
-    for (let i = 0; i < details.length; i++) {
-        const detail = details[i];
-        if (detail.getColumnName() === SCEPTER_CATEGORY_COLUMN_NAME) {
-            category = new Category(detail.getElement());
-        }
-    }
-
-    return new ScepterFormattedLine(new Transaction(detailsForConversion), category);
+    return new ScepterFormattedLine(
+      new Transaction(this.getNonCategoryDetails(transactionWithCategory)),
+      this.getCategoryFromDetail(transactionWithCategory)
+    );
   }
 
+  getNonCategoryDetails(transaction: Transaction) {
+    const detailsForConversion = [];
 
+    const details = transaction.getDetails();
+    for (let i = 0; i < details.length; i++) {
+      const detail = details[i];
+      if (detail.getColumnName() !== SCEPTER_CATEGORY_COLUMN_NAME) {
+        detailsForConversion.push(detail);
+      }
+    }
+    return detailsForConversion;
+  }
 
-  // convert: (item: string) => ScepterFormatLine;
+  getCategoryFromDetail(transaction : Transaction) {
+    const details = transaction.getDetails();
+
+    let category = new Category('CATEGORY NOT FOUND');
+    for (let i = 0; i < details.length; i++) {
+      const detail = details[i];
+      if (detail.getColumnName() === SCEPTER_CATEGORY_COLUMN_NAME) {
+        category = new Category(detail.getElement());
+      }
+    }
+    return category;
+  }
 }

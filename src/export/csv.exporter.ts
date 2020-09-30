@@ -12,17 +12,47 @@ export class CsvExporter implements Exporter {
     this.columns = new Columns({});
   }
 
-  defineOutgoingFormat(columns : Columns) {
+  defineOutgoingFormat(columns: Columns) {
     this.columns = columns.copy();
   }
 
-  convertColumns(columns : Columns) {
-    let converted = '';
-    for (let i = 0; i < columns.getNumColumns(); i++) {
+  convertColumns(columns: Columns) {
+    let converted = "";
+
+    const getMinIndex = () => {
+      let minIndex = 1000000000;
+      for (let i = 0; i < columns.getNumColumns(); i++) {
+        if (columns.hasColumn(i)) {
+          if (i < minIndex) {
+            minIndex = i;
+          }
+        }
+      }
+      return minIndex;
+    };
+
+    const getMaxIndex = () => {
+      let maxIndex = -1;
+      for (let i = columns.getNumColumns(); i >= 0; i--) {
+        if (columns.hasColumn(i)) {
+          if (i > maxIndex) {
+            maxIndex = i;
+          }
+        }
+      }
+      return maxIndex;
+    };
+
+    for (let i = getMinIndex(); i <= getMaxIndex(); i++) {
+      if (!columns.hasColumn(i)) {
+        converted += ",noConfig" + i;
+        continue;
+      }
+
       if (i === 0) {
         converted = columns.getName(i);
       } else {
-        converted = converted + ',' + columns.getName(i);
+        converted = converted + "," + columns.getName(i);
       }
     }
     return converted;
@@ -97,9 +127,9 @@ export class CsvExporter implements Exporter {
   }
 }
 
-export function removeCommaAtEnd(toRemoveFrom : string) {
-    let withoutLastComma = toRemoveFrom.substring(0, toRemoveFrom.length - 1);
-    return withoutLastComma;
+export function removeCommaAtEnd(toRemoveFrom: string) {
+  let withoutLastComma = toRemoveFrom.substring(0, toRemoveFrom.length - 1);
+  return withoutLastComma;
 }
 
 export function escapeCsvElement(raw: string) {

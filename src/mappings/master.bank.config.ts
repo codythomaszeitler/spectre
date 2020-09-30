@@ -39,5 +39,17 @@ export const MasterBankConfig = {
         }
       ],
     },
+    {
+      name : 'Scepter',
+      imageFilePath: require("../../assets/tiny_paypal.png"),
+      default: false,
+      mappings : []
+    },
+    {
+      name : 'Raw',
+      imageFilePath: require("../../assets/tiny_paypal.png"),
+      default: false,
+      mappings : []
+    },
   ],
 };

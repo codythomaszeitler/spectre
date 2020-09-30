@@ -32,9 +32,6 @@ export class ColumnEstimation {
   estimateByTransaction(transaction: Transaction) {
     const columnsConfig = {};
     this._ensureColumnSupportsTransaction(transaction, columnsConfig);
-
-    console.log(columnsConfig);
-
     return new Columns(columnsConfig);
   }
 

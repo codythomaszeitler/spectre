@@ -2,40 +2,29 @@ import { SpectreUser } from "../pojo/spectre.user";
 import { Importer } from "../export/importer";
 import { RawDataLocation } from "./raw.data.location";
 import { DocumentLoadService } from "./document.load.service";
-import { Columns } from "../export/columns";
+import { ColumnEstimation } from "../service/column.estimation";
+import { TransactionLoader } from "./transaction.loader";
 
-export class TransactionLoadService {
-  spectreUser: SpectreUser;
-  location: RawDataLocation;
+export class TransactionLoadService implements TransactionLoader {
   importer: Importer;
-  columns : Columns;
+  numLinesLoaded: number;
 
-  numLinesLoaded : number;
-
-  constructor(
-    spectreUser: SpectreUser,
-    location: RawDataLocation,
-    importer: Importer,
-  ) {
-    this.spectreUser = spectreUser;
-    this.location = location;
+  constructor(importer: Importer) {
     this.importer = importer;
     this.numLinesLoaded = 0;
   }
 
-  async load() {
-    const loadService = new DocumentLoadService(this.location);
+  async load(scepterUser: SpectreUser, location: RawDataLocation) {
+    const estimator = new ColumnEstimation();
+    const structureOfCsv = await estimator.estimateByLocation(location);
+    this.importer.defineIncomingFormat(structureOfCsv);
 
+    const loadService = new DocumentLoadService(location);
     let lines = await loadService.fetchall();
 
-    const transactions = [];
-    for (let i = 0; i < lines.length; i++) {
-        const transaction = this.importer.convert(lines[i]);
-        transactions.push(transaction);
-
-        this.spectreUser.readyForCategorization(transaction);
+    for (let i = 1; i < lines.length; i++) {
+      const transaction = this.importer.convert(lines[i]);
+      scepterUser.readyForCategorization(transaction);
     }
-
-    return transactions;
   }
 }

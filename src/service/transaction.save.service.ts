@@ -20,7 +20,8 @@ export class TransactionSaveService {
     const structureOfCsv = estimator.estimateBySpectreUser(scepterUser);
     this.exporter.defineOutgoingFormat(structureOfCsv);
 
-    let converted = [];
+    let converted = [this.exporter.convertColumns(structureOfCsv) + '\n'];
+
     const categories = scepterUser.getCategories();
     for (let i = 0; i < categories.length; i++) {
         const category = categories[i];

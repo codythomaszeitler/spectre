@@ -35,7 +35,7 @@ export class LocalFileLocation implements RawDataLocation {
     const lines = await this.readFileAsArray(this.file);
 
     this.wasRead = false;
-    return lines.slice(1);
+    return lines.slice(0);
   }
 
   async readFileAsArray(file : File) {

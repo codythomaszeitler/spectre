@@ -1,10 +1,10 @@
 export const MasterBankConfig = {
-  default: "Chase",
+  default: "Raw",
   configs: [
     {
       name: "Chase",
       imageFilePath: require("../../assets/Chase-logo.png"),
-      default: true,
+      default: false,
       mappings: [
         {
           csvHeaderName: "Amount",
@@ -48,7 +48,7 @@ export const MasterBankConfig = {
     {
       name : 'Raw',
       imageFilePath: require("../../assets/tiny_paypal.png"),
-      default: false,
+      default: true,
       mappings : []
     },
   ],

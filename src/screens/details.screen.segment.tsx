@@ -50,10 +50,10 @@ export class DetailsScreenSegment extends Component {
   }
 
   getViewForVerticalOrientation() {
-    const generateDetailLine = (detail: TransactionDetail) => {
+    const generateDetailLine = (detail: TransactionDetail, index : number) => {
       return (
         <View
-          key={detail.getElement()}
+          key={detail.getElement() + index}
           style={{
             flex: 1,
             alignSelf: "flex-start",
@@ -91,7 +91,7 @@ export class DetailsScreenSegment extends Component {
       height : 6 
     }}></View>);
     for (let i = 0; i < details.length; i < i++) {
-      views.push(generateDetailLine(details[i]));
+      views.push(generateDetailLine(details[i], i));
     }
     views.push(<View style={{
       height : 6 

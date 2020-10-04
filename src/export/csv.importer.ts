@@ -11,12 +11,27 @@ export class CsvImporter implements Importer {
     this.columns = new Columns({});
   }
 
-  defineIncomingFormat(columns : Columns) {
+  defineIncomingFormat(columns: Columns) {
     this.columns = columns.copy();
   }
 
   convert(string: string) {
     let details = [];
+    if (!string) {
+      const numColumns = this.columns.getNumColumns();
+      for (let i = 0; i < numColumns; i++) {
+        if (this.columns.hasColumn(i)) {
+          details.push(
+            new TransactionDetail(
+              "",
+              this.columns.getName(i),
+              this.columns.getType(i)
+            )
+          );
+        }
+      }
+      return new Transaction(details);
+    }
 
     const splits = string.split(",");
     for (let i = 0; i < splits.length; i++) {

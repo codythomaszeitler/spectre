@@ -45,7 +45,7 @@ describe("Transaction Save Service", () => {
 
     const loadDocument = new DocumentLoadService(location);
     const lines = await loadDocument.fetchall();
-    expect(lines.length).toBe(10);
+    expect(lines.length).toBe(11);
   });
 
   it("should write all categorized transactions to the given location using the generated columns", async () => {
@@ -91,15 +91,15 @@ describe("Transaction Save Service", () => {
 
     const loadDocument = new DocumentLoadService(location);
     const lines = await loadDocument.fetchall();
-    expect(lines.length).toBe(3);
+    expect(lines.length).toBe(4);
 
-    expect(lines[0]).toBe(
+    expect(lines[1]).toBe(
       '"test1","test2",,,' + escapeCsvElement(category.getName()) + '\n'
     );
-    expect(lines[1]).toBe(
+    expect(lines[2]).toBe(
       '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
-    expect(lines[2]).toBe(
+    expect(lines[3]).toBe(
       '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
   });
@@ -147,15 +147,15 @@ describe("Transaction Save Service", () => {
 
     const loadDocument = new DocumentLoadService(location);
     const lines = await loadDocument.fetchall();
-    expect(lines.length).toBe(3);
+    expect(lines.length).toBe(4);
 
-    expect(lines[0]).toBe(
+    expect(lines[1]).toBe(
       '"test1","test2",,,' + escapeCsvElement(category.getName()) + '\n'
     );
-    expect(lines[1]).toBe(
+    expect(lines[2]).toBe(
       '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
-    expect(lines[2]).toBe(
+    expect(lines[3]).toBe(
       '"test1","test2","test3","test4",' + escapeCsvElement(category.getName()) + '\n'
     );
   });

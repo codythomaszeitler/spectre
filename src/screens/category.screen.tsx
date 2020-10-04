@@ -67,8 +67,6 @@ export class CategoryScreen
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
-    this.cachedTransactionsView = [];
-
     this.state = {
       color: props.color,
       category: props.category,
@@ -77,11 +75,14 @@ export class CategoryScreen
       showDeleteButton: false,
       deleteButtonWidth: CATEGORY_BOX_HEIGHT,
       numTransactionsDiameter: TRANSACTION_DIAMETER,
+      cachedTransactionsView: [],
     };
   }
 
   componentDidMount() {
-    this.cachedTransactionsView = this.generateTransactionsViews();
+    this.setState({
+      cachedTransactionsView: this.generateTransactionsViews(),
+    });
   }
 
   generateTransactionsViews() {
@@ -169,22 +170,34 @@ export class CategoryScreen
     const numTransactions = this.spectreUser.getTransactionsFor(
       this.state.category
     ).length;
-    this.setState({
-      numTransactions: numTransactions,
-      category: event.category.copy(),
-    });
-    this.cachedTransactionsView = this.generateTransactionsViews();
+    this.setState(
+      {
+        numTransactions: numTransactions,
+        category: event.category.copy(),
+      },
+      () => {
+        this.setState({
+          cachedTransactionsView: this.generateTransactionsViews(),
+        });
+      }
+    );
   }
 
   onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
     const numTransactions = this.spectreUser.getTransactionsFor(
       this.state.category
     ).length;
-    this.setState({
-      numTransactions: numTransactions,
-      category: event.category.copy(),
-    });
-    this.cachedTransactionsView = this.generateTransactionsViews();
+    this.setState(
+      {
+        numTransactions: numTransactions,
+        category: event.category.copy(),
+      },
+      () => {
+        this.setState({
+          cachedTransactionsView: this.generateTransactionsViews(),
+        });
+      }
+    );
   }
 
   onPress() {
@@ -342,7 +355,7 @@ export class CategoryScreen
         </GestureRecognizer>
         {!this.props.categorizationMode &&
           this.state.shouldShowTransactions &&
-          this.cachedTransactionsView}
+          this.state.cachedTransactionsView}
       </View>
     );
   }

@@ -74,6 +74,8 @@ export class CsvToImport {
     listener.__listenerId = this.currentListenerId;
     this.currentListenerId++;
     this.onCsvSetListeners.push(listener);
+
+    this.emitCsvTypeChangedEvent();
   }
 
   removeOnCsvTypeSelectedListener(listener: OnCsvTypeSelectedListener) {
@@ -92,9 +94,17 @@ export class CsvToImport {
 
     this.csvType = csvType.copy();
 
+    this.emitCsvTypeChangedEvent(); 
+  }
+
+  emitCsvTypeChangedEvent() {
+    if (!this.csvType) {
+      return;
+    }
+
     for (let i = 0; i < this.onCsvSetListeners.length; i++) {
         const event = new OnCsvTypeSelectedEvent();
-        event.csvType = csvType.copy();
+        event.csvType = this.csvType.copy();
 
         const listener = this.onCsvSetListeners[i];
         listener.onCsvTypeSeleted(event);

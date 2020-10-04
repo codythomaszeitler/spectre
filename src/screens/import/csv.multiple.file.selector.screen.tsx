@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native";
-import { BoldFontFamily } from "../../css/styles";
-import { CsvToImport } from "./csv.to.import";
+import { View, TouchableOpacity, Text } from "react-native";
+import { styles } from "./csv.file.selection.screen";
 
 export interface Props {
-  csvToImport: CsvToImport;
+  placeholderFilePath: string;
+  onFilesSelectedListener: OnMultipleFilesSelectedListener;
 }
 
-export class CsvFileSelectionScreen extends Component {
+export class CsvMultipleFileSelectorScreen extends Component {
+  listeners: Array<OnMultipleFilesSelectedListener>;
+
   constructor(props: Props) {
     super(props);
 
@@ -17,22 +18,23 @@ export class CsvFileSelectionScreen extends Component {
     this.fileInputRef = React.createRef();
 
     this.listeners = [];
-    if (this.props.onFileSelectedListener) {
-      this.listeners.push(this.props.onFileSelectedListener);
+    if (this.props.onFilesSelectedListener) {
+      this.listeners.push(this.props.onFilesSelectedListener);
     }
 
     this.state = {
-      selectedFilePath: this.props.csvToImport.getImportFile().name,
       currentFile: "",
     };
   }
 
   onFilePick(event: Object) {
-    this.setState({
-      selectedFilePath: event.target.files[0].name,
-    });
+    for (let i = 0; i < this.listeners.length; i++) {
+      const listener = this.listeners[i];
 
-    this.props.csvToImport.setImportFile(event.target.files[0]);
+      const filesSelectedEvent = new OnMultipleFilesSelectedEvent();
+      filesSelectedEvent.files = event.target.files;
+      listener.onFilesSelectedListener(filesSelectedEvent);
+    }
   }
 
   render() {
@@ -60,11 +62,7 @@ export class CsvFileSelectionScreen extends Component {
             this.fileInputRef.current.click();
           }}
         >
-          <Text
-            style={styles.font}
-          >
-            {this.state.selectedFilePath}
-          </Text>
+          <Text style={styles.font}>{this.props.placeholderFilePath}</Text>
         </TouchableOpacity>
         <input
           type="file"
@@ -75,16 +73,21 @@ export class CsvFileSelectionScreen extends Component {
           style={{
             display: "none",
           }}
+          multiple
         ></input>
       </View>
     );
   }
 }
 
-export const styles = StyleSheet.create({
-  font: {
-    color: "white",
-    fontFamily: BoldFontFamily,
-    fontSize: 18,
-  },
-});
+export interface OnMultipleFilesSelectedListener {
+  onFilesSelectedListener: (event: OnMultipleFilesSelectedEvent) => void;
+}
+
+export class OnMultipleFilesSelectedEvent {
+  files: Array<File>;
+
+  constructor() {
+    this.files = [];
+  }
+}

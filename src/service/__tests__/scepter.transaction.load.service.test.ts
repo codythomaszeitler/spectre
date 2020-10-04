@@ -32,6 +32,7 @@ describe("Scepter Transaction Load Service", () => {
     const location = new TestLocation([
       exporter.convertColumns(columns),
       exporter.convert(scepterTransaction, category),
+      "Uncategorized Transaction"
     ]);
 
     const importer = new ScepterFormatCsvImporter();
@@ -46,5 +47,8 @@ describe("Scepter Transaction Load Service", () => {
 
     const newlyAddedCategory = categories[0];
     expect(newlyAddedCategory.getName()).toBe(category.getName());
+
+    const uncategorized = newScepterUser.getUncategorized();
+    expect(uncategorized.length).toBe(1);
   });
 });

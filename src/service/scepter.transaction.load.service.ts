@@ -4,6 +4,7 @@ import { TransactionLoader } from "./transaction.loader";
 import { ScepterFormatImporter } from "./scepter.format.importer";
 import { ColumnEstimation } from "./column.estimation";
 import { DocumentLoadService } from "./document.load.service";
+import { CATEGORY_NOT_FOUND } from "./scepter.format.csv.importer";
 
 export class ScepterTransactionLoadService implements TransactionLoader {
   importer: ScepterFormatImporter;
@@ -25,12 +26,15 @@ export class ScepterTransactionLoadService implements TransactionLoader {
       const transaction = transactionAndCategory.getTransaction();
       const category = transactionAndCategory.getCategory();
 
-      if (!scepterUser.hasCategory(category)) {
+      if (!category.equals(CATEGORY_NOT_FOUND) && !scepterUser.hasCategory(category)) {
         scepterUser.addCategory(category);
       }
 
       scepterUser.readyForCategorization(transaction);
-      scepterUser.categorize(transaction, category);
+
+      if (!category.equals(CATEGORY_NOT_FOUND)) {
+        scepterUser.categorize(transaction, category);
+      }
     }
   }
 }

@@ -3,12 +3,15 @@ import { View } from "react-native";
 import { CsvFileSelectionScreen } from "./csv.file.selection.screen";
 import { CsvTypeSelectionScreen } from "./csv.type.selection.screen";
 
+export const CSV_IMPORT_LINE_HEIGHT = 75;
+
 export class CsvToImportLine extends Component {
   render() {
     return (
       <View
         style={{
-          flex: 1,
+          width : '100%',
+          height: CSV_IMPORT_LINE_HEIGHT,
         }}
       >
         <View

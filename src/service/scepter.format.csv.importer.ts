@@ -8,6 +8,8 @@ import {
   SCEPTER_CATEGORY_COLUMN_NAME,
 } from "./scepter.format.importer";
 
+export const CATEGORY_NOT_FOUND = new Category('_______CATEGORY NOT FOUND_______');
+
 export class ScepterFormatCsvImporter implements ScepterFormatImporter {
   columns: Columns;
 
@@ -20,6 +22,12 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
   }
 
   convert(item: string) {
+    if (!item) {
+
+
+
+    }
+
     const csvImporter = new CsvImporter();
     csvImporter.defineIncomingFormat(this.columns);
 
@@ -47,11 +55,14 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
   getCategoryFromDetail(transaction : Transaction) {
     const details = transaction.getDetails();
 
-    let category = new Category('CATEGORY NOT FOUND');
+    let category = CATEGORY_NOT_FOUND;
     for (let i = 0; i < details.length; i++) {
       const detail = details[i];
       if (detail.getColumnName() === SCEPTER_CATEGORY_COLUMN_NAME) {
-        category = new Category(detail.getElement());
+        const element = detail.getElement();
+        if (element) {
+          category = new Category(element);
+        }
       }
     }
     return category;

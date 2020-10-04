@@ -19,12 +19,13 @@ export class CsvTypeSelectionScreen
     super(props);
 
     this.masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
-    const defaultConfig = this.masterMappingInfo.getDefaultConfig();
-
+    const config = this.masterMappingInfo.getConfigFor(
+      this.props.csvToImport.getCsvType().get()
+    );
 
     this.state = {
-      currentChoice: defaultConfig.getName(),
-      currentImage: defaultConfig.getFilePath(),
+      currentChoice: config.getName(),
+      currentImage: config.getFilePath(),
     };
   }
 
@@ -96,6 +97,7 @@ export class CsvTypeSelectionScreen
               selectedValue={this.state.currentChoice}
               style={{ flex: 1, borderColor: "white", fontSize: 18 }}
               onValueChange={(itemValue: string) => {
+                console.log('on value changed was called');
                 this.props.csvToImport.setCsvType(new CsvType(itemValue));
               }}
             >

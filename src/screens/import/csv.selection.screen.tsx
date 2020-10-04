@@ -9,6 +9,7 @@ import {
   OnCsvTypeSelectedListener,
 } from "./csv.to.import";
 import { CsvToImportLine } from "./csv.to.import.line.screen";
+import { CsvPickerScreen, OnMultipleCsvsSelectedEvent, OnMultipleCsvsSelectedListener } from "./csv.picker.screen";
 
 export interface State {
   csvsToImport: Array<CsvToImport>;
@@ -16,14 +17,14 @@ export interface State {
 
 export class CsvSelectionScreen
   extends Component
-  implements OnCsvTypeSelectedListener {
+  implements OnCsvTypeSelectedListener, OnMultipleCsvsSelectedListener {
   listeners: FileCsvTypeDuoSelectedListener[];
 
   constructor(props) {
     super(props);
 
     this.onFilesImportStart = this.onFilesImportStart.bind(this);
-    this.onFilePick = this.onFilePick.bind(this);
+    this.onCsvsSelected = this.onCsvsSelected.bind(this);
 
     this.fileInputRef = React.createRef();
 
@@ -36,6 +37,22 @@ export class CsvSelectionScreen
       csvsToImport: [],
       currentFile: "",
     };
+  }
+
+  onCsvsSelected(event: OnMultipleCsvsSelectedEvent) {
+    const csvsToImport = [...this.state.csvsToImport];
+
+    const newCsvsToImport = event.csvsToImport;
+    for (let i = 0; i < newCsvsToImport.length; i++) {
+      const newCsvToImport = newCsvsToImport[i];
+      newCsvToImport.addOnCsvTypeSelectedListener(this);
+    }
+
+    csvsToImport.push(...newCsvsToImport);
+
+    this.setState({
+      csvsToImport
+    })
   }
 
   onCsvTypeSeleted(event: OnCsvTypeSelectedEvent) {
@@ -66,28 +83,6 @@ export class CsvSelectionScreen
       listener.onFilesWithTypeSelectedListener(event);
     }
   }
-
-  onFilePick(event: Object) {
-    const files = event.target.files;
-
-    const csvsToImport = [...this.state.csvsToImport];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-
-      const csvToImport = new CsvToImport();
-      csvToImport.setImportFile(file);
-      csvToImport.setCsvType(new CsvType("Chase"));
-
-      csvToImport.addOnCsvTypeSelectedListener(this);
-
-      csvsToImport.push(csvToImport);
-    }
-
-    this.setState({
-      csvsToImport : csvsToImport
-    });
-  }
-
 
   render() {
     return (
@@ -131,24 +126,9 @@ export class CsvSelectionScreen
           ></View>
         </View>
 
-        <Button
-          title="Click me to start importing"
-          onPress={() => {
-            this.fileInputRef.current.click();
-          }}
-        ></Button>
+        <CsvPickerScreen onCsvsSelectedListener={this} placeholderFilePath={'-------'}>
 
-        <input
-          type="file"
-          width="100%"
-          ref={this.fileInputRef}
-          value={this.state.currentFile}
-          onChange={this.onFilePick}
-          style={{
-            display: "none",
-          }}
-          multiple
-        ></input>
+        </CsvPickerScreen>
 
         <View
           style={{

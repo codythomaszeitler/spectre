@@ -16,7 +16,6 @@ export class ByColumnNameCsvImporter  extends CsvImporter {
 
     defineIncomingFormat(columns : Columns) {
         columns = this.alignColumnsWithTypesFromConfig(columns);
-        console.log(columns);
         super.defineIncomingFormat(columns);
     }
 
@@ -24,7 +23,9 @@ export class ByColumnNameCsvImporter  extends CsvImporter {
         for (let i = 0; i < columns.getNumColumns(); i++) {
             if (columns.hasColumn(i)) {
                 const type = this.config.getTypeFor(columns.getName(i));
-                columns.setType(i, type);
+                if (type) {
+                    columns.setType(i, type);
+                }
             }
         }
         return columns;

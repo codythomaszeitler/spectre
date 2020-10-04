@@ -1,7 +1,7 @@
 import { Columns } from "../columns";
 import { AMOUNT_TYPE, Transaction } from "../../pojo/transaction";
 import { Currency } from "../../pojo/currency";
-import { TransactionDetail } from "../../pojo/transaction.detail";
+import { STRING_TYPE, TransactionDetail } from "../../pojo/transaction.detail";
 import { BankConfig } from "../../mappings/bank.config";
 import { CsvExporter } from "../csv.exporter";
 import { ByColumnNameCsvImporter } from "../by.column.name.csv.converter";
@@ -11,7 +11,7 @@ describe("By Column Name Csv Converter", () => {
     const columns = new Columns({
       0: {
         name: "Amount",
-        type: AMOUNT_TYPE,
+        type: STRING_TYPE,
       },
       1: {
         name: "Test1Type",
@@ -24,7 +24,7 @@ describe("By Column Name Csv Converter", () => {
     });
 
     const details = [
-      TransactionDetail.withCurrency(new Currency(400), "Amount"),
+      new TransactionDetail('First Detail', 'Amount', STRING_TYPE),
       new TransactionDetail("This is a detail", "Test1Type", "Test1Type"),
       new TransactionDetail("This is another detail", "Test2Type", "Test2Type"),
     ];
@@ -52,7 +52,8 @@ describe("By Column Name Csv Converter", () => {
       new TransactionDetail("This is another detail", "Test", "Test2Type"),
     ]);
 
-    const converted = testObject.convert(exporter.convert(transaction));
+    const asString = exporter.convert(transaction);
+    const converted = testObject.convert(asString);
     expect(converted.equals(expected)).toBe(true);
   });
 

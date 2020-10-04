@@ -1,5 +1,4 @@
 import { TransactionDetail } from "./transaction.detail";
-import { DetailConverter } from "../export/detail.converter";
 
 export const AMOUNT_TYPE = "Amount";
 
@@ -74,8 +73,7 @@ export class Transaction {
 
       const detail = this.details[i];
       if (detail.getColumnName() === columnName) {
-        const converter = new DetailConverter();
-        element = converter.fromDetail(detail);
+        element = detail.getElement();
       }
     }
 

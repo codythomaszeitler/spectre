@@ -3,7 +3,6 @@ import { CATEGORY_TYPE } from "../pojo/category";
 import { Columns, columnNameDelimeter } from "./columns";
 import { Category } from "../pojo/category";
 import { Exporter } from "./exporter";
-import { DetailConverter } from "./detail.converter";
 
 export class CsvExporter implements Exporter {
   columns: Columns;
@@ -110,12 +109,9 @@ export class CsvExporter implements Exporter {
         const columnNames = nameOrNames.split(columnNameDelimeter);
         if (containsColumnName(columnNames)) {
           const matchingColumnName = getMatchingColumnName(columnNames);
-          const converter = new DetailConverter();
           converted +=
             escapeCsvElement(
-              converter.fromDetail(
-                transaction.getDetailByName(matchingColumnName)
-              )
+              transaction.getDetailByName(matchingColumnName).getElement()
             ) + ",";
         } else {
           converted += ",";

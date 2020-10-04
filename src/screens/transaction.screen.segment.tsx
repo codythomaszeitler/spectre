@@ -70,7 +70,6 @@ export class TransactionScreenSegment extends Component {
   }
 
   render() {
-    console.log('The render method of transaction screen segment was called.');
     return (
       <GestureRecognizer
         onSwipeLeft={this.showDeleteButton}

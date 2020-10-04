@@ -9,7 +9,11 @@ import {
   OnCsvTypeSelectedListener,
 } from "./csv.to.import";
 import { CsvToImportLine } from "./csv.to.import.line.screen";
-import { CsvPickerScreen, OnMultipleCsvsSelectedEvent, OnMultipleCsvsSelectedListener } from "./csv.picker.screen";
+import {
+  CsvPickerScreen,
+  OnMultipleCsvsSelectedEvent,
+  OnMultipleCsvsSelectedListener,
+} from "./csv.picker.screen";
 
 export interface State {
   csvsToImport: Array<CsvToImport>;
@@ -51,8 +55,8 @@ export class CsvSelectionScreen
     csvsToImport.push(...newCsvsToImport);
 
     this.setState({
-      csvsToImport
-    })
+      csvsToImport,
+    });
   }
 
   onCsvTypeSeleted(event: OnCsvTypeSelectedEvent) {
@@ -68,7 +72,6 @@ export class CsvSelectionScreen
   }
 
   onFilesImportStart() {
-
     const pairs = [];
     for (let i = 0; i < this.state.csvsToImport.length; i++) {
       const csvToImport = this.state.csvsToImport[i];
@@ -77,7 +80,7 @@ export class CsvSelectionScreen
 
     const event = new OnFilesWithCsvTypeSelectedEvent();
     event.pairs = pairs;
-    
+
     for (let i = 0; i < this.listeners.length; i++) {
       const listener = this.listeners[i];
       listener.onFilesWithTypeSelectedListener(event);
@@ -98,7 +101,7 @@ export class CsvSelectionScreen
       >
         <View
           style={{
-            flex: 0.5,
+            flex: 0.175,
           }}
         ></View>
 
@@ -118,6 +121,10 @@ export class CsvSelectionScreen
                 <CsvToImportLine csvToImport={csvToImport}></CsvToImportLine>
               );
             })}
+            <CsvPickerScreen
+              onCsvsSelectedListener={this}
+              placeholderFilePath={"-------"}
+            ></CsvPickerScreen>
           </View>
           <View
             style={{
@@ -125,10 +132,6 @@ export class CsvSelectionScreen
             }}
           ></View>
         </View>
-
-        <CsvPickerScreen onCsvsSelectedListener={this} placeholderFilePath={'-------'}>
-
-        </CsvPickerScreen>
 
         <View
           style={{

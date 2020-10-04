@@ -3,6 +3,7 @@ import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/transaction.detail";
 import { Transaction } from "../pojo/transaction";
 import { BankConfig } from "../mappings/bank.config";
+import { ColumnEstimation } from "../service/column.estimation";
 
 export class ByColumnNameCsvImporter  extends CsvImporter {
 
@@ -14,7 +15,19 @@ export class ByColumnNameCsvImporter  extends CsvImporter {
     }
 
     defineIncomingFormat(columns : Columns) {
+        columns = this.alignColumnsWithTypesFromConfig(columns);
+        console.log(columns);
         super.defineIncomingFormat(columns);
+    }
+
+    alignColumnsWithTypesFromConfig(columns : Columns) {
+        for (let i = 0; i < columns.getNumColumns(); i++) {
+            if (columns.hasColumn(i)) {
+                const type = this.config.getTypeFor(columns.getName(i));
+                columns.setType(i, type);
+            }
+        }
+        return columns;
     }
 
     convert(string : string) {

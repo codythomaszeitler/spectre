@@ -20,4 +20,5 @@ export class CsvType {
 }
 
 export const SCEPTER_FORMAT = new CsvType('Scepter');
-export const RAW_FORMAT = new CsvType('Raw');
+export const RAW_FORMAT = new CsvType('--');
+export const VENMO_FORMAT = new CsvType('Venmo');

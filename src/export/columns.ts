@@ -26,6 +26,11 @@ export class Columns {
     return this.configuration[columnIndex]['type'];
   }
 
+  setType(columnIndex : number, type : string) {
+    this._checkColumnIndex(columnIndex);
+    this.configuration[columnIndex]['type'] = type;
+  }
+
   hasColumn(columnIndex : number) {
     return (columnIndex in this.configuration);
   }

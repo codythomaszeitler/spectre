@@ -19,6 +19,7 @@ import { Color } from "../pojo/color";
 import { DeleteButton } from "./delete.button";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { isMobile } from "react-device-detect";
+import { EditCategoryScreen } from "./edit.category.screen";
 
 export const CATEGORY_BOX_HEIGHT = isMobile ? 35 : 47;
 export const CATEGORY_BOX_INSET = 6;
@@ -43,6 +44,9 @@ export interface State {
   numTransactionsDiameter: number;
 }
 
+
+
+
 export class CategoryScreen
   extends Component
   implements TransactionCategorizedListener {
@@ -56,16 +60,19 @@ export class CategoryScreen
     this.onUncategorizePress = this.onUncategorizePress.bind(this);
     this.onCategoryDeletePress = this.onCategoryDeletePress.bind(this);
     this.onDeletePress = this.onDeletePress.bind(this);
+    this.onStartEditing = this.onStartEditing.bind(this);
     this.showDeleteButton = this.showDeleteButton.bind(this);
     this.hideDeleteButton = this.hideDeleteButton.bind(this);
     this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(
       this
     );
+    // this.onCategoryNameChange = this.onCategoryNameChange.bind(this);
 
     this.spectreUser = datastore().get();
 
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
+    // this.spectreUser.addOnCategoryNameChangeListener(this);
 
     this.state = {
       color: props.color,
@@ -76,6 +83,7 @@ export class CategoryScreen
       deleteButtonWidth: CATEGORY_BOX_HEIGHT,
       numTransactionsDiameter: TRANSACTION_DIAMETER,
       cachedTransactionsView: [],
+      isEditing: false,
     };
   }
 
@@ -84,6 +92,28 @@ export class CategoryScreen
       cachedTransactionsView: this.generateTransactionsViews(),
     });
   }
+
+  componentWillUnmount() {
+    this.spectreUser.removeTransactionCategorizedListener(
+      this.state.category,
+      this
+    );
+    this.spectreUser.removeTransactionUncategorizedListener(
+      this.state.category,
+      this
+    );
+
+    // this.spectreUser.removeOnCategoryNameChangeListener(this);
+  }
+
+  // onCategoryNameChange(event: OnCategoryNameChangeEvent) {
+  //   if (event.oldCategory.equals(this.state.category)) {
+  //     console.log(event);
+  //     this.setState({
+  //       category : event.newCategory
+  //     });
+  //   }
+  // }
 
   generateTransactionsViews() {
     return this.state.category
@@ -137,15 +167,10 @@ export class CategoryScreen
     );
   }
 
-  componentWillUnmount() {
-    this.spectreUser.removeTransactionCategorizedListener(
-      this.props.category,
-      this
-    );
-    this.spectreUser.removeTransactionUncategorizedListener(
-      this.props.category,
-      this
-    );
+  onStartEditing() {
+    this.setState({
+      isEditing: true,
+    });
   }
 
   onDeletePress() {
@@ -246,130 +271,163 @@ export class CategoryScreen
   render() {
     return (
       <View>
-        <GestureRecognizer
-          onSwipeLeft={this.showDeleteButton}
-          onSwipeRight={this.hideDeleteButton}
-        >
-          <TouchableOpacity
-            onPress={this.onPress}
-            onLongPress={this.onLongPressShowHideDeleteButton}
+        {this.state.isEditing && (
+          <EditCategoryScreen
+            category={this.state.category}
+            color={this.state.color}
+            onSuccessfulNameChange={() => {
+              this.setState({
+                isEditing: false,
+              });
+            }}
+          ></EditCategoryScreen>
+        )}
+
+        {!this.state.isEditing && (
+          <GestureRecognizer
+            onSwipeLeft={this.showDeleteButton}
+            onSwipeRight={this.hideDeleteButton}
           >
-            <View
-              style={{
-                flexBasis: CATEGORY_BOX_HEIGHT,
-                borderRadius: CATEGORY_BOX_INSET,
-                backgroundColor: this.state.color.hex(),
-                justifyContent: "center",
-                flexGrow: 1,
-                flexShrink: 1,
-                flex: 0,
-              }}
-              onMouseEnter={() => {
-                this.setState({
-                  showDeleteButton: true,
-                });
-              }}
-              onMouseLeave={() => {
-                this.setState({
-                  showDeleteButton: false,
-                });
-              }}
+            <TouchableOpacity
+              onPress={this.onPress}
+              onLongPress={this.onLongPressShowHideDeleteButton}
             >
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
+                  flexBasis: CATEGORY_BOX_HEIGHT,
+                  borderRadius: CATEGORY_BOX_INSET,
+                  backgroundColor: this.state.color.hex(),
                   justifyContent: "center",
-                  flex: 1,
+                  flexGrow: 1,
+                  flexShrink: 1,
+                  flex: 0,
+                }}
+                onMouseEnter={() => {
+                  this.setState({
+                    showDeleteButton: true,
+                  });
+                }}
+                onMouseLeave={() => {
+                  this.setState({
+                    showDeleteButton: false,
+                  });
                 }}
               >
                 <View
                   style={{
-                    width: WHITESPACE_LEFT_OF_CATEGORY_TEXT,
-                  }}
-                ></View>
-                <View
-                  style={{
-                    flex: 18.5,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#fff",
-                      fontSize: isMobile
-                        ? CATEGORY_FONT_SIZE
-                        : CATEGORY_FONT_SIZE + 3,
-                      fontFamily: FontFamily,
-                      marginBottom: 1,
-                    }}
-                  >
-                    {this.state.category.getName()}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    width: this.state.numTransactionsDiameter,
-                    height: this.state.numTransactionsDiameter,
-                    backgroundColor: this.state.color.darkerBy(1.2).hex(),
-                    borderRadius: this.state.numTransactionsDiameter,
+                    flexDirection: "row",
                     alignItems: "center",
+                    justifyContent: "center",
+                    flex: 1,
                   }}
                 >
                   <View
                     style={{
-                      justifyContent: "center",
-                      alignContent: "center",
-                      flex: 1,
+                      width: WHITESPACE_LEFT_OF_CATEGORY_TEXT,
+                    }}
+                  ></View>
+                  <View
+                    style={{
+                      flex: 18.5,
                     }}
                   >
-                    <Text style={styles.numTransactionCounterText}>
-                      {this.state.numTransactions}
+                    <Text
+                      style={{
+                        color: "#fff",
+                        fontSize: isMobile
+                          ? CATEGORY_FONT_SIZE
+                          : CATEGORY_FONT_SIZE + 3,
+                        fontFamily: FontFamily,
+                        marginBottom: 1,
+                      }}
+                    >
+                      {this.state.category.getName()}
                     </Text>
                   </View>
-                </View>
-                <View
-                  style={{
-                    width: 10,
-                  }}
-                ></View>
-                {this.state.showDeleteButton && (
+
                   <View
                     style={{
                       justifyContent: "flex-end",
-                      width: this.state.deleteButtonWidth,
-                      height: this.state.deleteButtonWidth,
+                      width: this.state.numTransactionsDiameter,
+                      height: this.state.numTransactionsDiameter,
+                      backgroundColor: this.state.color.darkerBy(1.2).hex(),
+                      borderRadius: this.state.numTransactionsDiameter,
+                      alignItems: "center",
                     }}
                   >
-                    <DeleteButton
-                      onPress={this.onDeletePress}
-                      color={new Color("#fa756b")}
-                      borderRadius={CATEGORY_BOX_INSET}
-                    ></DeleteButton>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignContent: "center",
+                        flex: 1,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: styles.numTransactionCounterText.fontFamily,
+                          color: styles.numTransactionCounterText.color,
+                          fontSize: styles.numTransactionCounterText.fontSize,
+                        }}
+                      >
+                        {this.state.numTransactions}
+                      </Text>
+                    </View>
                   </View>
-                )}
+                  <View
+                    style={{
+                      width: 10,
+                    }}
+                  ></View>
+                  {this.state.showDeleteButton && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: this.state.deleteButtonWidth * 2 + 5,
+                        height: this.state.deleteButtonWidth,
+                      }}
+                    >
+                      <View
+                        style={{
+                          justifyContent: "flex-end",
+                          width: this.state.deleteButtonWidth,
+                          height: this.state.deleteButtonWidth,
+                        }}
+                      >
+                        <DeleteButton
+                          onPress={this.onStartEditing}
+                          color={new Color("#fa756b")}
+                          borderRadius={CATEGORY_BOX_INSET}
+                        ></DeleteButton>
+                      </View>
+                      <View
+                        style={{
+                          width: 5,
+                          height: 1,
+                        }}
+                      ></View>
+                      <View
+                        style={{
+                          justifyContent: "flex-end",
+                          width: this.state.deleteButtonWidth,
+                          height: this.state.deleteButtonWidth,
+                        }}
+                      >
+                        <DeleteButton
+                          onPress={this.onDeletePress}
+                          color={new Color("#fa756b")}
+                          borderRadius={CATEGORY_BOX_INSET}
+                        ></DeleteButton>
+                      </View>
+                    </View>
+                  )}
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </GestureRecognizer>
+            </TouchableOpacity>
+          </GestureRecognizer>
+        )}
         {!this.props.categorizationMode &&
           this.state.shouldShowTransactions &&
           this.state.cachedTransactionsView}
-      </View>
-    );
-  }
-}
-
-export class CategoryScreenSkeleton extends Component {
-  render() {
-    return (
-      <View
-        style={{
-          backgroundColor: this.props.color.hex(),
-        }}
-      >
-        {this.props.children}
       </View>
     );
   }
@@ -380,16 +438,6 @@ export class OnCategoryPressed {
 
   constructor(category: Category) {
     this.category = category.copy();
-  }
-}
-
-export class OnLocationChange {
-  box: InvisibleBoundingBox;
-  category: Category;
-
-  constructor(category: Category, box: InvisibleBoundingBox) {
-    this.category = category.copy();
-    this.box = box.copy();
   }
 }
 

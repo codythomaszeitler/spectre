@@ -108,7 +108,6 @@ export class CategoryScreen
     return transactions
       .reverse()
       .map((data) => {
-        console.log(data);
         return this.generateTransactionsView(data);
       });
   }

@@ -68,7 +68,6 @@ export class SpectreUser {
   }
 
   getTransactionsFor(category: Category) {
-    console.log(category);
     const found = this._getCategory(category);
     return found.getTransactions();
   }

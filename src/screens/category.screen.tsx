@@ -44,9 +44,6 @@ export interface State {
   numTransactionsDiameter: number;
 }
 
-
-
-
 export class CategoryScreen
   extends Component
   implements TransactionCategorizedListener {
@@ -74,6 +71,8 @@ export class CategoryScreen
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
     // this.spectreUser.addOnCategoryNameChangeListener(this);
 
+    console.log(props.category);
+
     this.state = {
       color: props.color,
       category: props.category,
@@ -94,12 +93,13 @@ export class CategoryScreen
   }
 
   componentWillUnmount() {
+    console.log('we are currently unmounting the category of : ' + this.props.category.getName());
     this.spectreUser.removeTransactionCategorizedListener(
-      this.state.category,
+      this.props.category,
       this
     );
     this.spectreUser.removeTransactionUncategorizedListener(
-      this.state.category,
+      this.props.category,
       this
     );
 
@@ -107,7 +107,7 @@ export class CategoryScreen
   }
 
   // onCategoryNameChange(event: OnCategoryNameChangeEvent) {
-  //   if (event.oldCategory.equals(this.state.category)) {
+  //   if (event.oldCategory.equals(this\.props\.category)) {
   //     console.log(event);
   //     this.setState({
   //       category : event.newCategory
@@ -116,7 +116,7 @@ export class CategoryScreen
   // }
 
   generateTransactionsViews() {
-    return this.state.category
+    return this.props.category
       .getTransactions()
       .reverse()
       .map((data) => {
@@ -192,8 +192,10 @@ export class CategoryScreen
   }
 
   onTransactionCategorized(event: OnTransactionCategorizedEvent) {
+    console.log(event.category);
+    console.log(event.transaction);
     const numTransactions = this.spectreUser.getTransactionsFor(
-      this.state.category
+      this.props.category
     ).length;
     this.setState(
       {
@@ -210,7 +212,7 @@ export class CategoryScreen
 
   onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
     const numTransactions = this.spectreUser.getTransactionsFor(
-      this.state.category
+      this.props.category
     ).length;
     this.setState(
       {
@@ -234,7 +236,7 @@ export class CategoryScreen
         });
       }
 
-      this.props.onPress(new OnCategoryPressed(this.state.category));
+      this.props.onPress(new OnCategoryPressed(this.props.category));
     } catch (e) {
       const errorDialog = new Alert();
       errorDialog.show(e.message);
@@ -243,7 +245,7 @@ export class CategoryScreen
 
   onCategoryDeletePress() {
     try {
-      this.spectreUser.remove(this.state.category);
+      this.spectreUser.remove(this.props.category);
     } catch (e) {
       const errorDialog = new Alert();
       errorDialog.show(e.message);
@@ -273,7 +275,7 @@ export class CategoryScreen
       <View>
         {this.state.isEditing && (
           <EditCategoryScreen
-            category={this.state.category}
+            category={this.props.category}
             color={this.state.color}
             onSuccessfulNameChange={() => {
               this.setState({
@@ -341,7 +343,7 @@ export class CategoryScreen
                         marginBottom: 1,
                       }}
                     >
-                      {this.state.category.getName()}
+                      {this.props.category.getName()}
                     </Text>
                   </View>
 
@@ -363,11 +365,7 @@ export class CategoryScreen
                       }}
                     >
                       <Text
-                        style={{
-                          fontFamily: styles.numTransactionCounterText.fontFamily,
-                          color: styles.numTransactionCounterText.color,
-                          fontSize: styles.numTransactionCounterText.fontSize,
-                        }}
+                        style={styles.numTransactionCounterText}
                       >
                         {this.state.numTransactions}
                       </Text>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-elements";
 import { CATEGORY_FONT_SIZE } from "./category.screen";
-import { BoldFontFamily, FontFamily, RegularFontFamily } from "../css/styles";
+import { FontFamily  } from "../css/styles";
 import { TransactionDetail } from "../pojo/transaction.detail";
 
 interface State {
@@ -27,6 +27,7 @@ export class DetailsScreenSegment extends Component {
     for (let i = 0; i < details.length; i++) {
       const detail = details[i];
       const element = detail.getElement() ? detail.getElement() : "-";
+
 
       if (i != details.length - 1) {
         horizontalText = horizontalText + element + " | ";

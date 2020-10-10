@@ -24,6 +24,18 @@ export class Category {
         return this.name;
     }
 
+    setName(newName : string) {
+        if (!newName) {
+            throw new Error('Cannot build a category with a falsy type string');
+        }
+
+        if (newName.trim().length === 0) {
+            throw new Error('Must give a value that is not just empty space');
+        }
+
+        this.name = newName;
+    }
+
     associate(transaction : Transaction) {
         this.transactions.push(transaction.copy());
     }

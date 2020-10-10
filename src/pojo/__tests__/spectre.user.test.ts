@@ -2,7 +2,7 @@ import {
   SpectreUser,
   TransactionCategorizedListener,
   OnTransactionCategorizedEvent,
-  OnCategoryRemovedEvent,
+  OnCategoryRemovedEvent, TransactionUncategorizedListener, OnTransactionUncategorizedEvent
 } from "../spectre.user";
 import { Category } from "../category";
 import { Currency } from "../currency";
@@ -413,7 +413,7 @@ describe("Spectre User", () => {
     testObject.addCategory(new Category('B'));
     testObject.addCategory(new Category('C'));
 
-    expect(testObject.getCategoryBefore(new Category('B')).equals(new Category('A'))).toBe(true);
+    expect(testObject.getCategoryBefore(new Category('B'))?.equals(new Category('A'))).toBe(true);
     expect(testObject.getCategoryBefore(new Category('A'))).toBeNull();
   });
 
@@ -447,4 +447,71 @@ describe("Spectre User", () => {
 
     expect(caughtException.message).toBe('Cannot call getCategoryAfter with a null or undefined category');
   });
+
+  it('should transfer all transactions to correct category when name has changed', () => {
+
+    const testObject = new SpectreUser();
+
+    testObject.addCategory(new Category('Test'));
+    const transaction = new Transaction([]);
+    testObject.readyForCategorization(transaction);
+    testObject.categorize(transaction, new Category("Test"));
+
+    testObject.changeCategoryName(new Category("Test"), "New Test Name");
+
+    const transactions = testObject.getTransactionsFor(new Category("New Test Name"));
+
+    expect(transactions.length).toBe(1);
+});
+
+  it('should be able to still listen for transaction added events even when the name has been changed', () => {
+
+      const testObject = new SpectreUser();
+
+      let caughtEvent = null;
+      const listener : TransactionCategorizedListener = {
+        onTransactionCategorized : (event : OnTransactionCategorizedEvent) => {
+          caughtEvent = event;
+        }
+      }
+
+      testObject.addCategory(new Category('Test'));
+      testObject.addTransactionCategorizedListener(new Category('Test'), listener);
+
+      testObject.changeCategoryName(new Category("Test"), "New Test Name");
+
+      const transaction = new Transaction([]);
+      testObject.readyForCategorization(transaction);
+
+      testObject.categorize(transaction, new Category("New Test Name"));
+
+      expect(caughtEvent).not.toBeNull();
+  });
+
+  it('should be able to still listen for transaction removed events even when the name has been changed', () => {
+
+    const testObject = new SpectreUser();
+
+    let caughtEvent = null;
+    const listener : TransactionUncategorizedListener = {
+      onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
+        caughtEvent = event;
+      }
+    }
+
+    testObject.addCategory(new Category('Test'));
+    testObject.addTransactionUncategorizedListener(new Category('Test'), listener);
+
+    testObject.changeCategoryName(new Category("Test"), "New Test Name");
+
+    const transaction = new Transaction([]);
+    testObject.readyForCategorization(transaction);
+
+    testObject.categorize(transaction, new Category("New Test Name"));
+
+    testObject.uncategorize(transaction, new Category('New Test Name'));
+
+    expect(caughtEvent).not.toBeNull();
+  });
+
 });

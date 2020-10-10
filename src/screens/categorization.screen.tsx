@@ -11,6 +11,8 @@ import {
   OnTransactionCategorizedEvent,
   OnBeforeCategoryRemovedEvent,
   BeforeCategoryRemovedListener,
+  CategoryNameChangeListener,
+  OnCategoryNameChangeEvent,
 } from "../pojo/spectre.user";
 import { Transaction } from "../pojo/transaction";
 import { OnCategoryPressed } from "./category.screen";
@@ -62,7 +64,9 @@ export class CategorizationScreen
     CategoryAddedListener,
     BeforeCategoryRemovedListener,
     TransactionCategorizedListener,
-    FileCsvTypeDuoSelectedListener {
+    FileCsvTypeDuoSelectedListener,
+    CategoryNameChangeListener
+    {
   spectreUser: SpectreUser;
   state: State;
   spacers: Array<Spacer>;
@@ -93,6 +97,7 @@ export class CategorizationScreen
       this
     );
     this.loadHelpYoutubeWebsite = this.loadHelpYoutubeWebsite.bind(this);
+    this.onCategoryNameChange = this.onCategoryNameChange.bind(this);
 
     const model = new SpectreUser();
     datastore().set(model);
@@ -101,6 +106,7 @@ export class CategorizationScreen
     this.spectreUser.addOnCategoryAddedListener(this);
     this.spectreUser.addCategoryRemovedListener(this);
     this.spectreUser.addBeforeCategoryRemovedListener(this);
+    this.spectreUser.addOnCategoryNameChangeListener(this);
 
     this.categoryColors = {};
     this.spacers = new Array<Spacer>();
@@ -132,6 +138,7 @@ export class CategorizationScreen
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
     this.spectreUser.removeBeforeCategoryRemovedListener(this);
+    this.spectreUser.removeOnCategoryNameChangeListener(this);
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
@@ -274,6 +281,8 @@ export class CategorizationScreen
     return payload;
   }
 
+
+
   onCategoryAdded(event: OnCategoryAddedEvent) {
     const getAndRemoveSpacerAtBottom = () => {
       let foundIndex = -1;
@@ -357,6 +366,16 @@ export class CategorizationScreen
     });
   }
 
+  onCategoryNameChange(event : OnCategoryNameChangeEvent) {
+
+    this.spectreUser.removeTransactionCategorizedListener(event.oldCategory, this);
+    this.spectreUser.addTransactionCategorizedListener(event.newCategory, this);
+
+    this.setState({
+      screenSegmentPayloads : this.generatePayloadsForCurrentState()
+    });
+  }
+
   onCategorizationStart() {
     if (this.spectreUser.hasAnotherTransaction()) {
       this.nextTransaction(() => {
@@ -399,7 +418,7 @@ export class CategorizationScreen
         }
 
         const factory = new TransactionLoaderFactory();
-        const service = factory.create(csvType);
+        const service = factory.create(csvType, location);
         await service.load(this.spectreUser, location);
 
         this.setState({
@@ -425,6 +444,7 @@ export class CategorizationScreen
         this.nextTransaction();
       }
     } catch (e) {
+      console.log(e);
       let errorDialog = new Alert();
       errorDialog.show(e.message);
     }

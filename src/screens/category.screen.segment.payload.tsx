@@ -35,6 +35,7 @@ export class CategoryScreenSegmentPayload extends ScreenSegmentPayload {
   }
 
   getUniqueKey() {
+    console.log('Getting unique key of category: ' + this.category.getName());
     return this.category.getName();
   }
 

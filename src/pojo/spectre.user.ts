@@ -47,60 +47,6 @@ export class SpectreUser {
     const category = this._getCategory(toChange);
     category.setName(newName);
 
-    // let affectedMappings = this.onTransactionCategorizedListeners.map(
-    //   (inner: ListenerCategoryMapping) => {
-    //     if (inner.category.equals(savedOffCategory)) {
-    //       return inner;
-    //     }
-    //   }
-    // );
-
-    // this.onTransactionCategorizedListeners = this.onTransactionCategorizedListeners.filter(
-    //   (inner: ListenerCategoryMapping) => {
-    //     return !inner.category.equals(savedOffCategory);
-    //   }
-    // );
-
-    // for (let i = 0; i < affectedMappings.length; i++) {
-    //   const mapping = affectedMappings[i];
-    //   this.removeTransactionCategorizedListener(
-    //     savedOffCategory,
-    //     mapping.listener
-    //   );
-    // }
-
-    // for (let i = 0; i < affectedMappings.length; i++) {
-    //   const mapping = affectedMappings[i];
-    //   this.addTransactionCategorizedListener(category, mapping.listener);
-    // }
-
-    // affectedMappings = this.onTransactionUncategorizedListeners.map(
-    //   (inner: ListenerCategoryMapping) => {
-    //     if (inner.category.equals(savedOffCategory)) {
-    //       return inner;
-    //     }
-    //   }
-    // );
-
-    // this.onTransactionUncategorizedListeners = this.onTransactionUncategorizedListeners.filter(
-    //   (inner: ListenerCategoryMapping) => {
-    //     return !inner.category.equals(savedOffCategory);
-    //   }
-    // );
-
-    // for (let i = 0; i < affectedMappings.length; i++) {
-    //   const mapping = affectedMappings[i];
-    //   this.removeTransactionUncategorizedListener(
-    //     savedOffCategory,
-    //     mapping.listener
-    //   );
-    // }
-
-    // for (let i = 0; i < affectedMappings.length; i++) {
-    //   const mapping = affectedMappings[i];
-    //   this.addTransactionUncategorizedListener(category, mapping.listener);
-    // }
-
     for (let i = 0; i < this.onCategoryNameChangeListeners.length; i++) {
       const event = new OnCategoryNameChangeEvent(savedOffCategory.copy(), category.copy(), newName);
       const listener = this.onCategoryNameChangeListeners[i];

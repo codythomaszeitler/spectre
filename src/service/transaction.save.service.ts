@@ -3,6 +3,8 @@ import { Exporter } from "../export/exporter";
 import { RawDataLocation } from "./raw.data.location";
 import { DocumentSaveService } from "./document.save.service";
 import { ColumnEstimation } from "./column.estimation";
+import { Transaction } from "../pojo/transaction";
+import { STRING_TYPE, TransactionDetail } from "../pojo/transaction.detail";
 
 export class TransactionSaveService {
 
@@ -26,7 +28,7 @@ export class TransactionSaveService {
     for (let i = 0; i < categories.length; i++) {
         const category = categories[i];
 
-        const transactions = scepterUser.getTransactionsFor(category);
+        const transactions = this.addEmptyNotes(scepterUser.getTransactionsFor(category));
         for (let j = 0; j < transactions.length; j++) {
             const transaction = transactions[j].copy();
 
@@ -37,6 +39,30 @@ export class TransactionSaveService {
 
     const documentSaveService = new DocumentSaveService(location);
     await documentSaveService.save(converted);
+  }
+
+  addEmptyNotes(transactions : Array<Transaction>) {
+    const withEmptyNotes = [];
+
+    const deepCopy = this.deepCopy(transactions);
+    for (let i = 0; i < deepCopy.length; i++) {
+      const transaction = transactions[i];
+      const details = transaction.getDetails();
+
+      details.push(new TransactionDetail('', 'Notes', STRING_TYPE));
+      withEmptyNotes.push(new Transaction(details));
+    }
+    return withEmptyNotes;
+  }
+
+  deepCopy(transactions : Array<Transaction>) {
+    const deepCopy = [];
+
+    for (let i = 0; i < transactions.length; i++) {
+      deepCopy.push(transactions[i].copy());
+    }
+
+    return deepCopy;
   }
 
   // This function should go through every transaction and ensure that the

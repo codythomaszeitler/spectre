@@ -16,6 +16,10 @@ export class LocalFileLocation implements RawDataLocation {
     this.wasRead = true;
   }
 
+  getFileName() {
+    return this.file.name;
+  }
+
   async isEmpty() {
     const contents = await this.readFile(this.file);
     return contents.trim().length === 0;

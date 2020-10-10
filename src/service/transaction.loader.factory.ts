@@ -12,9 +12,12 @@ import { TransactionLoadService } from "./transaction.load.service";
 import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
 import { CsvImporter } from "../export/csv.importer";
 import { VenmoTransactionLoadService } from "./venmo.transaction.load.service";
+import { WithNotesCsvConverter } from "../export/with.notes.csv.converter";
+import { RawDataLocation } from "./raw.data.location";
+import { WithStaticValueCsvConveter } from "../export/with.static.value.csv.converter";
 
 export class TransactionLoaderFactory {
-  create(csvType: CsvType) {
+  create(csvType: CsvType, location: RawDataLocation) {
     const masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
     const config = masterMappingInfo.getConfigFor(csvType.get());
 
@@ -32,12 +35,28 @@ export class TransactionLoaderFactory {
       );
     } else if (csvType.equals(VENMO_FORMAT)) {
       service = new VenmoTransactionLoadService(
-        new ByColumnNameCsvImporter(config)
+        new WithNotesCsvConverter(
+          new WithStaticValueCsvConveter(
+            new ByColumnNameCsvImporter(config),
+            "Account",
+            location.getFileName()
+          )
+        )
       );
     } else if (csvType.equals(RAW_FORMAT)) {
-      service = new TransactionLoadService(new CsvImporter());
+      service = new TransactionLoadService(
+        new WithNotesCsvConverter(new CsvImporter())
+      );
     } else {
-      service = new TransactionLoadService(new ByColumnNameCsvImporter(config));
+      service = new TransactionLoadService(
+        new WithNotesCsvConverter(
+          new WithStaticValueCsvConveter(
+            new ByColumnNameCsvImporter(config),
+            "Account",
+            location.getFileName()
+          )
+        )
+      );
     }
 
     return service;

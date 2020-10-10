@@ -32,7 +32,7 @@ describe("Csv Importer", () => {
     const exporter = new CsvExporter();
     exporter.defineOutgoingFormat(columns);
 
-    const testObject = new CsvImporter(columns);
+    const testObject = new CsvImporter();
     testObject.defineIncomingFormat(columns);
 
     const converted = testObject.convert(exporter.convert(transaction));
@@ -56,7 +56,7 @@ describe("Csv Importer", () => {
     });
 
     const rawString = "$400.00,Test1,Test2,Test3\n";
-    const testObject = new CsvImporter(columns);
+    const testObject = new CsvImporter();
 
     const converted = testObject.convert(rawString);
 

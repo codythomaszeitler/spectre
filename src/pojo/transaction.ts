@@ -24,7 +24,7 @@ export class Transaction {
   }
 
   copy() {
-    const transaction = new Transaction(this.details);
+    const transaction = new Transaction(this.getDetails());
     transaction.id = this.id;
     return transaction;
   }

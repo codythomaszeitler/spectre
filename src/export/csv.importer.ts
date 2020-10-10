@@ -2,21 +2,26 @@ import { AMOUNT_TYPE, Transaction } from "../pojo/transaction";
 import { CurrencyConverter } from "../transaction.detail.converter/currency.converter";
 import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/transaction.detail";
+import { ImporterDecorator } from "./importer.decorator";
 import { Importer } from "./importer";
 
-export class CsvImporter implements Importer {
+export class CsvImporter extends ImporterDecorator {
   columns: Columns;
 
-  constructor() {
+  constructor(importer? : Importer) {
+    super(importer);
     this.columns = new Columns({});
   }
 
   defineIncomingFormat(columns: Columns) {
     this.columns = columns.copy();
+    super.defineIncomingFormat(columns);
   }
 
   convert(string: string) {
-    let details = [];
+    const transaction = super.convert(string);
+
+    let details = transaction.getDetails();
     if (!string) {
       const numColumns = this.columns.getNumColumns();
       for (let i = 0; i < numColumns; i++) {

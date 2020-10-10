@@ -5,6 +5,7 @@ import { STRING_TYPE, TransactionDetail } from "../../pojo/transaction.detail";
 import { BankConfig } from "../../mappings/bank.config";
 import { CsvExporter } from "../csv.exporter";
 import { ByColumnNameCsvImporter } from "../by.column.name.csv.converter";
+import { CsvImporter } from "../csv.importer";
 
 describe("By Column Name Csv Converter", () => {
   it("should be able to convert into a specific csv format", () => {

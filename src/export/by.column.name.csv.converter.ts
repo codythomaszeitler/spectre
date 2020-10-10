@@ -3,20 +3,23 @@ import { Columns } from "./columns";
 import { TransactionDetail } from "../pojo/transaction.detail";
 import { Transaction } from "../pojo/transaction";
 import { BankConfig } from "../mappings/bank.config";
-import { ColumnEstimation } from "../service/column.estimation";
+import { ImporterDecorator } from "./importer.decorator";
+import { Importer } from "./importer";
 
-export class ByColumnNameCsvImporter  extends CsvImporter {
+export class ByColumnNameCsvImporter extends ImporterDecorator {
 
     config : BankConfig;
+    columns : Columns;
 
-    constructor(config : BankConfig) {
-        super();
+    constructor(config : BankConfig, importer? : Importer) {
+        super(importer);
         this.config = config;
+        this.columns = new Columns({});
     }
 
     defineIncomingFormat(columns : Columns) {
-        columns = this.alignColumnsWithTypesFromConfig(columns);
-        super.defineIncomingFormat(columns);
+        this.columns = this.alignColumnsWithTypesFromConfig(columns);
+        super.defineIncomingFormat(this.columns);
     }
 
     alignColumnsWithTypesFromConfig(columns : Columns) {
@@ -32,11 +35,9 @@ export class ByColumnNameCsvImporter  extends CsvImporter {
     }
 
     convert(string : string) {
-        const converted = super.convert(string);    
-
-        /*
-         This transaction should have all of the columsn that are found within the config.
-        */
+        const converter = new CsvImporter();
+        converter.defineIncomingFormat(this.columns);
+        const converted = converter.convert(string);    
 
         const details = [];
 

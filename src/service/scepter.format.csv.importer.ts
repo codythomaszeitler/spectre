@@ -18,16 +18,14 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
   }
 
   defineIncomingFormat(columns: Columns) {
+
+    // TODO it feels like this should have a check to ensure that 
+    // the column structure that we have is in line with scepter format 
+    // looks like.
     this.columns = columns.copy();
   }
 
   convert(item: string) {
-    if (!item) {
-
-
-
-    }
-
     const csvImporter = new CsvImporter();
     csvImporter.defineIncomingFormat(this.columns);
 

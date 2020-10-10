@@ -10,6 +10,7 @@ export class CategoryScreenSegmentPayload extends ScreenSegmentPayload {
   color: Color;
   isCategorizationMode: boolean;
   onPress: (event: OnCategoryPressed) => void;
+  onColorChange : (Category : Category, color :Color) => void;
 
   constructor(category: Category) {
     super();
@@ -17,6 +18,7 @@ export class CategoryScreenSegmentPayload extends ScreenSegmentPayload {
     this.color = new Color("00000000");
     this.isCategorizationMode = false;
     this.onPress = function (event: OnCategoryPressed) {};
+    this.onColorChange = () => {};
   }
 
   setColor(color: Color) {
@@ -34,9 +36,13 @@ export class CategoryScreenSegmentPayload extends ScreenSegmentPayload {
     return this;
   }
 
+  setOnColorChange(onColorChange : (category : Category, color : Color) => void) {
+    this.onColorChange = onColorChange;
+    return this;
+  }
+
   getUniqueKey() {
-    console.log('Getting unique key of category: ' + this.category.getName());
-    return this.category.getName();
+    return this.category.getName() + ' ' + this.color.hex();
   }
 
   getType() {

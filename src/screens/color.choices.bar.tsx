@@ -26,11 +26,21 @@ export class ColorChoicesBar extends Component {
     this.onLayout = this.onLayout.bind(this);
     this.onColorSelect = this.onColorSelect.bind(this);
 
+
     this.state = {
       colorChoiceDiameter: this.props.diameter,
       emptySpaceWidth: 9,
-      currentlySelectedColor: this.colors[0],
+      currentlySelectedColor: this.getInitialChoice(),
     };
+  }
+
+  getInitialChoice() {
+
+    if (this.props.initialColorChoice) {
+      return this.props.initialColorChoice;
+    } else {
+      return this.colors[0];
+    }
   }
 
   componentDidMount() {

@@ -65,6 +65,7 @@ class CategoryScreenSegmentFactory {
         category={payload.category}
         categorizationMode={payload.isCategorizationMode}
         onPress={payload.onPress}
+        onColorChoice={payload.onColorChange}
         key={payload.getUniqueKey()}
       ></CategoryScreen>
     );

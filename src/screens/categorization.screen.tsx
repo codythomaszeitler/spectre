@@ -65,8 +65,7 @@ export class CategorizationScreen
     BeforeCategoryRemovedListener,
     TransactionCategorizedListener,
     FileCsvTypeDuoSelectedListener,
-    CategoryNameChangeListener
-    {
+    CategoryNameChangeListener {
   spectreUser: SpectreUser;
   state: State;
   spacers: Array<Spacer>;
@@ -80,6 +79,7 @@ export class CategorizationScreen
     this.onCategorizationStart = this.onCategorizationStart.bind(this);
     this.onCategorizationEnd = this.onCategorizationEnd.bind(this);
     this.onSpacerAddPress = this.onSpacerAddPress.bind(this);
+    this.onCategoryColorChoice = this.onCategoryColorChoice.bind(this);
     this.onSuccessfulCategoryAdd = this.onSuccessfulCategoryAdd.bind(this);
     this.onFilesWithTypeSelectedListener = this.onFilesWithTypeSelectedListener.bind(
       this
@@ -226,7 +226,8 @@ export class CategorizationScreen
     const categoryPayload = new CategoryScreenSegmentPayload(category)
       .setColor(this.getColorFor(category))
       .setCategorizationMode(this.state.isCategorizationMode)
-      .setOnPress(this.onCategoryPress);
+      .setOnPress(this.onCategoryPress)
+      .setOnColorChange(this.onCategoryColorChoice);
     return categoryPayload;
   }
 
@@ -280,8 +281,6 @@ export class CategorizationScreen
       });
     return payload;
   }
-
-
 
   onCategoryAdded(event: OnCategoryAddedEvent) {
     const getAndRemoveSpacerAtBottom = () => {
@@ -349,9 +348,6 @@ export class CategorizationScreen
   }
 
   onCategoryRemoved(event: OnCategoryRemovedEvent) {
-    const removeColorChoice = (category: Category) => {
-      delete this.categoryColors[category.getName()];
-    };
 
     this.spectreUser.removeTransactionCategorizedListener(event.category, this);
     this.spectreUser.removeTransactionUncategorizedListener(
@@ -359,20 +355,31 @@ export class CategorizationScreen
       this
     );
 
-    removeColorChoice(event.category);
+    this.removeColorChoice(event.category);
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 
-  onCategoryNameChange(event : OnCategoryNameChangeEvent) {
+  removeColorChoice (category : Category) {
+      delete this.categoryColors[category.getName()];
+  }
 
-    this.spectreUser.removeTransactionCategorizedListener(event.oldCategory, this);
+  onCategoryNameChange(event: OnCategoryNameChangeEvent) {
+    const oldColor = this.categoryColors[event.oldCategory.getName()];
+
+    this.removeColorChoice(event.oldCategory);
+
+    this.spectreUser.removeTransactionCategorizedListener(
+      event.oldCategory,
+      this
+    );
     this.spectreUser.addTransactionCategorizedListener(event.newCategory, this);
 
+    this.onCategoryColorChoice(event.newCategory, oldColor);
     this.setState({
-      screenSegmentPayloads : this.generatePayloadsForCurrentState()
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
   }
 

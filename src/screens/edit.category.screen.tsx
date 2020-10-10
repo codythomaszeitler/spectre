@@ -4,7 +4,7 @@ import { TextInput } from "react-native";
 import { SpectreUser } from "../pojo/spectre.user";
 import { Color } from "../pojo/color";
 import { datastore } from "../datastore/datastore";
-import { CategoryColors, FontFamily } from "../css/styles";
+import { FontFamily } from "../css/styles";
 import { Alert } from "./alert";
 import {
   CATEGORY_BOX_HEIGHT,
@@ -13,8 +13,12 @@ import {
 } from "./category.screen";
 import { DeleteButton } from "./delete.button";
 import { ColorChoicesBar } from "./color.choices.bar";
-import { TRANSACTION_DIAMETER, WHITESPACE_LEFT_OF_CATEGORY_TEXT } from "./category.screen";
-import {isMobile} from 'react-device-detect';
+import {
+  TRANSACTION_DIAMETER,
+  WHITESPACE_LEFT_OF_CATEGORY_TEXT,
+} from "./category.screen";
+import { isMobile } from "react-device-detect";
+import { Category } from "../pojo/category";
 
 export class EditCategoryScreen extends Component {
   spectreUser: SpectreUser;
@@ -28,6 +32,8 @@ export class EditCategoryScreen extends Component {
 
     this.textBoxReference = React.createRef();
 
+    console.log(this.props.color.hex());
+
     this.state = {
       categoryAddText: this.props.category.getName(),
       color: this.props.color,
@@ -39,19 +45,18 @@ export class EditCategoryScreen extends Component {
 
   onEditCategoryPress() {
     try {
-      // This function changes based on what state the screen is currently in
       if (this.state.categoryAddText) {
-
-        this.spectreUser.changeCategoryName(this.props.category, this.state.categoryAddText);
-        this.props.onSuccessfulNameChange(this.props.category, this.state.color);
-
-        this.setState({
-          categoryAddText: "",
-          color: CategoryColors[0],
-        });
+        this.spectreUser.changeCategoryName(
+          this.props.category,
+          this.state.categoryAddText
+        );
+        this.props.onColorChoice(
+          new Category(this.state.categoryAddText),
+          this.state.color
+        );
       }
     } catch (e) {
-        console.log(e);
+      console.log(e);
       const errorDialog = new Alert();
       errorDialog.show(e.message);
     }
@@ -75,7 +80,9 @@ export class EditCategoryScreen extends Component {
 
   render() {
     return (
-      <View onLayout={this.onLayout}>
+      <View
+        onLayout={this.onLayout}
+      >
         <View
           style={{
             flexBasis: CATEGORY_BOX_HEIGHT,
@@ -96,7 +103,7 @@ export class EditCategoryScreen extends Component {
           >
             <View
               style={{
-                width : WHITESPACE_LEFT_OF_CATEGORY_TEXT
+                width: WHITESPACE_LEFT_OF_CATEGORY_TEXT,
               }}
             ></View>
             <View
@@ -116,7 +123,9 @@ export class EditCategoryScreen extends Component {
                 style={{
                   backgroundColor: this.state.color.hex(),
                   fontFamily: FontFamily,
-                  fontSize: isMobile ? CATEGORY_FONT_SIZE : CATEGORY_FONT_SIZE + 3,
+                  fontSize: isMobile
+                    ? CATEGORY_FONT_SIZE
+                    : CATEGORY_FONT_SIZE + 3,
                   color: "white",
                 }}
                 onChangeText={(categoryText) => {
@@ -156,6 +165,7 @@ export class EditCategoryScreen extends Component {
         ></View>
 
         <ColorChoicesBar
+          initialColorChoice={this.props.color}
           diameter={35}
           onColorSelect={(colorChoice: Color) => {
             this.setState({

@@ -4,11 +4,21 @@ export class TestLocation implements RawDataLocation {
   items: string[];
   parsed: string[];
   written: string[];
+  fileName : string;
 
   constructor(items: string[]) {
     this.items = items.slice();
     this.parsed = [];
     this.written = [];
+    this.fileName = 'No Test File Name Set';
+  }
+
+  setFileName(testFileName : string) {
+    this.fileName = testFileName;
+  }
+
+  getFileName() {
+    return this.fileName;
   }
 
   async hasNext() {

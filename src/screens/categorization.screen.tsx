@@ -348,7 +348,6 @@ export class CategorizationScreen
   }
 
   onCategoryRemoved(event: OnCategoryRemovedEvent) {
-
     this.spectreUser.removeTransactionCategorizedListener(event.category, this);
     this.spectreUser.removeTransactionUncategorizedListener(
       event.category,
@@ -362,8 +361,8 @@ export class CategorizationScreen
     });
   }
 
-  removeColorChoice (category : Category) {
-      delete this.categoryColors[category.getName()];
+  removeColorChoice(category: Category) {
+    delete this.categoryColors[category.getName()];
   }
 
   onCategoryNameChange(event: OnCategoryNameChangeEvent) {
@@ -375,7 +374,15 @@ export class CategorizationScreen
       event.oldCategory,
       this
     );
+    this.spectreUser.removeTransactionUncategorizedListener(
+      event.oldCategory,
+      this
+    );
     this.spectreUser.addTransactionCategorizedListener(event.newCategory, this);
+    this.spectreUser.addTransactionUncategorizedListener(
+      event.newCategory,
+      this
+    );
 
     this.onCategoryColorChoice(event.newCategory, oldColor);
     this.setState({

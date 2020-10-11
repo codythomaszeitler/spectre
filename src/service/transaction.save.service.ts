@@ -65,8 +65,6 @@ export class TransactionSaveService {
     return deepCopy;
   }
 
-  // This function should go through every transaction and ensure that the
-  // exported 
   static generateCompliantColumns(spectreUser : SpectreUser) {
     const estimator = new ColumnEstimation();
     return estimator.estimateBySpectreUser(spectreUser);

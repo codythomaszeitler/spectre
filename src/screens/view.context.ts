@@ -85,7 +85,7 @@ export class ViewContext {
         );
       }
 
-      const categoryWithColor = new CategoryColorDuo(category, color);
+      const categoryWithColor = new CategoryColorDuo(category.copy(), color.copy());
       this.building.categoryColors.push(categoryWithColor);
     }
 
@@ -108,7 +108,7 @@ export class ViewContext {
         );
       }
 
-      const categoryWithOrdering = new CategoryOrderingDuo(category, ordering);
+      const categoryWithOrdering = new CategoryOrderingDuo(category.copy(), ordering);
       this.building.categoryOrderings.push(categoryWithOrdering);
     }
 

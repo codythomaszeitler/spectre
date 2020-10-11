@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Image } from "react-native";
+import { View, FlatList, Image, ViewComponent } from "react-native";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,
@@ -43,6 +43,8 @@ import {
 } from "./import/csv.selection.screen";
 import { FileCsvTypeDuoSelectedListener } from "./import/csv.selection.screen";
 import { TransactionLoaderFactory } from "../service/transaction.loader.factory";
+import { WithViewContextExporter } from "../export/with.view.context.exporter";
+import { ViewContext } from "./view.context";
 
 export interface Props {}
 
@@ -70,7 +72,7 @@ export class CategorizationScreen
   state: State;
   spacers: Array<Spacer>;
 
-  categoryColors: Object;
+  categoryColors: Map<string, Color>;
 
   constructor(props: Props) {
     super(props);
@@ -108,7 +110,7 @@ export class CategorizationScreen
     this.spectreUser.addBeforeCategoryRemovedListener(this);
     this.spectreUser.addOnCategoryNameChangeListener(this);
 
-    this.categoryColors = {};
+    this.categoryColors = new Map<String, Color>();
     this.spacers = new Array<Spacer>();
 
     this.state = {
@@ -170,7 +172,7 @@ export class CategorizationScreen
       });
       const location = new LocalFileLocation(file);
       const transactionSaveService = new TransactionSaveService(
-        new CsvExporter()
+        new CsvExporter(new WithViewContextExporter(this.createViewContextFromCurrentState()))
       );
 
       await transactionSaveService.save(this.spectreUser, location);
@@ -178,6 +180,21 @@ export class CategorizationScreen
       let errorDialog = new Alert();
       errorDialog.show(e.message);
     }
+  }
+
+  private createViewContextFromCurrentState() {
+    const builder = new ViewContext.Builder();
+
+    const categories = this.spectreUser.getCategories();
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+      const color = this.categoryColors.get(category.getName());
+
+      builder.setCategoryColor(category, color);
+      builder.setCategoryOrdering(category, i + 1);
+    }
+
+    return builder.build();
   }
 
   renderScreenSegmentPayload({ item }: { item: ScreenSegmentPayload }) {
@@ -234,13 +251,13 @@ export class CategorizationScreen
   getColorFor(category: Category) {
     let color = new Color(CategoryColors[0]);
     if (category.getName() in this.categoryColors) {
-      color = this.categoryColors[category.getName()].copy();
+      color = this.categoryColors.get(category.getName())?.copy();
     }
     return color;
   }
 
   onCategoryColorChoice(category: Category, color: Color) {
-    this.categoryColors[category.getName()] = color;
+    this.categoryColors.set(category.getName(), color);
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
@@ -362,11 +379,11 @@ export class CategorizationScreen
   }
 
   removeColorChoice(category: Category) {
-    delete this.categoryColors[category.getName()];
+    this.categoryColors.delete(category.getName());
   }
 
   onCategoryNameChange(event: OnCategoryNameChangeEvent) {
-    const oldColor = this.categoryColors[event.oldCategory.getName()];
+    const oldColor = this.categoryColors.get(event.oldCategory.getName());
 
     this.removeColorChoice(event.oldCategory);
 

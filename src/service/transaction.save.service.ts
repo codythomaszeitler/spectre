@@ -11,7 +11,7 @@ export class TransactionSaveService {
   exporter: Exporter;
 
   constructor(
-    exporter: Exporter
+    exporter: Exporter,
   ) {
     this.exporter = exporter;
   }

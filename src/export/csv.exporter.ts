@@ -3,15 +3,18 @@ import { CATEGORY_TYPE } from "../pojo/category";
 import { Columns, columnNameDelimeter } from "./columns";
 import { Category } from "../pojo/category";
 import { Exporter } from "./exporter";
+import { ExporterDecorator } from "./exporter.decorator";
 
-export class CsvExporter implements Exporter {
+export class CsvExporter extends ExporterDecorator {
   columns: Columns;
 
-  constructor() {
+  constructor(exporter : Exporter) {
+    super(exporter);
     this.columns = new Columns({});
   }
 
   defineOutgoingFormat(columns: Columns) {
+    super.defineOutgoingFormat(columns);
     this.columns = columns.copy();
   }
 
@@ -54,7 +57,7 @@ export class CsvExporter implements Exporter {
         converted = converted + "," + columns.getName(i);
       }
     }
-    return converted;
+    return converted + super.convertColumns(columns);
   }
 
   convert(transaction: Transaction, category?: Category) {
@@ -119,7 +122,8 @@ export class CsvExporter implements Exporter {
       }
     }
 
-    return removeCommaAtEnd(converted);
+    const fullString = converted + super.convert(transaction, category);
+    return removeCommaAtEnd(fullString);
   }
 }
 

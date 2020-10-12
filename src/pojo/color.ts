@@ -1,3 +1,5 @@
+
+export const COLOR_TYPE = 'Color';
 export class Color {
   hexCode: string;
 

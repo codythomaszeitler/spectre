@@ -1,5 +1,6 @@
 import { Category } from "../pojo/category";
 import { Color } from "../pojo/color";
+import { COLOR_NOT_FOUND } from "../service/scepter.format.csv.importer";
 
 export class ViewContext {
   private categoryColors: Array<CategoryColorDuo>;
@@ -8,6 +9,32 @@ export class ViewContext {
   constructor() {
     this.categoryColors = new Array<CategoryColorDuo>();
     this.categoryOrderings = new Array<CategoryOrderingDuo>();
+  }
+
+  public hasCategoryViewInfo(category: Category) {
+    const categories = this.getCategories();
+
+    let hasCategory = false;
+    for (let i = 0; i < categories.length; i++) {
+      const inner = categories[i];
+
+      if (inner.equals(category)) {
+        hasCategory = true;
+        break;
+      }
+    }
+    return hasCategory;
+  }
+
+  public getCategories() {
+    const categories = [];
+
+    for (let i = 0; i < this.categoryColors.length; i++) {
+      const categoryWithColor = this.categoryColors[i];
+      categories.push(categoryWithColor.category);
+    }
+
+    return categories;
   }
 
   public getColorFor(category: Category) {
@@ -28,24 +55,9 @@ export class ViewContext {
     return foundColor;
   }
 
-  private categoryColorAlreadySet(category: Category) {
-    let alreadySet = false;
-
-    for (let i = 0; i < this.categoryColors.length; i++) {
-      const categoryWithColor = this.categoryColors[i];
-
-      if (categoryWithColor.hasCategory(category)) {
-        alreadySet = true;
-        break;
-      }
-    }
-
-    return alreadySet;
-  }
-
   public getOrderFor(category: Category) {
     if (!category) {
-        throw new Error("Cannot get a sort ordering without a category");
+      throw new Error("Cannot get a sort ordering without a category");
     }
 
     let foundOrdering = null;
@@ -77,16 +89,28 @@ export class ViewContext {
         throw new Error("Cannot set a category color with a null color");
       }
 
-      if (this.building.categoryColorAlreadySet(category)) {
-        throw new Error(
-          "Cannot set a category's color [" +
-            category.getName() +
-            "] when it has already been set"
-        );
-      }
+      const alreadySetColor = this.building.getColorFor(category);
+      let categoryWithColor = null;
+      if (alreadySetColor && !alreadySetColor?.equals(color)) {
+        this.removeCategoryColor(category);
 
-      const categoryWithColor = new CategoryColorDuo(category.copy(), color.copy());
-      this.building.categoryColors.push(categoryWithColor);
+        categoryWithColor = new CategoryColorDuo(
+          category.copy(),
+          COLOR_NOT_FOUND.copy()
+        );
+        this.building.categoryColors.push(categoryWithColor);
+      } else if (!alreadySetColor) {
+        categoryWithColor = new CategoryColorDuo(category.copy(), color.copy());
+        this.building.categoryColors.push(categoryWithColor);
+      }
+    }
+
+    private removeCategoryColor(category: Category) {
+      this.building.categoryColors = this.building.categoryColors.filter(
+        (inner: CategoryColorDuo) => {
+          return !category.equals(inner.category);
+        }
+      );
     }
 
     public setCategoryOrdering(category: Category, ordering: number) {
@@ -108,8 +132,28 @@ export class ViewContext {
         );
       }
 
-      const categoryWithOrdering = new CategoryOrderingDuo(category.copy(), ordering);
-      this.building.categoryOrderings.push(categoryWithOrdering);
+      const alreadySetOrdering = this.building.getOrderFor(category);
+
+      let categoryWithOrdering = null;
+      if (alreadySetOrdering && alreadySetOrdering !== ordering) {
+        this.removeCategoryOrdering(category);
+        categoryWithOrdering = new CategoryOrderingDuo(category.copy(), 1);
+        this.building.categoryOrderings.push(categoryWithOrdering);
+      } else if (!alreadySetOrdering) {
+        categoryWithOrdering = new CategoryOrderingDuo(
+          category.copy(),
+          ordering
+        );
+        this.building.categoryOrderings.push(categoryWithOrdering);
+      }
+    }
+
+    private removeCategoryOrdering(category: Category) {
+      this.building.categoryOrderings = this.building.categoryOrderings.filter(
+        (inner: CategoryOrderingDuo) => {
+          return !category.equals(inner.category);
+        }
+      );
     }
 
     public build() {
@@ -139,10 +183,7 @@ export class ViewContext {
         };
 
         const sorted = getOrderingsSorted();
-        const toCheck = generateArray(
-          1,
-          getMaxElement(sorted)
-        );
+        const toCheck = generateArray(1, getMaxElement(sorted));
 
         let missingElements = [];
         for (let i = 0; i < toCheck.length; i++) {
@@ -172,11 +213,7 @@ export class ViewContext {
         const color = this.building.getColorFor(category);
 
         if (!color) {
-          throw new Error(
-            "Could not build since a category [" +
-              category.getName() +
-              "] did not have a color"
-          );
+          this.setCategoryColor(category, COLOR_NOT_FOUND.copy());
         }
       }
 
@@ -186,11 +223,7 @@ export class ViewContext {
         const ordering = this.building.getOrderFor(category);
 
         if (!ordering) {
-          throw new Error(
-            "Could not build since a category [" +
-              category.getName() +
-              "] did not have a corresponding ordering"
-          );
+          this.setCategoryOrdering(category, 1);
         }
       }
 

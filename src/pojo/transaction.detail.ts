@@ -2,8 +2,15 @@ import { Currency } from "./currency";
 import { AMOUNT_TYPE } from "./transaction";
 import { CurrencyConverter } from "../transaction.detail.converter/currency.converter";
 import { DateConverter } from "../transaction.detail.converter/date.converter";
+import {
+  SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+  SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+} from "../export/with.view.context.exporter";
+import { SCEPTER_CATEGORY_COLUMN_NAME } from "../service/scepter.format.importer";
+import { Color, COLOR_TYPE } from "./color";
+import { Category, CATEGORY_TYPE } from "./category";
 
-export const STRING_TYPE = 'String';
+export const STRING_TYPE = "String";
 
 export class TransactionDetail {
   detail: string;
@@ -45,11 +52,19 @@ export class TransactionDetail {
     );
   }
 
+
+  // This was supposed to be the function that exports something as a string
   getElement() {
     let element = null;
     if (this.type === "Date") {
       const dateConverter = new DateConverter();
       element = dateConverter.intoString(dateConverter.fromString(this.detail));
+    } else if (this.type == "Color") {
+      element = this.asGivenType().hex();
+    } else if (this.type === "Category") {
+      element = this.asGivenType().getName();
+    } else if (this.type === "number") {
+      element = this.detail;
     } else {
       element = this.detail;
     }
@@ -72,6 +87,12 @@ export class TransactionDetail {
       asGivenType = dateConverter.fromString(this.detail);
     } else if (this.type === STRING_TYPE) {
       asGivenType = this.detail;
+    } else if (this.type === CATEGORY_TYPE) {
+      asGivenType = new Category(this.detail);
+    } else if (this.type === COLOR_TYPE) {
+      asGivenType = new Color(this.detail);
+    } else if (this.type === 'number') {
+      asGivenType = parseInt(this.detail);
     }
 
     return asGivenType;

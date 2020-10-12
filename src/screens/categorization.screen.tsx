@@ -73,6 +73,7 @@ export class CategorizationScreen
   spacers: Array<Spacer>;
 
   categoryColors: Map<string, Color>;
+  categoryOrder: Map<string, number>;
 
   constructor(props: Props) {
     super(props);
@@ -110,7 +111,8 @@ export class CategorizationScreen
     this.spectreUser.addBeforeCategoryRemovedListener(this);
     this.spectreUser.addOnCategoryNameChangeListener(this);
 
-    this.categoryColors = new Map<String, Color>();
+    this.categoryColors = new Map<string, Color>();
+    this.categoryOrder = new Map<string, number>();
     this.spacers = new Array<Spacer>();
 
     this.state = {
@@ -172,7 +174,9 @@ export class CategorizationScreen
       });
       const location = new LocalFileLocation(file);
       const transactionSaveService = new TransactionSaveService(
-        new CsvExporter(new WithViewContextExporter(this.createViewContextFromCurrentState()))
+        new CsvExporter(
+          new WithViewContextExporter(this.createViewContextFromCurrentState())
+        )
       );
 
       await transactionSaveService.save(this.spectreUser, location);
@@ -189,9 +193,10 @@ export class CategorizationScreen
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
       const color = this.categoryColors.get(category.getName());
+      const ordering = this.categoryOrder.get(category.getName());
 
       builder.setCategoryColor(category, color);
-      builder.setCategoryOrdering(category, i + 1);
+      builder.setCategoryOrdering(category, ordering);
     }
 
     return builder.build();
@@ -215,7 +220,8 @@ export class CategorizationScreen
       );
     }
 
-    const categories = this.spectreUser.getCategories();
+    // We need to somehow
+    const categories = this.getSortedCategories();
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
       payloads.push(this.createPayloadFor(category));
@@ -237,6 +243,32 @@ export class CategorizationScreen
     }
 
     return payloads;
+  }
+
+  private getSortedCategories() {
+    const sorted = [];
+    const categories = this.spectreUser.getCategories();
+
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+      const ordering = this.categoryOrder.get(category.getName());
+      sorted.push({
+        category,
+        ordering,
+      });
+    }
+
+    sorted.sort(function (a, b) {
+      return a.ordering - b.ordering;
+    });
+
+    const final = [];
+    for (let i = 0; i < sorted.length; i++) {
+      const element = sorted[i];
+      final.push(element.category);
+    }
+
+    return final;
   }
 
   createPayloadFor(category: Category) {
@@ -323,9 +355,30 @@ export class CategorizationScreen
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
     this.spectreUser.addTransactionUncategorizedListener(event.category, this);
 
+    this.categoryOrder.set(
+      event.category.getName(),
+      this.getNextHighestSortOrder()
+    );
+
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
+  }
+
+  private getNextHighestSortOrder() {
+    let highest = 0;
+
+    const orderings = this.categoryOrder.values();
+    let ordering = orderings.next();
+    while (!ordering.done) {
+      if (highest < ordering.value) {
+        highest = ordering.value;
+      }
+
+      ordering = orderings.next();
+    }
+
+    return highest + 1;
   }
 
   onBeforeCategoryRemoved(event: OnBeforeCategoryRemovedEvent) {
@@ -372,6 +425,7 @@ export class CategorizationScreen
     );
 
     this.removeColorChoice(event.category);
+    this.removeOrderChoice(event.category);
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
@@ -380,6 +434,10 @@ export class CategorizationScreen
 
   removeColorChoice(category: Category) {
     this.categoryColors.delete(category.getName());
+  }
+
+  removeOrderChoice(category: Category) {
+    this.categoryOrder.delete(category.getName());
   }
 
   onCategoryNameChange(event: OnCategoryNameChangeEvent) {
@@ -450,7 +508,9 @@ export class CategorizationScreen
 
         const factory = new TransactionLoaderFactory();
         const service = factory.create(csvType, location);
-        await service.load(this.spectreUser, location);
+        const viewContext = await service.load(this.spectreUser, location);
+
+        this.alignViewContext(viewContext);
 
         this.setState({
           showImportCsvScreen: false,
@@ -461,6 +521,22 @@ export class CategorizationScreen
         let errorDialog = new Alert();
         errorDialog.show(e.message);
       }
+    }
+  }
+
+  alignViewContext(viewContext: ViewContext) {
+    const categories = viewContext.getCategories();
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+
+      this.categoryColors.set(
+        category.getName(),
+        viewContext.getColorFor(category)
+      );
+      this.categoryOrder.set(
+        category.getName(),
+        viewContext.getOrderFor(category)
+      );
     }
   }
 

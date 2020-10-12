@@ -5,6 +5,7 @@ import { ScepterFormatImporter } from "./scepter.format.importer";
 import { ColumnEstimation } from "./column.estimation";
 import { DocumentLoadService } from "./document.load.service";
 import { CATEGORY_NOT_FOUND } from "./scepter.format.csv.importer";
+import { ViewContext } from "../screens/view.context";
 
 export class ScepterTransactionLoadService implements TransactionLoader {
   importer: ScepterFormatImporter;
@@ -14,6 +15,8 @@ export class ScepterTransactionLoadService implements TransactionLoader {
   }
 
   async load(scepterUser: SpectreUser, location: RawDataLocation) {
+    const viewContextBuilder = new ViewContext.Builder();
+
     const estimator = new ColumnEstimation();
     const structureOfCsv = await estimator.estimateByLocation(location);
     this.importer.defineIncomingFormat(structureOfCsv);
@@ -22,11 +25,26 @@ export class ScepterTransactionLoadService implements TransactionLoader {
     const lines = await documentLoadService.fetchall();
 
     for (let i = 1; i < lines.length; i++) {
-      const transactionAndCategory = this.importer.convert(lines[i]);
-      const transaction = transactionAndCategory.getTransaction();
-      const category = transactionAndCategory.getCategory();
+      const scepterTransactionLine = this.importer.convert(lines[i]);
+      const transaction = scepterTransactionLine.getTransaction();
+      const category = scepterTransactionLine.getCategory();
+      const viewContext = scepterTransactionLine.getViewContext();
 
-      if (!category.equals(CATEGORY_NOT_FOUND) && !scepterUser.hasCategory(category)) {
+      if (viewContext.hasCategoryViewInfo(category)) {
+        viewContextBuilder.setCategoryColor(
+          category,
+          viewContext.getColorFor(category)
+        );
+        viewContextBuilder.setCategoryOrdering(
+          category,
+          viewContext.getOrderFor(category)
+        );
+      }
+
+      if (
+        !category.equals(CATEGORY_NOT_FOUND) &&
+        !scepterUser.hasCategory(category)
+      ) {
         scepterUser.addCategory(category);
       }
 
@@ -36,5 +54,7 @@ export class ScepterTransactionLoadService implements TransactionLoader {
         scepterUser.categorize(transaction, category);
       }
     }
+
+    return viewContextBuilder.build();
   }
 }

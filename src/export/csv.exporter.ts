@@ -4,11 +4,12 @@ import { Columns, columnNameDelimeter } from "./columns";
 import { Category } from "../pojo/category";
 import { Exporter } from "./exporter";
 import { ExporterDecorator } from "./exporter.decorator";
+import { COLOR_TYPE } from "../pojo/color";
 
 export class CsvExporter extends ExporterDecorator {
   columns: Columns;
 
-  constructor(exporter : Exporter) {
+  constructor(exporter? : Exporter) {
     super(exporter);
     this.columns = new Columns({});
   }

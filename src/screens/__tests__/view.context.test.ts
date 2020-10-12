@@ -1,5 +1,6 @@
 import { Category } from "../../pojo/category";
 import { Color } from "../../pojo/color";
+import { COLOR_NOT_FOUND } from "../../service/scepter.format.csv.importer";
 import { ViewContext } from "../view.context";
 
 describe("View Context", () => {
@@ -124,14 +125,9 @@ describe("View Context", () => {
     builder.setCategoryOrdering(new Category('B'), 2);
     builder.setCategoryOrdering(new Category('C'), 3);
 
-    let caughtException = null;
-    try {
-        builder.build();
-    } catch (e) {
-        caughtException = e;
-    }
+    const testObject = builder.build();
 
-    expect(caughtException.message).toBe('Could not build since a category [B] did not have a color');
+    expect(testObject.getColorFor(new Category('B'))).toEqual(COLOR_NOT_FOUND);
     
   });
 
@@ -145,15 +141,9 @@ describe("View Context", () => {
     builder.setCategoryOrdering(new Category('A'), 1);
     builder.setCategoryOrdering(new Category('C'), 2);
 
-    let caughtException = null;
-    try {
-        builder.build();
-    } catch (e) {
-        caughtException = e;
-    }
+    const testObject = builder.build();
 
-    expect(caughtException.message).toBe('Could not build since a category [B] did not have a corresponding ordering');
-    
+    expect(testObject.getOrderFor(new Category('B'))).toBe(1);
   });
 
   it("should return null if the requested category doest not exist within the context", () => {
@@ -165,21 +155,17 @@ describe("View Context", () => {
     expect(testObject.getColorFor(category.copy())).toBeNull();
   });
 
-  it('should throw an exception if the category color is trying to be set when already set', () => {
+  it('should default to an error color if there are two conflicting colors', () => {
     const category = new Category("Test");
     const color = new Color("#000000");
 
     const builder = new ViewContext.Builder();
     builder.setCategoryColor(category, color);
+    builder.setCategoryColor(category, new Color("#111111"));
 
-    let caughtException = null;
-    try {
-        builder.setCategoryColor(category, new Color("#111111"));
-    } catch (e) {
-        caughtException = e;
-    }
+    const testObject = builder.build();
 
-    expect(caughtException.message).toBe('Cannot set a category\'s color [' + category.getName() + '] when it has already been set');
+    expect(testObject.getColorFor(category)).toEqual(COLOR_NOT_FOUND);
   });
 
   it("should throw an exception if the given category during building is null", () => {

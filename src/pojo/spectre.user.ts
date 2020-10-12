@@ -42,6 +42,8 @@ export class SpectreUser {
   }
 
   changeCategoryName(toChange: Category, newName: string) {
+    this.assertCategoryDoesNotExist(new Category(newName));
+
     const savedOffCategory = toChange.copy();
 
     const category = this._getCategory(toChange);
@@ -133,13 +135,7 @@ export class SpectreUser {
   }
 
   addCategory(category: Category) {
-    const found = this._getCategory(category);
-    if (found) {
-      throw new Error(
-        "Category [" + category.getName() + "] was already added"
-      );
-    }
-
+    this.assertCategoryDoesNotExist(category);
     this.categories.push(category.copy());
 
     for (let i = 0; i < this.onCategoryAddedListeners.length; i++) {
@@ -147,6 +143,15 @@ export class SpectreUser {
         new OnCategoryAddedEvent(category.copy())
       );
     }
+  }
+
+  assertCategoryDoesNotExist(category : Category) {
+    const found = this._getCategory(category);
+    if (found) {
+      throw new Error(
+        "Category [" + category.getName() + "] was already added"
+      );
+    } 
   }
 
   addOnCategoryAddedListener(listener: CategoryAddedListener) {

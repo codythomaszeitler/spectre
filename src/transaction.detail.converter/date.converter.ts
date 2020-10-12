@@ -12,7 +12,9 @@ export class DateConverter {
             jsDate = dt.toJSDate();
         } else {
             const properFormat = input.split('/').join('-'); 
-            const dt = DateTime.fromFormat(properFormat, 'MM-dd-yyyy');
+            const dt = DateTime.fromFormat(properFormat, 'MM-dd-yyyy HH:mm:ss');
+
+            console.log(dt);
 
             if (!dt.isValid) {
                 throw new Error('Could not convert [' + input + '] into a date');
@@ -36,7 +38,11 @@ export class DateConverter {
         const paddedDay = this.padToTwo("" + luxonDatetime.day);
         const year = luxonDatetime.year;
 
-        return paddedMonth + '/' + paddedDay + '/' + year;
+        const paddedHours = this.padToTwo("" + luxonDatetime.hour);
+        const paddedMinutes = this.padToTwo("" + luxonDatetime.minute);
+        const paddedSeconds = this.padToTwo("" + luxonDatetime.second);
+
+        return paddedMonth + '/' + paddedDay + '/' + year + ' ' + paddedHours + ':' + paddedMinutes + ':' + paddedSeconds;
     }
 
     padToTwo(input : string) {
@@ -44,6 +50,5 @@ export class DateConverter {
             input = '0' + input;
         }
         return input;
-
     }
 }

@@ -290,7 +290,6 @@ export class CategorizationScreen
   }
 
   onCategoryColorChoice(category: Category, color: Color) {
-    this.categoryColors.delete(category.getName());
     this.categoryColors.set(category.getName(), color);
 
     this.setState({
@@ -462,9 +461,20 @@ export class CategorizationScreen
     );
 
     this.onCategoryColorChoice(event.newCategory, oldColor);
+    this.onCategoryOrderChoice(event.newCategory, this.getOrderForCategory(event.oldCategory));
+    this.removeOrderChoice(event.oldCategory);
+
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
+  }
+
+  onCategoryOrderChoice(category : Category, ordering : number) {
+    this.categoryOrder.set(category.getName(), ordering);
+  }
+
+  getOrderForCategory(category : Category) {
+    return this.categoryOrder.get(category.getName());
   }
 
   onCategorizationStart() {

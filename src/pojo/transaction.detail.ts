@@ -9,6 +9,7 @@ import {
 import { SCEPTER_CATEGORY_COLUMN_NAME } from "../service/scepter.format.importer";
 import { Color, COLOR_TYPE } from "./color";
 import { Category, CATEGORY_TYPE } from "./category";
+import { CATEGORY_NOT_FOUND } from "../service/scepter.format.csv.importer";
 
 export const STRING_TYPE = "String";
 
@@ -88,7 +89,12 @@ export class TransactionDetail {
     } else if (this.type === STRING_TYPE) {
       asGivenType = this.detail;
     } else if (this.type === CATEGORY_TYPE) {
-      asGivenType = new Category(this.detail);
+      if (!this.detail) {
+        asGivenType = CATEGORY_NOT_FOUND;
+      } else {
+        asGivenType = new Category(this.detail);
+      }
+
     } else if (this.type === COLOR_TYPE) {
       asGivenType = new Color(this.detail);
     } else if (this.type === 'number') {

@@ -34,28 +34,6 @@ describe("View Context", () => {
     expect(testObject.getOrderFor(category.copy())).toBe(1);
   });
 
-  it('should throw an exception if there is a missing ordering within the builder', () => {
-
-    const builder = new ViewContext.Builder();
-
-    builder.setCategoryColor(new Category('A'), new Color('#111111'));
-    builder.setCategoryColor(new Category('B'), new Color('#111111'));
-    builder.setCategoryColor(new Category('C'), new Color('#111111'));
-
-    builder.setCategoryOrdering(new Category('A'), 1);
-    builder.setCategoryOrdering(new Category('B'), 3);
-    builder.setCategoryOrdering(new Category('C'), 6);
-
-    let caughtException = null;
-    try {
-        builder.build();
-    } catch (e) {
-        caughtException = e;
-    }
-
-    expect(caughtException.message).toBe('Could not build since there was a gap in ordering [2,4,5] was missing')
-  });
-
   it('should throw an exception if the given index is 0 or below', () => {
     const builder = new ViewContext.Builder();
 
@@ -93,26 +71,6 @@ describe("View Context", () => {
     }
 
     expect(caughtException.message).toBe('Cannot set a sort ordering without an ordering');
-  });
-
-  it('should throw an exception if the first sort ordering is not given', () => {
-    const builder = new ViewContext.Builder();
-
-    builder.setCategoryColor(new Category('A'), new Color('#111111'));
-    builder.setCategoryColor(new Category('C'), new Color('#111111'));
-
-    builder.setCategoryOrdering(new Category('A'), 2);
-    builder.setCategoryOrdering(new Category('C'), 3);
-
-    let caughtException = null;
-    try {
-        builder.build();
-    } catch (e) {
-        caughtException = e;
-    }
-
-    expect(caughtException.message).toBe('Could not build since there was a gap in ordering [1] was missing');
-    
   });
 
   it('should throw an exception if there is not a color for every ordering and vice versa', () => {

@@ -140,7 +140,7 @@ describe("By Column Name Csv Converter", () => {
 
     const transaction = new Transaction(details);
 
-    const exporter = new CsvExporter(columns);
+    const exporter = new CsvExporter();
     exporter.defineOutgoingFormat(columns);
 
     const testObject = new ByColumnNameCsvImporter(

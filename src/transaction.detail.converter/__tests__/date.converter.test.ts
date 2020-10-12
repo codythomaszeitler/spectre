@@ -1,9 +1,16 @@
 import { DateConverter } from "../date.converter";
 
 describe("Date Converter", () => {
-  it("should be able to convert a date of the following form: MM-DD-YYYY", () => {
+  it("should be able to convert a date of the following form: MM-DD-YYYY HH:mm:ss", () => {
     const testObject = new DateConverter();
     const date = testObject.fromString("07/31/2020 18:31:41");
+
+    expect(date.getFullYear()).toBe(2020);
+  });
+
+  it("should be able to convert a date of the following form: MM-DD-YYYY", () => {
+    const testObject = new DateConverter();
+    const date = testObject.fromString("07/31/2020");
 
     expect(date.getFullYear()).toBe(2020);
   });

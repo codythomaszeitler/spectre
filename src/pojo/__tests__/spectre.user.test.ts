@@ -2,7 +2,9 @@ import {
   SpectreUser,
   TransactionCategorizedListener,
   OnTransactionCategorizedEvent,
-  OnCategoryRemovedEvent, TransactionUncategorizedListener, OnTransactionUncategorizedEvent
+  OnCategoryRemovedEvent,
+  TransactionUncategorizedListener,
+  OnTransactionUncategorizedEvent,
 } from "../spectre.user";
 import { Category } from "../category";
 import { Currency } from "../currency";
@@ -230,13 +232,12 @@ describe("Spectre User", () => {
   });
 
   it("should be able to delete a category with transactions", () => {
-
     let caughtEvent = null;
     const listener = {
-      onCategoryRemoved: function(event : OnCategoryRemovedEvent) {
+      onCategoryRemoved: function (event: OnCategoryRemovedEvent) {
         caughtEvent = event;
-      }
-    }
+      },
+    };
 
     const testObject = new SpectreUser();
     testObject.addCategory(new Category("Home"));
@@ -253,12 +254,12 @@ describe("Spectre User", () => {
     testObject.removeCategory(new Category("Home"));
 
     expect(testObject.getUncategorized().length).toBe(1);
-    expect(caughtEvent.category.equals(new Category('Home'))).toBe(true);
+    expect(caughtEvent.category.equals(new Category("Home"))).toBe(true);
     caughtEvent = null;
 
     testObject.removeCategoryRemovedListener(listener);
-    testObject.addCategory(new Category('Test'));
-    testObject.removeCategory(new Category('Test'));
+    testObject.addCategory(new Category("Test"));
+    testObject.removeCategory(new Category("Test"));
 
     expect(caughtEvent).toBeNull();
   });
@@ -298,49 +299,50 @@ describe("Spectre User", () => {
     );
   });
 
-  it('should throw an exception if two categories are added with the same name', () => {
+  it("should throw an exception if two categories are added with the same name", () => {
     const testObject = new SpectreUser();
 
-    testObject.addCategory(new Category('Home'));
+    testObject.addCategory(new Category("Home"));
 
     let caughtException = null;
     try {
-      testObject.addCategory(new Category('Home'));
+      testObject.addCategory(new Category("Home"));
     } catch (e) {
       caughtException = e;
     }
-    expect(caughtException.message).toBe('Category [Home] was already added');
+    expect(caughtException.message).toBe("Category [Home] was already added");
   });
 
-  it('should throw an exception if trying to categorize against something that dne', () => {
-
+  it("should throw an exception if trying to categorize against something that dne", () => {
     const testObject = new SpectreUser();
-    const transaction = new Transaction([new TransactionDetail('TEST', 'A')]);
+    const transaction = new Transaction([new TransactionDetail("TEST", "A")]);
 
     testObject.readyForCategorization(transaction);
 
     let caughtException = null;
     try {
-      testObject.categorize(transaction, new Category('Home'));
+      testObject.categorize(transaction, new Category("Home"));
     } catch (e) {
       caughtException = e;
     }
-    expect(caughtException.message).toBe('[Home] category was not registered in user');
+    expect(caughtException.message).toBe(
+      "[Home] category was not registered in user"
+    );
   });
 
-  it('should emit an event right before a category is removed', () => {
+  it("should emit an event right before a category is removed", () => {
     const testObject = new SpectreUser();
 
     let caughtEvent = null;
     const listener = {
-      onBeforeCategoryRemoved(event : OnCategoryRemovedEvent) {
+      onBeforeCategoryRemoved(event: OnCategoryRemovedEvent) {
         caughtEvent = event;
-      }
+      },
     };
 
     testObject.addBeforeCategoryRemovedListener(listener);
 
-    const category = new Category('TEST');
+    const category = new Category("TEST");
     testObject.addCategory(category);
 
     testObject.removeCategory(category);
@@ -353,35 +355,38 @@ describe("Spectre User", () => {
     expect(caughtEvent).toBeNull();
   });
 
-  it('should be able to tell what category is before another category when one exists', () => {
+  it("should be able to tell what category is before another category when one exists", () => {
     const testObject = new SpectreUser();
 
-    testObject.addCategory(new Category('A'));
-    testObject.addCategory(new Category('B'));
-    testObject.addCategory(new Category('C'));
+    testObject.addCategory(new Category("A"));
+    testObject.addCategory(new Category("B"));
+    testObject.addCategory(new Category("C"));
 
-    expect(testObject.getCategoryBefore(new Category('B')).equals(new Category('A'))).toBe(true);
-    expect(testObject.getCategoryBefore(new Category('A'))).toBeNull();
+    expect(
+      testObject.getCategoryBefore(new Category("B")).equals(new Category("A"))
+    ).toBe(true);
+    expect(testObject.getCategoryBefore(new Category("A"))).toBeNull();
   });
 
-  it('should throw an exception if a category that does not exist within the user is given for getCategoryBefore', () => {
-
+  it("should throw an exception if a category that does not exist within the user is given for getCategoryBefore", () => {
     const testObject = new SpectreUser();
-    testObject.addCategory(new Category('A'));
-    testObject.addCategory(new Category('B'));
-    testObject.addCategory(new Category('C'));
+    testObject.addCategory(new Category("A"));
+    testObject.addCategory(new Category("B"));
+    testObject.addCategory(new Category("C"));
 
     let caughtException = null;
     try {
-      testObject.getCategoryBefore(new Category('D'));
+      testObject.getCategoryBefore(new Category("D"));
     } catch (e) {
       caughtException = e;
     }
 
-    expect(caughtException.message).toBe('Cannot call getCategoryBefore on category that does not exist within user [D]');
+    expect(caughtException.message).toBe(
+      "Cannot call getCategoryBefore on category that does not exist within user [D]"
+    );
   });
 
-  it('should throw an exception if a falsy category is given to getCategoryBefore', () => {
+  it("should throw an exception if a falsy category is given to getCategoryBefore", () => {
     const testObject = new SpectreUser();
 
     let caughtException = null;
@@ -392,49 +397,56 @@ describe("Spectre User", () => {
       caughtException = e;
     }
 
-    expect(caughtException.message).toBe('Cannot call getCategoryBefore with a null or undefined category');
+    expect(caughtException.message).toBe(
+      "Cannot call getCategoryBefore with a null or undefined category"
+    );
   });
 
-  it('should be able to tell what category is before another category when one exists', () => {
+  it("should be able to tell what category is before another category when one exists", () => {
     const testObject = new SpectreUser();
 
-    testObject.addCategory(new Category('A'));
-    testObject.addCategory(new Category('B'));
-    testObject.addCategory(new Category('C'));
+    testObject.addCategory(new Category("A"));
+    testObject.addCategory(new Category("B"));
+    testObject.addCategory(new Category("C"));
 
-    expect(testObject.getCategoryAfter(new Category('B')).equals(new Category('C'))).toBe(true);
-    expect(testObject.getCategoryAfter(new Category('C'))).toBeNull();
+    expect(
+      testObject.getCategoryAfter(new Category("B")).equals(new Category("C"))
+    ).toBe(true);
+    expect(testObject.getCategoryAfter(new Category("C"))).toBeNull();
   });
 
-  it('should be able to tell what category is before another category when one exists', () => {
+  it("should be able to tell what category is before another category when one exists", () => {
     const testObject = new SpectreUser();
 
-    testObject.addCategory(new Category('A'));
-    testObject.addCategory(new Category('B'));
-    testObject.addCategory(new Category('C'));
+    testObject.addCategory(new Category("A"));
+    testObject.addCategory(new Category("B"));
+    testObject.addCategory(new Category("C"));
 
-    expect(testObject.getCategoryBefore(new Category('B'))?.equals(new Category('A'))).toBe(true);
-    expect(testObject.getCategoryBefore(new Category('A'))).toBeNull();
+    expect(
+      testObject.getCategoryBefore(new Category("B"))?.equals(new Category("A"))
+    ).toBe(true);
+    expect(testObject.getCategoryBefore(new Category("A"))).toBeNull();
   });
 
-  it('should throw an exception if a category that does not exist within the user is given for getCategoryAfter', () => {
-
+  it("should throw an exception if a category that does not exist within the user is given for getCategoryAfter", () => {
     const testObject = new SpectreUser();
-    testObject.addCategory(new Category('A'));
-    testObject.addCategory(new Category('B'));
-    testObject.addCategory(new Category('C'));
+    testObject.addCategory(new Category("A"));
+    testObject.addCategory(new Category("B"));
+    testObject.addCategory(new Category("C"));
 
     let caughtException = null;
     try {
-      testObject.getCategoryAfter(new Category('D'));
+      testObject.getCategoryAfter(new Category("D"));
     } catch (e) {
       caughtException = e;
     }
 
-    expect(caughtException.message).toBe('Cannot call getCategoryAfter on category that does not exist within user [D]');
+    expect(caughtException.message).toBe(
+      "Cannot call getCategoryAfter on category that does not exist within user [D]"
+    );
   });
 
-  it('should throw an exception if a falsy category is given to getCategoryAfter', () => {
+  it("should throw an exception if a falsy category is given to getCategoryAfter", () => {
     const testObject = new SpectreUser();
 
     let caughtException = null;
@@ -445,73 +457,25 @@ describe("Spectre User", () => {
       caughtException = e;
     }
 
-    expect(caughtException.message).toBe('Cannot call getCategoryAfter with a null or undefined category');
+    expect(caughtException.message).toBe(
+      "Cannot call getCategoryAfter with a null or undefined category"
+    );
   });
 
-  it('should transfer all transactions to correct category when name has changed', () => {
-
+  it("should transfer all transactions to correct category when name has changed", () => {
     const testObject = new SpectreUser();
 
-    testObject.addCategory(new Category('Test'));
+    testObject.addCategory(new Category("Test"));
     const transaction = new Transaction([]);
     testObject.readyForCategorization(transaction);
     testObject.categorize(transaction, new Category("Test"));
 
     testObject.changeCategoryName(new Category("Test"), "New Test Name");
 
-    const transactions = testObject.getTransactionsFor(new Category("New Test Name"));
+    const transactions = testObject.getTransactionsFor(
+      new Category("New Test Name")
+    );
 
     expect(transactions.length).toBe(1);
-});
-
-  it('should be able to still listen for transaction added events even when the name has been changed', () => {
-
-      const testObject = new SpectreUser();
-
-      let caughtEvent = null;
-      const listener : TransactionCategorizedListener = {
-        onTransactionCategorized : (event : OnTransactionCategorizedEvent) => {
-          caughtEvent = event;
-        }
-      }
-
-      testObject.addCategory(new Category('Test'));
-      testObject.addTransactionCategorizedListener(new Category('Test'), listener);
-
-      testObject.changeCategoryName(new Category("Test"), "New Test Name");
-
-      const transaction = new Transaction([]);
-      testObject.readyForCategorization(transaction);
-
-      testObject.categorize(transaction, new Category("New Test Name"));
-
-      expect(caughtEvent).not.toBeNull();
   });
-
-  it('should be able to still listen for transaction removed events even when the name has been changed', () => {
-
-    const testObject = new SpectreUser();
-
-    let caughtEvent = null;
-    const listener : TransactionUncategorizedListener = {
-      onTransactionUncategorized(event: OnTransactionUncategorizedEvent) {
-        caughtEvent = event;
-      }
-    }
-
-    testObject.addCategory(new Category('Test'));
-    testObject.addTransactionUncategorizedListener(new Category('Test'), listener);
-
-    testObject.changeCategoryName(new Category("Test"), "New Test Name");
-
-    const transaction = new Transaction([]);
-    testObject.readyForCategorization(transaction);
-
-    testObject.categorize(transaction, new Category("New Test Name"));
-
-    testObject.uncategorize(transaction, new Category('New Test Name'));
-
-    expect(caughtEvent).not.toBeNull();
-  });
-
 });

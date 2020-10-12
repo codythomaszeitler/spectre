@@ -282,13 +282,15 @@ export class CategorizationScreen
 
   getColorFor(category: Category) {
     let color = new Color(CategoryColors[0]);
-    if (category.getName() in this.categoryColors) {
+
+    if (this.categoryColors.has(category.getName())) {
       color = this.categoryColors.get(category.getName())?.copy();
     }
     return color;
   }
 
   onCategoryColorChoice(category: Category, color: Color) {
+    this.categoryColors.delete(category.getName());
     this.categoryColors.set(category.getName(), color);
 
     this.setState({
@@ -538,6 +540,10 @@ export class CategorizationScreen
         viewContext.getOrderFor(category)
       );
     }
+
+    this.setState({
+      screenSegmentPayloads: this.generatePayloadsForCurrentState(),
+    });
   }
 
   onCategoryPress(event: OnCategoryPressed) {

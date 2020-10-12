@@ -168,6 +168,7 @@ export class EditCategoryScreen extends Component {
           initialColorChoice={this.props.color}
           diameter={35}
           onColorSelect={(colorChoice: Color) => {
+            console.log(colorChoice);
             this.setState({
               color: colorChoice,
             });

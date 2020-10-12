@@ -69,8 +69,6 @@ export class CategoryScreen
     this.spectreUser.addTransactionCategorizedListener(props.category, this);
     this.spectreUser.addTransactionUncategorizedListener(props.category, this);
 
-    console.log(props.category);
-
     this.state = {
       color: props.color,
       category: props.category,

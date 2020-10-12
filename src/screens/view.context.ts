@@ -157,56 +157,6 @@ export class ViewContext {
     }
 
     public build() {
-      const getMissingOrderings = () => {
-        const getMaxElement = (orderings: Array<number>) => {
-          return Math.max(...orderings);
-        };
-
-        const getOrderingsSorted = () => {
-          let orderings = [];
-          for (let i = 0; i < this.building.categoryOrderings.length; i++) {
-            const categoryWithOrdering = this.building.categoryOrderings[i];
-            orderings.push(categoryWithOrdering.getOrdering());
-          }
-          orderings.sort(function (a, b) {
-            return a - b;
-          });
-          return orderings;
-        };
-
-        const generateArray = (minumum: number, maximum: number) => {
-          const generated = [];
-          for (let i = minumum; i <= maximum; i++) {
-            generated.push(i);
-          }
-          return generated;
-        };
-
-        const sorted = getOrderingsSorted();
-        const toCheck = generateArray(1, getMaxElement(sorted));
-
-        let missingElements = [];
-        for (let i = 0; i < toCheck.length; i++) {
-          const element = toCheck[i];
-          if (!sorted.includes(element)) {
-            missingElements.push(element);
-          }
-        }
-        return missingElements;
-      };
-
-      const missing = getMissingOrderings();
-
-      if (missing.length > 0) {
-        const asString = JSON.stringify(missing);
-
-        throw new Error(
-          "Could not build since there was a gap in ordering " +
-            asString +
-            " was missing"
-        );
-      }
-
       for (let i = 0; i < this.building.categoryOrderings.length; i++) {
         const categoryWithOrdering = this.building.categoryOrderings[i];
         const category = categoryWithOrdering.category;

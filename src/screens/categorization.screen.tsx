@@ -56,6 +56,7 @@ export interface State {
   categoryAddText: string;
   currentTransaction: Transaction;
   isCategorizationMode: boolean;
+  isImporting: boolean;
 }
 
 const VIEWING_MODE_BOTTOM_BAR_FLEX = 1.15;
@@ -127,6 +128,7 @@ export class CategorizationScreen
       height: 0,
       bottomBarFlex: VIEWING_MODE_BOTTOM_BAR_FLEX,
       isHoveringOverHelp: false,
+      isImporting: false,
     };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -461,7 +463,10 @@ export class CategorizationScreen
     );
 
     this.onCategoryColorChoice(event.newCategory, oldColor);
-    this.onCategoryOrderChoice(event.newCategory, this.getOrderForCategory(event.oldCategory));
+    this.onCategoryOrderChoice(
+      event.newCategory,
+      this.getOrderForCategory(event.oldCategory)
+    );
     this.removeOrderChoice(event.oldCategory);
 
     this.setState({
@@ -469,11 +474,11 @@ export class CategorizationScreen
     });
   }
 
-  onCategoryOrderChoice(category : Category, ordering : number) {
+  onCategoryOrderChoice(category: Category, ordering: number) {
     this.categoryOrder.set(category.getName(), ordering);
   }
 
-  getOrderForCategory(category : Category) {
+  getOrderForCategory(category: Category) {
     return this.categoryOrder.get(category.getName());
   }
 
@@ -505,35 +510,42 @@ export class CategorizationScreen
   async onFilesWithTypeSelectedListener(
     event: OnFilesWithCsvTypeSelectedEvent
   ) {
-    const pairs = event.pairs;
+    this.setState(
+      {
+        isImporting: true,
+      },
+      async () => {
+        const pairs = event.pairs;
 
-    for (let i = 0; i < pairs.length; i++) {
-      const pair = pairs[i];
-      const file = pair.file;
-      const csvType = pair.csvType;
+        for (let i = 0; i < pairs.length; i++) {
+          const pair = pairs[i];
+          const file = pair.file;
+          const csvType = pair.csvType;
 
-      try {
-        const location = new LocalFileLocation(file);
-        if (await location.isEmpty()) {
-          return;
+          try {
+            const location = new LocalFileLocation(file);
+            if (await location.isEmpty()) {
+              return;
+            }
+
+            const factory = new TransactionLoaderFactory();
+            const service = factory.create(csvType, location);
+            const viewContext = await service.load(this.spectreUser, location);
+
+            this.alignViewContext(viewContext);
+          } catch (e) {
+            console.log(e);
+            let errorDialog = new Alert();
+            errorDialog.show(e.message);
+          }
         }
-
-        const factory = new TransactionLoaderFactory();
-        const service = factory.create(csvType, location);
-        const viewContext = await service.load(this.spectreUser, location);
-
-        this.alignViewContext(viewContext);
-
         this.setState({
           showImportCsvScreen: false,
           numUncategorized: this.spectreUser.getUncategorized().length,
+          isImporting: false,
         });
-      } catch (e) {
-        console.log(e);
-        let errorDialog = new Alert();
-        errorDialog.show(e.message);
       }
-    }
+    );
   }
 
   alignViewContext(viewContext: ViewContext) {
@@ -591,6 +603,10 @@ export class CategorizationScreen
   }
 
   onTransactionCategorized(event: OnTransactionCategorizedEvent) {
+    if (this.state.isImporting) {
+      return;
+    }
+
     this.setState({
       numUncategorized: this.spectreUser.getUncategorized().length,
     });
@@ -650,7 +666,7 @@ export class CategorizationScreen
   }
 
   onSuccessfulCategoryAdd(category: Category, color: Color) {
-    this.state.showAddCategoryScreen = false;
+  this.state.showAddCategoryScreen = false;
     this.forceUpdate();
     this.onCategoryColorChoice(category, color);
 
@@ -800,7 +816,6 @@ export class CategorizationScreen
               <ViewModeBottomBar
                 onCategorizationStartPress={this.onCategorizationStart}
                 onImportButtonPress={() => {
-                  console.log("We got in here");
                   this.setState({
                     showImportCsvScreen: true,
                   });

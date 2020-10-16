@@ -74,7 +74,9 @@ export class DetailsScreenSegment extends Component {
               marginLeft : 5,
             }}
           >
-            { detail.getElement()}
+            {detail.getElement().length < 50
+                ? `${detail.getElement()}`
+                : `${detail.getElement().substring(0, 50)}...`}
           </Text>
           <View
             style={{

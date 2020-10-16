@@ -42,6 +42,10 @@ export class SpectreUser {
   }
 
   changeCategoryName(toChange: Category, newName: string) {
+    if (toChange.equals(new Category(newName))) {
+      return;
+    }
+
     this.assertCategoryDoesNotExist(new Category(newName));
 
     const savedOffCategory = toChange.copy();

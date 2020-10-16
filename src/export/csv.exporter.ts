@@ -8,7 +8,7 @@ import { ExporterDecorator } from "./exporter.decorator";
 export class CsvExporter extends ExporterDecorator {
   columns: Columns;
 
-  constructor(exporter? : Exporter) {
+  constructor(exporter?: Exporter) {
     super(exporter);
     this.columns = new Columns({});
   }
@@ -73,18 +73,6 @@ export class CsvExporter extends ExporterDecorator {
       return hasColumnName;
     };
 
-    const getMatchingColumnName = (columnNames: string[]) => {
-      let matchingColumnName = null;
-
-      for (let i = 0; i < columnNames.length; i++) {
-        if (transaction.hasDetailWithColumnName(columnNames[i])) {
-          matchingColumnName = columnNames[i];
-          break;
-        }
-      }
-      return matchingColumnName;
-    };
-
     let converted = "";
 
     const details = transaction.getDetails();
@@ -102,20 +90,17 @@ export class CsvExporter extends ExporterDecorator {
       }
 
       const type = this.columns.getType(i);
-      const nameOrNames = this.columns.getName(i);
+      const name = this.columns.getName(i);
 
       if (type === CATEGORY_TYPE) {
         converted += escapeCsvElement(category.getName()) + ",";
-      } else if (!nameOrNames) {
+      } else if (!name) {
         converted += ",";
       } else {
-        const columnNames = nameOrNames.split(columnNameDelimeter);
-        if (containsColumnName(columnNames)) {
-          const matchingColumnName = getMatchingColumnName(columnNames);
+        if (containsColumnName([name])) {
           converted +=
-            escapeCsvElement(
-              transaction.getDetailByName(matchingColumnName).getElement()
-            ) + ",";
+            escapeCsvElement(transaction.getDetailByName(name).getElement()) +
+            ",";
         } else {
           converted += ",";
         }

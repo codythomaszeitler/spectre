@@ -8,7 +8,7 @@ export class WithStaticValueCsvConveter extends ImporterDecorator {
   columnName: string;
   value: string;
 
-  constructor(importer: Importer, columnName: string, value: string) {
+  constructor(columnName: string, value: string, importer? : Importer) {
     super(importer);
 
     this.columnName = columnName;

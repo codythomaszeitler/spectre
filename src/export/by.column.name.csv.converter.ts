@@ -35,11 +35,13 @@ export class ByColumnNameCsvImporter extends ImporterDecorator {
     }
 
     convert(string : string) {
+        const transaction = super.convert(string);
+
         const converter = new CsvImporter();
         converter.defineIncomingFormat(this.columns);
         const converted = converter.convert(string);    
 
-        const details = [];
+        const details = transaction.getDetails();
 
         const mappings = this.config.getMappings();
         for (let i = 0; i < mappings.length; i++) {

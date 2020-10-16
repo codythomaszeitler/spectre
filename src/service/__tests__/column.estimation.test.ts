@@ -1,3 +1,6 @@
+import { ExporterDecorator } from "../../export/exporter.decorator";
+import { Category } from "../../pojo/category";
+import { SpectreUser } from "../../pojo/spectre.user";
 import { Transaction } from "../../pojo/transaction";
 import { TransactionDetail } from "../../pojo/transaction.detail";
 import { ColumnEstimation } from "../column.estimation";
@@ -86,16 +89,41 @@ describe("Column Estimation", () => {
     );
   });
 
-  it('should be able to estimate what the columns look like given a transaction', () => {
+  it('should be able to make a set of columns be able to keep up with all transactions', () => {
+    const testObject = new ColumnEstimation();
+
     const columnName = 'Test Column Name';
 
     const transaction = new Transaction([
       new TransactionDetail('Test Detail', columnName, 'String')
-    ]);
+    ]); 
+    const anotherTransaction = new Transaction([
+      new TransactionDetail('Test Detail', 'Another Column Name', 'String')
+    ]); 
 
-    const testObject = new ColumnEstimation();
-    const estimated = testObject.estimateByTransaction(transaction);
+    const duplicateTransaction = new Transaction([
+      new TransactionDetail('Test Detail', columnName, 'String')
+    ]); 
 
-    expect(estimated.hasColumnWithName(columnName)).toBeTruthy();
+    const scepterUser = new SpectreUser();
+
+    const category = new Category('a');
+    scepterUser.addCategory(category);
+
+    scepterUser.readyForCategorization(transaction);
+    scepterUser.readyForCategorization(anotherTransaction);
+    scepterUser.readyForCategorization(duplicateTransaction);
+
+    scepterUser.categorize(transaction, category);
+    scepterUser.categorize(anotherTransaction, category);
+    scepterUser.categorize(duplicateTransaction, category);
+
+    const estimated = testObject.estimateBySpectreUser(scepterUser);
+
+    expect(estimated.getNumColumns()).toBe(3);
+
+    expect(estimated.getName(0)).toBe(columnName);
+    expect(estimated.getName(1)).toBe('Another Column Name');
+
   });
 });

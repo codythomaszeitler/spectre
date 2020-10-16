@@ -4,7 +4,10 @@ import { SpectreUser } from "../pojo/spectre.user";
 import { CATEGORY_TYPE } from "../pojo/category";
 import { Transaction } from "../pojo/transaction";
 import { SCEPTER_CATEGORY_COLUMN_NAME } from "./scepter.format.importer";
-import { SCEPTER_CATEGORY_COLOR_COLUMN_NAME, SCEPTER_CATEGORY_ORDERING_COLUMN_NAME } from "../export/with.view.context.exporter";
+import {
+  SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+  SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+} from "../export/with.view.context.exporter";
 import { COLOR_TYPE } from "../pojo/color";
 
 export class ColumnEstimation {
@@ -26,91 +29,65 @@ export class ColumnEstimation {
     for (let i = 0; i < headerSegments.length; i++) {
       config[i] = {
         name: headerSegments[i],
-        type: this.getTypeFromColumnName(headerSegments[i])
+        type: this.getTypeFromColumnName(headerSegments[i]),
       };
     }
     return new Columns(config);
   }
 
-  private getTypeFromColumnName(columnName : string) {
+  private getTypeFromColumnName(columnName: string) {
     let type;
     if (columnName === SCEPTER_CATEGORY_COLUMN_NAME) {
       type = CATEGORY_TYPE;
     } else if (columnName === SCEPTER_CATEGORY_COLOR_COLUMN_NAME) {
       type = COLOR_TYPE;
     } else if (columnName === SCEPTER_CATEGORY_ORDERING_COLUMN_NAME) {
-      type = 'number';
-    } else { 
+      type = "number";
+    } else {
       type = "string";
     }
 
     return type;
   }
 
-  estimateByTransaction(transaction: Transaction) {
-    const columnsConfig = {};
-    this._ensureColumnSupportsTransaction(transaction, columnsConfig);
-    return new Columns(columnsConfig);
-  }
 
   estimateBySpectreUser(spectreUser: SpectreUser) {
     const columnsConfig: any = {};
 
-    const addCategoryColumn = () => {
-      const getLargestColumnCount = () => {
-        const transactions = spectreUser.getTransactions();
+    const addCategoryColumn = (largestIndex : number) => {
 
-        let largestColumnCount = 0;
-        for (let i = 0; i < transactions.length; i++) {
-          const details = transactions[i].getDetails();
-          if (details.length > largestColumnCount) {
-            largestColumnCount = details.length;
-          }
-        }
-        return largestColumnCount;
-      };
-      columnsConfig[getLargestColumnCount()] = {
+      columnsConfig[largestIndex] = {
         name: "Category",
         type: CATEGORY_TYPE,
       };
     };
 
+    const columnNames = new Set();
+
     const transactions = spectreUser.getTransactions();
     for (let i = 0; i < transactions.length; i++) {
       const transaction = transactions[i];
-      this._ensureColumnSupportsTransaction(transaction, columnsConfig);
+
+      const details = transaction.getDetails();
+
+      for (let j = 0; j < details.length; j++) {
+        const detail = details[j];
+        columnNames.add(detail.getColumnName());
+      }
     }
 
-    addCategoryColumn();
+    let i = 0;
+    columnNames.forEach((value) => {
+      columnsConfig[i] = {
+        name: value,
+        type: "string",
+      };
+
+      i++;
+    });
+
+    addCategoryColumn(i);
 
     return new Columns(columnsConfig);
   }
-
-  _ensureColumnSupportsTransaction = (
-    transaction: Transaction,
-    columnsConfig: any
-  ) => {
-    const addOrAppendColumnName = (columnIndex: number, columnName: string) => {
-      if (columnsConfig[columnIndex]) {
-        const currentColumnName = columnsConfig[columnIndex][nameKey];
-        if (!currentColumnName.includes(columnName)) {
-          columnsConfig[columnIndex][nameKey] =
-            currentColumnName + columnNameDelimeter + columnName;
-        }
-      } else {
-        columnsConfig[columnIndex] = {
-          name: columnName,
-          type: "string",
-        };
-      }
-    };
-
-    const details = transaction.getDetails();
-    for (let j = 0; j < details.length; j++) {
-      const detail = details[j];
-      const columnName = detail.getColumnName();
-
-      addOrAppendColumnName(j, columnName);
-    }
-  };
 }

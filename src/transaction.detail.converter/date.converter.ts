@@ -10,14 +10,20 @@ export class DateConverter {
       jsDate = dt.toJSDate();
     } else {
       const properFormat = input.split("/").join("-");
-      const dt = DateTime.fromFormat(properFormat, "MM-dd-yyyy HH:mm:ss");
+      const dt = DateTime.fromFormat(properFormat, "M-d-y H:m:s");
 
       if (!dt.isValid) {
-        const shorterDt = DateTime.fromFormat(properFormat, "MM-dd-yyyy");
-        if (!shorterDt.isValid) {
-          throw new Error("Could not convert [" + input + "] into a date");
-        } else {
+        const longerDt = DateTime.fromFormat(properFormat, "M-d-y tt");
+        if (!longerDt.isValid) {
+          const shorterDt = DateTime.fromFormat(properFormat, "M-d-y");
+
+          if (!shorterDt.isValid) {
+            throw new Error("Could not convert [" + input + "] into a date");
+          } else {
             jsDate = shorterDt.toJSDate();
+          }
+        } else {
+          jsDate = longerDt.toJSDate();
         }
       } else {
           jsDate = dt.toJSDate();

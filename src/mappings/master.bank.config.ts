@@ -6,24 +6,211 @@ export const MasterBankConfig = {
   default: RAW_FORMAT.get(),
   configs: [
     {
-      name: "Chase",
+      name: "Chase-Credit",
       imageFilePath: require("../../assets/Chase-logo.png"),
       mappings: [
         {
-          csvHeaderName: "Amount",
-          nodeFormatName: "Amount",
-          type : STRING_TYPE
-        },
-        {
-          csvHeaderName: "Post Date",
+          csvHeaderName: "Transaction Date",
           nodeFormatName: "Date",
-          type : DATE_TYPE
+          type: DATE_TYPE,
         },
         {
           csvHeaderName: "Description",
-          nodeFormatName: "Name",
-          type : STRING_TYPE
-        }
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Category",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "Chase-Checking",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Posting Date",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Description",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Type",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "Chase-Saving",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Posting Date",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Description",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Type",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "USBank-Credit",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Transaction Date",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Name",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Memo",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "USBank-Checking",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Date",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Name",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Memo",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "USBank-Reserve",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Date",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Name",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Memo",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "USBank-Saving",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Date",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Name",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Memo",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
+      ],
+    },
+    {
+      name: "Point",
+      imageFilePath: require("../../assets/Chase-logo.png"),
+      mappings: [
+        {
+          csvHeaderName: "Date Created",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "To User Nickname",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Note",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
       ],
     },
     {
@@ -33,49 +220,54 @@ export const MasterBankConfig = {
         {
           csvHeaderName: "Amount (total)",
           nodeFormatName: "Amount",
-          type : STRING_TYPE 
+          type: STRING_TYPE,
         },
         {
           csvHeaderName: "Datetime",
           nodeFormatName: "Date",
-          type : DATE_TYPE
+          type: DATE_TYPE,
         },
         {
           csvHeaderName: "Note",
           nodeFormatName: "Name",
-          type : STRING_TYPE
-        }
+          type: STRING_TYPE,
+        },
       ],
     },
     {
-      name : 'Paypal',
+      name: "Paypal",
       imageFilePath: require("../../assets/tiny_paypal.png"),
       mappings: [
         {
-          csvHeaderName: "Gross",
-          nodeFormatName: "Amount",
-          type : STRING_TYPE
-        },
-        {
           csvHeaderName: "Date",
           nodeFormatName: "Date",
-          type : DATE_TYPE
+          type: DATE_TYPE,
         },
         {
           csvHeaderName: "Name",
-          nodeFormatName: "Name",
-          type : STRING_TYPE
-        }
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Type",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Gross",
+          nodeFormatName: "Amount",
+          type: STRING_TYPE,
+        },
       ],
     },
     {
-      name : SCEPTER_FORMAT.get(),
+      name: SCEPTER_FORMAT.get(),
       imageFilePath: require("../../assets/tiny_paypal.png"),
-      mappings : []
+      mappings: [],
     },
     {
-      name : RAW_FORMAT.get(),
-      mappings : []
+      name: RAW_FORMAT.get(),
+      mappings: [],
     },
   ],
 };

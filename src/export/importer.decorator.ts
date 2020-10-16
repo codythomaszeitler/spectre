@@ -4,9 +4,9 @@ import { Importer } from "./importer";
 
 export class ImporterDecorator implements Importer {
 
-    importer : Importer;
+    importer? : Importer;
 
-    constructor(importer : Importer) {
+    constructor(importer? : Importer) {
         this.importer = importer;
     }
 

@@ -35,26 +35,18 @@ export class TransactionLoaderFactory {
       );
     } else if (csvType.equals(VENMO_FORMAT)) {
       service = new VenmoTransactionLoadService(
-        new WithNotesCsvConverter(
-          new WithStaticValueCsvConveter(
-            new ByColumnNameCsvImporter(config),
-            "Account",
-            location.getFileName()
-          )
+        new ByColumnNameCsvImporter(
+          config,
+          new WithStaticValueCsvConveter("Account", location.getFileName())
         )
       );
     } else if (csvType.equals(RAW_FORMAT)) {
-      service = new TransactionLoadService(
-        new WithNotesCsvConverter(new CsvImporter())
-      );
+      service = new TransactionLoadService(new CsvImporter());
     } else {
       service = new TransactionLoadService(
-        new WithNotesCsvConverter(
-          new WithStaticValueCsvConveter(
-            new ByColumnNameCsvImporter(config),
-            "Account",
-            location.getFileName()
-          )
+        new ByColumnNameCsvImporter(
+          config,
+          new WithStaticValueCsvConveter("Account", location.getFileName())
         )
       );
     }

@@ -18,7 +18,7 @@ import {
 export const CATEGORY_NOT_FOUND = new Category(
   "_______CATEGORY NOT FOUND_______"
 );
-export const COLOR_NOT_FOUND = new Color('#96E3F3');
+export const COLOR_NOT_FOUND = new Color("#96E3F3");
 export const ORDERING_NOT_FOUND = 1;
 
 export class ScepterFormatCsvImporter implements ScepterFormatImporter {
@@ -33,6 +33,14 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
     // the column structure that we have is in line with scepter format
     // looks like.
     this.columns = columns.copy();
+  }
+
+  necessaryColumnHeaders() {
+    return [
+      SCEPTER_CATEGORY_COLUMN_NAME,
+      SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+      SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+    ];
   }
 
   convert(item: string) {

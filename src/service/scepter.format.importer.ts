@@ -6,6 +6,7 @@ import { ViewContext } from "../screens/view.context";
 export interface ScepterFormatImporter {
   defineIncomingFormat: (columns: Columns) => void;
   convert: (item: string) => ScepterFormattedLine;
+  necessaryColumnHeaders : () => Array<string>;
 }
 
 export const SCEPTER_CATEGORY_COLUMN_NAME = "Category";

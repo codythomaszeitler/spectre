@@ -1,6 +1,6 @@
 import { SpectreUser } from "../pojo/spectre.user";
 import { RawDataLocation } from "./raw.data.location";
-import { TransactionLoader } from "./transaction.loader";
+import { CanLoadResult, getMissingHeaders, TransactionLoader } from "./transaction.loader";
 import { ScepterFormatImporter } from "./scepter.format.importer";
 import { ColumnEstimation } from "./column.estimation";
 import { DocumentLoadService } from "./document.load.service";
@@ -12,6 +12,11 @@ export class ScepterTransactionLoadService implements TransactionLoader {
 
   constructor(importer: ScepterFormatImporter) {
     this.importer = importer;
+  }
+
+  async canLoad(location : RawDataLocation) {
+    const missing = await getMissingHeaders(location, this.importer.necessaryColumnHeaders());
+    return CanLoadResult.generate(missing);
   }
 
   async load(scepterUser: SpectreUser, location: RawDataLocation) {

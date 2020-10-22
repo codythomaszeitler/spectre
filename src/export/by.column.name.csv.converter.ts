@@ -63,4 +63,15 @@ export class ByColumnNameCsvImporter extends ImporterDecorator {
         return new Transaction(details);
     }
 
+    necessaryColumnHeaders() {
+        const headers = super.necessaryColumnHeaders();
+
+        const mappings = this.config.getMappings();
+        for (let i = 0; i < mappings.length; i++) {
+
+            const mapping = mappings[i];
+            headers.push(mapping.getColumnHeader());
+        }
+        return headers;
+    }
 }

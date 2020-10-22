@@ -8,7 +8,7 @@ export class WithStaticValueCsvConveter extends ImporterDecorator {
   columnName: string;
   value: string;
 
-  constructor(columnName: string, value: string, importer? : Importer) {
+  constructor(columnName: string, value: string, importer?: Importer) {
     super(importer);
 
     this.columnName = columnName;
@@ -17,6 +17,11 @@ export class WithStaticValueCsvConveter extends ImporterDecorator {
 
   defineIncomingFormat(columns: Columns) {
     super.defineIncomingFormat(columns);
+  }
+
+  necessaryColumnHeaders() {
+    const headers = super.necessaryColumnHeaders();
+    return headers;
   }
 
   convert(item: string) {

@@ -13,6 +13,11 @@ export class WithNotesCsvConverter extends ImporterDecorator {
     super.defineIncomingFormat(columns);
   }
 
+  necessaryColumnHeaders() {
+    const headers = super.necessaryColumnHeaders();
+    return headers;
+  }
+
   convert(item: string) {
     const transaction = super.convert(item);
 

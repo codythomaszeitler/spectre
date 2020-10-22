@@ -6,7 +6,9 @@ import { Columns } from "../../export/columns";
 import { CsvExporter } from "../../export/csv.exporter";
 import { CsvImporter } from "../../export/csv.importer";
 import { TransactionLoadService } from "../transaction.load.service";
-import { TransactionDetail } from "../../pojo/transaction.detail";
+import { STRING_TYPE, TransactionDetail } from "../../pojo/transaction.detail";
+import { ByColumnNameCsvImporter } from "../../export/by.column.name.csv.converter";
+import { BankConfig } from "../../mappings/bank.config";
 
 describe("Transaction Load Service", () => {
   it("should be able to load transactions from a location", async () => {
@@ -104,5 +106,56 @@ describe("Transaction Load Service", () => {
     expect(transaction.getElementByColumnName("noConfig1")).toBe("ELEMENT1");
     expect(transaction.getElementByColumnName("default2")).toBe("ELEMENT2");
     expect(transaction.getDetails().length).toBe(3);
+  });
+
+  it('should return true and an empty error message if the location is able to be loaded', async () => {
+    const bankConfig = new BankConfig({
+      name : 'USBank-Saving',
+      mappings : [
+        {
+          csvHeaderName : 'TestCsvName',
+          nodeFormatNamde : 'TestNodeName',
+          type : STRING_TYPE
+        }
+      ]
+    });
+
+    const importer = new ByColumnNameCsvImporter(bankConfig);
+    const testObject = new TransactionLoadService(importer);
+
+    const location = new TestLocation([
+      'TestCsvName',
+      'These are contents'
+    ]);
+
+    const result = await testObject.canLoad(location);
+    expect(result.canLoad).toBe(true);
+    expect(result.errorMessage).toBe('');
+  });
+
+  it('should return false and an error message if the necessary columns are not in the location', async () => {
+
+    const bankConfig = new BankConfig({
+      name : 'USBank-Saving',
+      mappings : [
+        {
+          csvHeaderName : 'TestCsvName',
+          nodeFormatNamde : 'TestNodeName',
+          type : STRING_TYPE
+        }
+      ]
+    });
+
+    const importer = new ByColumnNameCsvImporter(bankConfig);
+    const testObject = new TransactionLoadService(importer);
+
+    const location = new TestLocation([
+      'NotTestCsvName',
+      'These are contents'
+    ]);
+
+    const result = await testObject.canLoad(location);
+    expect(result.canLoad).toBe(false);
+    expect(result.errorMessage).toBe('Location did not have headers: [TestCsvName]');
   });
 });

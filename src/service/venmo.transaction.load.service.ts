@@ -3,7 +3,7 @@ import { SpectreUser } from "../pojo/spectre.user";
 import { RawDataLocation } from "./raw.data.location";
 import { DocumentLoadService } from "./document.load.service";
 import { ColumnEstimation } from "../service/column.estimation";
-import { TransactionLoader } from "./transaction.loader";
+import { TransactionLoader, getMissingHeaders, CanLoadResult } from "./transaction.loader";
 import { ViewContext } from "../screens/view.context";
 
 export class VenmoTransactionLoadService implements TransactionLoader {
@@ -11,6 +11,11 @@ export class VenmoTransactionLoadService implements TransactionLoader {
 
   constructor(importer : Importer) {
       this.importer = importer;
+  }
+
+  async canLoad(location : RawDataLocation) {
+    const missing = await getMissingHeaders(location, this.importer.necessaryColumnHeaders());
+    return CanLoadResult.generate(missing);
   }
 
   async load(scepterUser: SpectreUser, location: RawDataLocation) {

@@ -524,6 +524,37 @@ export class CategorizationScreen
 
           try {
             const location = new LocalFileLocation(file);
+            const factory = new TransactionLoaderFactory();
+            const service = factory.create(csvType, location);
+            const canLoadResult = await service.canLoad(location);
+
+            if (!canLoadResult.canLoad) {
+              console.log(canLoadResult);
+              let errorDialog = new Alert();
+
+              const errorMessage =
+                "File " +
+                location.getFileName() +
+                " did not have the proper format for " +
+                csvType.get();
+
+              errorDialog.show(errorMessage);
+              return;
+            }
+          } catch (e) {
+            console.log(e);
+            let errorDialog = new Alert();
+            errorDialog.show(e.message);
+          }
+        }
+
+        for (let i = 0; i < pairs.length; i++) {
+          const pair = pairs[i];
+          const file = pair.file;
+          const csvType = pair.csvType;
+
+          try {
+            const location = new LocalFileLocation(file);
             if (await location.isEmpty()) {
               return;
             }
@@ -666,7 +697,7 @@ export class CategorizationScreen
   }
 
   onSuccessfulCategoryAdd(category: Category, color: Color) {
-  this.state.showAddCategoryScreen = false;
+    this.state.showAddCategoryScreen = false;
     this.forceUpdate();
     this.onCategoryColorChoice(category, color);
 

@@ -24,4 +24,11 @@ export class ImporterDecorator implements Importer {
         return this.importer.convert(item);
     }
 
+    necessaryColumnHeaders() {
+        if (!this.importer) {
+            return new Array<string>();
+        }
+
+        return this.importer.necessaryColumnHeaders();
+    }
 }

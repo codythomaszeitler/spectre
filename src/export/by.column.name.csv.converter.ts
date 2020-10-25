@@ -5,73 +5,85 @@ import { Transaction } from "../pojo/transaction";
 import { BankConfig } from "../mappings/bank.config";
 import { ImporterDecorator } from "./importer.decorator";
 import { Importer } from "./importer";
+import { CsvExporter, removeCommaAtEnd } from "./csv.exporter";
 
 export class ByColumnNameCsvImporter extends ImporterDecorator {
+  config: BankConfig;
+  columns: Columns;
 
-    config : BankConfig;
-    columns : Columns;
+  constructor(config: BankConfig, importer?: Importer) {
+    super(importer);
+    this.config = config;
+    this.columns = new Columns({});
+  }
 
-    constructor(config : BankConfig, importer? : Importer) {
-        super(importer);
-        this.config = config;
-        this.columns = new Columns({});
-    }
+  defineIncomingFormat(columns: Columns) {
+    this.columns = this.alignColumnsWithTypesFromConfig(columns);
+    super.defineIncomingFormat(this.columns);
+  }
 
-    defineIncomingFormat(columns : Columns) {
-        this.columns = this.alignColumnsWithTypesFromConfig(columns);
-        super.defineIncomingFormat(this.columns);
-    }
-
-    alignColumnsWithTypesFromConfig(columns : Columns) {
-        for (let i = 0; i < columns.getNumColumns(); i++) {
-            if (columns.hasColumn(i)) {
-                const type = this.config.getTypeFor(columns.getName(i));
-                if (type) {
-                    columns.setType(i, type);
-                }
-            }
+  alignColumnsWithTypesFromConfig(columns: Columns) {
+    for (let i = 0; i < columns.getNumColumns(); i++) {
+      if (columns.hasColumn(i)) {
+        const type = this.config.getTypeFor(columns.getName(i));
+        if (type) {
+          columns.setType(i, type);
         }
-        return columns;
+      }
+    }
+    return columns;
+  }
+
+  convert(string: string) {
+    const transaction = super.convert(string);
+
+    const converter = new CsvImporter();
+    converter.defineIncomingFormat(this.columns);
+    const converted = converter.convert(string);
+
+    const details = transaction.getDetails();
+
+    const mappings = this.config.getMappings();
+    for (let i = 0; i < mappings.length; i++) {
+      const mapping = mappings[i];
+
+      const headers = mapping.getColumnHeader();
+      if (!converted.hasDetailWithColumnName(headers)) {
+        throw new Error(
+          "Imported CSV did not have the following column: " + headers
+        );
+      }
     }
 
-    convert(string : string) {
-        const transaction = super.convert(string);
+    for (let i = 0; i < mappings.length; i++) {
+      const mapping = mappings[i];
 
-        const converter = new CsvImporter();
-        converter.defineIncomingFormat(this.columns);
-        const converted = converter.convert(string);    
+      const header = mapping.getColumnHeader();
+      const detailsForColumn = converted.getDetailsByColumnName(header);
 
-        const details = transaction.getDetails();
+      for (let j = 0; j < detailsForColumn.length; j++) {
+        const detail = detailsForColumn[j];
+        const changedDetail = new TransactionDetail(
+          detail.getElement(),
+          mapping.getNodeName(),
+          detail.getType()
+        );
 
-        const mappings = this.config.getMappings();
-        for (let i = 0; i < mappings.length; i++) {
-            const mapping = mappings[i];
-            if (!converted.hasDetailWithColumnName(mapping.getColumnHeader())) {
-                throw new Error('Imported CSV did not have the following column: ' + mapping.getColumnHeader());
-            }
-        }
-
-        for (let i = 0; i < mappings.length; i++) {
-            const mapping = mappings[i];
-
-            const detail = converted.getDetailByName(mapping.getColumnHeader());
-            const changedDetail = new TransactionDetail(detail.getElement(), mapping.getNodeName(), detail.getType());
-
-            details.push(changedDetail);
-        }
-
-        return new Transaction(details);
+        details.push(changedDetail);
+      }
     }
 
-    necessaryColumnHeaders() {
-        const headers = super.necessaryColumnHeaders();
+    return new Transaction(details);
+  }
 
-        const mappings = this.config.getMappings();
-        for (let i = 0; i < mappings.length; i++) {
+  necessaryColumnHeaders() {
+    const headers = super.necessaryColumnHeaders();
 
-            const mapping = mappings[i];
-            headers.push(mapping.getColumnHeader());
-        }
-        return headers;
+    const mappings = this.config.getMappings();
+    for (let i = 0; i < mappings.length; i++) {
+      const mapping = mappings[i];
+      headers.push(mapping.getColumnHeader());
     }
+    return headers;
+  }
 }

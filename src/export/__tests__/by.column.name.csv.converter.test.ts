@@ -5,7 +5,6 @@ import { STRING_TYPE, TransactionDetail } from "../../pojo/transaction.detail";
 import { BankConfig } from "../../mappings/bank.config";
 import { CsvExporter } from "../csv.exporter";
 import { ByColumnNameCsvImporter } from "../by.column.name.csv.converter";
-import { CsvImporter } from "../csv.importer";
 
 describe("By Column Name Csv Converter", () => {
   it("should be able to convert into a specific csv format", () => {
@@ -25,7 +24,7 @@ describe("By Column Name Csv Converter", () => {
     });
 
     const details = [
-      new TransactionDetail('First Detail', 'Amount', STRING_TYPE),
+      new TransactionDetail("First Detail", "Amount", STRING_TYPE),
       new TransactionDetail("This is a detail", "Test1Type", "Test1Type"),
       new TransactionDetail("This is another detail", "Test2Type", "Test2Type"),
     ];
@@ -44,9 +43,7 @@ describe("By Column Name Csv Converter", () => {
     const exporter = new CsvExporter();
     exporter.defineOutgoingFormat(columns);
 
-    const testObject = new ByColumnNameCsvImporter(
-      byColumnIndexMapping
-    );
+    const testObject = new ByColumnNameCsvImporter(byColumnIndexMapping);
     testObject.defineIncomingFormat(columns);
 
     const expected = new Transaction([
@@ -89,7 +86,7 @@ describe("By Column Name Csv Converter", () => {
         {
           csvHeaderName: "Test1Type",
           nodeFormatName: "OtherTest",
-        }
+        },
       ],
     });
 
@@ -98,9 +95,7 @@ describe("By Column Name Csv Converter", () => {
     const exporter = new CsvExporter();
     exporter.defineOutgoingFormat(columns);
 
-    const testObject = new ByColumnNameCsvImporter(
-      byColumnIndexMapping
-    );
+    const testObject = new ByColumnNameCsvImporter(byColumnIndexMapping);
     testObject.defineIncomingFormat(columns);
 
     const expected = new Transaction([
@@ -112,7 +107,7 @@ describe("By Column Name Csv Converter", () => {
     expect(converted.equals(expected)).toBe(true);
   });
 
-  it('should throw an exception if there is no matching column in the imported data', () => {
+  it("should throw an exception if there is no matching column in the imported data", () => {
     const columns = new Columns({
       0: {
         name: "Amount",
@@ -121,7 +116,7 @@ describe("By Column Name Csv Converter", () => {
       1: {
         name: "Test1Type",
         type: "Test1Type",
-      }
+      },
     });
 
     const details = [
@@ -143,21 +138,21 @@ describe("By Column Name Csv Converter", () => {
     const exporter = new CsvExporter();
     exporter.defineOutgoingFormat(columns);
 
-    const testObject = new ByColumnNameCsvImporter(
-      byColumnIndexMapping
-    );
+    const testObject = new ByColumnNameCsvImporter(byColumnIndexMapping);
 
     let caughtException = null;
     try {
-        testObject.convert(exporter.convert(transaction));
+      testObject.convert(exporter.convert(transaction));
     } catch (e) {
-        caughtException = e;
+      caughtException = e;
     }
-    
-    expect(caughtException.message).toBe('Imported CSV did not have the following column: Test2Type');
+
+    expect(caughtException.message).toBe(
+      "Imported CSV did not have the following column: Test2Type"
+    );
   });
 
-  it('should be able to handle the transaction not having an element, while the columns do have it', () => {
+  it("should be able to handle the transaction not having an element, while the columns do have it", () => {
     const columns = new Columns({
       0: {
         name: "Amount",
@@ -166,7 +161,7 @@ describe("By Column Name Csv Converter", () => {
       1: {
         name: "Test1Type",
         type: "Test1Type",
-      }
+      },
     });
 
     const details = [
@@ -187,16 +182,74 @@ describe("By Column Name Csv Converter", () => {
     const exporter = new CsvExporter();
     exporter.defineOutgoingFormat(columns);
 
-    const testObject = new ByColumnNameCsvImporter(
-      byColumnIndexMapping
-    );
+    const testObject = new ByColumnNameCsvImporter(byColumnIndexMapping);
     testObject.defineIncomingFormat(columns);
 
     const expected = new Transaction([
-        new TransactionDetail("", "Test", "Test1Type"),
-      ]);
+      new TransactionDetail("", "Test", "Test1Type"),
+    ]);
 
     const converted = testObject.convert(exporter.convert(transaction));
     expect(converted.equals(expected)).toBe(true);
   });
+
+  it("should be able to concatenate two columns into one", () => {
+    const columns = new Columns({
+      0: {
+        name: "Test0Type",
+        type: STRING_TYPE,
+      },
+      1: {
+        name: "Test1Type",
+        type: STRING_TYPE,
+      },
+      2: {
+        name: "Test2Type",
+        type: STRING_TYPE,
+      },
+      3 : {
+        name : "Test3Type",
+        type : STRING_TYPE
+      }
+    });
+
+    const byColumnIndexMapping = new BankConfig({
+      mappings: [
+        {
+          csvHeaderName: "Test1Type",
+          nodeFormatName: "Test",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Test2Type",
+          nodeFormatName: "Test",
+          type: STRING_TYPE,
+        },
+      ],
+    });
+
+    const testObject = new ByColumnNameCsvImporter(byColumnIndexMapping);
+    testObject.defineIncomingFormat(columns);
+
+    const transaction = testObject.convert("Z,A,B,C");
+    const details = transaction.getDetailsByColumnName("Test");
+    assertOneDetailContainsElement(details, "A");
+    assertOneDetailContainsElement(details, "B");
+  });
+
+  function assertOneDetailContainsElement(
+    details: Array<TransactionDetail>,
+    element: string
+  ) {
+    let oneDetailContainsElement = false;
+
+    for (let i = 0; i < details.length; i++) {
+      if (details[i].getElement() === element) {
+        oneDetailContainsElement = true;
+        break;
+      }
+    }
+
+    expect(oneDetailContainsElement).toBeTruthy();
+  }
 });

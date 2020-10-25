@@ -20,7 +20,6 @@ export class TransactionSaveService {
 
     const estimator = new ColumnEstimation();
     const structureOfCsv = estimator.estimateBySpectreUser(scepterUser);
-    console.log(structureOfCsv);
     this.exporter.defineOutgoingFormat(structureOfCsv);
 
     let converted = [this.exporter.convertColumns(structureOfCsv) + '\n'];

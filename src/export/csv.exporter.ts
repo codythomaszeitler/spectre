@@ -1,6 +1,6 @@
 import { Transaction } from "../pojo/transaction";
 import { CATEGORY_TYPE } from "../pojo/category";
-import { Columns, columnNameDelimeter } from "./columns";
+import { Columns } from "./columns";
 import { Category } from "../pojo/category";
 import { Exporter } from "./exporter";
 import { ExporterDecorator } from "./exporter.decorator";
@@ -98,9 +98,8 @@ export class CsvExporter extends ExporterDecorator {
         converted += ",";
       } else {
         if (containsColumnName([name])) {
-          converted +=
-            escapeCsvElement(transaction.getDetailByName(name).getElement()) +
-            ",";
+          const csvElement = this.intoCsvElement(transaction, name);
+          converted += escapeCsvElement(csvElement) + ",";
         } else {
           converted += ",";
         }
@@ -110,11 +109,32 @@ export class CsvExporter extends ExporterDecorator {
     const fullString = converted + super.convert(transaction, category);
     return removeCommaAtEnd(fullString);
   }
+
+  intoCsvElement(transaction: Transaction, columnName: string) {
+    let csvElement = "";
+
+    const details = transaction.getDetailsByColumnName(columnName);
+    for (let i = 0; i < details.length; i++) {
+      const detail = details[i];
+      csvElement = csvElement + "-" + detail.getElement();
+    }
+
+    return removeFirstCharacter(csvElement);
+  }
+}
+
+function removeFirstCharacter(toRemoveFrom: string) {
+  let withoutLastComma = toRemoveFrom.substring(1, toRemoveFrom.length);
+  return withoutLastComma;
+}
+
+function removeLastCharacter(toRemoveFrom: string) {
+  let withoutLastComma = toRemoveFrom.substring(0, toRemoveFrom.length - 1);
+  return withoutLastComma;
 }
 
 export function removeCommaAtEnd(toRemoveFrom: string) {
-  let withoutLastComma = toRemoveFrom.substring(0, toRemoveFrom.length - 1);
-  return withoutLastComma;
+  return removeLastCharacter(toRemoveFrom);
 }
 
 export function escapeCsvElement(raw: string) {

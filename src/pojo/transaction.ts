@@ -3,19 +3,18 @@ import { TransactionDetail } from "./transaction.detail";
 export const AMOUNT_TYPE = "Amount";
 
 export class Transaction {
-
   /*
    Are these necessary sorted?
   */
-  details : TransactionDetail[];
-  id : number;
+  details: TransactionDetail[];
+  id: number;
 
-  constructor(otherInfo : TransactionDetail[]) {
+  constructor(otherInfo: TransactionDetail[]) {
     this.details = otherInfo.slice();
     this.id = -1;
   }
 
-  getDetailByColumnIndex(columnIndex : number) {
+  getDetailByColumnIndex(columnIndex: number) {
     return this.details[columnIndex];
   }
 
@@ -42,19 +41,56 @@ export class Transaction {
     return copied;
   }
 
-  hasDetailWithColumnName(columnName : string) {
-    let hasDetailWithColumnName = false;
-    for (let i = 0; i < this.details.length; i++) {
-      if (this.details[i].getColumnName() === columnName) {
-        hasDetailWithColumnName = true;
-        break;
+  hasDetailWithColumnName(columnName: string | string[]) {
+    const checkForColumn = (columnToCheckFor: string) => {
+      let hasDetailWithColumnName = false;
+      for (let i = 0; i < this.details.length; i++) {
+        if (this.details[i].getColumnName() === columnToCheckFor) {
+          hasDetailWithColumnName = true;
+          break;
+        }
       }
+      return hasDetailWithColumnName;
+    };
+
+    if (Array.isArray(columnName)) {
+      if (columnName.length === 0) {
+        return false;
+      }
+
+      let hasColumns = true;
+
+      for (let i = 0; i < columnName.length; i++) {
+        if (!checkForColumn(columnName[i])) {
+          hasColumns = false;
+          break;
+        }
+      }
+      return hasColumns;
+    } else {
+      return checkForColumn(columnName);
     }
-    return hasDetailWithColumnName;
   }
 
-  getDetailByName(name : string) {
+  //   TODO This function is deprecated, remove at some point.
+  getDetailByName(name: string) {
     let raw = null;
+
+    const assertOnlyOneMatchingColumnName = () => {
+      let count = 0;
+      for (let i = 0; i < this.details.length; i++) {
+        if (this.details[i].getColumnName() === name) {
+          count = count + 1;
+        }
+      }
+      
+      const numAllowedColumns = 1;
+      if (count > numAllowedColumns) {
+        throw new Error('Tried to call getDetailByName when there was more than one element ')
+      }
+    };
+
+    assertOnlyOneMatchingColumnName();
 
     for (let i = 0; i < this.details.length; i++) {
       if (this.details[i].getColumnName() === name) {
@@ -66,11 +102,20 @@ export class Transaction {
     return raw;
   }
 
-  getElementByColumnName(columnName : string) {
+  getDetailsByColumnName(columnName : string) {
+    const details = [];
+    for (let i = 0; i < this.details.length; i++) {
+      if (this.details[i].getColumnName() === columnName) {
+        details.push(this.details[i].copy());
+      }
+    }
+    return details;
+  }
+
+  getElementByColumnName(columnName: string) {
     let element = null;
 
     for (let i = 0; i < this.details.length; i++) {
-
       const detail = this.details[i];
       if (detail.getColumnName() === columnName) {
         element = detail.getElement();
@@ -80,13 +125,14 @@ export class Transaction {
     return element;
   }
 
-
-  equals(transaction : Transaction) {
-    const areDetailsEquivalent = (aDetails : TransactionDetail[], bDetails : TransactionDetail[]) => {
+  equals(transaction: Transaction) {
+    const areDetailsEquivalent = (
+      aDetails: TransactionDetail[],
+      bDetails: TransactionDetail[]
+    ) => {
       if (aDetails.length !== bDetails.length) {
         return false;
       }
-
 
       let equivalent = true;
       for (let i = 0; i < aDetails.length; i++) {
@@ -111,8 +157,7 @@ export class Transaction {
     let idsEquivalent = this.id === transaction.id;
 
     return (
-      areDetailsEquivalent(this.details, transaction.details) &&
-      idsEquivalent
+      areDetailsEquivalent(this.details, transaction.details) && idsEquivalent
     );
   }
 }

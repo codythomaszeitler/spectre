@@ -1,6 +1,6 @@
 import { MasterBankConfigParser } from "../master.bank.config.parser";
 
-describe("Master Info", () => {
+describe("Master Bank Config Parser", () => {
   const masterConfig = {
     default: "Chase",
     configs: [
@@ -61,7 +61,7 @@ describe("Master Info", () => {
     expect(chaseBankConfig.getFilePath()).toBe("test file path");
   });
 
-  it('should be able to parse all configs within the master info', () => {
+  it("should be able to parse all configs within the master info", () => {
     const testObject = new MasterBankConfigParser(masterConfig);
 
     const configs = testObject.getConfigs();

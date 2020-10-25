@@ -5,7 +5,6 @@ import { Transaction } from "../pojo/transaction";
 import { BankConfig } from "../mappings/bank.config";
 import { ImporterDecorator } from "./importer.decorator";
 import { Importer } from "./importer";
-import { CsvExporter, removeCommaAtEnd } from "./csv.exporter";
 
 export class ByColumnNameCsvImporter extends ImporterDecorator {
   config: BankConfig;
@@ -47,10 +46,10 @@ export class ByColumnNameCsvImporter extends ImporterDecorator {
     for (let i = 0; i < mappings.length; i++) {
       const mapping = mappings[i];
 
-      const headers = mapping.getColumnHeader();
-      if (!converted.hasDetailWithColumnName(headers)) {
+      const header = mapping.getColumnHeader();
+      if (!converted.hasDetailWithColumnName(header)) {
         throw new Error(
-          "Imported CSV did not have the following column: " + headers
+          "Imported CSV did not have the following column: " + header
         );
       }
     }

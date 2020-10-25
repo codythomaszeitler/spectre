@@ -41,7 +41,7 @@ export class Transaction {
     return copied;
   }
 
-  hasDetailWithColumnName(columnName: string | string[]) {
+  hasDetailWithColumnName(columnName: string) {
     const checkForColumn = (columnToCheckFor: string) => {
       let hasDetailWithColumnName = false;
       for (let i = 0; i < this.details.length; i++) {
@@ -53,23 +53,7 @@ export class Transaction {
       return hasDetailWithColumnName;
     };
 
-    if (Array.isArray(columnName)) {
-      if (columnName.length === 0) {
-        return false;
-      }
-
-      let hasColumns = true;
-
-      for (let i = 0; i < columnName.length; i++) {
-        if (!checkForColumn(columnName[i])) {
-          hasColumns = false;
-          break;
-        }
-      }
-      return hasColumns;
-    } else {
-      return checkForColumn(columnName);
-    }
+    return checkForColumn(columnName);
   }
 
   //   TODO This function is deprecated, remove at some point.
@@ -83,10 +67,12 @@ export class Transaction {
           count = count + 1;
         }
       }
-      
+
       const numAllowedColumns = 1;
       if (count > numAllowedColumns) {
-        throw new Error('Tried to call getDetailByName when there was more than one element ')
+        throw new Error(
+          "Tried to call getDetailByName when there was more than one element "
+        );
       }
     };
 
@@ -102,7 +88,7 @@ export class Transaction {
     return raw;
   }
 
-  getDetailsByColumnName(columnName : string) {
+  getDetailsByColumnName(columnName: string) {
     const details = [];
     for (let i = 0; i < this.details.length; i++) {
       if (this.details[i].getColumnName() === columnName) {

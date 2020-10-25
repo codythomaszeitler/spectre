@@ -12,7 +12,6 @@ import { TransactionLoadService } from "./transaction.load.service";
 import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
 import { CsvImporter } from "../export/csv.importer";
 import { VenmoTransactionLoadService } from "./venmo.transaction.load.service";
-import { WithNotesCsvConverter } from "../export/with.notes.csv.converter";
 import { RawDataLocation } from "./raw.data.location";
 import { WithStaticValueCsvConveter } from "../export/with.static.value.csv.converter";
 

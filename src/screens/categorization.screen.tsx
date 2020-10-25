@@ -529,14 +529,16 @@ export class CategorizationScreen
             const canLoadResult = await service.canLoad(location);
 
             if (!canLoadResult.canLoad) {
-              console.log(canLoadResult);
               let errorDialog = new Alert();
+              console.log(canLoadResult);
 
               const errorMessage =
                 "File " +
                 location.getFileName() +
                 " did not have the proper format for " +
-                csvType.get();
+                csvType.get() +
+                " : " +
+                canLoadResult.missingHeaders.join(",") + ' were missing';
 
               errorDialog.show(errorMessage);
               return;

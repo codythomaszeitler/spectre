@@ -214,22 +214,53 @@ export const MasterBankConfig = {
       ],
     },
     {
-      name: VENMO_FORMAT.get(),
-      imageFilePath: require("../../assets/venmo.png"),
+      name: "Point2",
+      imageFilePath: require("../../assets/Chase-logo.png"),
       mappings: [
         {
-          csvHeaderName: "Amount (total)",
+          csvHeaderName: "Timestamp",
+          nodeFormatName: "Date",
+          type: DATE_TYPE,
+        },
+        {
+          csvHeaderName: "Description",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Outgoing",
           nodeFormatName: "Amount",
           type: STRING_TYPE,
         },
+      ],
+    },
+    {
+      name: VENMO_FORMAT.get(),
+      imageFilePath: require("../../assets/venmo.png"),
+      mappings: [
         {
           csvHeaderName: "Datetime",
           nodeFormatName: "Date",
           type: DATE_TYPE,
         },
         {
+          csvHeaderName: "From",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "To",
+          nodeFormatName: "Vendor",
+          type: STRING_TYPE,
+        },
+        {
           csvHeaderName: "Note",
-          nodeFormatName: "Name",
+          nodeFormatName: "Notes",
+          type: STRING_TYPE,
+        },
+        {
+          csvHeaderName: "Amount (total)",
+          nodeFormatName: "Amount",
           type: STRING_TYPE,
         },
       ],

@@ -43,10 +43,12 @@ export const getMissingHeaders = async (
 export class CanLoadResult {
   canLoad: boolean;
   errorMessage: string;
+  missingHeaders : Array<string>;
 
-  constructor(canLoad: boolean, errorMessage: string) {
+  constructor(canLoad: boolean, errorMessage: string, missingHeaders : Array<string>) {
     this.canLoad = canLoad;
     this.errorMessage = errorMessage;
+    this.missingHeaders = missingHeaders.slice();
   }
 
   static generate(missing: Array<string>) {
@@ -58,6 +60,8 @@ export class CanLoadResult {
         "Location did not have headers: [" + missing.join(",") + "]";
     }
 
-    return new CanLoadResult(canLoad, errorMessage);
+    console.log(missing);
+
+    return new CanLoadResult(canLoad, errorMessage, missing);
   }
 }

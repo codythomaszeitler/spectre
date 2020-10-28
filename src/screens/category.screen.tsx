@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Text } from "react-native-elements";
 import { Category } from "../pojo/category";
 import {
@@ -46,7 +46,7 @@ export interface State {
 
 export class CategoryScreen
   extends Component
-  implements TransactionCategorizedListener{
+  implements TransactionCategorizedListener {
   state: State;
   spectreUser: SpectreUser;
 
@@ -58,6 +58,7 @@ export class CategoryScreen
     this.onCategoryDeletePress = this.onCategoryDeletePress.bind(this);
     this.onDeletePress = this.onDeletePress.bind(this);
     this.onStartEditing = this.onStartEditing.bind(this);
+    this.onStopEditing = this.onStopEditing.bind(this);
     this.showDeleteButton = this.showDeleteButton.bind(this);
     this.hideDeleteButton = this.hideDeleteButton.bind(this);
     this.onLongPressShowHideDeleteButton = this.onLongPressShowHideDeleteButton.bind(
@@ -102,12 +103,12 @@ export class CategoryScreen
   }
 
   generateTransactionsViews() {
-    const transactions = this.spectreUser.getTransactionsFor(this.props.category);
-    return transactions
-      .reverse()
-      .map((data) => {
-        return this.generateTransactionsView(data);
-      });
+    const transactions = this.spectreUser.getTransactionsFor(
+      this.props.category
+    );
+    return transactions.reverse().map((data) => {
+      return this.generateTransactionsView(data);
+    });
   }
 
   generateTransactionsView(data) {
@@ -156,6 +157,13 @@ export class CategoryScreen
   onStartEditing() {
     this.setState({
       isEditing: true,
+      shouldShowTransactions : false
+    });
+  }
+
+  onStopEditing() {
+    this.setState({
+      isEditing : false
     });
   }
 
@@ -261,7 +269,8 @@ export class CategoryScreen
           <EditCategoryScreen
             category={this.props.category}
             color={this.state.color}
-            onColorChoice={(category : Category, color : Color) => {
+            onStopAddCategory={this.onStopEditing}
+            onColorChoice={(category: Category, color: Color) => {
               this.props.onColorChoice(category, color);
               this.setState({
                 isEditing: false,
@@ -374,11 +383,17 @@ export class CategoryScreen
                           height: this.state.deleteButtonWidth,
                         }}
                       >
-                        <DeleteButton
-                          onPress={this.onStartEditing}
-                          color={new Color("#fa756b")}
-                          borderRadius={CATEGORY_BOX_INSET}
-                        ></DeleteButton>
+                        <TouchableOpacity onPress={this.onStartEditing}>
+                          <Image
+                            source={require("../../assets/edit.png")}
+                            resizeMode="contain"
+                            resizeMethod="resize"
+                            style={{
+                              width: this.state.deleteButtonWidth,
+                              height: this.state.deleteButtonWidth,
+                            }}
+                          ></Image>
+                        </TouchableOpacity>
                       </View>
                       <View
                         style={{
@@ -396,6 +411,7 @@ export class CategoryScreen
                         <DeleteButton
                           onPress={this.onDeletePress}
                           color={new Color("#fa756b")}
+                          image={require("../../assets/x-delete.png")}
                           borderRadius={CATEGORY_BOX_INSET}
                         ></DeleteButton>
                       </View>

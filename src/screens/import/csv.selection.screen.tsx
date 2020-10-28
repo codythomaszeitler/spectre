@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, Button } from "react-native";
-import { CsvType, RAW_FORMAT } from "../../export/csv.type";
+import { FlatList, ScrollView, View } from "react-native";
+import { RAW_FORMAT } from "../../export/csv.type";
 import { DocumentPicker } from "../document.picker.screen";
 import { CATEGORY_BOX_HEIGHT, CATEGORY_BOX_INSET } from "../category.screen";
 import {
@@ -14,6 +14,7 @@ import {
   OnMultipleCsvsSelectedEvent,
   OnMultipleCsvsSelectedListener,
 } from "./csv.picker.screen";
+import { isMobile } from "react-device-detect";
 
 export interface State {
   csvsToImport: Array<CsvToImport>;
@@ -87,28 +88,44 @@ export class CsvSelectionScreen
     }
   }
 
+  getWidth() {
+    if (isMobile) {
+      return 250;
+    } else {
+      return 500 * 1.2;
+    }
+  }
+
+  getHeight() {
+    if (isMobile) {
+      return 500;
+    } else {
+      return 800 * .85;
+    }
+  }
+
   render() {
     return (
       <View
         style={{
-          width: 500,
-          height: 800,
-          backgroundColor: "white",
-          borderColor: "grey",
-          borderWidth: 10,
-          borderRadius: 15,
+          width: this.getWidth(),
+          height: this.getHeight(),
+          backgroundColor: "#F5F5F5",
+          borderColor: "#989898",
+          borderWidth: 6.5,
+          borderRadius: 30,
         }}
       >
         <View
           style={{
-            flex: 0.175,
+            flex: 0.29,
           }}
         ></View>
 
         <View style={{ flex: 5, flexDirection: "row" }}>
           <View
             style={{
-              flex: 0.25,
+              flex: 0.16,
             }}
           ></View>
           <View
@@ -121,14 +138,15 @@ export class CsvSelectionScreen
                 <CsvToImportLine csvToImport={csvToImport}></CsvToImportLine>
               );
             })}
+
             <CsvPickerScreen
               onCsvsSelectedListener={this}
-              placeholderFilePath={"-------"}
+              placeholderFilePath={""}
             ></CsvPickerScreen>
           </View>
           <View
             style={{
-              flex: 0.25,
+              flex: 0.16,
             }}
           ></View>
         </View>
@@ -155,6 +173,9 @@ export class CsvSelectionScreen
             ></DocumentPicker>
           </View>
         </View>
+        <View style={{
+          flex : .15
+        }}></View>
       </View>
     );
   }

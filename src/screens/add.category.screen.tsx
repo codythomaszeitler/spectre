@@ -144,6 +144,7 @@ export class AddCategoryScreen extends Component {
             >
               <DeleteButton
                 onPress={this.props.onStopAddCategory}
+                image={require("../../assets/x-delete.png")}
                 color={new Color("#fa756b")}
                 borderRadius={CATEGORY_BOX_INSET}
               ></DeleteButton>

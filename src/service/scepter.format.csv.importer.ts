@@ -1,10 +1,14 @@
 import { CategoryColors } from "../css/styles";
+import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
 import { Columns } from "../export/columns";
 import { CsvImporter } from "../export/csv.importer";
+import { CsvType } from "../export/csv.type";
 import {
   SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
   SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
 } from "../export/with.view.context.exporter";
+import { MasterBankConfig } from "../mappings/master.bank.config";
+import { MasterBankConfigParser } from "../mappings/master.bank.config.parser";
 import { Category } from "../pojo/category";
 import { Color } from "../pojo/color";
 import { Transaction } from "../pojo/transaction";
@@ -36,15 +40,24 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
   }
 
   necessaryColumnHeaders() {
-    return [
-      SCEPTER_CATEGORY_COLUMN_NAME,
-      SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
-      SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
-    ];
+    const masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
+    const csvImporter = new ByColumnNameCsvImporter(
+      masterMappingInfo.getConfigFor("Scepter")
+    );
+    csvImporter.defineIncomingFormat(this.columns);
+
+    const headers = csvImporter.necessaryColumnHeaders();
+    headers.push(SCEPTER_CATEGORY_COLUMN_NAME);
+    headers.push(SCEPTER_CATEGORY_COLOR_COLUMN_NAME);
+    headers.push(SCEPTER_CATEGORY_ORDERING_COLUMN_NAME);
+    return headers;
   }
 
   convert(item: string) {
-    const csvImporter = new CsvImporter();
+    const masterMappingInfo = new MasterBankConfigParser(MasterBankConfig);
+    const csvImporter = new ByColumnNameCsvImporter(
+      masterMappingInfo.getConfigFor("Scepter")
+    );
     csvImporter.defineIncomingFormat(this.columns);
 
     const transactionWithCategory = csvImporter.convert(item);
@@ -120,6 +133,9 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
       const detail = details[i];
       if (detail.getColumnName() === SCEPTER_CATEGORY_ORDERING_COLUMN_NAME) {
         ordering = detail.asGivenType();
+        if (isNaN(ordering)) {
+          ordering = 1;
+        }
       }
     }
     return ordering;

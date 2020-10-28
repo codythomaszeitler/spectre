@@ -9,6 +9,7 @@ export interface Props {
 export class Modal extends Component {
 
     render() {
+        console.log(this.props.children);
         return (<EnhancedModal isVisible={this.props.isVisible} onBackdropPress={() => {
             this.props.onBackdropPress();
         }}>

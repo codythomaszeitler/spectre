@@ -80,9 +80,7 @@ export class EditCategoryScreen extends Component {
 
   render() {
     return (
-      <View
-        onLayout={this.onLayout}
-      >
+      <View onLayout={this.onLayout}>
         <View
           style={{
             flexBasis: CATEGORY_BOX_HEIGHT,
@@ -150,6 +148,7 @@ export class EditCategoryScreen extends Component {
               }}
             >
               <DeleteButton
+                image={require("../../assets/x-delete.png")}
                 onPress={this.props.onStopAddCategory}
                 color={new Color("#fa756b")}
                 borderRadius={CATEGORY_BOX_INSET}

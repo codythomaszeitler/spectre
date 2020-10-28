@@ -70,4 +70,20 @@ describe("Date Converter", () => {
 
     expect(asString).toBe("01/01/2020 00:00:00");
   });
+
+  it("should turn an falsy string into the start of time UNIX", () => {
+    const input = "";
+    const testObject = new DateConverter();
+    const asString = testObject.intoString(testObject.fromString(input));
+
+    expect(asString).toBe("01/01/1970 00:00:00");
+  });
+
+  it("should turn an empty string into the start of time UNIX", () => {
+    const input = "   ";
+    const testObject = new DateConverter();
+    const asString = testObject.intoString(testObject.fromString(input));
+
+    expect(asString).toBe("01/01/1970 00:00:00");
+  });
 });

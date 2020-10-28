@@ -21,7 +21,7 @@ export class DeleteButton extends Component {
           borderRadius={this.props.borderRadius}
         >
           <Image
-            source={require("../../assets/x-delete.png")}
+            source={this.props.image}
             resizeMode='contain'
             resizeMethod='resize'
             style={{

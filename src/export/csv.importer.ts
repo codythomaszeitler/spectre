@@ -44,13 +44,6 @@ export class CsvImporter extends ImporterDecorator {
         const split = unescapeCsvElement(splits[i]);
         const detail = new TransactionDetail(split, "noConfig" + i, "string");
         details.push(detail);
-      } else if (this.columns.getType(i) === AMOUNT_TYPE) {
-        const columnName = this.columns.getName(i);
-        const split = unescapeCsvElement(splits[i]);
-
-        const converter = new CurrencyConverter();
-        const amount = converter.fromString(split);
-        details.push(TransactionDetail.withCurrency(amount, columnName));
       } else {
         const columnName = this.columns.getName(i);
         const split = unescapeCsvElement(splits[i]);

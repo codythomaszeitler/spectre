@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Image, ViewComponent } from "react-native";
+import { View, FlatList, Image } from "react-native";
 import { datastore } from "../datastore/datastore";
 import {
   SpectreUser,

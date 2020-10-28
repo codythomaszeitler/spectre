@@ -114,6 +114,7 @@ export class CsvExporter extends ExporterDecorator {
     let csvElement = "";
 
     const details = transaction.getDetailsByColumnName(columnName);
+
     for (let i = 0; i < details.length; i++) {
       const detail = details[i];
       csvElement = csvElement + "-" + detail.getElement();

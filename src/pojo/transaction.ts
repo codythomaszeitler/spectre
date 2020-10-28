@@ -5,6 +5,7 @@ export const AMOUNT_TYPE = "Amount";
 export class Transaction {
   /*
    Are these necessary sorted?
+   The answer is yes. 
   */
   details: TransactionDetail[];
   id: number;

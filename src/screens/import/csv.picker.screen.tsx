@@ -12,6 +12,8 @@ import { MasterBankConfig } from "../../mappings/master.bank.config";
 import { MasterBankConfigParser } from "../../mappings/master.bank.config.parser";
 import { CsvType } from "../../export/csv.type";
 
+export const DIVIDING_CENTER = .2;
+
 export interface Props {
   onCsvsSelectedListener: OnMultipleCsvsSelectedListener;
 }
@@ -87,6 +89,7 @@ export class CsvPickerScreen
             style={{
               flex: 5,
               justifyContent: "center",
+              // backgroundColor : 'blue'
             }}
           >
             <CsvMultipleFileSelectorScreen
@@ -97,13 +100,13 @@ export class CsvPickerScreen
 
           <View
             style={{
-              flex: 0.5,
+              flex: DIVIDING_CENTER,
             }}
           ></View>
 
           <View
             style={{
-              flex: 2,
+              flex: 2
             }}
           >
             <CsvTypeSelectionScreen

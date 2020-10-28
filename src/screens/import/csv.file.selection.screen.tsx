@@ -41,7 +41,7 @@ export class CsvFileSelectionScreen extends Component {
         style={{
           flex: 1,
           justifyContent: "center",
-          backgroundColor: "grey",
+          backgroundColor: "#A2A2A2",
           flexDirection: "row",
           borderRadius: 5,
         }}

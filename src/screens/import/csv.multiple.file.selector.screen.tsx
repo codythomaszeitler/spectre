@@ -43,9 +43,10 @@ export class CsvMultipleFileSelectorScreen extends Component {
         style={{
           flex: 1,
           justifyContent: "center",
-          backgroundColor: "grey",
+          backgroundColor: "#A2A2A2",
           flexDirection: "row",
           borderRadius: 5,
+          opacity : '42%'
         }}
       >
         <View
@@ -69,6 +70,7 @@ export class CsvMultipleFileSelectorScreen extends Component {
           width="100%"
           ref={this.fileInputRef}
           value={this.state.currentFile}
+          accept=".csv"
           onChange={this.onFilePick}
           style={{
             display: "none",

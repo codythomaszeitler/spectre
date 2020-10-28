@@ -69,7 +69,7 @@ export class CsvTypeSelectionScreen
         >
           <View
             style={{
-              flex: 1,
+              flex: .9,
               justifyContent: "center",
               alignSelf: "center",
             }}
@@ -83,11 +83,11 @@ export class CsvTypeSelectionScreen
               }}
             ></Image>
           </View>
-          <View
+          {/* <View
             style={{
-              flex: 0.25,
+              flex: 0.5,
             }}
-          ></View>
+          ></View> */}
           <View
             style={{
               flex: 3,
@@ -95,7 +95,7 @@ export class CsvTypeSelectionScreen
           >
             <Picker
               selectedValue={this.state.currentChoice}
-              style={{ flex: 1, borderColor: "white", fontSize: 18 }}
+              style={{ flex: 1, borderColor: "#F5F5F5", fontSize: 18, backgroundColor :'#F5F5F5' }}
               onValueChange={(itemValue: string) => {
                 this.props.csvToImport.setCsvType(new CsvType(itemValue));
               }}

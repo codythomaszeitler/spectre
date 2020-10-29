@@ -1,19 +1,23 @@
-import React, {Component} from 'react';
-import EnhancedModal from 'modal-enhanced-react-native-web';
+import React, { Component } from "react";
+import EnhancedModal from "modal-enhanced-react-native-web";
 
 export interface Props {
-    isVisible : boolean;
-    onBackdropPresss: () => void;
+  isVisible: boolean;
+  onBackdropPresss: () => void;
 }
 
 export class Modal extends Component {
-
-    render() {
-        console.log(this.props.children);
-        return (<EnhancedModal isVisible={this.props.isVisible} onBackdropPress={() => {
-            this.props.onBackdropPress();
-        }}>
-            {this.props.children}
-        </EnhancedModal>);
-    }
+  render() {
+    return (
+      <EnhancedModal
+        isVisible={this.props.isVisible}
+        onBackdropPress={() => {
+          this.props.onBackdropPress();
+        }}
+        backdropColor={'white'} 
+      >
+        {this.props.children}
+      </EnhancedModal>
+    );
+  }
 }

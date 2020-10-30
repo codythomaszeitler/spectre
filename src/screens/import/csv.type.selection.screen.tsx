@@ -105,6 +105,7 @@ export class CsvTypeSelectionScreen
                 .map((currentValue: BankConfig) => {
                   return (
                     <Picker.Item
+                    key={currentValue.getName()}
                       label={currentValue.getName()}
                       value={currentValue.getName()}
                     />

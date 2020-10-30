@@ -80,7 +80,7 @@ export class PaypalButtonScreen extends Component {
             }}
           >
             <Image
-              source={require("../../assets/paypal.png")}
+              source={require("../../assets/bgpaypal.png")}
               resizeMode="contain"
               style={{
                 width : undefined,

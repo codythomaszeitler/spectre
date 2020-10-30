@@ -4,9 +4,7 @@ export const DATE_TYPE = "Date";
 
 export class DateConverter {
   fromString(input: string) {
-    console.log(input);
     if (!input || input.trim().length === 0) {
-      console.log('we got into here in date converter');
       return new Date(1970, 0, 1, 0, 0, 0, 0);
     }
 

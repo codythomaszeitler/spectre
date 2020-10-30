@@ -31,7 +31,6 @@ export class CsvToImportLine extends Component {
               style={{
                 flex: 5,
                 justifyContent: "center",
-              // backgroundColor : 'red'
               }}
             >
               <CsvFileSelectionScreen

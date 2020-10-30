@@ -15,10 +15,13 @@ import {
   OnMultipleCsvsSelectedListener,
 } from "./csv.picker.screen";
 import { isMobile } from "react-device-detect";
+import { Alert } from "../alert";
 
 export interface State {
   csvsToImport: Array<CsvToImport>;
 }
+
+const MAX_FILES_CAN_SELECT = 10;
 
 export class CsvSelectionScreen
   extends Component
@@ -46,6 +49,17 @@ export class CsvSelectionScreen
 
   onCsvsSelected(event: OnMultipleCsvsSelectedEvent) {
     const csvsToImport = [...this.state.csvsToImport];
+
+    const numCsvsSelected = event.csvsToImport.length;
+    const totalSelected = this.state.csvsToImport.length + numCsvsSelected;
+    if (totalSelected > MAX_FILES_CAN_SELECT) {
+      const errorDialog = new Alert();
+      errorDialog.show(
+        "Cannot select more than " + MAX_FILES_CAN_SELECT + " at a time"
+      );
+
+      return;
+    }
 
     const newCsvsToImport = event.csvsToImport;
     for (let i = 0; i < newCsvsToImport.length; i++) {
@@ -100,7 +114,7 @@ export class CsvSelectionScreen
     if (isMobile) {
       return 500;
     } else {
-      return 800 * .85;
+      return 800 * 0.85;
     }
   }
 
@@ -139,10 +153,12 @@ export class CsvSelectionScreen
               );
             })}
 
-            <CsvPickerScreen
-              onCsvsSelectedListener={this}
-              placeholderFilePath={""}
-            ></CsvPickerScreen>
+            {this.state.csvsToImport.length !== MAX_FILES_CAN_SELECT && (
+              <CsvPickerScreen
+                onCsvsSelectedListener={this}
+                placeholderFilePath={""}
+              ></CsvPickerScreen>
+            )}
           </View>
           <View
             style={{
@@ -173,9 +189,11 @@ export class CsvSelectionScreen
             ></DocumentPicker>
           </View>
         </View>
-        <View style={{
-          flex : .15
-        }}></View>
+        <View
+          style={{
+            flex: 0.15,
+          }}
+        ></View>
       </View>
     );
   }

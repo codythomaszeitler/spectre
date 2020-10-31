@@ -126,6 +126,7 @@ export class TransactionScreenSegment extends Component {
                 color={this.props.backgroundColor.darkerBy(1.2)}
                 onPress={this.onDeletePress}
                 borderRadius={CATEGORY_BOX_INSET}
+                image={require('../../assets/x-delete.png')}
               ></DeleteButton>
             </View>
               )}

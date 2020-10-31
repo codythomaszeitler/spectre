@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Image, View } from "react-native";
-import { Text } from "react-native-elements";
 import { PerfectSquare } from "./perfect.square";
-import { FontFamily } from "../css/styles";
 import { isMobile } from "react-device-detect";
 
 export class DeleteButton extends Component {
@@ -32,5 +30,6 @@ export class DeleteButton extends Component {
         </PerfectSquare>
       </View>
     );
+    
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, LayoutChangeEvent } from "react-native";
-import { Card, Text } from "react-native-elements";
+import { View, LayoutChangeEvent } from "react-native";
 import { Transaction } from "../pojo/transaction";
 import { DeleteButton } from "./delete.button";
 import { DetailsScreenSegment } from "./details.screen.segment";

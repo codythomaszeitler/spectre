@@ -124,7 +124,7 @@ export class CsvExporter extends ExporterDecorator {
   }
 }
 
-function removeFirstCharacter(toRemoveFrom: string) {
+export function removeFirstCharacter(toRemoveFrom: string) {
   let withoutLastComma = toRemoveFrom.substring(1, toRemoveFrom.length);
   return withoutLastComma;
 }

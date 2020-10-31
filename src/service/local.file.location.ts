@@ -1,6 +1,6 @@
 import { RawDataLocation } from "./raw.data.location";
 import FileSaver from "file-saver";
-import { readString } from 'react-papaparse'
+import { readCsv, split } from "../export/csv.line.splitter";
 
 
 export class LocalFileLocation implements RawDataLocation {
@@ -32,7 +32,7 @@ export class LocalFileLocation implements RawDataLocation {
 
   async peek() {
     await this.readFileAsArray(this.file);
-    return this.lines[0];
+    return split(this.lines[0]).join();
   }
 
   async read() {
@@ -47,14 +47,8 @@ export class LocalFileLocation implements RawDataLocation {
       return this.lines;
     }
 
-    const lines = [];
     const contents = await this.readFile(file);
-    const asPapaParse = readString(contents);
-    for (let i = 0; i < asPapaParse.data.length; i++) {
-      const papaParseArray = asPapaParse.data[i];
-      const line = papaParseArray.join();
-      lines.push(line);
-    }
+    const lines = readCsv(contents);
 
     this.lines = lines;
     return lines;

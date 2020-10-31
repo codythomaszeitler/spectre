@@ -30,6 +30,5 @@ export class DeleteButton extends Component {
         </PerfectSquare>
       </View>
     );
-    
   }
 }

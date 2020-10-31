@@ -3,6 +3,7 @@ import { Columns } from "./columns";
 import { STRING_TYPE, TransactionDetail } from "../pojo/transaction.detail";
 import { ImporterDecorator } from "./importer.decorator";
 import { Importer } from "./importer";
+import { split } from "./csv.line.splitter";
 
 export class CsvImporter extends ImporterDecorator {
   columns: Columns;
@@ -25,7 +26,9 @@ export class CsvImporter extends ImporterDecorator {
       return new Transaction(this.getDefaultDetails());
     }
 
-    const splits = string.split(",");
+    console.log(string);
+    const splits =  split(string);
+    console.log(splits);
     details.push(...this.convertDetailsFoundInLine(splits));
     details.push(...this.convertDetailsNotFoundInLine(splits));
 

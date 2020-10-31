@@ -325,21 +325,21 @@ export const MasterBankConfig = {
           nodeFormatName: "Notes",
           type: STRING_TYPE,
         },
-        // {
-        //   csvHeaderName: SCEPTER_CATEGORY_COLUMN_NAME,
-        //   nodeFormatName: SCEPTER_CATEGORY_COLUMN_NAME,
-        //   type: CATEGORY_TYPE,
-        // },
-        // {
-        //   csvHeaderName: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
-        //   nodeFormatName: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
-        //   type: "number",
-        // },
-        // {
-        //   csvHeaderName: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
-        //   nodeFormatName: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
-        //   type: COLOR_TYPE,
-        // },
+        {
+          csvHeaderName: SCEPTER_CATEGORY_COLUMN_NAME,
+          nodeFormatName: SCEPTER_CATEGORY_COLUMN_NAME,
+          type: CATEGORY_TYPE,
+        },
+        {
+          csvHeaderName: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+          nodeFormatName: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+          type: "number",
+        },
+        {
+          csvHeaderName: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+          nodeFormatName: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+          type: COLOR_TYPE,
+        },
       ],
     },
     {

@@ -1,10 +1,9 @@
 import { CsvExporter } from "../../export/csv.exporter";
-import { Category, CATEGORY_TYPE } from "../../pojo/category";
+import { Category } from "../../pojo/category";
 import { TransactionDetail } from "../../pojo/transaction.detail";
 import { SpectreUser } from "../../pojo/spectre.user";
 import { Transaction } from "../../pojo/transaction";
 import { TestLocation } from "./test.location";
-import { Columns } from "../../export/columns";
 import {
   COLOR_NOT_FOUND,
   ScepterFormatCsvImporter,
@@ -13,23 +12,16 @@ import { ScepterTransactionLoadService } from "../scepter.transaction.load.servi
 import { SCEPTER_CATEGORY_COLUMN_NAME } from "../scepter.format.importer";
 import { Color } from "../../pojo/color";
 import {
-  SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
   SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+  SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
 } from "../../export/with.view.context.exporter";
+import { getScepterCompliantColumns } from "./scepter.format.csv.importer.test";
+import { generateTransactionFor } from "../../export/__tests__/csv.importer.test";
 
 describe("Scepter Transaction Load Service", () => {
-  it("should add categories to scepter user when loading in a scepter csv file", async () => {
-    const columns = new Columns({
-      0: {
-        name: "TestColumn",
-        type: "String",
-      },
-      1: {
-        name: SCEPTER_CATEGORY_COLUMN_NAME,
-        type: CATEGORY_TYPE,
-      },
-    });
+  const columns = getScepterCompliantColumns();
 
+  it("should add categories to scepter user when loading in a scepter csv file", async () => {
     const scepterTransaction = new Transaction([
       new TransactionDetail(
         "Test String",
@@ -65,42 +57,27 @@ describe("Scepter Transaction Load Service", () => {
   });
 
   it("should return a view context that respects the ordering and colors found within the location", async () => {
-    const columns = new Columns({
-      0: {
-        name: "TestColumn",
-        type: "String",
-      },
-      1: {
-        name: SCEPTER_CATEGORY_COLUMN_NAME,
-        type: CATEGORY_TYPE,
-      },
-      2: {
-        name: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
-        type: "number",
-      },
-      3: {
-        name: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
-        type: "Color",
-      },
-    });
+    const columns = getScepterCompliantColumns();
 
-    const scepterTransaction = new Transaction([
-      new TransactionDetail(
-        "Test String",
-        columns.getName(0),
-        columns.getType(0)
-      ),
-      new TransactionDetail("1", columns.getName(2), columns.getType(2)),
-      new TransactionDetail("#111111", columns.getName(3), columns.getType(3)),
+    const scepterTransaction = generateTransactionFor(columns, [
+      {
+        name: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+        value: "#111111",
+      },
+      {
+        name: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+        value: "1",
+      },
     ]);
-    const anotherTransaction = new Transaction([
-      new TransactionDetail(
-        "Test String",
-        columns.getName(0),
-        columns.getType(0)
-      ),
-      new TransactionDetail("1", columns.getName(2), columns.getType(2)),
-      new TransactionDetail("#111111", columns.getName(3), columns.getType(3)),
+    const anotherTransaction = generateTransactionFor(columns, [
+      {
+        name: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+        value: "#111111",
+      },
+      {
+        name: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+        value: "1",
+      },
     ]);
 
     const category = new Category("Test Category");
@@ -128,42 +105,17 @@ describe("Scepter Transaction Load Service", () => {
   });
 
   it("should return a default color if there are two conflicting colors in the spreadsheet", async () => {
-    const columns = new Columns({
-      0: {
-        name: "TestColumn",
-        type: "String",
-      },
-      1: {
-        name: SCEPTER_CATEGORY_COLUMN_NAME,
-        type: CATEGORY_TYPE,
-      },
-      2: {
-        name: SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
-        type: "number",
-      },
-      3: {
+    const scepterTransaction = generateTransactionFor(columns, [
+      {
         name: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
-        type: "Color",
+        value: "#111111",
       },
-    });
-
-    const scepterTransaction = new Transaction([
-      new TransactionDetail(
-        "Test String",
-        columns.getName(0),
-        columns.getType(0)
-      ),
-      new TransactionDetail("1", columns.getName(2), columns.getType(2)),
-      new TransactionDetail("#111111", columns.getName(3), columns.getType(3)),
     ]);
-    const anotherTransaction = new Transaction([
-      new TransactionDetail(
-        "Test String",
-        columns.getName(0),
-        columns.getType(0)
-      ),
-      new TransactionDetail("1", columns.getName(2), columns.getType(2)),
-      new TransactionDetail("#111112", columns.getName(3), columns.getType(3)),
+    const anotherTransaction = generateTransactionFor(columns, [
+      {
+        name: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
+        value: "#111112",
+      },
     ]);
 
     const category = new Category("Test Category");
@@ -202,9 +154,7 @@ describe("Scepter Transaction Load Service", () => {
     const result = await testObject.canLoad(location);
     expect(result.canLoad).toBe(false);
     expect(result.errorMessage).toBe(
-      "Location did not have headers: [" +
-        SCEPTER_CATEGORY_ORDERING_COLUMN_NAME +
-        "]"
+      "Location did not have headers: [Account,Date,Vendor,Amount,Notes,Ordering]"
     );
   });
 
@@ -212,12 +162,10 @@ describe("Scepter Transaction Load Service", () => {
     const importer = new ScepterFormatCsvImporter();
     const testObject = new ScepterTransactionLoadService(importer);
 
+    const exporter = new CsvExporter();
+
     const location = new TestLocation([
-      SCEPTER_CATEGORY_COLUMN_NAME +
-        "," +
-        SCEPTER_CATEGORY_COLOR_COLUMN_NAME +
-        "," +
-        SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+      exporter.convertColumns(getScepterCompliantColumns()),
       "TestCategory,#000000",
     ]);
 

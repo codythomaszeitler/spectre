@@ -4,6 +4,74 @@ import { CsvExporter } from "../csv.exporter";
 import { Currency } from "../../pojo/currency";
 import { CsvImporter, unescapeCsvElement } from "../csv.importer";
 import { TransactionDetail } from "../../pojo/transaction.detail";
+import { DATE_TYPE } from "../../transaction.detail.converter/date.converter";
+import { CATEGORY_TYPE } from "../../pojo/category";
+import { COLOR_TYPE } from "../../pojo/color";
+import { COLOR_NOT_FOUND } from "../../service/scepter.format.csv.importer";
+
+export function generateTransactionFor(columns: Columns, overrides?: any) {
+  const getDefaultElementFor = (type: string) => {
+    let defaultElement;
+    if (type === DATE_TYPE) {
+      defaultElement = "08/17/2020 03:43:12 PM";
+    } else if (type === CATEGORY_TYPE) {
+      defaultElement = "Defaulted Test Category";
+    } else if (type === AMOUNT_TYPE) {
+      defaultElement = "$50.00";
+    } else if (type === COLOR_TYPE) {
+      defaultElement = COLOR_NOT_FOUND.hex();
+    } else if (type === "number") {
+      defaultElement = "1";
+    } else {
+      defaultElement = "Test String";
+    }
+    return defaultElement;
+  };
+
+  const containsOverride = (overrides: any, name: string) => {
+    let containsOverride = false;
+    for (let i = 0; i < overrides.length; i++) {
+      if (overrides[i]["name"] === name) {
+        containsOverride = true;
+        break;
+      }
+    }
+    return containsOverride;
+  };
+
+  const getOverride = (overrides: any, name: string) => {
+    let override = null;
+    for (let i = 0; i < overrides.length; i++) {
+      if (overrides[i]["name"] === name) {
+        override = overrides[i]["value"];
+        break;
+      }
+    }
+    return override;
+  };
+
+  if (!overrides) {
+    overrides = [];
+  }
+
+  const details = [];
+
+  for (let i = 0; i < columns.getNumColumns(); i++) {
+    let name = columns.getName(i);
+    const type = columns.getType(i);
+
+    let element;
+    if (containsOverride(overrides, name)) {
+      element = getOverride(overrides, name);
+    } else {
+      element = getDefaultElementFor(type);
+    }
+
+    details.push(new TransactionDetail(element, name, type));
+  }
+
+  return new Transaction(details);
+}
 
 describe("Csv Importer", () => {
   it("should be able to import items into that were exported", () => {
@@ -40,6 +108,16 @@ describe("Csv Importer", () => {
   });
 
   it("should be able to convert a transaction with extra elements", () => {
+    const rawString = "$400.00,Test1,Test2,Test3\n";
+    const testObject = new CsvImporter();
+
+    const converted = testObject.convert(rawString);
+
+    const details = converted.getDetails();
+    expect(details.length).toBe(4);
+  });
+
+  it("should return all default values for each element if null string is given", () => {
     const columns = new Columns({
       0: {
         name: "Amount",
@@ -55,13 +133,35 @@ describe("Csv Importer", () => {
       },
     });
 
-    const rawString = "$400.00,Test1,Test2,Test3\n";
     const testObject = new CsvImporter();
+    testObject.defineIncomingFormat(columns);
 
-    const converted = testObject.convert(rawString);
+    const transaction = testObject.convert(null);
 
-    const details = converted.getDetails();
-    expect(details.length).toBe(4);
+    expect(
+      transaction.getDetailsByColumnName(columns.getName(0)).length
+    ).toEqual(1);
+    expect(
+      transaction.getDetailsByColumnName(columns.getName(1)).length
+    ).toEqual(1);
+    expect(
+      transaction.getDetailsByColumnName(columns.getName(2)).length
+    ).toEqual(1);
+
+    const defaultedAmountDetail = transaction.getDetailsByColumnName(
+      columns.getName(0)
+    )[0];
+    expect(defaultedAmountDetail.getElement()).toBe("");
+
+    const defaultedTest1TypeDetail = transaction.getDetailsByColumnName(
+      columns.getName(1)
+    )[0];
+    expect(defaultedTest1TypeDetail.getElement()).toBe("");
+
+    const defaultedTest2TypeDetail = transaction.getDetailsByColumnName(
+      columns.getName(2)
+    )[0];
+    expect(defaultedTest2TypeDetail.getElement()).toBe("");
   });
 
   it("should be able to unescape csv element without quotations marks", () => {

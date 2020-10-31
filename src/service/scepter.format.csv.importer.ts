@@ -1,8 +1,5 @@
-import { CategoryColors } from "../css/styles";
 import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter";
 import { Columns } from "../export/columns";
-import { CsvImporter } from "../export/csv.importer";
-import { CsvType } from "../export/csv.type";
 import {
   SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
   SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
@@ -47,9 +44,6 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
     csvImporter.defineIncomingFormat(this.columns);
 
     const headers = csvImporter.necessaryColumnHeaders();
-    headers.push(SCEPTER_CATEGORY_COLUMN_NAME);
-    headers.push(SCEPTER_CATEGORY_COLOR_COLUMN_NAME);
-    headers.push(SCEPTER_CATEGORY_ORDERING_COLUMN_NAME);
     return headers;
   }
 
@@ -65,7 +59,6 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
     const category = this.getCategoryFromDetail(transactionWithCategory);
 
     const viewConextBuilder = new ViewContext.Builder();
-
     viewConextBuilder.setCategoryColor(
       category,
       this.getColorFromDetail(transactionWithCategory)

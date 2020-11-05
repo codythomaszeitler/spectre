@@ -60,8 +60,6 @@ export class CanLoadResult {
         "Location did not have headers: [" + missing.join(",") + "]";
     }
 
-    console.log(missing);
-
     return new CanLoadResult(canLoad, errorMessage, missing);
   }
 }

@@ -30,7 +30,6 @@ export class TransactionLoadService implements TransactionLoader {
 
     for (let i = 1; i < lines.length; i++) {
       const transaction = this.importer.convert(lines[i]);
-      console.log(transaction);
       scepterUser.readyForCategorization(transaction);
     }
 

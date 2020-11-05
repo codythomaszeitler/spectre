@@ -26,9 +26,7 @@ export class CsvImporter extends ImporterDecorator {
       return new Transaction(this.getDefaultDetails());
     }
 
-    console.log(string);
     const splits =  split(string);
-    console.log(splits);
     details.push(...this.convertDetailsFoundInLine(splits));
     details.push(...this.convertDetailsNotFoundInLine(splits));
 

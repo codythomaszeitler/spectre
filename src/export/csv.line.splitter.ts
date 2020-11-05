@@ -5,7 +5,7 @@ import { unescapeCsvElement } from "./csv.importer";
 export function readCsv(input: string) {
   const lines = [];
 
-  const asPapaParse = readString(input);
+  const asPapaParse = readString(input, { skipEmptyLines: 'greedy'});
   for (let i = 0; i < asPapaParse.data.length; i++) {
     const papaParseArray = asPapaParse.data[i];
     const line = csvLineWithEscapes(papaParseArray);
@@ -27,7 +27,7 @@ export function split(input: string) {
         return [];
     }
 
-  const asPapaParse = readString(input, { skipEmptyLines: true });
+  const asPapaParse = readString(input, { skipEmptyLines: "greedy" });
   if (asPapaParse.data.length > 1) {
     throw new Error(
       "Line had more than one line in it [" + asPapaParse.data.length + "]"

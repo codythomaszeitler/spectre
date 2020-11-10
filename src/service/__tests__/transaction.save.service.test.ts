@@ -11,6 +11,7 @@ import { STRING_TYPE, TransactionDetail } from "../../pojo/transaction.detail";
 import { ViewContext } from "../../screens/view.context";
 import { Color } from "../../pojo/color";
 import { WithViewContextExporter } from "../../export/with.view.context.exporter";
+import { SCEPTER_CATEGORY_COLUMN_NAME } from "../scepter.format.importer";
 
 describe("Transaction Save Service", () => {
   it("should write all categorized transactions to the given location", async () => {
@@ -205,7 +206,7 @@ describe("Transaction Save Service", () => {
     const columns = TransactionSaveService.generateCompliantColumns(
       spectreUser
     );
-    expect(columns.getName(4)).toBe(CATEGORY_TYPE);
+    expect(columns.getName(4)).toBe(SCEPTER_CATEGORY_COLUMN_NAME);
     expect(columns.getName(0)).toBe("noConfig1");
     expect(columns.getName(1)).toBe("noConfig2");
     expect(columns.getName(2)).toBe("noConfig3");

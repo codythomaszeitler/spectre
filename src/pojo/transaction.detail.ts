@@ -57,7 +57,7 @@ export class TransactionDetail {
       element = dateConverter.intoString(dateConverter.fromString(this.detail));
     } else if (this.type == "Color") {
       element = this.asGivenType().hex();
-    } else if (this.type === "Category") {
+    } else if (this.type === CATEGORY_TYPE) {
       element = this.asGivenType().getName();
     } else if (this.type === "number") {
       element = this.detail;

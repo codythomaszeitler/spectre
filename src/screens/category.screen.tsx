@@ -157,13 +157,13 @@ export class CategoryScreen
   onStartEditing() {
     this.setState({
       isEditing: true,
-      shouldShowTransactions : false
+      shouldShowTransactions: false,
     });
   }
 
   onStopEditing() {
     this.setState({
-      isEditing : false
+      isEditing: false,
     });
   }
 
@@ -378,6 +378,12 @@ export class CategoryScreen
                     >
                       <View
                         style={{
+                          width: 5,
+                          height: 1,
+                        }}
+                      ></View>
+                      <View
+                        style={{
                           justifyContent: "flex-end",
                           width: this.state.deleteButtonWidth,
                           height: this.state.deleteButtonWidth,
@@ -385,7 +391,7 @@ export class CategoryScreen
                       >
                         <TouchableOpacity onPress={this.onStartEditing}>
                           <Image
-                            source={require("../../assets/edit.png")}
+                            source={require("../../assets/edit-icon.png")}
                             resizeMode="contain"
                             resizeMethod="resize"
                             style={{
@@ -395,12 +401,7 @@ export class CategoryScreen
                           ></Image>
                         </TouchableOpacity>
                       </View>
-                      <View
-                        style={{
-                          width: 5,
-                          height: 1,
-                        }}
-                      ></View>
+
                       <View
                         style={{
                           justifyContent: "flex-end",

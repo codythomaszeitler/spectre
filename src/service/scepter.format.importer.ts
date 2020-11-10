@@ -9,7 +9,7 @@ export interface ScepterFormatImporter {
   necessaryColumnHeaders : () => Array<string>;
 }
 
-export const SCEPTER_CATEGORY_COLUMN_NAME = "Category";
+export const SCEPTER_CATEGORY_COLUMN_NAME = "ScepterCategory";
 
 export class ScepterFormattedLine {
   transaction: Transaction;

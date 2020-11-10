@@ -154,7 +154,7 @@ describe("Scepter Transaction Load Service", () => {
     const result = await testObject.canLoad(location);
     expect(result.canLoad).toBe(false);
     expect(result.errorMessage).toBe(
-      "Location did not have headers: [Account,Date,Vendor,Amount,Notes,Ordering]"
+      "Location did not have headers: [Account,Date,Vendor,Amount,Notes," + SCEPTER_CATEGORY_ORDERING_COLUMN_NAME + "]"
     );
   });
 

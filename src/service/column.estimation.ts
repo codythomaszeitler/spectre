@@ -57,7 +57,7 @@ export class ColumnEstimation {
     const addCategoryColumn = (largestIndex : number) => {
 
       columnsConfig[largestIndex] = {
-        name: "Category",
+        name: SCEPTER_CATEGORY_COLUMN_NAME,
         type: CATEGORY_TYPE,
       };
     };

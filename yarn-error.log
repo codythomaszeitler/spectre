@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js add luxoin
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js test
 
 PATH: 
-  /Users/codyzeitler/opt/anaconda3/bin:/Users/codyzeitler/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Users/codyzeitler/opt/anaconda3/bin:/Users/codyzeitler/opt/anaconda3/condabin
 
 Yarn version: 
   1.22.4
@@ -14,17 +14,12 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/luxoin: Not found
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:66987:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:140748:22)
-      at Request.emit (events.js:223:5)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141720:10)
-      at Request.emit (events.js:223:5)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141642:12)
-      at Object.onceWrapper (events.js:312:28)
-      at IncomingMessage.emit (events.js:228:7)
-      at endReadableNT (_stream_readable.js:1185:12)
-      at processTicksAndRejections (internal/process/task_queues.js:81:21)
+  SyntaxError: /Users/codyzeitler/dev/spectrets/package.json: Unexpected token } in JSON at position 1788
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:310:30)
+      at /usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:321:13
 
 npm manifest: 
   {
@@ -41,12 +36,14 @@ npm manifest:
       "@expo-google-fonts/inter": "^0.1.0",
       "@react-native-community/picker": "^1.7.1",
       "@types/file-saver": "^2.0.1",
+      "@types/luxon": "^1.25.0",
       "dinero": "^1.0.1",
       "dinero.js": "^1.8.1",
       "expo": "~37.0.3",
       "expo-font": "~8.1.0",
       "file-saver": "^2.0.2",
-      "luxon": "^1.24.1",
+      "identity-obj-proxy": "^3.0.0",
+      "luxon": "^1.25.0",
       "modal-enhanced-react-native-web": "^0.2.0",
       "modal-react-native-web": "^0.2.0",
       "react": "~16.9.0",
@@ -76,7 +73,10 @@ npm manifest:
       "testPathIgnorePatterns": [
         "<rootDir>/src/service/__tests__/test.location.ts",
         "<rootDir>/src/service/__tests__/transaction.test.util.ts"
-      ]
+      ],
+      "moduleNameMapper": {
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      }
     },
     "private": true
   }
@@ -1557,6 +1557,11 @@ Lockfile:
     version "4.14.157"
     resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.157.tgz#fdac1c52448861dfde1a2e1515dbc46e54926dc8"
     integrity sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
+  
+  "@types/luxon@^1.25.0":
+    version "1.25.0"
+    resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.25.0.tgz#3d6fe591fac874f48dd225cb5660b2b785a21a05"
+    integrity sha512-iIJp2CP6C32gVqI08HIYnzqj55tlLnodIBMCcMf28q9ckqMfMzocCmIzd9JWI/ALLPMUiTkCu1JGv3FFtu6t3g==
   
   "@types/node@*":
     version "14.0.22"
@@ -4928,10 +4933,10 @@ Lockfile:
       pseudomap "^1.0.2"
       yallist "^2.1.2"
   
-  luxon@^1.24.1:
-    version "1.24.1"
-    resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.24.1.tgz#a8383266131ed4eaed4b5f430f96f3695403a52a"
-    integrity sha512-CgnIMKAWT0ghcuWFfCWBnWGOddM0zu6c4wZAWmD0NN7MZTnro0+833DF6tJep+xlxRPg4KtsYEHYLfTMBQKwYg==
+  luxon@^1.25.0:
+    version "1.25.0"
+    resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.25.0.tgz#d86219e90bc0102c0eb299d65b2f5e95efe1fe72"
+    integrity sha512-hEgLurSH8kQRjY6i4YLey+mcKVAWXbDNlZRmM6AgWDJ1cY3atl8Ztf5wEY7VBReFbmGnwQPz7KYJblL8B2k0jQ==
   
   make-dir@^2.0.0, make-dir@^2.1.0:
     version "2.1.0"

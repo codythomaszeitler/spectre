@@ -33,6 +33,7 @@
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-web": "~0.11.7",
     "react-papaparse": "^3.8.0",
+    "react-player": "^2.6.2",
     "react-textfit": "^1.1.0"
   },
   "devDependencies": {

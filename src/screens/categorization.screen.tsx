@@ -776,7 +776,7 @@ export class CategorizationScreen
         >
           <PerfectCircle
             color={new Color("#A2A2A2")}
-            onPress={this.loadHelpYoutubeWebsite}
+            onPress={this.props.onHelpScreenPress}
           >
             <Image
               resizeMode="contain"

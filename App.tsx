@@ -3,6 +3,7 @@ import { CategorizationScreen } from "./src/screens/categorization.screen";
 import { View } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
+import { MainScreen } from "./src/screens/main.screen";
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -26,7 +27,7 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }}>
-      <CategorizationScreen></CategorizationScreen>
+      <MainScreen></MainScreen>
     </View>
   );
 }

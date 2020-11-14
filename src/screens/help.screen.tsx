@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Text } from "react-native";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
 import { Color } from "../pojo/color";
 import ReactPlayer from "react-player";
 import { SpacerScreenSegment } from "./spacer.screen.segment";
+import { BoldFontFamily } from "../css/styles";
 
 export class HelpScreen extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ export class HelpScreen extends Component {
 
     this.state = {
       width: 0,
-      height: 0,
+      height: 3000,
     };
   }
 
@@ -28,13 +29,9 @@ export class HelpScreen extends Component {
 
   updateWindowDimensions() {
     const currentWidowWidth = window.innerWidth;
-    const currentWindowHeight = window.innerHeight;
-
-    console.log(currentWindowHeight);
 
     this.setState({
       width: this.conformToMinWidth(currentWidowWidth),
-      height: currentWindowHeight * 2,
     });
   }
 
@@ -55,23 +52,21 @@ export class HelpScreen extends Component {
         style={{
           width: this.state.width,
           height: this.state.height,
-          justifyContent: "space-around",
-          alignContent: "stretch",
           alignSelf: "center",
+          alignItems: "center",
         }}
       >
         <View
           style={{
-            flex: 0.42,
+            height: 10,
           }}
         ></View>
         <View
           style={{
             width: 50,
-            flex: 0.5,
+            height: 50,
             alignItems: "center",
             alignSelf: "center",
-            backgroundColor: "red",
           }}
         >
           <PerfectCircle
@@ -90,54 +85,74 @@ export class HelpScreen extends Component {
         </View>
         <View
           style={{
-            flex: 0.42,
+            height: 5,
           }}
         ></View>
         <View
           style={{
-            alignItems: "center",
-            alignSelf: "center",
-            flex: 10,
+            height: 50,
+            width: "100%",
           }}
         >
-          <View
+          <Text
             style={{
-              flex: 5,
-              backgroundColor: "green",
+              fontSize: 30,
+              fontFamily: BoldFontFamily,
+              color: "grey",
             }}
           >
-            <div className="player-wrapper">
-              <ReactPlayer url="https://www.youtube.com/watch?v=eegQI9WM6mk"></ReactPlayer>
-            </div>
-          </View>
-
-          <View
-            style={{
-              backgroundColor: "red",
-              flex: 1,
-              alignItems: "center",
-              alignSelf: "center",
-              justifyContent : 'center'
-            }}
-          >
-            <SpacerScreenSegment numSmallDividers={6}></SpacerScreenSegment>
-          </View>
-
-          <View
-            style={{
-              flex: 5,
-            }}
-          >
-            <div className="player-wrapper">
-              <ReactPlayer url="https://www.youtube.com/watch?v=eegQI9WM6mk"></ReactPlayer>
-            </div>
-          </View>
+            We are here
+          </Text>
         </View>
         <View
           style={{
-            flex: 1,
+            height: 375,
+            justifyContent: "center",
           }}
-        ></View>
+        >
+          <div className="player-wrapper">
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=eegQI9WM6mk"
+              className="react-player"
+            ></ReactPlayer>
+          </div>
+        </View>
+        <View
+          style={{
+            height: 5,
+          }}
+        >
+          <SpacerScreenSegment numSmallDividers={6}></SpacerScreenSegment>
+        </View>
+        <View
+          style={{
+            height: 50,
+            width: "100%",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: BoldFontFamily,
+              color: "grey",
+            }}
+          >
+            We are here
+          </Text>
+        </View>
+        <View
+          style={{
+            height: 375,
+            justifyContent: "center",
+          }}
+        >
+          <div className="player-wrapper">
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=eegQI9WM6mk"
+              className="react-player"
+            ></ReactPlayer>
+          </div>
+        </View>
       </View>
     );
   }

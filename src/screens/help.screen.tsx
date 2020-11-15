@@ -6,6 +6,10 @@ import { Color } from "../pojo/color";
 import ReactPlayer from "react-player";
 import { SpacerScreenSegment } from "./spacer.screen.segment";
 import { BoldFontFamily } from "../css/styles";
+import { EmbeddedVideoPlayer } from "./embedded.video.player";
+
+const PLAYBACK_PLAYER_WIDTH = 640;
+const PLAYBACK_PLAYER_HEIGHT = 360;
 
 export class HelpScreen extends Component {
   constructor(props) {
@@ -14,7 +18,7 @@ export class HelpScreen extends Component {
 
     this.state = {
       width: 0,
-      height: 3000,
+      height: 925,
     };
   }
 
@@ -54,105 +58,194 @@ export class HelpScreen extends Component {
           height: this.state.height,
           alignSelf: "center",
           alignItems: "center",
+          flex: 1,
         }}
       >
         <View
           style={{
-            height: 10,
+            flex: 1.3,
+            backgroundColor: "black",
           }}
         ></View>
         <View
           style={{
-            width: 50,
-            height: 50,
+            flex: 2,
             alignItems: "center",
             alignSelf: "center",
+            width: isMobile ? 75 : 50,
           }}
         >
           <PerfectCircle
-            color={new Color("#A2A2A2")}
+            borderColor={new Color("#A2A2A2")}
+            color={new Color("#FFFFFF")}
             onPress={this.props.onBackButtonPress}
           >
             <Image
               resizeMode="contain"
-              source={require("../../assets/question-mark.png")}
+              source={require("../../assets/move_left_arrow-512.png")}
               style={{
-                width: isMobile ? 8 : 18,
-                height: isMobile ? 13 : 25,
+                width: isMobile ? 8 : 30,
+                height: isMobile ? 13 : 60,
               }}
             ></Image>
           </PerfectCircle>
         </View>
         <View
           style={{
-            height: 5,
+            flex: 1,
           }}
         ></View>
         <View
           style={{
-            height: 50,
+            flex: 1,
+            flexDirection: "row",
+            alignSelf: "flex-start",
+            justifyContent: "flex-start",
             width: "100%",
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 30,
-              fontFamily: BoldFontFamily,
-              color: "grey",
+              width: "12%",
+              height: "100%",
+            }}
+          ></View>
+          <View
+            style={{
+              width: "88%",
+              height: "100%",
             }}
           >
-            We are here
-          </Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontFamily: BoldFontFamily,
+                color: "#A2A2A2",
+              }}
+            >
+              I. Introduction to Scepter
+            </Text>
+          </View>
         </View>
         <View
           style={{
-            height: 375,
+            flex: 1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 15,
             justifyContent: "center",
+            width: "75%",
+            height: "100%",
           }}
         >
-          <div className="player-wrapper">
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=eegQI9WM6mk"
-              className="react-player"
-            ></ReactPlayer>
-          </div>
+          <EmbeddedVideoPlayer youtubeUrl="https://www.youtube.com/watch?v=IUt0zup2bHc"></EmbeddedVideoPlayer>
         </View>
+
         <View
           style={{
-            height: 5,
+            flex: 1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 0.5,
           }}
         >
           <SpacerScreenSegment numSmallDividers={6}></SpacerScreenSegment>
         </View>
         <View
           style={{
-            height: 50,
+            flex: 1,
+            flexDirection: "row",
+            alignSelf: "flex-start",
+            justifyContent: "flex-start",
             width: "100%",
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 30,
-              fontFamily: BoldFontFamily,
-              color: "grey",
+              width: "12%",
+              height: "100%",
+            }}
+          ></View>
+          <View
+            style={{
+              width: "88%",
+              height: "100%",
             }}
           >
-            We are here
-          </Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontFamily: BoldFontFamily,
+                color: "#A2A2A2",
+              }}
+            >
+              II. Basic budgeting spreadsheet
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 15,
+            justifyContent: "center",
+            width: "75%",
+            height: "100%",
+          }}
+        >
+          <EmbeddedVideoPlayer youtubeUrl="https://www.youtube.com/watch?v=IUt0zup2bHc"></EmbeddedVideoPlayer>
         </View>
         <View
           style={{
-            height: 375,
-            justifyContent: "center",
+            flex: 1,
+          }}
+        ></View>
+
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            alignSelf: "flex-start",
+            justifyContent: "flex-start",
+            width: "100%",
           }}
         >
-          <div className="player-wrapper">
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=eegQI9WM6mk"
-              className="react-player"
-            ></ReactPlayer>
-          </div>
+          <View
+            style={{
+              width: "12%",
+              height: "100%",
+            }}
+          ></View>
+          <View
+            style={{
+              width: "88%",
+              height: "100%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 17,
+                fontFamily: BoldFontFamily,
+                color: "#A2A2A2",
+              }}
+            >
+              Template Downloads
+            </Text>
+          </View>
         </View>
+        <View
+          style={{
+            flex: 10,
+          }}
+        ></View>
       </View>
     );
   }

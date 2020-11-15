@@ -34,7 +34,7 @@ export class PerfectCircle extends Component {
       diameter: getMinDimension(event),
       showCircle: true,
     });
-  }
+}
 
   render() {
     return (

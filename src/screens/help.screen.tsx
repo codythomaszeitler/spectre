@@ -3,13 +3,10 @@ import { View, Image, Text } from "react-native";
 import { PerfectCircle } from "./perfect.circle";
 import { isMobile } from "react-device-detect";
 import { Color } from "../pojo/color";
-import ReactPlayer from "react-player";
 import { SpacerScreenSegment } from "./spacer.screen.segment";
 import { BoldFontFamily } from "../css/styles";
 import { EmbeddedVideoPlayer } from "./embedded.video.player";
-
-const PLAYBACK_PLAYER_WIDTH = 640;
-const PLAYBACK_PLAYER_HEIGHT = 360;
+import { TemplateDownloadScreen } from "./template.download.screen";
 
 export class HelpScreen extends Component {
   constructor(props) {
@@ -243,7 +240,59 @@ export class HelpScreen extends Component {
         </View>
         <View
           style={{
-            flex: 10,
+            flex: 0.25,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 2,
+            width: "100%",
+          }}
+        >
+          <TemplateDownloadScreen name="CSV" color={new Color('#CD8AF4')}></TemplateDownloadScreen>
+        </View>
+        <View
+          style={{
+            flex: 0.1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 2,
+            width: "100%",
+          }}
+        >
+          <TemplateDownloadScreen name="Excel" color={new Color('#72D4D4')}></TemplateDownloadScreen>
+        </View>
+        <View
+          style={{
+            flex: 0.1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 2,
+            width: "100%",
+          }}
+        >
+          <TemplateDownloadScreen name="Numbers" color={new Color('#EDB373')}></TemplateDownloadScreen>
+        </View>
+        <View
+          style={{
+            flex: 0.1,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 2,
+            width: "100%",
+          }}
+        >
+          <TemplateDownloadScreen name="Google Sheets" color={new Color('#FF7676')}></TemplateDownloadScreen>
+        </View>
+        <View
+          style={{
+            flex: 0.5,
           }}
         ></View>
       </View>

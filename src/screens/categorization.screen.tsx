@@ -46,7 +46,10 @@ import { TransactionLoaderFactory } from "../service/transaction.loader.factory"
 import { WithViewContextExporter } from "../export/with.view.context.exporter";
 import { ViewContext } from "./view.context";
 
-export interface Props {}
+export interface Props {
+  categoryColors: Map<string, Color>;
+  categoryOrder: Map<string, number>;
+}
 
 export interface State {
   screenSegmentPayloads: ScreenSegmentPayload[];
@@ -62,7 +65,7 @@ export interface State {
 const VIEWING_MODE_BOTTOM_BAR_FLEX = 1.15;
 
 export class CategorizationScreen
-  extends Component
+  extends Component<Props, State>
   implements
     CategoryAddedListener,
     BeforeCategoryRemovedListener,
@@ -72,9 +75,6 @@ export class CategorizationScreen
   spectreUser: SpectreUser;
   state: State;
   spacers: Array<Spacer>;
-
-  categoryColors: Map<string, Color>;
-  categoryOrder: Map<string, number>;
 
   constructor(props: Props) {
     super(props);
@@ -103,17 +103,8 @@ export class CategorizationScreen
     this.loadHelpYoutubeWebsite = this.loadHelpYoutubeWebsite.bind(this);
     this.onCategoryNameChange = this.onCategoryNameChange.bind(this);
 
-    const model = new SpectreUser();
-    datastore().set(model);
-    this.spectreUser = model;
+    this.spectreUser = datastore().get();
 
-    this.spectreUser.addOnCategoryAddedListener(this);
-    this.spectreUser.addCategoryRemovedListener(this);
-    this.spectreUser.addBeforeCategoryRemovedListener(this);
-    this.spectreUser.addOnCategoryNameChangeListener(this);
-
-    this.categoryColors = new Map<string, Color>();
-    this.categoryOrder = new Map<string, number>();
     this.spacers = new Array<Spacer>();
 
     this.state = {
@@ -123,7 +114,7 @@ export class CategorizationScreen
       showAddCategoryScreen: false,
       currentTransaction: undefined,
       isCategorizationMode: false,
-      numUncategorized: 0,
+      numUncategorized: this.spectreUser.getUncategorized().length,
       width: 0,
       height: 0,
       bottomBarFlex: VIEWING_MODE_BOTTOM_BAR_FLEX,
@@ -134,6 +125,18 @@ export class CategorizationScreen
   }
 
   componentDidMount() {
+    this.spectreUser.addOnCategoryAddedListener(this);
+    this.spectreUser.addCategoryRemovedListener(this);
+    this.spectreUser.addBeforeCategoryRemovedListener(this);
+    this.spectreUser.addOnCategoryNameChangeListener(this);
+
+    const categories = this.spectreUser.getCategories();
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+      this.spectreUser.addTransactionCategorizedListener(category, this);
+      this.spectreUser.addTransactionUncategorizedListener(category, this);
+    }
+
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
     this.setState({
@@ -143,8 +146,17 @@ export class CategorizationScreen
 
   componentWillUnmount() {
     this.spectreUser.removeOnCategoryAddedListener(this);
+    this.spectreUser.removeCategoryRemovedListener(this);
     this.spectreUser.removeBeforeCategoryRemovedListener(this);
     this.spectreUser.removeOnCategoryNameChangeListener(this);
+
+    const categories = this.spectreUser.getCategories();
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+      this.spectreUser.removeTransactionCategorizedListener(category, this);
+      this.spectreUser.removeTransactionUncategorizedListener(category, this);
+    }
+
     window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
@@ -194,8 +206,8 @@ export class CategorizationScreen
     const categories = this.spectreUser.getCategories();
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
-      const color = this.categoryColors.get(category.getName());
-      const ordering = this.categoryOrder.get(category.getName());
+      const color = this.props.categoryColors.get(category.getName());
+      const ordering = this.props.categoryOrder.get(category.getName());
 
       builder.setCategoryColor(category, color);
       builder.setCategoryOrdering(category, ordering);
@@ -253,7 +265,7 @@ export class CategorizationScreen
 
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
-      const ordering = this.categoryOrder.get(category.getName());
+      const ordering = this.props.categoryOrder.get(category.getName());
       sorted.push({
         category,
         ordering,
@@ -285,14 +297,14 @@ export class CategorizationScreen
   getColorFor(category: Category) {
     let color = new Color(CategoryColors[0]);
 
-    if (this.categoryColors.has(category.getName())) {
-      color = this.categoryColors.get(category.getName())?.copy();
+    if (this.props.categoryColors.has(category.getName())) {
+      color = this.props.categoryColors.get(category.getName())?.copy();
     }
     return color;
   }
 
   onCategoryColorChoice(category: Category, color: Color) {
-    this.categoryColors.set(category.getName(), color);
+    this.props.categoryColors.set(category.getName(), color);
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
@@ -358,7 +370,7 @@ export class CategorizationScreen
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
     this.spectreUser.addTransactionUncategorizedListener(event.category, this);
 
-    this.categoryOrder.set(
+    this.props.categoryOrder.set(
       event.category.getName(),
       this.getNextHighestSortOrder()
     );
@@ -371,7 +383,7 @@ export class CategorizationScreen
   private getNextHighestSortOrder() {
     let highest = 0;
 
-    const orderings = this.categoryOrder.values();
+    const orderings = this.props.categoryOrder.values();
     let ordering = orderings.next();
     while (!ordering.done) {
       if (highest < ordering.value) {
@@ -436,15 +448,15 @@ export class CategorizationScreen
   }
 
   removeColorChoice(category: Category) {
-    this.categoryColors.delete(category.getName());
+    this.props.categoryColors.delete(category.getName());
   }
 
   removeOrderChoice(category: Category) {
-    this.categoryOrder.delete(category.getName());
+    this.props.categoryOrder.delete(category.getName());
   }
 
   onCategoryNameChange(event: OnCategoryNameChangeEvent) {
-    const oldColor = this.categoryColors.get(event.oldCategory.getName());
+    const oldColor = this.props.categoryColors.get(event.oldCategory.getName());
 
     this.removeColorChoice(event.oldCategory);
 
@@ -475,11 +487,11 @@ export class CategorizationScreen
   }
 
   onCategoryOrderChoice(category: Category, ordering: number) {
-    this.categoryOrder.set(category.getName(), ordering);
+    this.props.categoryOrder.set(category.getName(), ordering);
   }
 
   getOrderForCategory(category: Category) {
-    return this.categoryOrder.get(category.getName());
+    return this.props.categoryOrder.get(category.getName());
   }
 
   onCategorizationStart() {
@@ -538,7 +550,8 @@ export class CategorizationScreen
                 " did not have the proper format for " +
                 csvType.get() +
                 " : " +
-                canLoadResult.missingHeaders.join(",") + ' were missing';
+                canLoadResult.missingHeaders.join(",") +
+                " were missing";
 
               errorDialog.show(errorMessage);
               return;
@@ -586,11 +599,11 @@ export class CategorizationScreen
     for (let i = 0; i < categories.length; i++) {
       const category = categories[i];
 
-      this.categoryColors.set(
+      this.props.categoryColors.set(
         category.getName(),
         viewContext.getColorFor(category)
       );
-      this.categoryOrder.set(
+      this.props.categoryOrder.set(
         category.getName(),
         viewContext.getOrderFor(category)
       );

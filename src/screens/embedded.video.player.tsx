@@ -32,7 +32,7 @@ export class EmbeddedVideoPlayer extends Component<Props, State> {
 
   render() {
     return (
-      <View
+      <TouchableOpacity
         style={{
           flex: 1,
           borderRadius: 10,
@@ -40,18 +40,17 @@ export class EmbeddedVideoPlayer extends Component<Props, State> {
           alignItems: "center",
           backgroundColor: "#A2A2A2",
         }}
+        onPress={this.pressPlaybackButton}
       >
         {!this.state.showYoutubePlayer && (
-          <TouchableOpacity onPress={this.pressPlaybackButton}>
-            <Image
-              resizeMode="contain"
-              source={require("../../assets/play_button.png")}
-              style={{
-                width: isMobile ? 8 : 30,
-                height: isMobile ? 13 : 60,
-              }}
-            ></Image>
-          </TouchableOpacity>
+          <Image
+            resizeMode="contain"
+            source={require("../../assets/play_button.png")}
+            style={{
+              width: isMobile ? 8 : 30,
+              height: isMobile ? 13 : 60,
+            }}
+          ></Image>
         )}
         {this.state.showYoutubePlayer && (
           <ReactPlayer
@@ -63,7 +62,7 @@ export class EmbeddedVideoPlayer extends Component<Props, State> {
             onPause={this.pressPlaybackButton}
           ></ReactPlayer>
         )}
-      </View>
+      </TouchableOpacity>
     );
   }
 }

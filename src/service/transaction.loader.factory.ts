@@ -13,7 +13,7 @@ import { ByColumnNameCsvImporter } from "../export/by.column.name.csv.converter"
 import { CsvImporter } from "../export/csv.importer";
 import { VenmoTransactionLoadService } from "./venmo.transaction.load.service";
 import { RawDataLocation } from "./raw.data.location";
-import { WithStaticValueCsvConveter } from "../export/with.static.value.csv.converter";
+import { WithStaticValueCsvImporter } from "../export/with.static.value.csv.importer";
 
 export class TransactionLoaderFactory {
   create(csvType: CsvType, location: RawDataLocation) {
@@ -36,7 +36,7 @@ export class TransactionLoaderFactory {
       service = new VenmoTransactionLoadService(
         new ByColumnNameCsvImporter(
           config,
-          new WithStaticValueCsvConveter("Account", location.getFileName())
+          new WithStaticValueCsvImporter("Account", location.getFileName())
         )
       );
     } else if (csvType.equals(RAW_FORMAT)) {
@@ -45,7 +45,7 @@ export class TransactionLoaderFactory {
       service = new TransactionLoadService(
         new ByColumnNameCsvImporter(
           config,
-          new WithStaticValueCsvConveter("Account", location.getFileName())
+          new WithStaticValueCsvImporter("Account", location.getFileName())
         )
       );
     }

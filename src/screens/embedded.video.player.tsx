@@ -15,20 +15,20 @@ export class EmbeddedVideoPlayer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-      showYoutubePlayer: false,
-    };
+    // this.state = {
+    //   showYoutubePlayer: false,
+    // };
   }
 
   componentDidMount() {
-    this.pressPlaybackButton = this.pressPlaybackButton.bind(this);
+    // this.pressPlaybackButton = this.pressPlaybackButton.bind(this);
   }
 
-  pressPlaybackButton() {
-    this.setState({
-      showYoutubePlayer: !this.state.showYoutubePlayer,
-    });
-  }
+  // pressPlaybackButton() {
+  //   this.setState({
+  //     showYoutubePlayer: !this.state.showYoutubePlayer,
+  //   });
+  // }
 
   render() {
     return (
@@ -40,9 +40,9 @@ export class EmbeddedVideoPlayer extends Component<Props, State> {
           alignItems: "center",
           backgroundColor: "#A2A2A2",
         }}
-        onPress={this.pressPlaybackButton}
+        // onPress={this.pressPlaybackButton}
       >
-        {!this.state.showYoutubePlayer && (
+        {/* {!this.state.showYoutubePlayer && (
           <Image
             resizeMode="contain"
             source={require("../../assets/play_button.png")}
@@ -51,17 +51,17 @@ export class EmbeddedVideoPlayer extends Component<Props, State> {
               height: isMobile ? 13 : 60,
             }}
           ></Image>
-        )}
-        {this.state.showYoutubePlayer && (
+        )} */}
+        {/* {this.state.showYoutubePlayer && ( */}
           <ReactPlayer
-            playing
+            controls={true}
             url={this.props.youtubeUrl}
             className="react-player"
             width="100%"
             height="100%"
-            onPause={this.pressPlaybackButton}
+            // onPause={this.pressPlaybackButton}
           ></ReactPlayer>
-        )}
+        {/* )} */}
       </TouchableOpacity>
     );
   }

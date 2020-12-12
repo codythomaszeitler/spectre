@@ -8,6 +8,8 @@ import { BoldFontFamily } from "../css/styles";
 import { EmbeddedVideoPlayer } from "./embedded.video.player";
 import { TemplateDownloadScreen } from "./template.download.screen";
 
+const SPACING_BETWEEN_TEMPLATES = .4;
+
 export class HelpScreen extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,7 @@ export class HelpScreen extends Component {
 
     this.state = {
       width: 0,
-      height: 925,
+      height: 1225,
     };
   }
 
@@ -69,7 +71,7 @@ export class HelpScreen extends Component {
             flex: 2,
             alignItems: "center",
             alignSelf: "center",
-            width: isMobile ? 75 : 50,
+            width: isMobile ? 75 : 40,
           }}
         >
           <PerfectCircle
@@ -79,17 +81,18 @@ export class HelpScreen extends Component {
           >
             <Image
               resizeMode="contain"
-              source={require("../../assets/move_left_arrow-512.png")}
+              source={require("../../assets/back-arrow.png")}
               style={{
-                width: isMobile ? 8 : 30,
-                height: isMobile ? 13 : 60,
+                width: isMobile ? 8 : 18,
+                height: isMobile ? 13 : 40,
               }}
             ></Image>
           </PerfectCircle>
         </View>
         <View
           style={{
-            flex: 1,
+            flex: 1.8,
+            width : '100%',
           }}
         ></View>
         <View
@@ -126,7 +129,7 @@ export class HelpScreen extends Component {
         </View>
         <View
           style={{
-            flex: 1,
+            flex:.26,
           }}
         ></View>
         <View
@@ -142,16 +145,10 @@ export class HelpScreen extends Component {
 
         <View
           style={{
-            flex: 1,
+            flex: 2.07,
           }}
         ></View>
-        <View
-          style={{
-            flex: 0.5,
-          }}
-        >
-          <SpacerScreenSegment numSmallDividers={6}></SpacerScreenSegment>
-        </View>
+
         <View
           style={{
             flex: 1,
@@ -187,7 +184,7 @@ export class HelpScreen extends Component {
 
         <View
           style={{
-            flex: 1,
+            flex: .26,
           }}
         ></View>
         <View
@@ -205,7 +202,16 @@ export class HelpScreen extends Component {
             flex: 1,
           }}
         ></View>
-
+        <View
+          style={{
+            flex: 0.5,
+          }}
+        >
+          <SpacerScreenSegment numSmallDividers={6}></SpacerScreenSegment>
+        </View>
+        <View style={{
+          flex : .45
+        }}></View>
         <View
           style={{
             flex: 1,
@@ -249,26 +255,14 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen name="CSV" color={new Color('#CD8AF4')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen name="CSV" color={new Color('#CD8AF4')} resource={require('../../templates/converted/numbers.csv')}></TemplateDownloadScreen>
         </View>
         <View
           style={{
-            flex: 0.1,
+            flex: SPACING_BETWEEN_TEMPLATES,
           }}
         ></View>
-        <View
-          style={{
-            flex: 2,
-            width: "100%",
-          }}
-        >
-          <TemplateDownloadScreen name="Excel" color={new Color('#72D4D4')}></TemplateDownloadScreen>
-        </View>
-        <View
-          style={{
-            flex: 0.1,
-          }}
-        ></View>
+
         <View
           style={{
             flex: 2,
@@ -279,7 +273,21 @@ export class HelpScreen extends Component {
         </View>
         <View
           style={{
-            flex: 0.1,
+            flex: SPACING_BETWEEN_TEMPLATES,
+          }}
+        ></View>
+        <View
+          style={{
+            flex: 2,
+            width: "100%",
+          }}
+        >
+          <TemplateDownloadScreen name="Excel" color={new Color('#72D4D4')}></TemplateDownloadScreen>
+        </View>
+
+        <View
+          style={{
+            flex: SPACING_BETWEEN_TEMPLATES,
           }}
         ></View>
         <View

@@ -10,6 +10,7 @@ export class LocalFileLocation implements RawDataLocation {
   startedReadingFile: boolean;
 
   constructor(file: File) {
+    console.log(file);
     this.file = file;
     this.lines = [];
     this.startedReadingFile = false;
@@ -73,5 +74,5 @@ export class LocalFileLocation implements RawDataLocation {
     await FileSaver.saveAs(file);
 
     return true;
-  }
+}
 }

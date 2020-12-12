@@ -183,7 +183,7 @@ export class CategorizationScreen
 
   async onExportCategorized() {
     try {
-      const file = new File([], "test.csv", {
+      const file = new File([], "Scepter.csv", {
         type: "text/plain;charset=utf-8",
       });
       const location = new LocalFileLocation(file);
@@ -789,6 +789,7 @@ export class CategorizationScreen
         >
           <PerfectCircle
             color={new Color("#A2A2A2")}
+            borderColor={new Color("#A2A2A2")}
             onPress={this.props.onHelpScreenPress}
           >
             <Image

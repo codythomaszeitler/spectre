@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
-import { isMobile } from "react-device-detect";
 import { FontFamily } from "../css/styles";
 import { Color } from "../pojo/color";
-import * as FileSystem from "expo-file-system";
+import { Asset } from "expo-asset";
+import { LocalFileLocation } from "../service/local.file.location";
 
 export interface Props {
   name: string;
@@ -12,18 +12,18 @@ export interface Props {
 }
 
 export class TemplateDownloadScreen extends Component<Props> {
-  download() {
-      console.log(FileSystem.documentDirectory);
-    FileSystem.downloadAsync(
-        "./",
-      FileSystem.documentDirectory + "small.mp4"
-    )
-      .then(({ uri }) => {
-        console.log("Finished downloading to ", uri);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
+  constructor(props : Props) {
+    super(props);
+    this.download = this.download.bind(this);
+  }
+
+  async download() {
+    const contents = this.props.resource.contents.contents;
+    console.log(contents);
+    const file = new File([], 'sample.csv');
+    const locationFileLocation = new LocalFileLocation(file);
+    locationFileLocation.write([JSON.stringify(contents)]);
   }
 
   render() {
@@ -46,7 +46,7 @@ export class TemplateDownloadScreen extends Component<Props> {
         ></View>
         <TouchableOpacity
           style={{
-            width: "38%",
+            width: "44%",
             height: "100%",
             backgroundColor: this.props.color.hex(),
             borderRadius: CATEGORY_BOX_INSET,
@@ -57,7 +57,7 @@ export class TemplateDownloadScreen extends Component<Props> {
           <Text
             style={{
               color: "#fff",
-              fontSize: isMobile ? CATEGORY_FONT_SIZE : CATEGORY_FONT_SIZE,
+              fontSize: CATEGORY_FONT_SIZE,
               fontFamily: FontFamily,
               marginLeft: 8,
             }}
@@ -67,7 +67,7 @@ export class TemplateDownloadScreen extends Component<Props> {
         </TouchableOpacity>
         <View
           style={{
-            width: "38%",
+            width: "32%",
             height: "100%",
           }}
         ></View>

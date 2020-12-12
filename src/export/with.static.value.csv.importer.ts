@@ -4,7 +4,7 @@ import { STRING_TYPE, TransactionDetail } from "../pojo/transaction.detail";
 import { Transaction } from "../pojo/transaction";
 import { Importer } from "./importer";
 
-export class WithStaticValueCsvConveter extends ImporterDecorator {
+export class WithStaticValueCsvImporter extends ImporterDecorator {
   columnName: string;
   value: string;
 

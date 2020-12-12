@@ -16,6 +16,7 @@
     "dinero": "^1.0.1",
     "dinero.js": "^1.8.1",
     "expo": "~37.0.3",
+    "expo-file-system": "~8.1.0",
     "expo-font": "~8.1.0",
     "file-saver": "^2.0.2",
     "identity-obj-proxy": "^3.0.0",

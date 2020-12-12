@@ -1,14 +1,9 @@
 import { RawDataLocation } from "./raw.data.location";
-import { Columns, nameKey, columnNameDelimeter } from "../export/columns";
+import { Columns} from "../export/columns";
 import { SpectreUser } from "../pojo/spectre.user";
 import { CATEGORY_TYPE } from "../pojo/category";
-import { Transaction } from "../pojo/transaction";
 import { SCEPTER_CATEGORY_COLUMN_NAME } from "./scepter.format.importer";
-import {
-  SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
-  SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
-} from "../export/with.view.context.exporter";
-import { COLOR_TYPE } from "../pojo/color";
+import { STRING_TYPE } from "../pojo/transaction.detail";
 
 export class ColumnEstimation {
   async estimateByLocation(location: RawDataLocation): Promise<Columns> {
@@ -36,18 +31,7 @@ export class ColumnEstimation {
   }
 
   private getTypeFromColumnName(columnName: string) {
-    let type;
-    if (columnName === SCEPTER_CATEGORY_COLUMN_NAME) {
-      type = CATEGORY_TYPE;
-    } else if (columnName === SCEPTER_CATEGORY_COLOR_COLUMN_NAME) {
-      type = COLOR_TYPE;
-    } else if (columnName === SCEPTER_CATEGORY_ORDERING_COLUMN_NAME) {
-      type = "number";
-    } else {
-      type = "string";
-    }
-
-    return type;
+    return STRING_TYPE;
   }
 
 

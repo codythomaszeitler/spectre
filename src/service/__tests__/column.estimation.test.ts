@@ -5,6 +5,7 @@ import { Transaction } from "../../pojo/transaction";
 import { TransactionDetail } from "../../pojo/transaction.detail";
 import { ColumnEstimation } from "../column.estimation";
 import { TestLocation } from "./test.location";
+import {STRING_TYPE} from "../../pojo/transaction.detail";
 
 describe("Column Estimation", () => {
   it("should be able to estimate columns given a location", async () => {
@@ -14,11 +15,11 @@ describe("Column Estimation", () => {
 
     expect(columns.getNumColumns()).toBe(3);
     expect(columns.getName(0)).toBe("a");
-    expect(columns.getType(0)).toBe("string");
+    expect(columns.getType(0)).toBe(STRING_TYPE);
     expect(columns.getName(1)).toBe("b");
-    expect(columns.getType(1)).toBe("string");
+    expect(columns.getType(1)).toBe(STRING_TYPE);
     expect(columns.getName(2)).toBe("c");
-    expect(columns.getType(2)).toBe("string");
+    expect(columns.getType(2)).toBe(STRING_TYPE);
   });
 
   it('should return only one column if the peeked line does not have the delimiter', async () => {
@@ -28,7 +29,7 @@ describe("Column Estimation", () => {
 
     expect(columns.getNumColumns()).toBe(1);
     expect(columns.getName(0)).toBe("a");
-    expect(columns.getType(0)).toBe("string");
+    expect(columns.getType(0)).toBe(STRING_TYPE);
   });
 
   it('should throw an exception if a null location is given during construction', async () => {

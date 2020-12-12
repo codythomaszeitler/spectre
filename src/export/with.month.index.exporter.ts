@@ -1,9 +1,11 @@
 import { Category } from "../pojo/category";
 import { Transaction } from "../pojo/transaction";
+import { DATE_TYPE } from "../transaction.detail.converter/date.converter";
 import { Columns } from "./columns";
+import { escapeCsvElement } from "./csv.exporter";
 import { ExporterDecorator } from "./exporter.decorator";
 
-// export const 
+export const SCEPTER_MONTH_INDEX_COLUMN_NAME = "MonthIndex";
 
 export class WithMonthIndexExporter extends ExporterDecorator {
   constructor(exporter?: ExporterDecorator) {
@@ -15,10 +17,38 @@ export class WithMonthIndexExporter extends ExporterDecorator {
   }
 
   convertColumns(columns: Columns): string {
-    return super.convertColumns(columns);
+    return (
+      super.convertColumns(columns) +
+      escapeCsvElement(SCEPTER_MONTH_INDEX_COLUMN_NAME) +
+      ","
+    );
   }
 
   convert(transaction: Transaction, category?: Category): string {
-    return super.convert(transaction);
+    const getDateDetails = () => {
+      const details = transaction.getDetails();
+
+      const foundDetails = [];
+      for (let i = 0; i < details.length; i++) {
+        const detail = details[i];
+        if (detail.getType() === DATE_TYPE) {
+          foundDetails.push(detail.copy());
+        }
+      }
+      return foundDetails;
+    };
+
+    const dateDetails = getDateDetails();
+    let monthIndex = 0;
+    if (dateDetails.length !== 0) {
+      const dateDetail = dateDetails[0];
+
+      const javascriptDate = dateDetail.asGivenType();
+      monthIndex = javascriptDate.getMonth() + 1;
+    }
+
+    return (
+      super.convert(transaction) + escapeCsvElement(monthIndex.toString()) + ","
+    );
   }
 }

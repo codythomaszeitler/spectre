@@ -6,8 +6,8 @@ import { Category } from "../pojo/category";
 import { ViewContext } from "../screens/view.context";
 import { escapeCsvElement } from "../export/csv.exporter";
 
-export const SCEPTER_CATEGORY_ORDERING_COLUMN_NAME = "ScepterOrdering";
-export const SCEPTER_CATEGORY_COLOR_COLUMN_NAME = "ScepterColor";
+export const SCEPTER_CATEGORY_ORDERING_COLUMN_NAME = "Ordering";
+export const SCEPTER_CATEGORY_COLOR_COLUMN_NAME = "Color";
 
 export class WithViewContextExporter extends ExporterDecorator {
   viewContext: ViewContext;

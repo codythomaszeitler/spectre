@@ -45,6 +45,7 @@ import { FileCsvTypeDuoSelectedListener } from "./import/csv.selection.screen";
 import { TransactionLoaderFactory } from "../service/transaction.loader.factory";
 import { WithViewContextExporter } from "../export/with.view.context.exporter";
 import { ViewContext } from "./view.context";
+import { WithMonthIndexExporter } from "../export/with.month.index.exporter";
 
 export interface Props {
   categoryColors: Map<string, Color>;
@@ -189,7 +190,11 @@ export class CategorizationScreen
       const location = new LocalFileLocation(file);
       const transactionSaveService = new TransactionSaveService(
         new CsvExporter(
-          new WithViewContextExporter(this.createViewContextFromCurrentState())
+          new WithMonthIndexExporter(
+            new WithViewContextExporter(
+              this.createViewContextFromCurrentState()
+            )
+          )
         )
       );
 

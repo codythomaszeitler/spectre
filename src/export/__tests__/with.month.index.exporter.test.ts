@@ -29,6 +29,6 @@ describe("With Month Index Exporter", () => {
     const testObject = new WithMonthIndexExporter();
 
     const csvHeader = testObject.convertColumns(new Columns({}));
-    expect(csvHeader).toBe('"' + SCEPTER_MONTH_INDEX_COLUMN_NAME + '",');
+    expect(csvHeader).toBe(',' + SCEPTER_MONTH_INDEX_COLUMN_NAME);
   });
 });

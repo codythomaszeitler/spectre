@@ -5,7 +5,7 @@ import { Columns } from "./columns";
 import { escapeCsvElement } from "./csv.exporter";
 import { ExporterDecorator } from "./exporter.decorator";
 
-export const SCEPTER_MONTH_INDEX_COLUMN_NAME = "MonthIndex";
+export const SCEPTER_MONTH_INDEX_COLUMN_NAME = "Month";
 
 export class WithMonthIndexExporter extends ExporterDecorator {
   constructor(exporter?: ExporterDecorator) {
@@ -19,8 +19,8 @@ export class WithMonthIndexExporter extends ExporterDecorator {
   convertColumns(columns: Columns): string {
     return (
       super.convertColumns(columns) +
-      escapeCsvElement(SCEPTER_MONTH_INDEX_COLUMN_NAME) +
-      ","
+      "," +
+      SCEPTER_MONTH_INDEX_COLUMN_NAME
     );
   }
 
@@ -48,7 +48,7 @@ export class WithMonthIndexExporter extends ExporterDecorator {
     }
 
     return (
-      super.convert(transaction) + escapeCsvElement(monthIndex.toString()) + ","
+      super.convert(transaction, category) + escapeCsvElement(monthIndex.toString()) + ","
     );
   }
 }

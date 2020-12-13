@@ -282,7 +282,7 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen name="Excel" color={new Color('#72D4D4')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen disabled name="Excel" color={new Color('#72D4D4')}></TemplateDownloadScreen>
         </View>
 
         <View
@@ -296,7 +296,7 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen name="Google Sheets" color={new Color('#FF7676')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen disabled name="Google Sheets" color={new Color('#FF7676')}></TemplateDownloadScreen>
         </View>
         <View
           style={{

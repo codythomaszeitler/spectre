@@ -3,17 +3,16 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
 import { FontFamily } from "../css/styles";
 import { Color } from "../pojo/color";
-import { Asset } from "expo-asset";
 import { LocalFileLocation } from "../service/local.file.location";
 
 export interface Props {
   name: string;
   color: Color;
+  disabled: boolean;
 }
 
 export class TemplateDownloadScreen extends Component<Props> {
-
-  constructor(props : Props) {
+  constructor(props: Props) {
     super(props);
     this.download = this.download.bind(this);
   }
@@ -21,9 +20,17 @@ export class TemplateDownloadScreen extends Component<Props> {
   async download() {
     const contents = this.props.resource.contents.contents;
     console.log(contents);
-    const file = new File([], 'sample.csv');
+    const file = new File([], "sample.csv");
     const locationFileLocation = new LocalFileLocation(file);
     locationFileLocation.write([JSON.stringify(contents)]);
+  }
+
+  private getOpacity() {
+    if (this.props.disabled) {
+      return 0.5;
+    } else {
+      return 1;
+    }
   }
 
   render() {
@@ -36,6 +43,7 @@ export class TemplateDownloadScreen extends Component<Props> {
           alignSelf: "flex-start",
           justifyContent: "flex-start",
           height: 50,
+          opacity: this.getOpacity(),
         }}
       >
         <View
@@ -44,27 +52,52 @@ export class TemplateDownloadScreen extends Component<Props> {
             height: "100%",
           }}
         ></View>
-        <TouchableOpacity
-          style={{
-            width: "44%",
-            height: "100%",
-            backgroundColor: this.props.color.hex(),
-            borderRadius: CATEGORY_BOX_INSET,
-            justifyContent: "center",
-          }}
-          onPress={this.download}
-        >
-          <Text
+        {!this.props.disabled && (
+          <TouchableOpacity
             style={{
-              color: "#fff",
-              fontSize: CATEGORY_FONT_SIZE,
-              fontFamily: FontFamily,
-              marginLeft: 8,
+              width: "44%",
+              height: "100%",
+              backgroundColor: this.props.color.hex(),
+              borderRadius: CATEGORY_BOX_INSET,
+              justifyContent: "center",
+            }}
+            onPress={this.download}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: CATEGORY_FONT_SIZE,
+                fontFamily: FontFamily,
+                marginLeft: 8,
+              }}
+            >
+              {this.props.name}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {this.props.disabled && (
+          <View
+            style={{
+              width: "44%",
+              height: "100%",
+              backgroundColor: this.props.color.hex(),
+              borderRadius: CATEGORY_BOX_INSET,
+              justifyContent: "center",
             }}
           >
-            {this.props.name}
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: CATEGORY_FONT_SIZE,
+                fontFamily: FontFamily,
+                marginLeft: 8,
+              }}
+            >
+              {this.props.name}
+            </Text>
+          </View>
+        )}
         <View
           style={{
             width: "32%",

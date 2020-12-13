@@ -14,6 +14,7 @@ import { CsvImporter } from "../export/csv.importer";
 import { VenmoTransactionLoadService } from "./venmo.transaction.load.service";
 import { RawDataLocation } from "./raw.data.location";
 import { WithStaticValueCsvImporter } from "../export/with.static.value.csv.importer";
+import { ScepterCompliantFormatImporter } from "../export/scepter.compliant.format.importer";
 
 export class TransactionLoaderFactory {
   create(csvType: CsvType, location: RawDataLocation) {
@@ -43,9 +44,11 @@ export class TransactionLoaderFactory {
       service = new TransactionLoadService(new CsvImporter());
     } else {
       service = new TransactionLoadService(
-        new ByColumnNameCsvImporter(
-          config,
-          new WithStaticValueCsvImporter("Account", location.getFileName())
+        new ScepterCompliantFormatImporter(
+          new ByColumnNameCsvImporter(
+            config,
+            new WithStaticValueCsvImporter("Account", location.getFileName())
+          )
         )
       );
     }

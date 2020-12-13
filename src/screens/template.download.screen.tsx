@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
 import { FontFamily } from "../css/styles";
 import { Color } from "../pojo/color";
-import { LocalFileLocation } from "../service/local.file.location";
+import FileSaver from "file-saver";
 
 export interface Props {
   name: string;
@@ -18,11 +18,14 @@ export class TemplateDownloadScreen extends Component<Props> {
   }
 
   async download() {
-    const contents = this.props.resource.contents.contents;
-    console.log(contents);
-    const file = new File([], "sample.csv");
-    const locationFileLocation = new LocalFileLocation(file);
-    locationFileLocation.write([JSON.stringify(contents)]);
+    try {
+      const result = await fetch('https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx', {
+        mode : 'cors'
+      });
+      FileSaver.saveAs(await result.blob(), 'scepter.template.xslx');
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   private getOpacity() {

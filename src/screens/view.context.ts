@@ -5,10 +5,14 @@ import { COLOR_NOT_FOUND } from "../service/scepter.format.csv.importer";
 export class ViewContext {
   private categoryColors: Array<CategoryColorDuo>;
   private categoryOrderings: Array<CategoryOrderingDuo>;
+  private categoryHasSpacerBefore: Map<string, boolean>;
+  private categoryHasSpacerAfter: Map<string, boolean>;
 
   constructor() {
     this.categoryColors = new Array<CategoryColorDuo>();
     this.categoryOrderings = new Array<CategoryOrderingDuo>();
+    this.categoryHasSpacerBefore = new Map<string, boolean>();
+    this.categoryHasSpacerAfter = new Map<string, boolean>();
   }
 
   public hasCategoryViewInfo(category: Category) {
@@ -71,6 +75,22 @@ export class ViewContext {
     }
 
     return foundOrdering;
+  }
+
+  public hasSpacerBefore(category: Category) {
+    if (!category || !this.categoryHasSpacerBefore.has(category.getName())) {
+      return false;
+    }
+
+    return this.categoryHasSpacerBefore.get(category.getName());
+  }
+
+  public hasSpacerAfter(category: Category) {
+    if (!category || !this.categoryHasSpacerAfter.has(category.getName())) {
+      return false;
+    }
+
+    return this.categoryHasSpacerAfter.get(category.getName());
   }
 
   static Builder = class {
@@ -153,6 +173,20 @@ export class ViewContext {
         (inner: CategoryOrderingDuo) => {
           return !category.equals(inner.category);
         }
+      );
+    }
+
+    public setHasSpacerBefore(category: Category, hasSpacerBefore: boolean) {
+      this.building.categoryHasSpacerBefore.set(
+        category.getName(),
+        hasSpacerBefore
+      );
+    }
+
+    public setHasSpacerAfter(category: Category, hasSpacerAfter: boolean) {
+      this.building.categoryHasSpacerAfter.set(
+        category.getName(),
+        hasSpacerAfter
       );
     }
 

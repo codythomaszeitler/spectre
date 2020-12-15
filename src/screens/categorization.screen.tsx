@@ -430,9 +430,11 @@ export class CategorizationScreen
     const removeAndRealignSpacers = (category: Category) => {
       const numSpacersBefore = this.props.spacers.length;
 
-      this.props.spacers = this.props.spacers.filter((spacer) => {
+      const spacers = this.props.spacers.filter((spacer) => {
         return !spacer.isAfter(category) && !spacer.isBefore(category);
       });
+      this.props.spacers.splice(0, this.props.spacers.length -1);
+      this.props.spacers.push(...spacers);
       const numSpacersAfter = this.props.spacers.length;
       const wasSpacerRemoved = numSpacersAfter != numSpacersBefore;
 

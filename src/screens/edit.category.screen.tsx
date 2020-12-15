@@ -32,8 +32,6 @@ export class EditCategoryScreen extends Component {
 
     this.textBoxReference = React.createRef();
 
-    console.log(this.props.color.hex());
-
     this.state = {
       categoryAddText: this.props.category.getName(),
       color: this.props.color,
@@ -167,7 +165,6 @@ export class EditCategoryScreen extends Component {
           initialColorChoice={this.props.color}
           diameter={35}
           onColorSelect={(colorChoice: Color) => {
-            console.log(colorChoice);
             this.setState({
               color: colorChoice,
             });

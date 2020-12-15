@@ -75,7 +75,6 @@ export class CategorizationScreen
     CategoryNameChangeListener {
   spectreUser: SpectreUser;
   state: State;
-  spacers: Array<Spacer>;
 
   constructor(props: Props) {
     super(props);
@@ -105,8 +104,6 @@ export class CategorizationScreen
     this.onCategoryNameChange = this.onCategoryNameChange.bind(this);
 
     this.spectreUser = datastore().get();
-
-    this.spacers = new Array<Spacer>();
 
     this.state = {
       screenSegmentPayloads: [],
@@ -216,9 +213,37 @@ export class CategorizationScreen
 
       builder.setCategoryColor(category, color);
       builder.setCategoryOrdering(category, ordering);
+      builder.setHasSpacerBefore(category, this.hasSpacerBefore(category));
+      builder.setHasSpacerAfter(category, this.hasSpacerAfter(category));
     }
 
     return builder.build();
+  }
+
+  private hasSpacerBefore(category: Category) {
+    let hasSpacerBefore = false;
+    for (let i = 0; i < this.props.spacers.length; i++) {
+      const spacer = this.props.spacers[i];
+      if (spacer.isAfter(category)) {
+        hasSpacerBefore = true;
+        break;
+      }
+    }
+
+    return hasSpacerBefore;
+  }
+
+  private hasSpacerAfter(category: Category) {
+    let hasSpacerAfter = false;
+    for (let i = 0; i < this.props.spacers.length; i++) {
+      const spacer = this.props.spacers[i];
+      if (spacer.isBefore(category)) {
+        hasSpacerAfter = true;
+        break;
+      }
+    }
+
+    return hasSpacerAfter;
   }
 
   renderScreenSegmentPayload({ item }: { item: ScreenSegmentPayload }) {
@@ -229,7 +254,7 @@ export class CategorizationScreen
   generatePayloadsForCurrentState() {
     const payloads = [];
 
-    if (Spacer.hasSpacerAtBeginning(this.spacers)) {
+    if (Spacer.hasSpacerAtBeginning(this.props.spacers)) {
       payloads.push(
         new LineBreakScreenSegmentPayload("AT-BEG-FIRST-LINEBREAK-1")
       );
@@ -245,7 +270,7 @@ export class CategorizationScreen
       const category = categories[i];
       payloads.push(this.createPayloadFor(category));
 
-      if (Spacer.containsSpacerAfter(this.spacers, category)) {
+      if (Spacer.containsSpacerAfter(this.props.spacers, category)) {
         payloads.push(new LineBreakScreenSegmentPayload(i + 1 + "LINE-BREAK"));
         payloads.push(new SpacerScreenSegmentPayload(i + 1 + "SPACER"));
       }
@@ -354,22 +379,22 @@ export class CategorizationScreen
   onCategoryAdded(event: OnCategoryAddedEvent) {
     const getAndRemoveSpacerAtBottom = () => {
       let foundIndex = -1;
-      for (let i = 0; i < this.spacers.length; i++) {
-        const spacer = this.spacers[i];
+      for (let i = 0; i < this.props.spacers.length; i++) {
+        const spacer = this.props.spacers[i];
         if (spacer.isAtEnd()) {
           foundIndex = i;
           break;
         }
       }
 
-      return this.spacers.splice(foundIndex, 1)[0];
+      return this.props.spacers.splice(foundIndex, 1)[0];
     };
 
-    if (Spacer.hasSpacerAtEnd(this.spacers)) {
+    if (Spacer.hasSpacerAtEnd(this.props.spacers)) {
       const bottomMostSpacer = getAndRemoveSpacerAtBottom();
 
       const spacer = new Spacer(bottomMostSpacer.getBefore(), event.category);
-      this.spacers.push(spacer);
+      this.props.spacers.push(spacer);
     }
 
     this.spectreUser.addTransactionCategorizedListener(event.category, this);
@@ -403,12 +428,12 @@ export class CategorizationScreen
 
   onBeforeCategoryRemoved(event: OnBeforeCategoryRemovedEvent) {
     const removeAndRealignSpacers = (category: Category) => {
-      const numSpacersBefore = this.spacers.length;
+      const numSpacersBefore = this.props.spacers.length;
 
-      this.spacers = this.spacers.filter((spacer) => {
+      this.props.spacers = this.props.spacers.filter((spacer) => {
         return !spacer.isAfter(category) && !spacer.isBefore(category);
       });
-      const numSpacersAfter = this.spacers.length;
+      const numSpacersAfter = this.props.spacers.length;
       const wasSpacerRemoved = numSpacersAfter != numSpacersBefore;
 
       if (wasSpacerRemoved) {
@@ -420,16 +445,16 @@ export class CategorizationScreen
             Spacer.START_OF_CATEGORIES(),
             Spacer.END_OF_CATEGORIES()
           );
-          this.spacers.push(spacer);
+          this.props.spacers.push(spacer);
         } else if (!before) {
           const spacer = new Spacer(Spacer.START_OF_CATEGORIES(), after);
-          this.spacers.push(spacer);
+          this.props.spacers.push(spacer);
         } else if (!after) {
           const spacer = new Spacer(before, Spacer.END_OF_CATEGORIES());
-          this.spacers.push(spacer);
+          this.props.spacers.push(spacer);
         } else {
           const spacer = new Spacer(before, after);
-          this.spacers.push(spacer);
+          this.props.spacers.push(spacer);
         }
       }
     };
@@ -547,7 +572,6 @@ export class CategorizationScreen
 
             if (!canLoadResult.canLoad) {
               let errorDialog = new Alert();
-              console.log(canLoadResult);
 
               const errorMessage =
                 "File " +
@@ -613,6 +637,9 @@ export class CategorizationScreen
         viewContext.getOrderFor(category)
       );
     }
+
+    const missingSpacers = Spacer.getMissingSpacers(this.props.spacers, viewContext);
+    this.props.spacers.push(...missingSpacers);
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
@@ -688,18 +715,18 @@ export class CategorizationScreen
     };
 
     const hasAtLeastOneSpacer = () => {
-      return this.spacers.length != 0;
+      return this.props.spacers.length != 0;
     };
 
     if (hasAtLeastOneCategory()) {
       const lastAddedCategory = getMostRecentlyAddedCategory();
 
-      if (!Spacer.hasSpacerAtEnd(this.spacers)) {
+      if (!Spacer.hasSpacerAtEnd(this.props.spacers)) {
         const spacer = new Spacer(
           lastAddedCategory,
           Spacer.END_OF_CATEGORIES()
         );
-        this.spacers.push(spacer);
+        this.props.spacers.push(spacer);
       }
     } else {
       if (!hasAtLeastOneSpacer()) {
@@ -707,7 +734,7 @@ export class CategorizationScreen
           Spacer.START_OF_CATEGORIES(),
           Spacer.END_OF_CATEGORIES()
         );
-        this.spacers.push(spacer);
+        this.props.spacers.push(spacer);
       }
     }
 

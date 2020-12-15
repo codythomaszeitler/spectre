@@ -1,5 +1,5 @@
 import { RAW_FORMAT, SCEPTER_FORMAT, VENMO_FORMAT } from "../export/csv.type";
-import { SCEPTER_CATEGORY_COLOR_COLUMN_NAME, SCEPTER_CATEGORY_ORDERING_COLUMN_NAME } from "../export/with.view.context.exporter";
+import { SCEPTER_CATEGORY_COLOR_COLUMN_NAME, SCEPTER_CATEGORY_ORDERING_COLUMN_NAME, SCEPTER_CATEGORY_SPACER_COLUMN_NAME } from "../export/with.view.context.exporter";
 import { CATEGORY_TYPE } from "../pojo/category";
 import { COLOR_TYPE } from "../pojo/color";
 import { AMOUNT_TYPE } from "../pojo/transaction";
@@ -339,7 +339,12 @@ export const MasterBankConfig = {
           csvHeaderName: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
           nodeFormatName: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
           type: COLOR_TYPE,
-        },
+        }, 
+        {
+          csvHeaderName: SCEPTER_CATEGORY_SPACER_COLUMN_NAME,
+          nodeFormatName: SCEPTER_CATEGORY_SPACER_COLUMN_NAME,
+          type: STRING_TYPE,
+        }
       ],
     },
     {

@@ -107,19 +107,19 @@ describe("Transaction Save Service", () => {
     expect(lines[1]).toBe(
       '"test1","test2",,,' +
         escapeCsvElement(category.getName()) +
-        ',"1","#111111"' +
+        ',"1","#111111","false/false"' +
         "\n"
     );
     expect(lines[2]).toBe(
       '"test1","test2","test3","test4",' +
         escapeCsvElement(category.getName()) +
-        ',"1","#111111"' +
+        ',"1","#111111","false/false"' +
         "\n"
     );
     expect(lines[3]).toBe(
       '"test1","test2","test3","test4",' +
         escapeCsvElement(category.getName()) +
-        ',"1","#111111"' +
+        ',"1","#111111","false/false"' +
         "\n"
     );
   });

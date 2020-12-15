@@ -1,3 +1,4 @@
+import { ViewContext } from "../../screens/view.context";
 import { Category } from "../category";
 import { Spacer } from "../spacer";
 
@@ -68,31 +69,30 @@ describe("Spacer", () => {
     expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(true);
   });
 
-
   it("should be able to tell if a spacer is not needed at the beginning of the collection using hasSpacerAtBeginning", () => {
     expect(Spacer.hasSpacerAtBeginning(spacers)).toBe(false);
   });
 
-  it('should return false if given an empty list to hasSpacerAtBeginning', () => {
+  it("should return false if given an empty list to hasSpacerAtBeginning", () => {
     expect(Spacer.hasSpacerAtBeginning([])).toBe(false);
   });
 
-  it('should be able to tell if a spacer is needed at the end using hasSpacerAtEnd', () => {
+  it("should be able to tell if a spacer is needed at the end using hasSpacerAtEnd", () => {
     const end = new Spacer(beforeCategorization, Spacer.END_OF_CATEGORIES());
     spacers.push(end);
 
     expect(Spacer.hasSpacerAtEnd(spacers)).toBe(true);
   });
 
-  it('should be able to tell if a spacer is not needed at the end using hasSpacerAtEnd', () => {
+  it("should be able to tell if a spacer is not needed at the end using hasSpacerAtEnd", () => {
     expect(Spacer.hasSpacerAtEnd(spacers)).toBe(false);
   });
 
-  it('should return false if an empty list is given to hasSpacerAtEnd', () => {
+  it("should return false if an empty list is given to hasSpacerAtEnd", () => {
     expect(Spacer.hasSpacerAtEnd([])).toBe(false);
   });
 
-  it('should throw an exception if a falsy list of spacers is given to hasSpacerAtBeginning', () => {
+  it("should throw an exception if a falsy list of spacers is given to hasSpacerAtBeginning", () => {
     let caughtException = null;
 
     try {
@@ -101,10 +101,12 @@ describe("Spacer", () => {
       caughtException = e;
     }
 
-    expect(caughtException.message).toBe('Cannot check hasSpacerAtBeginning without a list');
+    expect(caughtException.message).toBe(
+      "Cannot check hasSpacerAtBeginning without a list"
+    );
   });
 
-  it('should throw an exception if a falsy list of spacers is given to hasSpacerAtEnd', () => {
+  it("should throw an exception if a falsy list of spacers is given to hasSpacerAtEnd", () => {
     let caughtException = null;
 
     try {
@@ -113,7 +115,9 @@ describe("Spacer", () => {
       caughtException = e;
     }
 
-    expect(caughtException.message).toBe('Cannot check hasSpacerAtEnd without a list');
+    expect(caughtException.message).toBe(
+      "Cannot check hasSpacerAtEnd without a list"
+    );
   });
 
   it("should return false if the category is empty for containsSpacerBefore", () => {
@@ -211,4 +215,189 @@ describe("Spacer", () => {
       "Cannot use START OF CATEGORIES constant for after category"
     );
   });
+
+  it("should be able to tell you if there should be a category between two categories", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerAfter(beforeCategorization, true);
+    builder.setHasSpacerBefore(afterCategorization, true);
+
+    builder.setCategoryOrdering(beforeCategorization, 1);
+    builder.setCategoryOrdering(afterCategorization, 2);
+
+    const missing = Spacer.getMissingSpacers([], builder.build());
+    expect(missing.length).toBe(1);
+
+    const missingSpacer = missing[0];
+    expect(missingSpacer).toEqual(
+      new Spacer(beforeCategorization, afterCategorization)
+    );
+  });
+
+  it("should be able to tell if there should be a spacer added at the very start", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerBefore(beforeCategorization, true);
+    builder.setCategoryOrdering(beforeCategorization, 1);
+
+    const missing = Spacer.getMissingSpacers([], builder.build());
+    expect(missing.length).toBe(1);
+
+    const missingSpacer = missing[0];
+    expect(missingSpacer).toEqual(
+      new Spacer(Spacer.START_OF_CATEGORIES(), beforeCategorization)
+    );
+  });
+
+  it("should be able to tell if there should be a spacer added at the very end", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerAfter(afterCategorization, true);
+    builder.setCategoryOrdering(beforeCategorization, 1);
+    builder.setCategoryOrdering(afterCategorization, 2);
+
+    const missing = Spacer.getMissingSpacers([], builder.build());
+    expect(missing.length).toBe(1);
+
+    const missingSpacer = missing[0];
+    expect(missingSpacer).toEqual(
+      new Spacer(afterCategorization, Spacer.END_OF_CATEGORIES())
+    );
+  });
+
+  it("should be able to create above, between, and below spacers at the same time", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerBefore(beforeCategorization, true);
+    builder.setHasSpacerAfter(afterCategorization, true);
+    builder.setHasSpacerBefore(afterCategorization, true);
+    builder.setHasSpacerAfter(beforeCategorization, true);
+    builder.setCategoryOrdering(beforeCategorization, 1);
+    builder.setCategoryOrdering(afterCategorization, 2);
+
+    const missing = Spacer.getMissingSpacers([], builder.build());
+    expect(missing.length).toBe(3);
+
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(Spacer.START_OF_CATEGORIES(), beforeCategorization)
+      )
+    ).toBe(true);
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(beforeCategorization, afterCategorization)
+      )
+    ).toBe(true);
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(afterCategorization, Spacer.END_OF_CATEGORIES())
+      )
+    ).toBe(true);
+  });
+
+  it("should be able to ignore spacers that already have been made in the middle", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerBefore(beforeCategorization, true);
+    builder.setHasSpacerAfter(afterCategorization, true);
+    builder.setHasSpacerBefore(afterCategorization, true);
+    builder.setHasSpacerAfter(beforeCategorization, true);
+    builder.setCategoryOrdering(beforeCategorization, 1);
+    builder.setCategoryOrdering(afterCategorization, 2);
+
+    const alreadyCreated = [
+      new Spacer(beforeCategorization, afterCategorization),
+    ];
+    const missing = Spacer.getMissingSpacers(alreadyCreated, builder.build());
+    expect(missing.length).toBe(2);
+
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(Spacer.START_OF_CATEGORIES(), beforeCategorization)
+      )
+    ).toBe(true);
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(afterCategorization, Spacer.END_OF_CATEGORIES())
+      )
+    ).toBe(true);
+  });
+
+  it("should be able to ignore spacers that already have been made at the beginning", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerBefore(beforeCategorization, true);
+    builder.setHasSpacerAfter(afterCategorization, true);
+    builder.setHasSpacerBefore(afterCategorization, true);
+    builder.setHasSpacerAfter(beforeCategorization, true);
+    builder.setCategoryOrdering(beforeCategorization, 1);
+    builder.setCategoryOrdering(afterCategorization, 2);
+
+    const alreadyCreated = [
+      new Spacer(Spacer.START_OF_CATEGORIES(), beforeCategorization),
+    ];
+    const missing = Spacer.getMissingSpacers(alreadyCreated, builder.build());
+    expect(missing.length).toBe(2);
+
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(beforeCategorization, afterCategorization)
+      )
+    ).toBe(true);
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(afterCategorization, Spacer.END_OF_CATEGORIES())
+      )
+    ).toBe(true);
+  });
+
+  it("should be able to ignore spacers already made at the end", () => {
+    const builder = new ViewContext.Builder();
+
+    builder.setHasSpacerBefore(beforeCategorization, true);
+    builder.setHasSpacerAfter(afterCategorization, true);
+    builder.setHasSpacerBefore(afterCategorization, true);
+    builder.setHasSpacerAfter(beforeCategorization, true);
+    builder.setCategoryOrdering(beforeCategorization, 1);
+    builder.setCategoryOrdering(afterCategorization, 2);
+
+    const missing = Spacer.getMissingSpacers(
+      [new Spacer(afterCategorization, Spacer.END_OF_CATEGORIES())],
+      builder.build()
+    );
+    expect(missing.length).toBe(2);
+
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(Spacer.START_OF_CATEGORIES(), beforeCategorization)
+      )
+    ).toBe(true);
+    expect(
+      containsSpacer(
+        missing,
+        new Spacer(beforeCategorization, afterCategorization)
+      )
+    ).toBe(true);
+  });
+
+  function containsSpacer(spacers: Array<Spacer>, spacer: Spacer) {
+    let containsSpacer = false;
+    for (let i = 0; i < spacers.length; i++) {
+      const inner = spacers[i];
+      if (inner.equals(spacer)) {
+        containsSpacer = true;
+        break;
+      }
+    }
+
+    return containsSpacer;
+  }
 });

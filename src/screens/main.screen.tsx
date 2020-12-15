@@ -5,6 +5,7 @@ import { HelpScreen } from "./help.screen";
 import { datastore } from "../datastore/datastore";
 import { SpectreUser } from "../pojo/spectre.user";
 import { Color } from "../pojo/color";
+import { Spacer } from "../pojo/spacer";
 
 export interface State {
   showHelpScreen: boolean;
@@ -20,6 +21,8 @@ export class MainScreen extends Component<Props, State> {
   categoryColors: Map<string, Color>;
   categoryOrder: Map<string, number>;
 
+  spacers : Array<Spacer>;
+
   constructor(props: Props) {
     super(props);
     const model = new SpectreUser();
@@ -34,12 +37,14 @@ export class MainScreen extends Component<Props, State> {
 
     this.categoryColors = new Map<string, Color>();
     this.categoryOrder = new Map<string, number>();
+    this.spacers = new Array<Spacer>();
 
     this.categorizationScreen = (
       <CategorizationScreen
         onHelpScreenPress={this.changeToHelpScreen}
         categoryColors={this.categoryColors}
         categoryOrder={this.categoryOrder}
+        spacers={this.spacers}
       ></CategorizationScreen>
     );
     this.helpScreen = (

@@ -3,6 +3,7 @@ import { Columns } from "../export/columns";
 import {
   SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
   SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+  SCEPTER_CATEGORY_SPACER_COLUMN_NAME,
 } from "../export/with.view.context.exporter";
 import { MasterBankConfig } from "../mappings/master.bank.config";
 import { MasterBankConfigParser } from "../mappings/master.bank.config.parser";
@@ -68,6 +69,14 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
       this.getOrderingFromDetail(transactionWithCategory)
     );
 
+    const spacer = this.getSpacerFromDetail(transactionWithCategory);
+    const splits = spacer.split("/");
+    const beforeCategorySpacer = splits[0] === "true";
+    const afterCategorySpacer = splits[1] === "true";
+
+    viewConextBuilder.setHasSpacerBefore(category, beforeCategorySpacer);
+    viewConextBuilder.setHasSpacerAfter(category, afterCategorySpacer);
+
     return new ScepterFormattedLine(
       new Transaction(this.getNonCategoryDetails(transactionWithCategory)),
       category,
@@ -84,7 +93,8 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
       if (
         detail.getColumnName() !== SCEPTER_CATEGORY_COLUMN_NAME &&
         detail.getColumnName() !== SCEPTER_CATEGORY_COLOR_COLUMN_NAME &&
-        detail.getColumnName() !== SCEPTER_CATEGORY_ORDERING_COLUMN_NAME
+        detail.getColumnName() !== SCEPTER_CATEGORY_ORDERING_COLUMN_NAME &&
+        detail.getColumnName() !== SCEPTER_CATEGORY_SPACER_COLUMN_NAME
       ) {
         detailsForConversion.push(detail);
       }
@@ -132,5 +142,21 @@ export class ScepterFormatCsvImporter implements ScepterFormatImporter {
       }
     }
     return ordering;
+  }
+
+  getSpacerFromDetail(transaction: Transaction) {
+    const details = transaction.getDetails();
+    let spacer = "FALSE/FALSE";
+
+    for (let i = 0; i < details.length; i++) {
+      const detail = details[i];
+      if (detail.getColumnName() === SCEPTER_CATEGORY_SPACER_COLUMN_NAME) {
+        spacer = detail.asGivenType();
+        if (!spacer) {
+          spacer = "FALSE/FALSE";
+        }
+      }
+    }
+    return spacer;
   }
 }

@@ -1,6 +1,10 @@
 import { SpectreUser } from "../pojo/spectre.user";
 import { RawDataLocation } from "./raw.data.location";
-import { CanLoadResult, getMissingHeaders, TransactionLoader } from "./transaction.loader";
+import {
+  CanLoadResult,
+  getMissingHeaders,
+  TransactionLoader,
+} from "./transaction.loader";
 import { ScepterFormatImporter } from "./scepter.format.importer";
 import { ColumnEstimation } from "./column.estimation";
 import { DocumentLoadService } from "./document.load.service";
@@ -14,8 +18,11 @@ export class ScepterTransactionLoadService implements TransactionLoader {
     this.importer = importer;
   }
 
-  async canLoad(location : RawDataLocation) {
-    const missing = await getMissingHeaders(location, this.importer.necessaryColumnHeaders());
+  async canLoad(location: RawDataLocation) {
+    const missing = await getMissingHeaders(
+      location,
+      this.importer.necessaryColumnHeaders()
+    );
     return CanLoadResult.generate(missing);
   }
 
@@ -43,6 +50,15 @@ export class ScepterTransactionLoadService implements TransactionLoader {
         viewContextBuilder.setCategoryOrdering(
           category,
           viewContext.getOrderFor(category)
+        );
+
+        viewContextBuilder.setHasSpacerBefore(
+          category,
+          viewContext.hasSpacerBefore(category)
+        );
+        viewContextBuilder.setHasSpacerAfter(
+          category,
+          viewContext.hasSpacerAfter(category)
         );
       }
 

@@ -11,7 +11,6 @@ import { SCEPTER_CATEGORY_COLOR_COLUMN_NAME, SCEPTER_CATEGORY_ORDERING_COLUMN_NA
 export class ScepterCompliantFormatImporter extends ImporterDecorator {
   public convert(item: string) {
     const transaction = super.convert(item);
-    console.log(transaction);
     const details = transaction.getDetails();
 
     // So now we have to get the scepter format importer thing

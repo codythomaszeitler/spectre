@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
 import { FontFamily } from "../css/styles";
 import { Color } from "../pojo/color";
@@ -9,6 +9,8 @@ export interface Props {
   name: string;
   color: Color;
   disabled: boolean;
+  downloadFileName: string;
+  resource: string;
 }
 
 export class TemplateDownloadScreen extends Component<Props> {
@@ -19,10 +21,10 @@ export class TemplateDownloadScreen extends Component<Props> {
 
   async download() {
     try {
-      const result = await fetch('https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx', {
-        mode : 'cors'
+      const result = await fetch(this.props.resource, {
+        mode: "cors",
       });
-      FileSaver.saveAs(await result.blob(), 'scepter.template.xslx');
+      FileSaver.saveAs(await result.blob(), this.props.downloadFileName);
     } catch (e) {
       console.log(e);
     }
@@ -40,13 +42,11 @@ export class TemplateDownloadScreen extends Component<Props> {
     return (
       <View
         style={{
-          flex: 1,
           width: "100%",
           flexDirection: "row",
           alignSelf: "flex-start",
           justifyContent: "flex-start",
           height: 50,
-          opacity: this.getOpacity(),
         }}
       >
         <View
@@ -56,7 +56,7 @@ export class TemplateDownloadScreen extends Component<Props> {
           }}
         ></View>
         {!this.props.disabled && (
-          <TouchableOpacity
+          <Pressable
             style={{
               width: "44%",
               height: "100%",
@@ -76,7 +76,7 @@ export class TemplateDownloadScreen extends Component<Props> {
             >
               {this.props.name}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
 
         {this.props.disabled && (
@@ -87,6 +87,7 @@ export class TemplateDownloadScreen extends Component<Props> {
               backgroundColor: this.props.color.hex(),
               borderRadius: CATEGORY_BOX_INSET,
               justifyContent: "center",
+              opacity: this.getOpacity(),
             }}
           >
             <Text

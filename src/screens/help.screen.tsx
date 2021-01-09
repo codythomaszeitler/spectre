@@ -8,7 +8,7 @@ import { BoldFontFamily } from "../css/styles";
 import { EmbeddedVideoPlayer } from "./embedded.video.player";
 import { TemplateDownloadScreen } from "./template.download.screen";
 
-const SPACING_BETWEEN_TEMPLATES = .4;
+const SPACING_BETWEEN_TEMPLATES = 0.4;
 
 export class HelpScreen extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ export class HelpScreen extends Component {
         <View
           style={{
             flex: 1.8,
-            width : '100%',
+            width: "100%",
           }}
         ></View>
         <View
@@ -129,7 +129,7 @@ export class HelpScreen extends Component {
         </View>
         <View
           style={{
-            flex:.26,
+            flex: 0.26,
           }}
         ></View>
         <View
@@ -255,11 +255,19 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen name="CSV" color={new Color('#CD8AF4')} resource={require('../../templates/converted/numbers.csv')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen
+            name="CSV"
+            color={new Color("#CD8AF4")}
+            resource={
+              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
+            }
+            downloadFileName={"scepter.template.xlsx"}
+          ></TemplateDownloadScreen>
         </View>
         <View
           style={{
             flex: SPACING_BETWEEN_TEMPLATES,
+            width : '100%',
           }}
         ></View>
 
@@ -269,7 +277,14 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen name="Numbers" color={new Color('#EDB373')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen
+            name="Numbers"
+            color={new Color("#EDB373")}
+            resource={
+              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
+            }
+            downloadFileName={"scepter.template.xlsx"}
+          ></TemplateDownloadScreen>
         </View>
         <View
           style={{
@@ -282,7 +297,15 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen disabled name="Excel" color={new Color('#72D4D4')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen
+            disabled
+            name="Excel"
+            color={new Color("#72D4D4")}
+            resource={
+              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
+            }
+            downloadFileName={"scepter.template.xlsx"}
+          ></TemplateDownloadScreen>
         </View>
 
         <View
@@ -296,7 +319,15 @@ export class HelpScreen extends Component {
             width: "100%",
           }}
         >
-          <TemplateDownloadScreen disabled name="Google Sheets" color={new Color('#FF7676')}></TemplateDownloadScreen>
+          <TemplateDownloadScreen
+            disabled
+            name="Google Sheets"
+            color={new Color("#FF7676")}
+            resource={
+              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
+            }
+            downloadFileName={"scepter.template.xlsx"}
+          ></TemplateDownloadScreen>
         </View>
         <View
           style={{

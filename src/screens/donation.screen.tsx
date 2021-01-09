@@ -29,7 +29,7 @@ export class PaypalButtonScreen extends Component {
   }
 
   async copyBitcoinAddress() {
-    await Clipboard.setString('19Xgnv9qrkZEzPYzhfNF9E87BRNyxqpxK1');
+    await Clipboard.setString('15xwVG9UbQN72vmcmDUgzeMNXSk4XtbTnt');
     this.setState({
       textUnderButtons : 'Bitcoin address copied!'
     });

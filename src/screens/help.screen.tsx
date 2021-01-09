@@ -17,7 +17,7 @@ export class HelpScreen extends Component {
 
     this.state = {
       width: 0,
-      height: 1225,
+      height: 1175,
     };
   }
 
@@ -256,28 +256,6 @@ export class HelpScreen extends Component {
           }}
         >
           <TemplateDownloadScreen
-            name="CSV"
-            color={new Color("#CD8AF4")}
-            resource={
-              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
-            }
-            downloadFileName={"scepter.template.xlsx"}
-          ></TemplateDownloadScreen>
-        </View>
-        <View
-          style={{
-            flex: SPACING_BETWEEN_TEMPLATES,
-            width : '100%',
-          }}
-        ></View>
-
-        <View
-          style={{
-            flex: 2,
-            width: "100%",
-          }}
-        >
-          <TemplateDownloadScreen
             name="Numbers"
             color={new Color("#EDB373")}
             resource={
@@ -298,7 +276,6 @@ export class HelpScreen extends Component {
           }}
         >
           <TemplateDownloadScreen
-            disabled
             name="Excel"
             color={new Color("#72D4D4")}
             resource={

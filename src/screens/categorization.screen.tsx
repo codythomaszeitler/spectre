@@ -203,6 +203,11 @@ export class CategorizationScreen
   }
 
   private createViewContextFromCurrentState() {
+    const builder = this.createViewContextBuilderFromCurrentState();
+    return builder.build();
+  }
+
+  private createViewContextBuilderFromCurrentState() {
     const builder = new ViewContext.Builder();
 
     const categories = this.spectreUser.getCategories();
@@ -216,8 +221,7 @@ export class CategorizationScreen
       builder.setHasSpacerBefore(category, this.hasSpacerBefore(category));
       builder.setHasSpacerAfter(category, this.hasSpacerAfter(category));
     }
-
-    return builder.build();
+    return builder;
   }
 
   private hasSpacerBefore(category: Category) {
@@ -426,6 +430,23 @@ export class CategorizationScreen
     return highest + 1;
   }
 
+  private hasCategoryWithSortOrder(sortOrder: number) {
+    const sortOrders = this.props.categoryOrder.values();
+
+    let hasCategoryWithSortOrder = false;
+
+    let current = sortOrders.next();
+    while (!current.done) {
+      if (sortOrder === current.value) {
+        hasCategoryWithSortOrder = true;
+      }
+
+      current = sortOrders.next();
+    }
+
+    return hasCategoryWithSortOrder;
+  }
+
   onBeforeCategoryRemoved(event: OnBeforeCategoryRemovedEvent) {
     const removeAndRealignSpacers = (category: Category) => {
       const numSpacersBefore = this.props.spacers.length;
@@ -433,7 +454,7 @@ export class CategorizationScreen
       const spacers = this.props.spacers.filter((spacer) => {
         return !spacer.isAfter(category) && !spacer.isBefore(category);
       });
-      this.props.spacers.splice(0, this.props.spacers.length -1);
+      this.props.spacers.splice(0, this.props.spacers.length);
       this.props.spacers.push(...spacers);
       const numSpacersAfter = this.props.spacers.length;
       const wasSpacerRemoved = numSpacersAfter != numSpacersBefore;
@@ -473,10 +494,58 @@ export class CategorizationScreen
 
     this.removeColorChoice(event.category);
     this.removeOrderChoice(event.category);
+    this.ensureOrderingIsContinous();
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
     });
+  }
+
+  ensureOrderingIsContinous() {
+    const getMissingOrdering = () => {
+      const values = this.props.categoryOrder.values();
+      const numbers = [];
+
+      let value = values.next();
+      while (!value.done) {
+        numbers.push(value.value);
+        value = values.next();
+      }
+
+      numbers.sort();
+
+      let previous = numbers[0];
+      let missing = null;
+      for (let i = 1; i < numbers.length; i++) {
+        let current = numbers[i];
+
+        if (previous !== current - 1) {
+          missing = previous + 1;
+          break;
+        }
+        previous = current;
+      }
+
+      if (missing === null) {
+        missing = numbers.length + 1;
+      }
+
+      return missing;
+    };
+
+    const removedOrdering = getMissingOrdering();
+
+    const keys = this.props.categoryOrder.keys();
+    let key = keys.next();
+    while (!key.done) {
+      const ordering = this.props.categoryOrder.get(key.value);
+
+      if (ordering > removedOrdering) {
+        this.props.categoryOrder.set(key.value, ordering - 1);
+      }
+
+      key = keys.next();
+    }
   }
 
   removeColorChoice(category: Category) {
@@ -512,6 +581,27 @@ export class CategorizationScreen
       this.getOrderForCategory(event.oldCategory)
     );
     this.removeOrderChoice(event.oldCategory);
+
+    const hasSpacerBefore = this.hasSpacerBefore(event.oldCategory);
+    const hasSpacerAfter = this.hasSpacerAfter(event.oldCategory);
+
+    const spacers = this.props.spacers.filter((spacer) => {
+      return (
+        !spacer.isAfter(event.oldCategory) &&
+        !spacer.isBefore(event.oldCategory)
+      );
+    });
+
+    const builder = this.createViewContextBuilderFromCurrentState();
+    builder.setHasSpacerBefore(event.oldCategory, false);
+    builder.setHasSpacerAfter(event.oldCategory, false);
+    builder.setHasSpacerBefore(event.newCategory, hasSpacerBefore);
+    builder.setHasSpacerAfter(event.newCategory, hasSpacerAfter);
+
+    const missing = Spacer.getMissingSpacers(spacers, builder.build());
+    this.props.spacers.splice(0, this.props.spacers.length);
+    this.props.spacers.push(...spacers);
+    this.props.spacers.push(...missing);
 
     this.setState({
       screenSegmentPayloads: this.generatePayloadsForCurrentState(),
@@ -634,13 +724,19 @@ export class CategorizationScreen
         category.getName(),
         viewContext.getColorFor(category)
       );
+
       this.props.categoryOrder.set(
         category.getName(),
         viewContext.getOrderFor(category)
       );
     }
 
-    const missingSpacers = Spacer.getMissingSpacers(this.props.spacers, viewContext);
+    console.log(viewContext);
+
+    const missingSpacers = Spacer.getMissingSpacers(
+      this.props.spacers,
+      viewContext
+    );
     this.props.spacers.push(...missingSpacers);
 
     this.setState({

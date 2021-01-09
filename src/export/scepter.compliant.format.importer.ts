@@ -6,7 +6,7 @@ import { TransactionDetail } from "../pojo/transaction.detail";
 import { SCEPTER_CATEGORY_COLUMN_NAME } from "../service/scepter.format.importer";
 import { SCEPTER_FORMAT } from "./csv.type";
 import { ImporterDecorator } from "./importer.decorator";
-import { SCEPTER_CATEGORY_COLOR_COLUMN_NAME, SCEPTER_CATEGORY_ORDERING_COLUMN_NAME } from "./with.view.context.exporter";
+import { SCEPTER_CATEGORY_COLOR_COLUMN_NAME, SCEPTER_CATEGORY_ORDERING_COLUMN_NAME, SCEPTER_CATEGORY_SPACER_COLUMN_NAME } from "./with.view.context.exporter";
 
 export class ScepterCompliantFormatImporter extends ImporterDecorator {
   public convert(item: string) {
@@ -31,6 +31,9 @@ export class ScepterCompliantFormatImporter extends ImporterDecorator {
         continue;
       }
       if (scepterFormatName === SCEPTER_CATEGORY_COLUMN_NAME) {
+        continue;
+      }
+      if (scepterFormatName === SCEPTER_CATEGORY_SPACER_COLUMN_NAME) {
         continue;
       }
 

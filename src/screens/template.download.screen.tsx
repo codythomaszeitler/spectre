@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { CATEGORY_BOX_INSET, CATEGORY_FONT_SIZE } from "./category.screen";
 import { FontFamily } from "../css/styles";
 import { Color } from "../pojo/color";
@@ -56,7 +56,7 @@ export class TemplateDownloadScreen extends Component<Props> {
           }}
         ></View>
         {!this.props.disabled && (
-          <Pressable
+          <TouchableOpacity
             style={{
               width: "44%",
               height: "100%",
@@ -76,7 +76,7 @@ export class TemplateDownloadScreen extends Component<Props> {
             >
               {this.props.name}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         )}
 
         {this.props.disabled && (

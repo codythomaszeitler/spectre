@@ -8,7 +8,7 @@ import FileSaver from "file-saver";
 export interface Props {
   name: string;
   color: Color;
-  disabled: boolean;
+  disabled?: boolean;
   downloadFileName: string;
   resource: string;
 }

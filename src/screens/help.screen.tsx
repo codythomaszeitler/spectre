@@ -140,7 +140,7 @@ export class HelpScreen extends Component {
             height: "100%",
           }}
         >
-          <EmbeddedVideoPlayer youtubeUrl="https://www.youtube.com/watch?v=IUt0zup2bHc"></EmbeddedVideoPlayer>
+          <EmbeddedVideoPlayer youtubeUrl="https://www.youtube.com/watch?v=nB6h0Ztb1Qk&feature=youtu.be"></EmbeddedVideoPlayer>
         </View>
 
         <View
@@ -195,7 +195,7 @@ export class HelpScreen extends Component {
             height: "100%",
           }}
         >
-          <EmbeddedVideoPlayer youtubeUrl="https://www.youtube.com/watch?v=IUt0zup2bHc"></EmbeddedVideoPlayer>
+          <EmbeddedVideoPlayer youtubeUrl="https://www.youtube.com/watch?v=IFhlY1rrMh0&feature=youtu.be"></EmbeddedVideoPlayer>
         </View>
         <View
           style={{

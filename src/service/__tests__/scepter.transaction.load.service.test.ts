@@ -14,6 +14,7 @@ import { Color } from "../../pojo/color";
 import {
   SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
   SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+  SCEPTER_CATEGORY_SPACER_COLUMN_NAME,
 } from "../../export/with.view.context.exporter";
 import { getScepterCompliantColumns } from "./scepter.format.csv.importer.test";
 import { generateTransactionFor } from "../../export/__tests__/csv.importer.test";
@@ -154,7 +155,7 @@ describe("Scepter Transaction Load Service", () => {
     const result = await testObject.canLoad(location);
     expect(result.canLoad).toBe(false);
     expect(result.errorMessage).toBe(
-      "Location did not have headers: [Account,Date,Vendor,Amount,Notes," + SCEPTER_CATEGORY_ORDERING_COLUMN_NAME + "]"
+      "Location did not have headers: [Account,Date,Vendor,Amount,Notes," + SCEPTER_CATEGORY_ORDERING_COLUMN_NAME + "," + SCEPTER_CATEGORY_SPACER_COLUMN_NAME + "]"
     );
   });
 

@@ -11,6 +11,7 @@ import { AMOUNT_TYPE } from "../../pojo/transaction";
 import {
   SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
   SCEPTER_CATEGORY_ORDERING_COLUMN_NAME,
+  SCEPTER_CATEGORY_SPACER_COLUMN_NAME,
 } from "../../export/with.view.context.exporter";
 import { COLOR_TYPE } from "../../pojo/color";
 
@@ -50,6 +51,10 @@ const SCEPTER_COMPLIANT_COLUMNS = new Columns({
   7: {
     name: SCEPTER_CATEGORY_COLOR_COLUMN_NAME,
     type: COLOR_TYPE,
+  },
+  8: {
+    name: SCEPTER_CATEGORY_SPACER_COLUMN_NAME,
+    type: STRING_TYPE,
   },
 });
 

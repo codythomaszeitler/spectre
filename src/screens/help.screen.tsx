@@ -259,9 +259,9 @@ export class HelpScreen extends Component {
             name="Numbers"
             color={new Color("#EDB373")}
             resource={
-              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
+              "https://s3-us-west-1.amazonaws.com/scepter.template.org/210109-0_Scepter-Template.numbers"
             }
-            downloadFileName={"scepter.template.xlsx"}
+            downloadFileName={"10109-0_Scepter-Template.numbers"}
           ></TemplateDownloadScreen>
         </View>
         <View
@@ -279,9 +279,9 @@ export class HelpScreen extends Component {
             name="Excel"
             color={new Color("#72D4D4")}
             resource={
-              "https://s3-us-west-1.amazonaws.com/scepter.template.org/ASU+MCS+Online+Class+Review+(Responses).xlsx"
+              "https://s3-us-west-1.amazonaws.com/scepter.template.org/210109-0_Scepter-Template.xlsx"
             }
-            downloadFileName={"scepter.template.xlsx"}
+            downloadFileName={"210109-0_Scepter-Template.xlsx"}
           ></TemplateDownloadScreen>
         </View>
 

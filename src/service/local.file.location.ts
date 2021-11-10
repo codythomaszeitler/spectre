@@ -2,7 +2,6 @@ import { RawDataLocation } from "./raw.data.location";
 import FileSaver from "file-saver";
 import { readCsv, split } from "../export/csv.line.splitter";
 
-
 export class LocalFileLocation implements RawDataLocation {
   file: File;
   lines: string[];
@@ -10,7 +9,6 @@ export class LocalFileLocation implements RawDataLocation {
   startedReadingFile: boolean;
 
   constructor(file: File) {
-    console.log(file);
     this.file = file;
     this.lines = [];
     this.startedReadingFile = false;
@@ -23,6 +21,7 @@ export class LocalFileLocation implements RawDataLocation {
 
   async isEmpty() {
     const contents = await this.readFile(this.file);
+    // @ts-ignore
     return contents.trim().length === 0;
   }
 
@@ -33,6 +32,7 @@ export class LocalFileLocation implements RawDataLocation {
 
   async peek() {
     await this.readFileAsArray(this.file);
+    // @ts-ignore
     return split(this.lines[0]).join();
   }
 
@@ -43,12 +43,13 @@ export class LocalFileLocation implements RawDataLocation {
     return lines.slice(0);
   }
 
-  async readFileAsArray(file : File) {
+  async readFileAsArray(file: File) {
     if (this.lines.length !== 0) {
       return this.lines;
     }
 
     const contents = await this.readFile(file);
+    // @ts-ignore
     const lines = readCsv(contents);
 
     this.lines = lines;
@@ -61,6 +62,7 @@ export class LocalFileLocation implements RawDataLocation {
       const reader = new FileReader();
 
       reader.onload = (res) => {
+        // @ts-ignore
         resolve(res.target.result);
       };
       reader.onerror = (err) => reject(err);
@@ -74,5 +76,5 @@ export class LocalFileLocation implements RawDataLocation {
     await FileSaver.saveAs(file);
 
     return true;
-}
+  }
 }

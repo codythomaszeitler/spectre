@@ -20,7 +20,7 @@
     "expo-font": "~8.1.0",
     "file-saver": "^2.0.5",
     "identity-obj-proxy": "^3.0.0",
-    "luxon": "^1.25.0",
+    "luxon": "^1.28.1",
     "modal-enhanced-react-native-web": "^0.2.0",
     "modal-react-native-web": "^0.2.0",
     "react": "~16.9.0",
